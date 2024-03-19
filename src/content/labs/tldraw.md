@@ -7,7 +7,7 @@ tags:
   - nanostores
   - react
 title: TLDraw P2P
-url: /app/tldraw/index.html
+url: /y-labs/app/tldraw/index.html
 description: TLDraw with offline editing,  P2P sharing and realtime collaboration
 pubDate: 2024-03-12T06:00:00.000Z
 ---

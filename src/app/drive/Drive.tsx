@@ -5,14 +5,26 @@ import { documentsStore } from "./store.ts";
 
 const typeIconMap = {
   codemirror: (
-    <img src="/logos/codemirror.svg" alt="CodeMirror" className="h-8 w-8" />
+    <img
+      src="/y-labs/logos/codemirror.svg"
+      alt="CodeMirror"
+      className="h-8 w-8"
+    />
   ),
   blocknote: (
-    <img src="/logos/blocknote.svg" alt="Blocknote" className="h-8 w-8" />
+    <img
+      src="/y-labs/logos/blocknote.svg"
+      alt="Blocknote"
+      className="h-8 w-8"
+    />
   ),
-  novel: <img src="/logos/novel.svg" alt="Novel" className="h-8 w-8" />,
+  novel: <img src="/y-labs/logos/novel.svg" alt="Novel" className="h-8 w-8" />,
   tldraw: (
-    <img src="/logos/tldraw.svg" alt="TL Tldraw Meta" className="h-8 w-8" />
+    <img
+      src="/y-labs/logos/tldraw.svg"
+      alt="TL Tldraw Meta"
+      className="h-8 w-8"
+    />
   ),
   unknown: <FileQuestionIcon className="h-8 w-8" />,
 };
@@ -21,35 +33,35 @@ const docTypes = [
   {
     label: "Novel",
     icon: typeIconMap.novel,
-    href: "/app/novel/index.html#/new",
+    href: "/y-labs/app/novel/index.html#/new",
   },
   {
     label: "Tldraw",
     icon: typeIconMap.tldraw,
-    href: "/app/tldraw/index.html#/new",
+    href: "/y-labs/app/tldraw/index.html#/new",
   },
   {
     label: "Blocknote",
     icon: typeIconMap.blocknote,
-    href: "/app/blocknote/index.html#/new",
+    href: "/y-labs/app/blocknote/index.html#/new",
   },
   {
     label: "Codemirror",
     icon: typeIconMap.codemirror,
-    href: "/app/codemirror/index.html#/new",
+    href: "/y-labs/app/codemirror/index.html#/new",
   },
 ];
 
 function getDocUrl(name: string, type: string) {
   switch (type) {
     case "novel":
-      return `/app/novel/index.html#/edit/${name}`;
+      return `/y-labs/app/novel/index.html#/edit/${name}`;
     case "blocknote":
-      return `/app/blocknote/index.html#/edit/${name}`;
+      return `/y-labs/app/blocknote/index.html#/edit/${name}`;
     case "codemirror":
-      return `/app/codemirror/index.html#/edit/${name}`;
+      return `/y-labs/app/codemirror/index.html#/edit/${name}`;
     case "tldraw":
-      return `/app/tldraw/index.html#/edit/${name}`;
+      return `/y-labs/app/tldraw/index.html#/edit/${name}`;
     default:
       return null;
   }
