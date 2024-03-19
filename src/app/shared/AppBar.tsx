@@ -33,7 +33,7 @@ export default function AppBar() {
             isIconOnly
             variant="light"
             as="a"
-            href="/app/drive/index.html"
+            href="/y-labs/app/drive/index.html"
             className="block flex items-center"
           >
             <HardDriveIcon className="h-5 w-5" />

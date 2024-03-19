@@ -7,6 +7,6 @@ tags:
   - react
 title: Saved Documents
 description: Manage documents saved from labs
-url: /app/drive/index.html
+url: /y-labs/app/drive/index.html
 pubDate: 2022-03-13
 ---
