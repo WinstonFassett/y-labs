@@ -225,7 +225,7 @@ export function ShareDialog() {
                               "//",
                               window.location.host,
                               window.location.pathname,
-                              "/#/edit/",
+                              "#/edit/",
                               docId,
                               "?roomId=",
                               roomId,
