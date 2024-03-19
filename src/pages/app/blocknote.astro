@@ -1,0 +1,9 @@
+---
+import Layout from "@/layouts/LabLayout.astro";
+import App from "@/app/blocknote/App";
+const frontmatter = { title: "BlockNote", favicon: "/logos/blocknote.svg" };
+---
+
+<Layout frontmatter={frontmatter} mainClass="container py-10">
+  <App client:only="react" frontmatter={frontmatter} />
+</Layout>

@@ -1,0 +1,20 @@
+---
+import Layout from "@/layouts/BaseLayout.astro";
+import React from "@/lab/astro-client-routing/React";
+
+export function getStaticPaths() {
+  // we need to define all the possible react routes so astro knows to redirect here
+  return [{ params: { route: undefined } }, { params: { route: "page1" } }];
+}
+---
+
+<Layout title="React">
+  <div class="flex flex-col gap-2 p-4">
+    <h1>This is rendered statically by Astro</h1>
+    <div class="card bg-base-300">
+      <div class="card-body">
+        <React client:only="react" />
+      </div>
+    </div>
+  </div>
+</Layout>

@@ -1,0 +1,24 @@
+---
+import "@/styles/global.css";
+import BaseHead from "@/components/BaseHead.astro";
+import { cn } from "@/lib/utils";
+interface Props {
+  title: string;
+  description: string;
+  favicon?: string;
+  class?: string;
+}
+
+const { title, favicon, class: className } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={title} favicon={favicon} />
+    <slot name="head" />
+  </head>
+  <body class={cn("h-screen", className)}>
+    <slot />
+  </body>
+</html>

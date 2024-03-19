@@ -1,0 +1,19 @@
+---
+import ThemeSwitch from "@/lib/astro-tailwind-themes/ThemeSwitch.svelte";
+import Navbar from "@/components/NextuiNavbar.astro";
+import logoRaw from "../../public/lab-icon.svg?raw";
+import LinkButton from "@/components/NextuiLinkButton.astro";
+import { SITE_TITLE } from "@/consts";
+---
+
+<Navbar maxWidth="full">
+  <h2 slot="brand">
+    <LinkButton variant="light" href="/">
+      <span set:html={logoRaw} class="h-6 w-6" />
+      <h2>{SITE_TITLE}</h2>
+    </LinkButton>
+  </h2>
+  <div slot="end">
+    <ThemeSwitch client:load />
+  </div>
+</Navbar>

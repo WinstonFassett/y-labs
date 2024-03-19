@@ -1,0 +1,48 @@
+---
+import { getCollection } from "astro:content";
+import MainLayout from "@/layouts/MainLayout.astro";
+import LabPreview from "@/components/LabPreview.astro";
+import CardList from "@/components/CardList.astro";
+import { SITE_TITLE } from "@/consts";
+
+const sorter = compareDates((x) => x?.data?.pubDate);
+
+// const posts = await getPosts();
+// const sortedPosts = posts.sort(sorter);
+
+const labs = await getCollection("labs");
+const sortedLabs = labs.sort(sorter);
+
+function compareDates(get = (x?: any) => x) {
+  return (a: any, b: any) => {
+    const aPubDate = get(a) ?? 0;
+    const bPubDate = get(b) ?? 0;
+    return bPubDate - aPubDate;
+  };
+}
+---
+
+<MainLayout pageTitle={SITE_TITLE}>
+  <div class="w-full flex-1 mx-auto relative">
+    <div class="max-w-3xl mx-auto h-full flex flex-col">
+      <h1 class="text-6xl font-bold text-center">Welcome to {SITE_TITLE}!</h1>
+
+      <p class="pt-10 text-center">
+        Experiments in local-first software with <a
+          class="text-primary underline"
+          href="https://github.com/yjs/yjs"
+        >
+          Yjs
+        </a>
+      </p>
+
+      <hr class="m-10" />
+
+      <h3 class="text-4xl font-bold pb-6 text-center">Local Apps</h3>
+
+      <CardList>
+        {sortedLabs.slice(0, 5).map((lab) => <LabPreview {...lab.data} />)}
+      </CardList>
+    </div>
+  </div>
+</MainLayout>

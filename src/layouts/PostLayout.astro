@@ -1,0 +1,15 @@
+---
+import Layout from "./MainLayout.astro";
+import Prose from "@/components/Prose.astro";
+
+const { frontmatter } = Astro.props;
+---
+
+<Layout title={frontmatter.title}>
+  <p>{frontmatter.pubDate.toString().slice(0, 10)}</p>
+  <article class="py-4">
+    <Prose>
+      <slot />
+    </Prose>
+  </article>
+</Layout>

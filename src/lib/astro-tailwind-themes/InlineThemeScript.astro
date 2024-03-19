@@ -1,0 +1,51 @@
+---
+
+---
+
+<script is:inline>
+  var STORAGE_KEY = "theme";
+  var prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+  function getThemePreference() {
+    return prefersDark.matches ? "dark" : "light";
+  }
+  function resolveTheme(theme) {
+    return theme ?? localStorage.getItem(STORAGE_KEY) ?? getThemePreference();
+  }
+  function applyTheme(theme) {
+    document.documentElement.setAttribute("data-theme", theme);
+    document.documentElement.style.colorScheme = theme;
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    document.documentElement.classList.toggle("light", theme === "light");
+  }
+  function saveTheme(theme) {
+    if (theme) {
+      localStorage.setItem(STORAGE_KEY, theme);
+    } else {
+      localStorage.removeItem(STORAGE_KEY);
+    }
+  }
+
+  document.addEventListener("set-theme", function (e) {
+    var theme = e.detail;
+    applyTheme(theme);
+    saveTheme(theme);
+  });
+  prefersDark.addEventListener("change", function (e) {
+    var theme = getThemePreference();
+    setTheme(theme);
+  });
+  document.addEventListener("storage", function (e) {
+    if (e instanceof StorageEvent && e.key === STORAGE_KEY) {
+      var theme = resolveTheme(e.newValue);
+      applyTheme(theme);
+    }
+  });
+  document.addEventListener("astro:after-swap", function () {});
+
+  function setTheme(theme) {
+    document.dispatchEvent(new CustomEvent("set-theme", { detail: theme }));
+  }
+
+  const initialTheme = resolveTheme();
+  setTheme(initialTheme);
+</script>

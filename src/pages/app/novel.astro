@@ -1,0 +1,26 @@
+---
+import Layout from "@/layouts/LabLayout.astro";
+import App from "@/app/novel";
+const frontmatter = { title: "Novel", favicon: "/logos/novel.svg" };
+---
+
+<script>
+  console.log("Service worker registration started");
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker
+      .register("/service-worker.js")
+      .then((registration) => {
+        console.log(
+          "Service worker successfully registered on page",
+          registration.scope
+        );
+      })
+      .catch((error) => {
+        console.error("Service worker registration failed:", error);
+      });
+  }
+</script>
+
+<Layout frontmatter={frontmatter}>
+  <App client:only="react" frontmatter={frontmatter} />
+</Layout>

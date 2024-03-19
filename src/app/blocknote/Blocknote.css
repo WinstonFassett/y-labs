@@ -1,0 +1,4 @@
+.bn-container[data-color-scheme] {
+  --bn-colors-editor-background: transparent !important;
+  --bn-colors-editor-text: inherit !important;
+}

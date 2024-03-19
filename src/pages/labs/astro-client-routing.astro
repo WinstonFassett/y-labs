@@ -1,0 +1,12 @@
+---
+import Layout from "@/layouts/MainLayout.astro";
+import React from "@/lab/astro-client-routing/React";
+import Prose from "@/components/Prose.astro";
+---
+
+<Layout>
+  <Prose>
+    <h3>Astro Client Routing</h3>
+    <React client:only="react" />
+  </Prose>
+</Layout>

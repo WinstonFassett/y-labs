@@ -1,0 +1,17 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/MainLayout.astro";
+import PostPreview from "@/components/PostPreview.astro";
+const allLabs = await getCollection("labs");
+const pageTitle = "Demos";
+---
+
+<BaseLayout title={pageTitle}>
+  <ul class="p-4">
+    {
+      allLabs.map((post) => (
+        <PostPreview url={`${post.data.url}`} title={post.data.title} />
+      ))
+    }
+  </ul>
+</BaseLayout>
