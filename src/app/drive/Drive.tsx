@@ -103,6 +103,9 @@ export function CreateDocButtons() {
 
 function DriveListing({ className }: { className?: string }) {
   const documents = useStore(documentsStore);
+  if (!documents) {
+    return <div>Loading...</div>;
+  }
   if (documents.length === 0) {
     return <EmptyState />;
   }
