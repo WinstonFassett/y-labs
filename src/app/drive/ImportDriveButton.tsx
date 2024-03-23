@@ -13,6 +13,7 @@ import {
 import { useDropzone } from "react-dropzone";
 import { getOfflineDoc } from "../shared/store/local-yjs-idb";
 import * as Y from "yjs";
+import { CheckCircleIcon, UploadCloudIcon, XCircle } from "lucide-react";
 
 export const ImportDriveButton: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,10 +32,15 @@ export const ImportDriveButton: React.FC = () => {
       reader.onload = async (event) => {
         const fileContent = event.target?.result as string;
         console.log("File content:", fileContent);
-        const json = JSON.parse(fileContent);
-        console.log("JSON", json);
-        await processImportedData(fileContent);
-        onDone();
+        try {
+          const json = JSON.parse(fileContent);
+          console.log("JSON", json);
+          await processImportedData(fileContent);
+          onDone();
+        } catch (error) {
+          console.error("Failed to parse file content:", error);
+          setUploadState("error");
+        }
       };
       reader.readAsText(file);
       const onDone = () => {
@@ -42,7 +48,7 @@ export const ImportDriveButton: React.FC = () => {
         setUploadState("success");
         console.log("DONE");
 
-        setTimeout(() => setIsOpen(false), 2000); // Close modal after showing success message
+        setTimeout(() => setIsOpen(false), 600); // Close modal after showing success message
       };
       // setTimeout(onDone, 1000);
     } else {
@@ -65,56 +71,46 @@ export const ImportDriveButton: React.FC = () => {
         <ModalContent>
           <ModalHeader>Upload Yjs Document</ModalHeader>
           <ModalBody>
-            <Card
-              isPressable
-              className={`rounded-lg border-2 border-dashed p-6 text-center cursor-pointer ${isDragActive ? "bg-primary-300" : "bg-primary"} hover:bg-primary-300 text-primary-foreground`}
-            >
-              <CardBody>
-                <div {...getRootProps()}>
-                  <input {...getInputProps()} />
+            {["initial", "uploading", "error"].includes(uploadState) && (
+              <Card
+                isPressable
+                className={`rounded-lg border-2 border-dashed p-6 text-center cursor-pointer ${isDragActive ? "bg-primary-300" : "bg-primary"} hover:bg-primary-300 text-primary-foreground`}
+              >
+                <CardBody>
+                  <div {...getRootProps()}>
+                    <input {...getInputProps()} />
 
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg
-                      className="w-8 h-8 mb-4 "
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 20 16"
-                    >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                      />
-                    </svg>
-                    {isDragActive ? (
-                      <p>Drop the files here ...</p>
-                    ) : uploadState === "initial" ? (
-                      <p className="mb-2">
-                        <span className="font-semibold">Click to upload</span>{" "}
-                        or drag and drop
-                      </p>
-                    ) : null}
+                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                      <UploadCloudIcon className="w-8 h-8 mb-4" />
 
-                    <p className="text-xs">Supported formats: .yjs.json</p>
-                    {/* {isDragActive ? (
-                      <p>Drop the files here ...</p>
-                    ) : uploadState === "initial" ? (
-                      <p>Drag 'n' drop some files here, or click to select files</p>
-                    ) : null} */}
-                    {uploadState === "uploading" && <Spinner />}
-                    {uploadState === "success" && (
-                      <p>File successfully uploaded!</p>
-                    )}
-                    {uploadState === "error" && (
-                      <p>Failed to upload file. Please try again.</p>
-                    )}
+                      {isDragActive ? (
+                        <p>Drop the files here ...</p>
+                      ) : uploadState === "initial" ? (
+                        <p className="mb-2">
+                          <span className="font-semibold">Click to upload</span>{" "}
+                          or drag and drop
+                        </p>
+                      ) : null}
+
+                      <p className="text-xs">Supported formats: .yjs.json</p>
+                      {uploadState === "uploading" && <Spinner />}
+                    </div>
                   </div>
-                </div>
-              </CardBody>
-            </Card>
+                </CardBody>
+              </Card>
+            )}
+            {uploadState === "success" && (
+              <div className="p-4 flex items-center gap-4 rounded border border-success-200 bg-success-400">
+                <CheckCircleIcon className="text-success-foreground" />
+                <p className="text-success-foreground">Import succeeded</p>
+              </div>
+            )}
+            {uploadState === "error" && (
+              <div className="p-4 flex items-center gap-4 rounded border border-danger-200 bg-danger-400">
+                <XCircle className="text-danger-foreground" />
+                <p className="text-danger-foreground">Import failed</p>
+              </div>
+            )}
           </ModalBody>
           <ModalFooter>
             {/* Add any footer content here or leave blank */}
@@ -129,6 +125,7 @@ export default ImportDriveButton;
 
 async function processImportedData(fileContents: string): Promise<void> {
   try {
+    console.log("PROCESSING");
     const docsData = JSON.parse(fileContents);
     const docNames = Object.keys(docsData);
 
