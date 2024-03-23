@@ -8,7 +8,7 @@ import { ExportDriveButton } from "@/app/drive/ExportDriveButton";
 import { ImportDriveButton } from "@/app/drive/ImportDriveButton";
 import LinkButton from "@/components/NextuiLinkButton.astro";
 import logoRaw from "../../../public/lab-icon.svg?raw";
-
+import { DriveActions } from "@/app/drive/DriveActions";
 const frontmatter = {
   title: "Saved Documents",
   favicon: "/logos/lucide-drive.svg",
@@ -24,10 +24,10 @@ const frontmatter = {
       <div>Saved Documents</div>
     </h2>
     <div slot="end" class="flex gap-2 items-center">
-      <CreateDocumentDialogButton client:only="react" />
-      <ThemeSwitch client:load />
+      <DriveActions client:only="react" />
+      <!-- <ThemeSwitch client:load />
       <ExportDriveButton client:load />
-      <ImportDriveButton client:only="react" />
+      <ImportDriveButton client:only="react" /> -->
     </div>
   </NextuiNavbar>
   <App client:only="react" frontmatter={frontmatter} />
