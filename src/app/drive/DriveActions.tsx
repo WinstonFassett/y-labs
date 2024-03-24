@@ -5,11 +5,18 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/react";
-import { MoreVertical, FileText, Sun, Moon } from "lucide-react";
+import {
+  MoreVertical,
+  FileText,
+  Sun,
+  Moon,
+  DownloadIcon,
+  UploadIcon,
+} from "lucide-react";
 import { CreateDocumentDialogButton } from "./CreateDocumentDialogButton";
 import { useTheme } from "@/lib/astro-tailwind-themes/useTheme";
-import { ExportDriveButton } from "./ExportDriveButton";
-import ImportDriveButton from "./ImportDriveButton";
+import { ExportDriveButton, doExport } from "./ExportDriveButton";
+import ImportDriveButton, { startImport } from "./ImportDriveButton";
 
 export function DriveActions() {
   return (
@@ -54,12 +61,21 @@ function MoreMenu() {
         >
           Change Theme
         </DropdownItem>
-        <DropdownItem key="export">
-          <ExportDriveButton />
+        <DropdownItem
+          key="import"
+          onPress={startImport}
+          endContent={<UploadIcon size={16} />}
+        >
+          Import Drive
         </DropdownItem>
-        <DropdownItem key="import">
-          <ImportDriveButton />
+        <DropdownItem
+          key="export"
+          onPress={doExport}
+          endContent={<DownloadIcon size={16} />}
+        >
+          Export Drive
         </DropdownItem>
+
         {/*
   <DropdownItem key="settings" endContent={<Settings size={16} />}>
     Settings

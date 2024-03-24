@@ -7,7 +7,7 @@ export function ExportDriveButton() {
   return <Button onPress={doExport}>Export Drive</Button>;
 }
 
-async function doExport() {
+export async function doExport() {
   // Export the drive
   console.log("Exporting drive...");
   const res = await exportAllYDocsToString();

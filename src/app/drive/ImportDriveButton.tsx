@@ -24,13 +24,11 @@ const importDriveState = map({
   total: 0,
   errors: [] as string[],
 });
-
+export const startImport = () => importDriveState.setKey("visible", true);
 export const ImportDriveButton: React.FC = () => {
   return (
     <>
-      <Button onClick={() => importDriveState.setKey("visible", true)}>
-        Import Yjs Docs
-      </Button>
+      <Button onClick={startImport}>Import Yjs Docs</Button>
     </>
   );
 };
@@ -81,7 +79,12 @@ export function ImportDriveModal() {
     }
   };
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      "application/json": [],
+    },
+  });
 
   const closeModal = () => {
     importDriveState.setKey("visible", false);
