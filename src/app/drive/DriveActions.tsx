@@ -1,6 +1,7 @@
 import { useTheme } from "@/lib/astro-tailwind-themes/useTheme";
 import {
   Button,
+  Divider,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -14,14 +15,16 @@ import {
   Sun,
   UploadIcon,
 } from "lucide-react";
-import { CreateDocumentDialogButton } from "./CreateDocumentDialogButton";
+import {
+  CreateDocumentDialogButton,
+  createDocumentState,
+} from "./CreateDocumentDialogButton";
 import { doExport, doExportJson } from "./ExportDriveButton";
 import { startImport } from "./ImportDrive";
 
 export function DriveActions() {
   return (
     <div className="flex items-center">
-      <CreateDocumentDialogButton />
       <MoreMenu />
     </div>
   );
@@ -42,24 +45,13 @@ function MoreMenu() {
         selectionMode="none"
       >
         <DropdownItem
-          href={`#/new`}
-          key="newDoc"
+          onPress={createDocumentState.open}
           endContent={<FileText size={16} />}
         >
           New Document
         </DropdownItem>
-        <DropdownItem
-          key="toggleTheme"
-          endContent={
-            theme === "light" ? <Sun size={16} /> : <Moon size={16} />
-          }
-          closeOnSelect={false}
-          onPress={(e) => {
-            console.log("click");
-            setTheme(theme === "dark" ? "light" : "dark");
-          }}
-        >
-          Change Theme
+        <DropdownItem>
+          <Divider />
         </DropdownItem>
         <DropdownItem
           key="import"
@@ -81,6 +73,22 @@ function MoreMenu() {
           endContent={<DownloadIcon size={16} />}
         >
           Export Drive to JSON
+        </DropdownItem>
+        <DropdownItem>
+          <Divider />
+        </DropdownItem>
+        <DropdownItem
+          key="toggleTheme"
+          endContent={
+            theme === "light" ? <Sun size={16} /> : <Moon size={16} />
+          }
+          closeOnSelect={false}
+          onPress={(e) => {
+            console.log("click");
+            setTheme(theme === "dark" ? "light" : "dark");
+          }}
+        >
+          Change Theme
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>
