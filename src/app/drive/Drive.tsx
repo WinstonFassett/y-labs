@@ -2,6 +2,8 @@ import { useStore } from "@nanostores/react";
 import { Card, CardBody, CardFooter, cn } from "@nextui-org/react";
 import { FileQuestionIcon } from "lucide-react";
 import { documentsStore } from "./store.ts";
+import { ImportDriveModal } from "./ImportDrive.tsx";
+import { CreateDocumentDialog } from "./CreateDocumentDialogButton.tsx";
 
 const typeIconMap = {
   codemirror: (
@@ -103,6 +105,9 @@ export function CreateDocButtons() {
 
 function DriveListing({ className }: { className?: string }) {
   const documents = useStore(documentsStore);
+  if (!documents) {
+    return <div>Loading...</div>;
+  }
   if (documents.length === 0) {
     return <EmptyState />;
   }
@@ -155,6 +160,8 @@ function Drive({ className }: { className: string }) {
           <DriveListing />
         </div>
       </div>
+      <CreateDocumentDialog />
+      <ImportDriveModal />
     </div>
   );
 }

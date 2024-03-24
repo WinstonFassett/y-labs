@@ -1,15 +1,13 @@
 ---
-import Layout from "@/layouts/LabLayout.astro";
 import App from "@/app/drive/App";
-import ThemeSwitch from "@/lib/astro-tailwind-themes/ThemeSwitch.svelte";
-import NextuiNavbar from "@/components/NextuiNavbar.astro";
-import { CreateDocumentDialogButton } from "@/app/drive/CreateDocumentDialogButton";
+import { DriveActions } from "@/app/drive/DriveActions";
 import LinkButton from "@/components/NextuiLinkButton.astro";
+import NextuiNavbar from "@/components/NextuiNavbar.astro";
+import Layout from "@/layouts/LabLayout.astro";
 import logoRaw from "../../../public/lab-icon.svg?raw";
-
 const frontmatter = {
   title: "Saved Documents",
-  favicon: "/logos/lucide-drive.svg",
+  favicon: "y-labs/logos/lucide-drive.svg",
 };
 ---
 
@@ -22,8 +20,7 @@ const frontmatter = {
       <div>Saved Documents</div>
     </h2>
     <div slot="end" class="flex gap-2 items-center">
-      <CreateDocumentDialogButton client:only="react" />
-      <ThemeSwitch client:load />
+      <DriveActions client:only="react" />
     </div>
   </NextuiNavbar>
   <App client:only="react" frontmatter={frontmatter} />

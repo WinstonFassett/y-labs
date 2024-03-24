@@ -102,8 +102,7 @@ export async function listDatabases() {
   return (await indexedDB.databases()).map(({ name }) => name!);
 }
 
-export async function getOfflineDoc(name: string) {
-  const store = getDocIdbStore(name);
+export function getOfflineDoc(name: string, destroy = true) {
   const onLoad = () => {
     // console.log("loaded", name);
   };
@@ -114,9 +113,12 @@ export async function getOfflineDoc(name: string) {
   } else {
     return new Promise<Y.Doc>((resolve, reject) => {
       const persister = new IndexeddbPersistence(name, ydoc);
+      ydoc.persister = persister;
       persister.once("synced", () => {
         onLoad();
-        persister.destroy();
+        if (destroy) {
+          persister.destroy();
+        }
         resolve(ydoc);
       });
     });

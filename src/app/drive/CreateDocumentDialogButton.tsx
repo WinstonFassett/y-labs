@@ -8,16 +8,45 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { CreateDocButtons } from "./Drive.tsx";
+import { useStore } from "@nanostores/react";
+import { map } from "nanostores";
+
+export const createDocumentState = Object.assign(
+  map({
+    visible: false,
+  }),
+  {
+    setOpen(v: boolean) {
+      createDocumentState.setKey("visible", v);
+    },
+    open() {
+      createDocumentState.setOpen(true);
+    },
+    close() {
+      createDocumentState.setOpen(false);
+    },
+  },
+);
 
 export function CreateDocumentDialogButton() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
   return (
     <>
-      <Button color="primary" onPress={onOpen}>
+      <Button color="primary" onPress={createDocumentState.open}>
         Create Document
       </Button>
-      <Modal placement="top" isOpen={isOpen} onOpenChange={onOpenChange}>
+    </>
+  );
+}
+
+export function CreateDocumentDialog() {
+  const isOpen = useStore(createDocumentState).visible;
+  return (
+    <>
+      <Modal
+        placement="top"
+        isOpen={isOpen}
+        onOpenChange={createDocumentState.setOpen}
+      >
         <ModalContent>
           {(onClose) => (
             <>
