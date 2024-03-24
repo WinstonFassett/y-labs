@@ -126,9 +126,7 @@ export function ImportDriveModal() {
             </div>
           )}
         </ModalBody>
-        <ModalFooter>
-          {/* Add any footer content here or leave blank */}
-        </ModalFooter>
+        <ModalFooter></ModalFooter>
       </ModalContent>
     </Modal>
   );

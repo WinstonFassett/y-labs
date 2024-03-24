@@ -1,14 +1,10 @@
 ---
-import Layout from "@/layouts/LabLayout.astro";
 import App from "@/app/drive/App";
-import ThemeSwitch from "@/lib/astro-tailwind-themes/ThemeSwitch.svelte";
-import NextuiNavbar from "@/components/NextuiNavbar.astro";
-import { CreateDocumentDialogButton } from "@/app/drive/CreateDocumentDialogButton";
-import { ExportDriveButton } from "@/app/drive/ExportDriveButton";
-import { ImportDriveButton } from "@/app/drive/ImportDrive";
-import LinkButton from "@/components/NextuiLinkButton.astro";
-import logoRaw from "../../../public/lab-icon.svg?raw";
 import { DriveActions } from "@/app/drive/DriveActions";
+import LinkButton from "@/components/NextuiLinkButton.astro";
+import NextuiNavbar from "@/components/NextuiNavbar.astro";
+import Layout from "@/layouts/LabLayout.astro";
+import logoRaw from "../../../public/lab-icon.svg?raw";
 const frontmatter = {
   title: "Saved Documents",
   favicon: "y-labs/logos/lucide-drive.svg",

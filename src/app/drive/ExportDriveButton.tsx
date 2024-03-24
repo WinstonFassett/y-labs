@@ -1,6 +1,7 @@
 import { Button } from "@nextui-org/react";
 import * as Y from "yjs";
-import { getOfflineDoc, resolveShare } from "../shared/store/local-yjs-idb";
+import { getOfflineDoc } from "../shared/store/local-yjs-idb";
+import { resolveShare } from "../shared/store/resolveShare";
 
 export function ExportDriveButton() {
   return <Button onPress={doExport}>Export Drive</Button>;

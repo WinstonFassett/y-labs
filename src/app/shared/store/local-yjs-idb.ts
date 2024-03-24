@@ -102,21 +102,6 @@ export async function listDatabases() {
   return (await indexedDB.databases()).map(({ name }) => name!);
 }
 
-export function resolveShare(ydoc: Y.Doc, name: string) {
-  switch (name) {
-    case "tldraw":
-      return ydoc.getArray(name);
-    case "novel":
-    case "blocknote":
-      return ydoc.getXmlFragment(name);
-    case "codemirror":
-      return ydoc.getText(name);
-    case "meta":
-    default:
-      return ydoc.getMap(name);
-  }
-}
-
 export function getOfflineDoc(name: string, destroy = true) {
   const onLoad = () => {
     // console.log("loaded", name);
@@ -149,11 +134,4 @@ export async function getOfflineDocMeta(name: string) {
     shares.find((s) => s !== "meta" && s !== "tldraw_meta") || "unknown";
   doc.destroy();
   return meta;
-}
-
-export async function getOfflineDocJson(name: string) {
-  const doc = await getOfflineDoc(name);
-  const json = doc.toJSON();
-  doc.destroy();
-  return json;
 }
