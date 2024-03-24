@@ -102,8 +102,22 @@ export async function listDatabases() {
   return (await indexedDB.databases()).map(({ name }) => name!);
 }
 
-export async function getOfflineDoc(name: string, destroy = true) {
-  // const store = getDocIdbStore(name);
+export function resolveShare(ydoc: Y.Doc, name: string) {
+  switch (name) {
+    case "tldraw":
+      return ydoc.getArray(name);
+    case "novel":
+    case "blocknote":
+      return ydoc.getXmlFragment(name);
+    case "codemirror":
+      return ydoc.getText(name);
+    case "meta":
+    default:
+      return ydoc.getMap(name);
+  }
+}
+
+export function getOfflineDoc(name: string, destroy = true) {
   const onLoad = () => {
     // console.log("loaded", name);
   };

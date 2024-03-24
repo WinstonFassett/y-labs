@@ -5,7 +5,7 @@ import ThemeSwitch from "@/lib/astro-tailwind-themes/ThemeSwitch.svelte";
 import NextuiNavbar from "@/components/NextuiNavbar.astro";
 import { CreateDocumentDialogButton } from "@/app/drive/CreateDocumentDialogButton";
 import { ExportDriveButton } from "@/app/drive/ExportDriveButton";
-import { ImportDriveButton } from "@/app/drive/ImportDriveButton";
+import { ImportDriveButton } from "@/app/drive/ImportDrive";
 import LinkButton from "@/components/NextuiLinkButton.astro";
 import logoRaw from "../../../public/lab-icon.svg?raw";
 import { DriveActions } from "@/app/drive/DriveActions";
@@ -25,10 +25,8 @@ const frontmatter = {
     </h2>
     <div slot="end" class="flex gap-2 items-center">
       <DriveActions client:only="react" />
-      <!-- <ThemeSwitch client:load />
-      <ExportDriveButton client:load />
-      <ImportDriveButton client:only="react" /> -->
     </div>
   </NextuiNavbar>
   <App client:only="react" frontmatter={frontmatter} />
 </Layout>
+@/app/drive/ImportDrive

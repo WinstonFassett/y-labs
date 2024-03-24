@@ -2,7 +2,7 @@ import { useStore } from "@nanostores/react";
 import { Card, CardBody, CardFooter, cn } from "@nextui-org/react";
 import { FileQuestionIcon } from "lucide-react";
 import { documentsStore } from "./store.ts";
-import { ImportDriveModal } from "./ImportDriveButton.tsx";
+import { ImportDriveModal } from "./ImportDrive.tsx";
 
 const typeIconMap = {
   codemirror: (

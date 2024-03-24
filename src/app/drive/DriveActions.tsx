@@ -1,22 +1,22 @@
+import { useTheme } from "@/lib/astro-tailwind-themes/useTheme";
 import {
   Button,
   Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
   DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
 } from "@nextui-org/react";
 import {
-  MoreVertical,
-  FileText,
-  Sun,
-  Moon,
   DownloadIcon,
+  FileText,
+  Moon,
+  MoreVertical,
+  Sun,
   UploadIcon,
 } from "lucide-react";
 import { CreateDocumentDialogButton } from "./CreateDocumentDialogButton";
-import { useTheme } from "@/lib/astro-tailwind-themes/useTheme";
-import { ExportDriveButton, doExport } from "./ExportDriveButton";
-import ImportDriveButton, { startImport } from "./ImportDriveButton";
+import { doExport, doExportJson } from "./ExportDriveButton";
+import { startImport } from "./ImportDrive";
 
 export function DriveActions() {
   return (
@@ -75,11 +75,13 @@ function MoreMenu() {
         >
           Export Drive
         </DropdownItem>
-
-        {/*
-  <DropdownItem key="settings" endContent={<Settings size={16} />}>
-    Settings
-  </DropdownItem> */}
+        <DropdownItem
+          key="export-json"
+          onPress={doExportJson}
+          endContent={<DownloadIcon size={16} />}
+        >
+          Export Drive to JSON
+        </DropdownItem>
       </DropdownMenu>
     </Dropdown>
   );
