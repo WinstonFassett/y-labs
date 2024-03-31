@@ -65,7 +65,7 @@ export const Novel = ({
           editorProps={{
             ...defaultEditorProps,
             attributes: {
-              class: `prose dark:prose-invert prose-sm prose-headings:font-title font-default focus:outline-none max-w-full`,
+              class: `prose dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full`,
             },
           }}
           onUpdate={({ editor }) => {
