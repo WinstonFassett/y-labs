@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  tiptap-extension-auto-joiner@0.1.1:
+    hash: maji7corvjceme4nbsyzcvq2wi
+    path: patches/tiptap-extension-auto-joiner@0.1.1.patch
+
 dependencies:
   '@astrojs/check':
     specifier: ^0.5.5
@@ -104,6 +109,9 @@ dependencies:
   clsx:
     specifier: ^2.1.0
     version: 2.1.0
+  cmdk:
+    specifier: 0.2.1
+    version: 0.2.1(@types/react@18.2.58)(react-dom@18.2.0)(react@18.2.0)
   codemirror:
     specifier: ^6.0.1
     version: 6.0.1(@lezer/common@1.2.1)
@@ -18962,7 +18970,7 @@ packages:
       react-markdown: 8.0.7(@types/react@18.2.58)(react@18.2.0)
       react-moveable: 0.56.0
       tippy.js: 6.3.7
-      tiptap-extension-auto-joiner: 0.1.1
+      tiptap-extension-auto-joiner: 0.1.1(patch_hash=maji7corvjceme4nbsyzcvq2wi)
       tiptap-extension-global-drag-handle: 0.1.6
       tiptap-markdown: 0.8.9(@tiptap/core@2.2.4)
       tunnel-rat: 0.1.2(@types/react@18.2.58)(react@18.2.0)
@@ -20253,6 +20261,7 @@ packages:
   /react-remove-scroll-bar@2.3.5(@types/react@18.2.58)(react@17.0.2):
     resolution: {integrity: sha512-3cqjOqg6s0XbOjWvmasmqHch+RLxIEk2r/70rzGXuz3iIGQsQheEQyqYCBb5EECoD01Vo2SIbDqW4paLeLTASw==}
     engines: {node: '>=10'}
+    deprecated: please update to the following version as this contains a bug (https://github.com/theKashey/react-remove-scroll-bar/issues/57)
     peerDependencies:
       '@types/react': ^16.8.0 || ^17.0.0 || ^18.0.0
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -20269,6 +20278,7 @@ packages:
   /react-remove-scroll-bar@2.3.5(@types/react@18.2.58)(react@18.2.0):
     resolution: {integrity: sha512-3cqjOqg6s0XbOjWvmasmqHch+RLxIEk2r/70rzGXuz3iIGQsQheEQyqYCBb5EECoD01Vo2SIbDqW4paLeLTASw==}
     engines: {node: '>=10'}
+    deprecated: please update to the following version as this contains a bug (https://github.com/theKashey/react-remove-scroll-bar/issues/57)
     peerDependencies:
       '@types/react': ^16.8.0 || ^17.0.0 || ^18.0.0
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -22178,9 +22188,10 @@ packages:
       '@popperjs/core': 2.11.8
     dev: false
 
-  /tiptap-extension-auto-joiner@0.1.1:
+  /tiptap-extension-auto-joiner@0.1.1(patch_hash=maji7corvjceme4nbsyzcvq2wi):
     resolution: {integrity: sha512-n38N7qWUL3Iz6XdwxZLacSuE1itIAp6lzcVUYgi0K/d/eLydgFl07ZixBJ6XHCDESjw4wrRgRQQE9nvMGvn3QA==}
     dev: false
+    patched: true
 
   /tiptap-extension-global-drag-handle@0.1.6:
     resolution: {integrity: sha512-kjRFd/glJGTHEglHPNWtML1iINuEBG4eWvWbNIuuXE2LbylFXYHKVgLvZgxilqXSBH/o+lKDEp7/iL3lKvnxGw==}

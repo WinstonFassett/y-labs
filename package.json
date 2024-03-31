@@ -47,6 +47,7 @@
     "astrojs-service-worker": "^2.0.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "cmdk": "0.2.1",
     "codemirror": "^6.0.1",
     "daisyui": "^4.7.2",
     "do_username": "^1.0.0",
@@ -82,5 +83,10 @@
   "devDependencies": {
     "@tinacms/cli": "^1.5.40",
     "@types/node": "^20.11.24"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "tiptap-extension-auto-joiner@0.1.1": "patches/tiptap-extension-auto-joiner@0.1.1.patch"
+    }
   }
 }
