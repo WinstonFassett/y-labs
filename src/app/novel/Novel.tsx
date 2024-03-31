@@ -9,9 +9,8 @@ import {
   EditorContent,
   // EditorInstance,
   EditorRoot,
-  defaultEditorProps,
 } from "novel";
-import { ImageResizer } from "novel/extensions";
+import { ImageResizer, handleCommandNavigation } from "novel/extensions";
 import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { useExtensions } from "./extensions";
@@ -63,7 +62,10 @@ export const Novel = ({
           extensions={extensions}
           className="relative min-h-[500px] w-full max-w-screen-lg sm:mb-[calc(20vh)]"
           editorProps={{
-            ...defaultEditorProps,
+            // ...defaultEditorProps,
+            handleDOMEvents: {
+              keydown: (_view, event) => handleCommandNavigation(event),
+            },
             attributes: {
               class: `prose dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full`,
             },

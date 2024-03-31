@@ -54,7 +54,7 @@
     "lib0": "^0.2.89",
     "lucide-react": "^0.338.0",
     "nanostores": "^0.10.0",
-    "novel": "^0.2.7",
+    "novel": "^0.3.1",
     "prettier": "^3.2.5",
     "prettier-plugin-astro": "^0.13.0",
     "react": "^18.2.0",

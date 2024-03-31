@@ -126,8 +126,8 @@ dependencies:
     specifier: ^0.10.0
     version: 0.10.0
   novel:
-    specifier: ^0.2.7
-    version: 0.2.7(@types/react@18.2.58)(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^0.3.1
+    version: 0.3.1(@types/react@18.2.58)(react-dom@18.2.0)(react@18.2.0)
   prettier:
     specifier: ^3.2.5
     version: 3.2.5
@@ -18932,8 +18932,8 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: false
 
-  /novel@0.2.7(@types/react@18.2.58)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-uOT4/4LrGijTZHqLyQKCpHsYXaEamH53OtqMm9LB7utINsSvRdowevAqFvkIy8lD35NTl+bq8lGBmZ2D9LM7+A==}
+  /novel@0.3.1(@types/react@18.2.58)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-om5ETtpo23BvKbN6wynSkSEwsJCWIEJjuBPYPk9jy9ktVqNUJjvVGGtCeah7Gr1L7Iy3Jtif1cMFokqsyzZQPw==}
     peerDependencies:
       react: ^18.0.0
       react-dom: ^18.0.0
@@ -18962,6 +18962,8 @@ packages:
       react-markdown: 8.0.7(@types/react@18.2.58)(react@18.2.0)
       react-moveable: 0.56.0
       tippy.js: 6.3.7
+      tiptap-extension-auto-joiner: 0.1.1
+      tiptap-extension-global-drag-handle: 0.1.6
       tiptap-markdown: 0.8.9(@tiptap/core@2.2.4)
       tunnel-rat: 0.1.2(@types/react@18.2.58)(react@18.2.0)
     transitivePeerDependencies:
@@ -22174,6 +22176,14 @@ packages:
     resolution: {integrity: sha512-E1d3oP2emgJ9dRQZdf3Kkn0qJgI6ZLpyS5z6ZkY1DF3kaQaBsGZsndEpHwx+eC+tYM41HaSNvNtLx8tU57FzTQ==}
     dependencies:
       '@popperjs/core': 2.11.8
+    dev: false
+
+  /tiptap-extension-auto-joiner@0.1.1:
+    resolution: {integrity: sha512-n38N7qWUL3Iz6XdwxZLacSuE1itIAp6lzcVUYgi0K/d/eLydgFl07ZixBJ6XHCDESjw4wrRgRQQE9nvMGvn3QA==}
+    dev: false
+
+  /tiptap-extension-global-drag-handle@0.1.6:
+    resolution: {integrity: sha512-kjRFd/glJGTHEglHPNWtML1iINuEBG4eWvWbNIuuXE2LbylFXYHKVgLvZgxilqXSBH/o+lKDEp7/iL3lKvnxGw==}
     dev: false
 
   /tiptap-markdown@0.8.9(@tiptap/core@2.2.4):
