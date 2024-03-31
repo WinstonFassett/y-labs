@@ -91,7 +91,9 @@ export function useExtensions({
     },
     codeBlock: {
       HTMLAttributes: {
-        class: cx("rounded-sm bg-muted border p-5 font-mono font-medium"),
+        class: cx(
+          "not-prose rounded-sm bg-muted border p-5 font-mono font-medium",
+        ),
       },
     },
     code: {
