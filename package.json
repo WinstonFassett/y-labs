@@ -47,6 +47,7 @@
     "astrojs-service-worker": "^2.0.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "cmdk": "0.2.1",
     "codemirror": "^6.0.1",
     "daisyui": "^4.7.2",
     "do_username": "^1.0.0",
@@ -54,7 +55,7 @@
     "lib0": "^0.2.89",
     "lucide-react": "^0.338.0",
     "nanostores": "^0.10.0",
-    "novel": "^0.2.7",
+    "novel": "^0.3.1",
     "prettier": "^3.2.5",
     "prettier-plugin-astro": "^0.13.0",
     "react": "^18.2.0",
@@ -82,5 +83,10 @@
   "devDependencies": {
     "@tinacms/cli": "^1.5.40",
     "@types/node": "^20.11.24"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "tiptap-extension-auto-joiner@0.1.1": "patches/tiptap-extension-auto-joiner@0.1.1.patch"
+    }
   }
 }

@@ -1,0 +1,39 @@
+diff --git a/dist/index.cjs b/dist/index.cjs
+index aeded6049c39f03346485e4c496f8bf004745ea2..83ecdba0585b65be89bf3a7de23e6c9011079392 100644
+--- a/dist/index.cjs
++++ b/dist/index.cjs
+@@ -3443,7 +3443,7 @@ nodeTypes // The node type to join
+                 break;
+             if (index && joinable.indexOf(pos) == -1) {
+                 var before = parent_1.child(index - 1);
+-                console.log(nodeTypes.includes(before.type));
++                // console.log(nodeTypes.includes(before.type));
+                 if (before.type == after.type && nodeTypes.includes(before.type))
+                     joinable.push(pos);
+             }
+diff --git a/dist/index.js b/dist/index.js
+index 0af66fa921693d58fd3230cd207ab84ea2cb5c25..b82eae1e62e364abe5d7402dca00da85965c7f24 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -3441,7 +3441,7 @@ nodeTypes // The node type to join
+                 break;
+             if (index && joinable.indexOf(pos) == -1) {
+                 var before = parent_1.child(index - 1);
+-                console.log(nodeTypes.includes(before.type));
++                // console.log(nodeTypes.includes(before.type));
+                 if (before.type == after.type && nodeTypes.includes(before.type))
+                     joinable.push(pos);
+             }
+diff --git a/dist/index.umd.js b/dist/index.umd.js
+index 2240cebf84ab46893ed8c3f509d241d155d3560f..7acd4cd4120ef0141521520d48e64e3466872370 100644
+--- a/dist/index.umd.js
++++ b/dist/index.umd.js
+@@ -3439,7 +3439,7 @@
+                   break;
+               if (index && joinable.indexOf(pos) == -1) {
+                   var before = parent_1.child(index - 1);
+-                  console.log(nodeTypes.includes(before.type));
++                //   console.log(nodeTypes.includes(before.type));
+                   if (before.type == after.type && nodeTypes.includes(before.type))
+                       joinable.push(pos);
+               }
