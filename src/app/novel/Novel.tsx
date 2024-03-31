@@ -14,7 +14,7 @@ import {
 import { ImageResizer } from "novel/extensions";
 import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
-import { defaultExtensions } from "./extensions";
+import { useExtensions } from "./extensions";
 import { ColorSelector } from "./selectors/color-selector";
 import { LinkSelector } from "./selectors/link-selector";
 import { NodeSelector } from "./selectors/node-selector";
@@ -22,19 +22,20 @@ import { Separator } from "./ui/separator";
 
 import { cn } from "@/lib/utils";
 import { TextButtons } from "./selectors/text-buttons";
-import { slashCommand, suggestionItems } from "./slash-command";
+import { suggestionItems } from "./slash-command";
 
 import type { Extension } from "@tiptap/core";
-
-const baseExtensions = [...defaultExtensions, slashCommand];
 
 export const Novel = ({
   className,
   extensions,
+  disableHistory,
 }: {
   className?: string;
   extensions?: Extension<any, any>[];
+  disableHistory?: boolean;
 }) => {
+  const baseExtensions = useExtensions({ disableHistory });
   extensions = extensions
     ? ([...baseExtensions, ...extensions] as any)
     : baseExtensions;

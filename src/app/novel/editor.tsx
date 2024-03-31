@@ -20,10 +20,8 @@ function Editor() {
       {/* <p>{loadState}</p> */}
       <Novel
         className=""
+        disableHistory={true}
         extensions={[
-          StarterKit.configure({
-            history: false,
-          }),
           Collaboration.configure({
             fragment,
           }),
