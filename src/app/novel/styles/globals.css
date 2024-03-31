@@ -85,12 +85,3 @@
     --novel-highlight-gray: #3a3a3a;
   }
 }
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
