@@ -1,0 +1,18 @@
+@use "sass:meta";
+html[data-theme="light"] {
+  @include meta.load-css("highlight.js/styles/a11y-light");
+}
+
+html[data-theme="dark"] {
+  @include meta.load-css("highlight.js/styles/a11y-dark");
+}
+
+.code-block {
+  position: relative;
+
+  select {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+  }
+}
