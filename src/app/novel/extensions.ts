@@ -12,6 +12,7 @@ import { UploadImagesPlugin } from "novel/plugins";
 
 import { cx } from "class-variance-authority";
 import { slashCommand } from "./slash-command";
+import lowlight from "./lowlight";
 
 export function useExtensions({
   disableHistory,
@@ -119,6 +120,7 @@ export function useExtensions({
     taskList,
     taskItem,
     horizontalRule,
+    lowlight,
     slashCommand,
   ];
 }
