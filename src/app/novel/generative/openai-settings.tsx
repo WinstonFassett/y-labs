@@ -1,16 +1,13 @@
-import { computed, map } from "nanostores";
-import { Controller, useForm } from "react-hook-form";
+import { $openaiApiKey } from "@/app/shared/store/secure-settings";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogOverlay,
-  DialogPortal,
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { useState } from "react";
-import { Button } from "../ui/button";
-import { $openaiApiKey } from "@/app/shared/store/secure-settings";
 
 export function OpenAiSettings() {
   return (
@@ -34,31 +31,46 @@ export function OpenAiDialog() {
     setValue,
     getValues,
   } = useForm();
+  console.log({ errors });
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>AI...</Button>
       </DialogTrigger>
       <DialogContent className="z-[10000]">
-        <DialogTitle>Yoooo</DialogTitle>
+        <DialogTitle>Configure AI</DialogTitle>
         <form
           className="flex gap-2"
           onSubmit={handleSubmit((data) => {
-            console.log("submit: ", data);
-            // // onClose();
             $openaiApiKey.set(data.openaiApiKey);
             setOpen(false);
           })}
-          // noValidate
         >
-          <input
-            type="password"
-            placeholder="OpenAI API Key"
-            className="flex-1 bg-background p-1 text-sm outline-none"
-            defaultValue={"soon"}
-            {...register("openaiApiKey", { required: true })}
-          />
-
+          <div className="flex-1">
+            <div>
+              <input
+                type="password"
+                placeholder="Enter your OpenAI API Key"
+                className="w-full bg-background p-1 text-sm outline-none"
+                {...register("openaiApiKey", {
+                  required: "Required",
+                })}
+              />
+            </div>
+            <div className="text-xs text-red-500 pl-1">
+              {errors.openaiApiKey && errors.openaiApiKey.message?.toString()}
+            </div>
+          </div>
+          <Button
+            variant="outline"
+            type="reset"
+            onClick={() => {
+              reset();
+              setOpen(false);
+            }}
+          >
+            Cancel
+          </Button>
           <Button type="submit">Save</Button>
         </form>
       </DialogContent>
