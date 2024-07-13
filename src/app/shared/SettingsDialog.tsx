@@ -22,7 +22,6 @@ import { map } from "nanostores";
 import { useStore } from "@nanostores/react";
 import { PasswordInput } from "@/lab/nextui/PasswordInput";
 import { CheckIcon, KeyRoundIcon, XIcon } from "lucide-react";
-import { CloseIcon } from "tinacms";
 
 export const $settingsStore = map({
   show: false,
@@ -207,7 +206,7 @@ export function OpenAiKeyForm() {
           <CheckIcon />
         </Button>
         <Button size="sm" type="reset" isIconOnly onClick={reset}>
-          <CloseIcon />
+          <XIcon />
         </Button>
       </div>
     </form>
