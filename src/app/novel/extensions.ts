@@ -13,6 +13,7 @@ import { UploadImagesPlugin } from "novel/plugins";
 import { cx } from "class-variance-authority";
 import { slashCommand } from "./slash-command";
 import lowlight from "./lowlight";
+import { AIHighlight } from "./extensions/ai-highlight";
 
 export function useExtensions({
   disableHistory,
@@ -122,6 +123,7 @@ export function useExtensions({
     horizontalRule,
     lowlight,
     slashCommand,
+    AIHighlight,
   ];
 }
 

@@ -1,6 +1,6 @@
 "use client";
 
-// import { Command, CommandInput } from "@/components/tailwind/ui/command";
+import { Command, CommandInput } from "../ui/command";
 
 import { useCompletion } from "ai/react";
 import { toast } from "sonner";
@@ -14,6 +14,7 @@ import { Button } from "../ui/button";
 import { ArrowUp } from "lucide-react";
 import Magic from "../ui/icons/magic";
 import CrazySpinner from "../ui/icons/crazy-spinner";
+import { addAIHighlight } from "../extensions/ai-highlight";
 //TODO: I think it makes more sense to create a custom Tiptap extension for this functionality https://tiptap.dev/docs/editor/ai/introduction
 
 interface AISelectorProps {
@@ -74,7 +75,7 @@ export function AISelector({ open, onOpenChange }: AISelectorProps) {
                   ? "Tell AI what to do next"
                   : "Ask AI to edit or generate..."
               }
-              onFocus={() => addAIHighlight(editor)}
+              onFocus={() => editor && addAIHighlight(editor)}
             />
             <Button
               size="icon"
@@ -85,10 +86,10 @@ export function AISelector({ open, onOpenChange }: AISelectorProps) {
                     body: { option: "zap", command: inputValue },
                   }).then(() => setInputValue(""));
 
-                const slice = editor.state.selection.content();
-                const text = editor.storage.markdown.serializer.serialize(
-                  slice.content,
-                );
+                const slice = editor?.state.selection.content();
+                const text =
+                  slice &&
+                  editor?.storage.markdown.serializer.serialize(slice.content);
 
                 complete(text, {
                   body: { option: "zap", command: inputValue },
@@ -101,7 +102,7 @@ export function AISelector({ open, onOpenChange }: AISelectorProps) {
           {hasCompletion ? (
             <AICompletionCommands
               onDiscard={() => {
-                editor.chain().unsetHighlight().focus().run();
+                editor?.chain().unsetHighlight().focus().run();
                 onOpenChange(false);
               }}
               completion={completion}

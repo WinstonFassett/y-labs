@@ -1,7 +1,7 @@
 import { EditorBubble, useEditor } from "novel";
 import React, { Fragment, useEffect, type ReactNode } from "react";
 import { Button } from "../ui/button";
-import { AISelector } from "./ai-selector";
+import { AISelector } from "../selectors/ai-selector";
 import Magic from "../ui/icons/magic";
 import {} from "novel/plugins";
 import { removeAIHighlight } from "../extensions/ai-highlight";
@@ -19,7 +19,7 @@ const GenerativeMenuSwitch = ({
   const { editor } = useEditor();
 
   useEffect(() => {
-    if (!open) removeAIHighlight(editor);
+    if (!open && editor) removeAIHighlight(editor);
   }, [open]);
   return (
     <EditorBubble
@@ -27,7 +27,7 @@ const GenerativeMenuSwitch = ({
         placement: open ? "bottom-start" : "top",
         onHidden: () => {
           onOpenChange(false);
-          editor.chain().unsetHighlight().run();
+          editor?.chain().unsetHighlight().run();
         },
       }}
       className="flex w-fit max-w-[90vw] overflow-hidden rounded-md border border-muted bg-background shadow-xl"

@@ -25,6 +25,7 @@ import { TextButtons } from "./selectors/text-buttons";
 import { suggestionItems } from "./slash-command";
 
 import type { Extension } from "@tiptap/core";
+import GenerativeMenuSwitch from "./generative/generative-menu-switch";
 
 export const Novel = ({
   className,
@@ -44,6 +45,7 @@ export const Novel = ({
   const [openNode, setOpenNode] = useState(false);
   const [openColor, setOpenColor] = useState(false);
   const [openLink, setOpenLink] = useState(false);
+  const [openAI, setOpenAI] = useState(false);
 
   const debouncedUpdates = useDebouncedCallback(
     async (editor: EditorInstance) => {
@@ -103,7 +105,7 @@ export const Novel = ({
             </EditorCommandList>
           </EditorCommand>
 
-          <EditorBubble
+          {/* <EditorBubble
             tippyOptions={{
               placement: "top",
             }}
@@ -119,6 +121,19 @@ export const Novel = ({
             <Separator orientation="vertical" />
             <ColorSelector open={openColor} onOpenChange={setOpenColor} />
           </EditorBubble>
+          */}
+
+          <GenerativeMenuSwitch open={openAI} onOpenChange={setOpenAI}>
+            <Separator orientation="vertical" />
+            <NodeSelector open={openNode} onOpenChange={setOpenNode} />
+            <Separator orientation="vertical" />
+
+            <LinkSelector open={openLink} onOpenChange={setOpenLink} />
+            <Separator orientation="vertical" />
+            <TextButtons />
+            <Separator orientation="vertical" />
+            <ColorSelector open={openColor} onOpenChange={setOpenColor} />
+          </GenerativeMenuSwitch>
         </EditorContent>
       </EditorRoot>
     </div>
