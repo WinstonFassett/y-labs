@@ -17,7 +17,7 @@ import {
   CardHeader,
 } from "@nextui-org/react";
 import { $openaiApiKey, $openaiApiKey_masked } from "./store/secure-settings";
-import { validateOpenAiKey } from "./store/openai";
+import { $openAiConfigValid, validateOpenAiKey } from "./store/openai";
 import { map } from "nanostores";
 import { useStore } from "@nanostores/react";
 import { PasswordInput } from "@/lab/nextui/PasswordInput";
@@ -25,7 +25,7 @@ import { CheckIcon, KeyRoundIcon, XIcon } from "lucide-react";
 import { CloseIcon } from "tinacms";
 
 export const $settingsStore = map({
-  show: true,
+  show: false,
 });
 
 export function SettingsDialog() {
@@ -42,7 +42,6 @@ export function SettingsDialog() {
     setValue,
     getValues,
   } = useForm();
-  console.log({ errors });
   return (
     <Modal isOpen={open} onOpenChange={setOpen}>
       <ModalContent>
@@ -108,24 +107,34 @@ function ThemeSettings() {
 
 function AiSettings() {
   return (
-    <Card>
-      {/* <CardHeader>
-        <CardTitle>AI Settings</CardTitle>
-      </CardHeader> */}
-      <CardBody>
-        <OpenApiKeySetting />
-      </CardBody>
-    </Card>
+    <OpenApiKeySetting />
+    // <Card>
+    //   <CardHeader>
+    //     <CardTitle>AI Settings</CardTitle>
+    //   </CardHeader>
+    //   <CardBody>
+    //     <OpenApiKeySetting />
+    //   </CardBody>
+    // </Card>
   );
 }
 
 function OpenApiKeySetting() {
   const openaiApiKeyMasked = useStore($openaiApiKey_masked);
+  const apiKeyIsValid = useStore($openAiConfigValid);
+  console.log({ apiKeyIsValid });
   return (
     <Setting>
       <SettingTitle>OpenAI API Key</SettingTitle>
       {openaiApiKeyMasked ? (
-        <div className="flex items-center">
+        <div className="flex items-center gap-2">
+          {apiKeyIsValid === true ? (
+            <CheckIcon color="green" />
+          ) : apiKeyIsValid === false ? (
+            <XIcon color="red" />
+          ) : (
+            <span>...</span>
+          )}
           <div className="flex-1">Using: {openaiApiKeyMasked}</div>
           <Button
             size="sm"
@@ -149,7 +158,7 @@ const openaiValidate = async (value: string) => {
   return (await validateOpenAiKey(value)) ? true : "Invalid OpenAI SDK Key";
 };
 
-function OpenAiKeyForm() {
+export function OpenAiKeyForm() {
   const {
     register,
     trigger,
@@ -160,13 +169,11 @@ function OpenAiKeyForm() {
     control,
     setValue,
     getValues,
-  } = useForm({ mode: "onBlur", reValidateMode: "onBlur" });
-  console.log({ errors });
+  } = useForm({ mode: "onSubmit", reValidateMode: "onSubmit" });
   return (
     <form
       noValidate
-      onBlur={handleSubmit(async ({ openaiApiKey }) => {
-        console.log("submit on blur");
+      onSubmit={handleSubmit(async ({ openaiApiKey }) => {
         $openaiApiKey.set(openaiApiKey);
       })}
     >

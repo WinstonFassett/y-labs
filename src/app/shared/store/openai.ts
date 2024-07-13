@@ -11,7 +11,13 @@ export const $session = computed([$openaiApiKey], (openaiApiKey) => {
 });
 
 export const $engines = computed([$session], (session) => {
-  return task(() => session?.models.list());
+  return task(async () => {
+    try {
+      return await session?.models?.list();
+    } catch (err) {
+      return undefined;
+    }
+  });
 });
 
 export const $openAiConfigValid = computed([$engines], (engines) => {
@@ -29,7 +35,6 @@ export async function validateOpenAiKey(apiKey: string) {
   const openai = connectToOpenAi(apiKey);
   try {
     const models = await openai.models.list();
-    console.log("models", models);
     return !!models;
   } catch (err) {
     console.log("failed to connect", err);
