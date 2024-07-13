@@ -42,3 +42,5 @@ function Editor() {
   );
 }
 export default Editor;
+
+console.log("yoooo", process.env.OPENAI_API_KEY ?? "nope");

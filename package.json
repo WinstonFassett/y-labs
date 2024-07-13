@@ -27,10 +27,12 @@
     "@codemirror/theme-one-dark": "^6.1.2",
     "@codemirror/view": "^6.25.0",
     "@nanostores/react": "^0.7.2",
+    "@next/font": "^14.2.5",
     "@nextui-org/react": "^2.2.9",
     "@nextui-org/theme": "^2.1.18",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-popover": "^1.0.7",
+    "@radix-ui/react-scroll-area": "^1.1.0",
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
@@ -44,6 +46,7 @@
     "@tldraw/tldraw": "2.0.0",
     "@types/react": "^18.2.58",
     "@types/react-dom": "^18.2.19",
+    "ai": "^3.2.22",
     "astro": "^4.4.2",
     "astro-themes": "^0.2.5",
     "astrojs-service-worker": "^2.0.0",
@@ -67,6 +70,7 @@
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.50.1",
+    "react-markdown": "^9.0.1",
     "react-router-dom": "^6.22.1",
     "sass": "^1.72.0",
     "sonner": "^1.4.3",
@@ -90,8 +94,6 @@
     "@types/node": "^20.11.24"
   },
   "pnpm": {
-    "patchedDependencies": {
-      "tiptap-extension-auto-joiner@0.1.1": "patches/tiptap-extension-auto-joiner@0.1.1.patch"
-    }
+    "patchedDependencies": {}
   }
 }
