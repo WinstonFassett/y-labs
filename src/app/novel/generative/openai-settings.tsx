@@ -1,16 +1,14 @@
-import { computed, map } from "nanostores";
-import { Controller, useForm } from "react-hook-form";
+import { $openaiApiKey } from "@/app/shared/store/secure-settings";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogOverlay,
-  DialogPortal,
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { useState } from "react";
-import { Button } from "../ui/button";
-import { $openaiApiKey } from "@/app/shared/store/secure-settings";
+import { OpenAiKeyForm } from "@/app/shared/SettingsDialog";
 
 export function OpenAiSettings() {
   return (
@@ -37,30 +35,13 @@ export function OpenAiDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>AI...</Button>
+        <Button size="sm" variant="ghost" className="text-purple-500">
+          AI...
+        </Button>
       </DialogTrigger>
       <DialogContent className="z-[10000]">
-        <DialogTitle>Yoooo</DialogTitle>
-        <form
-          className="flex gap-2"
-          onSubmit={handleSubmit((data) => {
-            console.log("submit: ", data);
-            // // onClose();
-            $openaiApiKey.set(data.openaiApiKey);
-            setOpen(false);
-          })}
-          // noValidate
-        >
-          <input
-            type="password"
-            placeholder="OpenAI API Key"
-            className="flex-1 bg-background p-1 text-sm outline-none"
-            defaultValue={"soon"}
-            {...register("openaiApiKey", { required: true })}
-          />
-
-          <Button type="submit">Save</Button>
-        </form>
+        <DialogTitle>Configure AI</DialogTitle>
+        <OpenAiKeyForm />
       </DialogContent>
     </Dialog>
   );

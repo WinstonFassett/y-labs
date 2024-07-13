@@ -10,7 +10,14 @@ import {
   NavbarBrand,
   NavbarContent,
 } from "@nextui-org/react";
-import { FileText, HardDriveIcon, Moon, MoreVertical, Sun } from "lucide-react";
+import {
+  FileText,
+  HardDriveIcon,
+  Moon,
+  MoreVertical,
+  Sun,
+  Settings,
+} from "lucide-react";
 import { Suspense } from "react";
 import { useResolvedPath } from "react-router-dom";
 import { useTheme } from "../../lib/astro-tailwind-themes/useTheme";
@@ -18,6 +25,7 @@ import { AppGlobals } from "../../globals";
 import { DocTitle } from "./DocTitle";
 import { LazyAppBarCollab } from "../blocknote/lazy/collab";
 import { LazyDocPersistenceToggle } from "../blocknote/lazy/storage";
+import { $settingsStore } from "./SettingsDialog";
 
 export default function AppBar() {
   const [theme, setTheme] = useTheme();
@@ -70,6 +78,7 @@ export default function AppBar() {
             >
               New Document
             </DropdownItem>
+
             <DropdownItem
               key="toggleTheme"
               endContent={
@@ -83,10 +92,15 @@ export default function AppBar() {
             >
               Change Theme
             </DropdownItem>
-            {/* 
-            <DropdownItem key="settings" endContent={<Settings size={16} />}>
+            <DropdownItem
+              key="settings"
+              endContent={<Settings size={16} />}
+              onPress={() => {
+                $settingsStore.setKey("show", true);
+              }}
+            >
               Settings
-            </DropdownItem> */}
+            </DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </NavbarContent>
