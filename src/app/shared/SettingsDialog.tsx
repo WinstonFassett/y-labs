@@ -42,7 +42,7 @@ export function SettingsDialog() {
     getValues,
   } = useForm();
   return (
-    <Modal isOpen={open} onOpenChange={setOpen}>
+    <Modal isOpen={open} onOpenChange={setOpen} placement="center">
       <ModalContent>
         <ModalHeader>
           <div>
