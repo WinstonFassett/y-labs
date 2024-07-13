@@ -4,7 +4,7 @@ import { Command, CommandInput } from "../ui/command";
 
 import { toast } from "sonner";
 import { useEditor } from "novel";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Markdown from "react-markdown";
 import AISelectorCommands from "./ai-selector-commands";
 import AICompletionCommands from "./ai-completion-command";
@@ -15,6 +15,8 @@ import Magic from "../ui/icons/magic";
 import CrazySpinner from "../ui/icons/crazy-spinner";
 import { addAIHighlight } from "../extensions/ai-highlight";
 import OpenAI from "openai";
+import { useStore } from "@nanostores/react";
+import { $openaiApiKey } from "@/app/shared/store/secure-settings";
 //TODO: I think it makes more sense to create a custom Tiptap extension for this functionality https://tiptap.dev/docs/editor/ai/introduction
 
 interface AISelectorProps {
@@ -28,16 +30,22 @@ export function AISelector({ open, onOpenChange }: AISelectorProps) {
   const [completion, setCompletion] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const openai = new OpenAI({
-    dangerouslyAllowBrowser: true,
-    apiKey: "API_KEY_HERE",
-  });
+  const openaiRef = useRef<OpenAI | null>(null);
+  const openaiApiKey = useStore($openaiApiKey);
+  useEffect(() => {
+    openaiRef.current = new OpenAI({
+      dangerouslyAllowBrowser: true,
+      apiKey: openaiApiKey,
+    });
+  }, []);
+
+  const openai = openaiRef.current;
 
   const handleCompletion = async (prompt: string) => {
     setIsLoading(true);
 
     try {
-      const response = await openai.chat.completions.create({
+      const response = await openai!.chat.completions.create({
         model: "gpt-3.5-turbo",
         messages: [{ role: "user", content: prompt }],
       });
