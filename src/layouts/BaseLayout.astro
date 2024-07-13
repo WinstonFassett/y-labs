@@ -18,7 +18,7 @@ const { title, favicon, class: className } = Astro.props;
     <BaseHead title={title} favicon={favicon} />
     <slot name="head" />
   </head>
-  <body class={cn("h-screen", className)}>
+  <body class={cn("h-screen flex flex-col", className)}>
     <slot />
   </body>
 </html>

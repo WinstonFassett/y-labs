@@ -40,5 +40,5 @@ export function EditorRoute() {
     }
   }, [docId, roomId, x]);
 
-  return <Editor className="h-full" />;
+  return <Editor />;
 }

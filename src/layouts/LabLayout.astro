@@ -10,14 +10,5 @@ const { frontmatter = {}, class: className } = Astro.props;
   favicon={frontmatter.favicon}
   class={className}
 >
-  <div class="h-full flex flex-col">
-    <main class="flex-1">
-      {
-        !!frontmatter.pubDate && (
-          <p>{frontmatter.pubDate.toString().slice(0, 10)}</p>
-        )
-      }
-      <slot />
-    </main>
-  </div>
+  <slot />
 </Layout>
