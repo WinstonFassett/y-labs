@@ -41,16 +41,26 @@ export function AISelector({ open, onOpenChange }: AISelectorProps) {
 
   const openai = openaiRef.current;
 
-  const handleCompletion = async (prompt: string) => {
+  const handleCompletion = async (
+    // prompt: string,
+    messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[],
+    replacer: (prevCompletion: string, newCompletion: string) => string = (
+      prev,
+      next,
+    ) => next,
+  ) => {
     setIsLoading(true);
 
     try {
       const response = await openai!.chat.completions.create({
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: prompt }],
+        model: "gpt-4o",
+        messages,
       });
 
-      setCompletion(response.choices[0].message.content!);
+      const newCompletion = response.choices[0].message.content!;
+      setCompletion((prevCompletion) =>
+        replacer(prevCompletion, newCompletion),
+      );
     } catch (error: any) {
       if (error.response && error.response.status === 429) {
         toast.error("You have reached your request limit for the day.");
@@ -62,12 +72,47 @@ export function AISelector({ open, onOpenChange }: AISelectorProps) {
     }
   };
 
+  async function runRecipe({
+    prompt,
+    steps,
+  }: {
+    prompt: string;
+    steps: string[];
+  }) {
+    const outputs = [] as string[];
+    for (let index = 0; index < steps.length; index++) {
+      const stepPrompt = createRecipeStepPrompt({
+        prompt,
+        steps,
+        index,
+        outputs,
+      });
+      await handleCompletion(stepPrompt, (prev = "", value) => {
+        outputs.push(value);
+        return [prev, value].join("\n\n");
+      });
+    }
+  }
+
   const handleComplete = () => {
     const slice = editor?.state.selection.content();
     const text =
       slice && editor?.storage.markdown.serializer.serialize(slice.content);
+    console.log("handleComplete", { text, inputValue });
 
-    handleCompletion(inputValue || text).then(() => setInputValue(""));
+    handleCompletion([
+      {
+        role: "system",
+        content: `
+        You are an automation that cannot talk back. Only complete the current step. Do not work ahead.
+
+        Input: 
+        ${text}
+        `,
+      },
+      { role: "user", content: inputValue },
+      { role: "assistant", content: "OUTPUT:\n" },
+    ]).then(() => setInputValue(""));
   };
 
   const hasCompletion = completion.length > 0;
@@ -124,9 +169,32 @@ export function AISelector({ open, onOpenChange }: AISelectorProps) {
             />
           ) : (
             <AISelectorCommands
-              onSelect={(value, option) =>
-                handleCompletion(value).then(() => setInputValue(""))
-              }
+              onSelect={(value, option) => {
+                switch (option) {
+                  case "recipe":
+                    console.log("TODO: execute recipe", value);
+                    const recipe = parseRecipe(value);
+                    console.log({ recipe });
+                    runRecipe(recipe);
+                    break;
+                  // case "continue":
+                  //   console.log("todo: continue writing");
+                  //   break;
+                  default:
+                    console.log("completing", { value, option });
+                    handleCompletion([
+                      { role: "user", content: `${option}: ${value}` },
+                    ]).then(() => setInputValue(""));
+                    // if (value) {
+                    // }
+                    break;
+                }
+
+                // console.log("completing", { value, option });
+                // handleCompletion(`${option}: ${value}`).then(() =>
+                //   setInputValue(""),
+                // );
+              }}
             />
           )}
         </>
@@ -134,3 +202,77 @@ export function AISelector({ open, onOpenChange }: AISelectorProps) {
     </Command>
   );
 }
+
+/*
+Example recipe (like Jasper.ai):
+
+write a brief for {Gun Control}
+
+write blog post title ideas
+
+write an introduction
+
+write a blog outline
+
+write about {History of Gun Control}
+
+write about {Arguments for Gun Control}
+
+write about {Arguments against Gun Control}
+
+write a blog conclusion on {History of Gun Control},  {Arguments for Gun Control}, {Arguments against Gun Control}
+
+
+*/
+function splitRecipeSteps(recipe: string, delimiter = "\n\n") {
+  return recipe.split(delimiter).map((step) => step.trim());
+}
+
+function parseRecipe(recipe: string) {
+  const [prompt, ...steps] = splitRecipeSteps(recipe);
+  // console.log({ steps });
+  return { prompt, steps };
+}
+
+function createRecipeStepPrompt({
+  prompt,
+  steps,
+  index,
+  outputs,
+}: {
+  prompt: string;
+  steps: string[];
+  index: number;
+  outputs: string[];
+}) {
+  const stepsCompleted = steps.slice(0, index);
+  const stepsRemaining = steps.slice(index);
+  return [
+    {
+      role: "system",
+      content: `
+      You are an automation that cannot talk back. Only complete the current step. Do not work ahead.
+      
+      Overall User Prompt: 
+      ${prompt}
+
+      ${steps.length} Planned Steps
+
+      Steps Completed: ${
+        stepsCompleted.length > 0 ? stepsCompleted.join("\n") : "none yet"
+      }
+      Last Step Output: ${outputs[index - 1] ?? "n/a"}
+      `,
+    },
+    {
+      role: "user",
+      content: `Current Step Prompt: ${steps[index]}`,
+    },
+    {
+      role: "assistant",
+      content: "Output:",
+    },
+  ];
+}
+
+// todo add memory?

@@ -16,6 +16,16 @@ const options = [
     label: "Improve writing",
     icon: RefreshCcwDot,
   },
+  {
+    value: "explain",
+    label: "Explain",
+    icon: RefreshCcwDot,
+  },
+  {
+    value: "Summarize",
+    label: "summarize",
+    icon: RefreshCcwDot,
+  },
 
   {
     value: "fix",
@@ -30,6 +40,11 @@ const options = [
   {
     value: "longer",
     label: "Make longer",
+    icon: WrapText,
+  },
+  {
+    value: "recipe",
+    label: "Use as Recipe",
     icon: WrapText,
   },
 ];
@@ -66,6 +81,7 @@ const AISelectorCommands = ({ onSelect }: AISelectorCommandsProps) => {
       <CommandGroup heading="Use AI to do more">
         <CommandItem
           onSelect={() => {
+            console.log("continuing");
             const text = getPrevText(editor, { chars: 5000 });
             onSelect(text, "continue");
           }}
