@@ -66,7 +66,7 @@ function getDocUrl(name: string, type: string) {
     case "tldraw":
       return `/y-labs/app/tldraw/index.html#/edit/${name}`;
     default:
-      return null;
+      return undefined;
   }
 }
 const EmptyState = () => (
@@ -118,23 +118,17 @@ function DriveListing({ className }: { className?: string }) {
         const url = getDocUrl(doc.name, doc.type);
         if (!url) return null;
         return (
-          <Card
-            as="a"
-            isPressable
-            isHoverable
-            key={index}
-            radius="sm"
-            href={getDocUrl(doc.name, doc.type)}
-          >
-            <div className="w-full flex items-center p-4 gap-4">
-              <div className="flex-1 flex items-center gap-2">
-                {typeIconMap[doc.type] ?? typeIconMap["unknown"]}
-                <div className="text-sm font-semibold">
-                  {doc.title || "[Untitled]"}
+          <a href={getDocUrl(doc.name, doc.type)}>
+            <Card isPressable isHoverable key={index} radius="sm">
+              <div className="w-full flex items-center p-4 gap-4">
+                <div className="flex-1 flex items-center gap-2">
+                  {typeIconMap[doc.type] ?? typeIconMap["unknown"]}
+                  <div className="text-sm font-semibold">
+                    {doc.title || "[Untitled]"}
+                  </div>
+                  <div className="text-sm text-default-500">{doc.type}</div>
                 </div>
-                <div className="text-sm text-default-500">{doc.type}</div>
-              </div>
-              {/* <Tooltip content="Delete document" color="danger">
+                {/* <Tooltip content="Delete document" color="danger">
                 <Button
                   color="danger"
                   size="sm"
@@ -145,8 +139,9 @@ function DriveListing({ className }: { className?: string }) {
                   <TrashIcon size={"16"} />
                 </Button>
               </Tooltip> */}
-            </div>
-          </Card>
+              </div>
+            </Card>
+          </a>
         );
       })}
     </div>
