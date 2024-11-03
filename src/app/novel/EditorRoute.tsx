@@ -17,7 +17,7 @@ export function EditorRoute() {
   const roomId = searchParams.get("roomId");
   const encrypt = searchParams.has("encrypt");
   const { frontmatter } = AppGlobals;
-
+  console.log({ roomId, docId, x, encrypt });
   // when docId, roomId or x changes, update password and encrypted
   useEffect(() => {
     if (x) {
@@ -35,6 +35,7 @@ export function EditorRoute() {
           { replace: true },
         );
       } else {
+        console.log("setSearch params", newSearchParams);
         setSearchParams(newSearchParams, { replace: true });
       }
     }

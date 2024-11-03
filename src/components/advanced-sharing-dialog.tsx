@@ -85,7 +85,7 @@ export function AdvancedSharingDialog({ onClose }: AdvancedSharingDialogProps) {
 
   return (
     <Card className="w-full max-w-lg overflow-hidden">
-      <CardHeader className="flex flex-row items-start justify-between space-y-0">
+      {/* <CardHeader className="flex flex-row items-start justify-between space-y-0">
         <div className="flex items-start space-x-2">
           <Share2 className="h-6 w-6 mt-1" />
           <div>
@@ -95,9 +95,9 @@ export function AdvancedSharingDialog({ onClose }: AdvancedSharingDialogProps) {
             </CardDescription>
           </div>
         </div>
-      </CardHeader>
+      </CardHeader> */}
       <CardContent className="space-y-4">
-        <div className="flex items-center justify-between">
+        {/* <div className="flex items-center justify-between">
           <Label htmlFor="sharing-toggle">
             Sharing is {isSharing ? "on" : "off"}
           </Label>
@@ -106,7 +106,7 @@ export function AdvancedSharingDialog({ onClose }: AdvancedSharingDialogProps) {
             checked={isSharing}
             onCheckedChange={setIsSharing}
           />
-        </div>
+        </div> */}
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>

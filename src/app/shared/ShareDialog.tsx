@@ -82,6 +82,8 @@ export function ShareDialog() {
         encrypt: false,
         enabled: true,
         password: undefined,
+        accessLevel: "edit",
+        includePassword: true,
       })
     : undefined;
   let currentConfig = useStore($config || atom()) as
@@ -98,6 +100,7 @@ export function ShareDialog() {
   const awarenessClientID = $collabRoom?.provider?.awareness.clientID;
   const peers = collabRoom?.peerIds ?? [];
   const navigate = useNavigate();
+  console.log({ currentConfig });
   const password = currentConfig?.password;
   const encrypt = currentConfig?.encrypt;
   const actionLabel = isSharing ? "Sharing" : "Share";
@@ -110,10 +113,13 @@ export function ShareDialog() {
     setValue("password", password);
   }, [password]);
   useEffect(() => {
+    console.log("outer encrypt changed", encrypt);
     setValue("encrypt", encrypt);
   }, [encrypt]);
   watch();
+  console.log({ encrypt });
   const submit = handleSubmit((data) => {
+    console.log("submit", data);
     if ($config) {
       $config.set({
         ...currentConfig,
@@ -198,8 +204,9 @@ export function ShareDialog() {
                     id="sharing-toggle"
                     checked={isSharing}
                     onCheckedChange={(value) => {
-                      console.log("change", { isSharing });
-                      console.log((!value ? stopSharing : submit)(null));
+                      console.log("change", { isSharing, value });
+                      console.log();
+                      (!value ? stopSharing : submit)(null);
                     }}
                   />
                 </div>
@@ -207,7 +214,36 @@ export function ShareDialog() {
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <div className={`space-y-4 rounded-md bg-muted p-4`}>
-                        <div className="space-y-2">
+                        <Controller
+                          name="roomId"
+                          defaultValue={initialRoomId}
+                          rules={{ required: true }}
+                          control={control}
+                          render={({ field }) => (
+                            <div className="space-y-2">
+                              <Label htmlFor="room">Room</Label>
+                              <div className="flex space-x-2">
+                                <Input
+                                  {...field}
+                                  id="room"
+                                  value={field.value || ""}
+                                  readOnly={isSharing}
+                                  isRequired
+                                  isInvalid={!!errors.roomId}
+                                  errorMessage={
+                                    errors.roomId && "Room name is required"
+                                  }
+                                  label="Room"
+                                  placeholder="Enter a room name to connect to"
+                                  variant="bordered"
+                                />
+                                <CopyButton value={field.value} label="room" />
+                              </div>
+                            </div>
+                          )}
+                        ></Controller>
+
+                        {/* <div className="space-y-2">
                           <Label htmlFor="room">Room</Label>
                           <div className="flex space-x-2">
                             <Input
@@ -219,9 +255,10 @@ export function ShareDialog() {
                             <CopyButton value={roomId} label="room" />
                           </div>
                         </div>
+                         */}
                         <Controller
                           name="encrypt"
-                          defaultValue={encrypt ?? false}
+                          // defaultValue={encrypt ?? false}
                           control={control}
                           render={({ field }) => (
                             // <Switch
@@ -235,12 +272,14 @@ export function ShareDialog() {
                             // </Switch>
                             <div className="flex items-center justify-between">
                               <Label htmlFor="encrypt">
-                                Encrypt communication
+                                Encrypt communication ={" "}
+                                {field.value ? "on" : "off"}
                               </Label>
                               <Switch
                                 id="encrypt"
                                 checked={field.value}
                                 onCheckedChange={(v) => {
+                                  console.log("encrypt", v);
                                   setValue("encrypt", v);
                                 }}
                                 disabled={isSharing}
@@ -370,35 +409,7 @@ export function ShareDialog() {
                     )}
                   </Tooltip>
                 </TooltipProvider>
-                {
-                  <>
-                    {!isSharing && (
-                      <Controller
-                        name="roomId"
-                        defaultValue={initialRoomId}
-                        rules={{ required: true }}
-                        control={control}
-                        render={({ field }) => (
-                          <div>
-                            <Input
-                              {...field}
-                              value={field.value || ""}
-                              isDisabled={isSharing}
-                              isRequired
-                              isInvalid={!!errors.roomId}
-                              errorMessage={
-                                errors.roomId && "Room name is required"
-                              }
-                              label="Room"
-                              placeholder="Enter a room name to connect to"
-                              variant="bordered"
-                            />
-                          </div>
-                        )}
-                      ></Controller>
-                    )}
-                  </>
-                }
+
                 {!!isSharing && (
                   <>
                     <div>
