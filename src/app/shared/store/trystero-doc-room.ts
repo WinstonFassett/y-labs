@@ -129,11 +129,7 @@ const trysteroDocRoomT = mapTemplate(
       roomId,
     }),
   (store, docRoomKey, docId, roomId) => {
-    const $config = getDocRoomConfig(docId, roomId, {
-      encrypt: false,
-      enabled: true,
-      password: undefined,
-    });
+    const $config = getDocRoomConfig(docId, roomId);
     let config = $config.get();
     const unsubConfig = $config.listen(() => {});
     const $ydoc = getYdoc(docId);

@@ -1,21 +1,40 @@
-import { useStore } from "@nanostores/react";
+import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { CopyButton } from "@/components/ui/copy-button";
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { PasswordInput } from "@/components/ui/password-input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { KeyRoundIcon, Share2Icon } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
+import { useStore } from "@nanostores/react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Share2Icon } from "lucide-react";
 import { atom } from "nanostores";
 import { forwardRef, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { generateId } from "./generateId";
 import {
   getDocRoomConfig,
   latestDocRoom,
@@ -25,28 +44,6 @@ import {
   getTrysteroDocRoom,
   type OnlineDocRoomFields,
 } from "./store/trystero-doc-room";
-import { generateId } from "./generateId";
-import { cn } from "@/lib/utils";
-import { AdvancedSharingDialog } from "@/components/advanced-sharing-dialog";
-import { Avatar } from "@/components/ui/avatar";
-import { Label } from "@/components/ui/label";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { CopyButton } from "@/components/ui/copy-button";
-import { AnimatePresence, motion } from "framer-motion";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { PasswordInput } from "@/components/ui/password-input";
 
 function useDisclosure(initialState = false) {
   const [isOpen, setIsOpen] = useState(initialState);
@@ -77,15 +74,7 @@ export function ShareDialog() {
     getValues,
   } = useForm();
 
-  const $config = roomId
-    ? getDocRoomConfig(docId, roomId, {
-        encrypt: false,
-        enabled: true,
-        password: undefined,
-        accessLevel: "edit",
-        includePassword: true,
-      })
-    : undefined;
+  const $config = roomId ? getDocRoomConfig(docId, roomId) : undefined;
   let currentConfig = useStore($config || atom()) as
     | DocRoomConfigFields
     | undefined;
@@ -100,7 +89,7 @@ export function ShareDialog() {
   const awarenessClientID = $collabRoom?.provider?.awareness.clientID;
   const peers = collabRoom?.peerIds ?? [];
   const navigate = useNavigate();
-  console.log({ currentConfig });
+  console.log({ $config, currentConfig, roomId, docId });
   const password = currentConfig?.password;
   const encrypt = currentConfig?.encrypt;
   const actionLabel = isSharing ? "Sharing" : "Share";
@@ -120,17 +109,18 @@ export function ShareDialog() {
   console.log({ encrypt });
   const submit = handleSubmit((data) => {
     console.log("submit", data);
-    if ($config) {
-      $config.set({
-        ...currentConfig,
-        ...data,
-        enabled: true,
-      } as any);
-    } else {
-      const { roomId, password } = data;
-      navigate(
-        `/edit/${docId}?roomId=${roomId}${password ? `&encrypt&x=${password}` : ""}`,
-      );
+    // const { roomId, password, encrypt, accessLevel } = data;
+
+    // save config by docId+roomId
+    const $newConfig = getDocRoomConfig(docId!, data.roomId);
+    $newConfig.set({
+      ...currentConfig,
+      ...data,
+      enabled: true,
+    } as any);
+    console.log("set config", $newConfig.value);
+    if (!roomId) {
+      navigate(`/edit/${docId}?roomId=${data.roomId}`);
     }
   });
   const stopSharing = (e) => {
@@ -258,7 +248,7 @@ export function ShareDialog() {
                          */}
                         <Controller
                           name="encrypt"
-                          // defaultValue={encrypt ?? false}
+                          defaultValue={encrypt ?? false}
                           control={control}
                           render={({ field }) => (
                             // <Switch
@@ -318,35 +308,20 @@ export function ShareDialog() {
                                       readOnly={isSharing}
                                       // className="text-default-400"
                                       value={field.value || ""}
-                                      isDisabled={isSharing}
-                                      isInvalid={!!errors.password}
-                                      isRequired
-                                      endContent={
-                                        <KeyRoundIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                                      }
-                                      label="Password"
-                                      placeholder="Enter a password to enable encryption"
-                                      variant="bordered"
+                                      // isDisabled={isSharing}
+                                      // isInvalid={!!errors.password}
+                                      // isRequired
+                                      // endContent={
+                                      //   <KeyRoundIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                                      // }
+                                      // label="Password"
+                                      // placeholder="Enter a password to enable encryption"
+                                      // variant="bordered"
                                     />
                                   </div>
                                 )}
                               ></Controller>
-
-                              {/* <div className="flex items-center space-x-2">
-                                <Checkbox
-                                  id="include-password"
-                                  checked={includePassword}
-                                  onCheckedChange={(checked) =>
-                                    setIncludePasswordInLink(checked === true)
-                                  }
-                                  disabled={isSharing}
-                                />
-                                <Label htmlFor="include-password">
-                                  Include password in sharing link
-                                </Label>
-                              </div> */}
-
-                              <Controller
+                              {/* <Controller
                                 name="includePassword"
                                 defaultValue={false}
                                 control={control}
@@ -365,7 +340,7 @@ export function ShareDialog() {
                                     </Label>
                                   </div>
                                 )}
-                              ></Controller>
+                              ></Controller> */}
                             </motion.div>
                           )}
                         </AnimatePresence>

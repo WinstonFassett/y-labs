@@ -13,7 +13,7 @@ const FieldDefaults: DocRoomConfigFields = {
   enabled: true,
   encrypt: false,
   password: undefined,
-  accessLevel: "edit",
+  accessLevel: "view",
   includePassword: true,
 };
 
@@ -28,10 +28,10 @@ const docRoomConfigsT = mapTemplate(
     id: string,
     docId: string,
     roomId: string,
-    fields: DocRoomConfigFields = FieldDefaults,
+    // fields: DocRoomConfigFields = FieldDefaults,
   ) => map(FieldDefaults),
   (store, id, docId, roomId, fields = FieldDefaults) => {
-    store.set(fields);
+    store.set(FieldDefaults);
     roomConfigsByDocId.setKey(docId, store);
     latestDocRoom.setKey(docId, roomId);
     return () => {
@@ -39,13 +39,9 @@ const docRoomConfigsT = mapTemplate(
     };
   },
 );
-export function getDocRoomConfig(
-  docId: string,
-  roomId: string,
-  fields?: DocRoomConfigFields,
-) {
+export function getDocRoomConfig(docId: string, roomId: string) {
   const docRoomId = getDocRoomId(docId, roomId);
-  const $model = docRoomConfigsT(docRoomId, docId, roomId, fields);
+  const $model = docRoomConfigsT(docRoomId, docId, roomId);
   return $model;
 }
 
