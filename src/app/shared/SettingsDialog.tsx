@@ -1,21 +1,15 @@
 import React, { useState, type ReactNode } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
-  Button,
-  Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  Snippet,
-  Switch,
-  User,
-  useDisclosure,
-  Card,
-  CardBody,
-  CardHeader,
-} from "@nextui-org/react";
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+} from "@/components/ui/dialog";
+
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { $openaiApiKey, $openaiApiKey_masked } from "./store/secure-settings";
 import { $openAiConfigValid, validateOpenAiKey } from "./store/openai";
 import { map } from "nanostores";
@@ -42,21 +36,21 @@ export function SettingsDialog() {
     getValues,
   } = useForm();
   return (
-    <Modal isOpen={open} onOpenChange={setOpen} placement="center">
-      <ModalContent>
-        <ModalHeader>
+    <Dialog open={open} onOpenChange={setOpen} placement="center">
+      <DialogContent>
+        <DialogHeader>
           <div>
             <h2 className="text-2xl font-bold">Settings</h2>
             {/* <p className="text-muted-foreground font-thin">
               Customize your experience.
             </p> */}
           </div>
-        </ModalHeader>
-        <ModalBody>
+        </DialogHeader>
+        <div>
           {/* <ThemeSettings /> */}
           <AiSettings />
-        </ModalBody>
-        <ModalFooter>
+        </div>
+        <DialogFooter>
           <Button
             type="reset"
             onClick={() => {
@@ -65,9 +59,9 @@ export function SettingsDialog() {
           >
             Close
           </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -97,9 +91,9 @@ function ThemeSettings() {
       <CardHeader>
         <CardTitle>Appearance</CardTitle>
       </CardHeader>
-      <CardBody>
+      <CardContent>
         <div>Theme</div>
-      </CardBody>
+      </CardContent>
     </Card>
   );
 }

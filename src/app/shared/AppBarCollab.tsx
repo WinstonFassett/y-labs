@@ -1,4 +1,4 @@
-import { Avatar, AvatarGroup } from "@nextui-org/react";
+import { Avatar } from "@/components/ui/avatar";
 import { ShareDialog } from "./ShareDialog";
 import { useDocCollabStore } from "./useDocCollabStore";
 import { useStore } from "@nanostores/react";

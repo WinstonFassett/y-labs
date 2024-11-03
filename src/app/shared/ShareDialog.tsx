@@ -16,10 +16,10 @@ import {
   //   ModalFooter,
   //   ModalHeader,
   Snippet,
-  Switch,
   User,
   useDisclosure,
 } from "@nextui-org/react";
+import { Switch } from "@/components/ui/switch";
 import { KeyRoundIcon, Share2Icon } from "lucide-react";
 import { atom } from "nanostores";
 import { useEffect } from "react";

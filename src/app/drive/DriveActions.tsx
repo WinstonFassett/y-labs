@@ -1,12 +1,4 @@
 import { useTheme } from "@/lib/astro-tailwind-themes/useTheme";
-// import {
-//   Button,
-//   Divider,
-//   Dropdown,
-//   DropdownItem,
-//   DropdownMenu,
-//   DropdownTrigger,
-// } from "@nextui-org/react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
