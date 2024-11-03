@@ -29,9 +29,11 @@ export function EditorRoute() {
         docId = generateId();
       }
       roomKeys.setKey(docId!, x);
+      console.log("setKey", docId, x);
       if (isNewDoc) {
+        console.log("redirect to new doc", newSearchParams);
         navigate(
-          `/edit/${docId}?roomId=${roomId}${x || encrypt ? "&encrypt" : ""}`,
+          `/edit/${docId}?roomId=${roomId}${x || encrypt ? "&encrypt=true" : ""}`,
           { replace: true },
         );
       } else {

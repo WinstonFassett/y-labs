@@ -16,7 +16,6 @@ import { atom } from "nanostores";
 import { forwardRef, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { PasswordInput } from "../../lab/nextui/PasswordInput";
 import {
   getDocRoomConfig,
   latestDocRoom,
@@ -47,6 +46,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { PasswordInput } from "@/components/ui/password-input";
 
 function useDisclosure(initialState = false) {
   const [isOpen, setIsOpen] = useState(initialState);
@@ -316,7 +316,7 @@ export function ShareDialog() {
                                     <PasswordInput
                                       {...field}
                                       readOnly={isSharing}
-                                      className="text-default-400"
+                                      // className="text-default-400"
                                       value={field.value || ""}
                                       isDisabled={isSharing}
                                       isInvalid={!!errors.password}

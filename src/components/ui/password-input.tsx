@@ -33,7 +33,10 @@ export const PasswordInput = ({
           size="icon"
           variant="ghost"
           className="absolute right-0 top-0 h-full"
-          onClick={() => setShowPassword(!showPassword)}
+          onClick={(e) => {
+            e.preventDefault();
+            setShowPassword(!showPassword);
+          }}
         >
           <AnimatePresence initial={false} mode="wait">
             {showPassword ? (

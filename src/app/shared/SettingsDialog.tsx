@@ -14,8 +14,8 @@ import { $openaiApiKey, $openaiApiKey_masked } from "./store/secure-settings";
 import { $openAiConfigValid, validateOpenAiKey } from "./store/openai";
 import { map } from "nanostores";
 import { useStore } from "@nanostores/react";
-import { PasswordInput } from "@/lab/nextui/PasswordInput";
 import { CheckIcon, KeyRoundIcon, XIcon } from "lucide-react";
+import { PasswordInput } from "@/components/ui/password-input";
 
 export const $settingsStore = map({
   show: false,
@@ -182,7 +182,7 @@ export function OpenAiKeyForm() {
             <div className="flex-1">
               <PasswordInput
                 {...field}
-                className="text-default-400"
+                // className="text-default-400"
                 value={field.value || ""}
                 isInvalid={!!errors.openaiApiKey}
                 isRequired
