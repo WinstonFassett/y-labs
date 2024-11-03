@@ -14,7 +14,7 @@ import {
   Sun,
   Settings,
 } from "lucide-react";
-import { Suspense, forwardRef } from "react";
+import { Suspense } from "react";
 import { useResolvedPath } from "react-router-dom";
 import { useTheme } from "../../lib/astro-tailwind-themes/useTheme";
 import { AppGlobals } from "../../globals";
@@ -22,7 +22,7 @@ import { DocTitle } from "./DocTitle";
 import { LazyAppBarCollab } from "../blocknote/lazy/collab";
 import { LazyDocPersistenceToggle } from "../blocknote/lazy/storage";
 import { $settingsStore } from "./SettingsDialog";
-import { cn } from "@/lib/utils";
+import { Navbar, NavbarContent, NavbarBrand } from "../../components/ui/navbar";
 
 export default function AppBar() {
   const [theme, setTheme] = useTheme();
@@ -49,10 +49,10 @@ export default function AppBar() {
           </Suspense>
         </NavbarBrand>
       </NavbarContent>
-      <NavbarContent as="div" className="items-center gap-2" justify="center">
+      <NavbarContent className="items-center gap-2" justify="center">
         <DocTitle />
       </NavbarContent>
-      <NavbarContent as="div" className="items-center gap-2" justify="end">
+      <NavbarContent className="items-center gap-2" justify="end">
         <Suspense>
           <LazyAppBarCollab />
         </Suspense>
@@ -104,38 +104,3 @@ export default function AppBar() {
     </Navbar>
   );
 }
-
-const Navbar = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn("flex justify-between items-center", className)}
-      {...props}
-    />
-  ),
-);
-Navbar.displayName = "Navbar";
-
-const NavbarContent = forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn("flex justify-between h-14 items-center", className)}
-    {...props}
-  />
-));
-NavbarContent.displayName = "NavbarContent";
-
-const NavbarBrand = forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn("flex justify-between items-center", className)}
-    {...props}
-  />
-));
-NavbarBrand.displayName = "NavbarBrand";

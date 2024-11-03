@@ -1,8 +1,8 @@
 ---
 import App from "@/app/drive/App";
 import { DriveActions } from "@/app/drive/DriveActions";
-import LinkButton from "@/components/NextuiLinkButton.astro";
-import NextuiNavbar from "@/components/NextuiNavbar.astro";
+import LinkButton from "@/components/LinkButton.astro";
+import Navbar from "@/components/Navbar.astro";
 import Layout from "@/layouts/LabLayout.astro";
 import logoRaw from "../../../public/lab-icon.svg?raw";
 const frontmatter = {
@@ -12,7 +12,7 @@ const frontmatter = {
 ---
 
 <Layout frontmatter={frontmatter} class="max-w-3xl mx-auto">
-  <NextuiNavbar maxWidth="full">
+  <Navbar maxWidth="full">
     <h2 slot="brand" class="flex items-center gap-2">
       <LinkButton variant="light" href="/y-labs/index.html" isIconOnly>
         <span set:html={logoRaw} />
@@ -22,6 +22,6 @@ const frontmatter = {
     <div slot="end" class="flex gap-2 items-center">
       <DriveActions client:only="react" />
     </div>
-  </NextuiNavbar>
+  </Navbar>
   <App client:only="react" frontmatter={frontmatter} />
 </Layout>
