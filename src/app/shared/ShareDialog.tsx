@@ -27,6 +27,7 @@ import {
 import { generateId } from "./generateId";
 import { cn } from "@/lib/utils";
 import { AdvancedSharingDialog } from "@/components/advanced-sharing-dialog";
+import { Avatar } from "@/components/ui/avatar";
 
 function useDisclosure(initialState = false) {
   const [isOpen, setIsOpen] = useState(initialState);
@@ -113,6 +114,18 @@ export function ShareDialog() {
     $collabRoom?.disconnect();
     navigate(`/edit/${docId}`);
   };
+  const initialRoomId = roomId ?? latestDocRoom.get()[docId!] ?? generateId();
+  const sharingUrl = [
+    window.location.protocol,
+    "//",
+    window.location.host,
+    window.location.pathname,
+    "#/edit/",
+    docId,
+    "?roomId=",
+    roomId,
+    password ? `&x=${password}` : "",
+  ].join("");
   return (
     <>
       <Button
@@ -147,9 +160,7 @@ export function ShareDialog() {
                     {!isSharing && (
                       <Controller
                         name="roomId"
-                        defaultValue={
-                          roomId ?? latestDocRoom.get()[docId!] ?? generateId()
-                        }
+                        defaultValue={initialRoomId}
                         rules={{ required: true }}
                         control={control}
                         render={({ field }) => (
@@ -230,70 +241,11 @@ export function ShareDialog() {
                             pre: "overflow-hidden",
                           }}
                         >
-                          {[
-                            window.location.protocol,
-                            "//",
-                            window.location.host,
-                            window.location.pathname,
-                            "#/edit/",
-                            docId,
-                            "?roomId=",
-                            roomId,
-                            password ? `&x=${password}` : "",
-                          ].join("")}
+                          {sharingUrl}
                         </Snippet>
                       </div>
                     </div>
-                    <div>
-                      <div>
-                        {(awarenessUsers?.size ?? 1) - 1} peers connected
-                      </div>
-                      {!!awarenessUsers &&
-                        Array.from(awarenessUsers).map(
-                          ([peerId, awareness]) => {
-                            console.log("awareness", peerId, awareness);
-                            const data = awareness.presence ?? awareness.user;
-                            if (!data) {
-                              return (
-                                <div key={peerId}>
-                                  Missing data {peerId}: {JSON.stringify(data)}
-                                </div>
-                              );
-                            }
-                            const { userName, color } = data;
-
-                            const isYou = peerId === awarenessClientID;
-                            if (isYou) return null;
-                            return (
-                              <div key={peerId}>
-                                <User
-                                  className="py-4"
-                                  key={peerId}
-                                  name={
-                                    userName ? (
-                                      <UserName {...{ userName, color }} />
-                                    ) : (
-                                      peerId
-                                    )
-                                  }
-                                  description={
-                                    isYou
-                                      ? "YOU"
-                                      : userName
-                                        ? undefined
-                                        : JSON.stringify(awareness)
-                                    //"Anonymous"
-                                  }
-                                  avatarProps={{
-                                    // src: `https://i.pravatar.cc/150?u=${peerId}`,
-                                    src: `https://avatar.vercel.sh/${userName}?size=32`,
-                                  }}
-                                />
-                              </div>
-                            );
-                          },
-                        )}
-                    </div>
+                    {UserList(awarenessUsers, awarenessClientID)}
                   </>
                 )}
               </div>
@@ -323,6 +275,57 @@ export function ShareDialog() {
   );
 }
 
+function UserList({
+  awarenessUsers,
+  awarenessClientID,
+}: {
+  awarenessUsers: Map<string, any> | Map<any, any>;
+  awarenessClientID: number | undefined;
+}) {
+  return (
+    <div>
+      <div>{(awarenessUsers?.size ?? 1) - 1} peers connected</div>
+      {!!awarenessUsers &&
+        Array.from(awarenessUsers).map(([peerId, awareness]) => {
+          console.log("awareness", peerId, awareness);
+          const data = awareness.presence ?? awareness.user;
+          if (!data) {
+            return (
+              <div key={peerId}>
+                Missing data {peerId}: {JSON.stringify(data)}
+              </div>
+            );
+          }
+          const { userName, color } = data;
+
+          const isYou = peerId === awarenessClientID;
+          if (isYou) return null;
+          return (
+            <div key={peerId}>
+              <User
+                className="py-4"
+                key={peerId}
+                name={userName ? <UserName {...{ userName, color }} /> : peerId}
+                description={
+                  isYou
+                    ? "YOU"
+                    : userName
+                      ? undefined
+                      : JSON.stringify(awareness)
+                  //"Anonymous"
+                }
+                avatarProps={{
+                  // src: `https://i.pravatar.cc/150?u=${peerId}`,
+                  src: `https://avatar.vercel.sh/${userName}?size=32`,
+                }}
+              />
+            </div>
+          );
+        })}
+    </div>
+  );
+}
+
 // function OrigDialogContent () {
 //   return (
 
@@ -345,12 +348,25 @@ const Snippet = forwardRef<
 ));
 Snippet.displayName = "Snippet";
 
-const User = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+interface UserProps extends React.HTMLAttributes<HTMLDivElement> {
+  name?: string;
+  description?: string;
+}
+
+const User = forwardRef<HTMLDivElement, UserProps>(
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
       className={cn("flex flex-col space-y-1.5 p-6", className)}
       {...props}
-    />
+    >
+      <div className="flex items-center gap-2">
+        <Avatar {...props} />
+        <div className="flex flex-col">
+          <div className="text-sm font-semibold">{props.name}</div>
+          <div className="text-xs text-default-500">{props.description}</div>
+        </div>
+      </div>
+    </div>
   ),
 );
