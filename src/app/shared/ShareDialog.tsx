@@ -8,22 +8,10 @@ import {
   DialogHeader,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import {
-  //   Button,
-  // Input,
-  //   Modal,
-  //   ModalBody,
-  //   ModalContent,
-  //   ModalFooter,
-  //   ModalHeader,
-  Snippet,
-  User,
-  useDisclosure,
-} from "@nextui-org/react";
 import { Switch } from "@/components/ui/switch";
 import { KeyRoundIcon, Share2Icon } from "lucide-react";
 import { atom } from "nanostores";
-import { useEffect } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { PasswordInput } from "../../lab/nextui/PasswordInput";
@@ -37,10 +25,21 @@ import {
   type OnlineDocRoomFields,
 } from "./store/trystero-doc-room";
 import { generateId } from "./generateId";
+import { cn } from "@/lib/utils";
+
+function useDisclosure(initialState = false) {
+  const [isOpen, setIsOpen] = useState(initialState);
+
+  const open = () => setIsOpen(true);
+  const close = () => setIsOpen(false);
+  const toggle = () => setIsOpen((prev) => !prev);
+
+  return { isOpen, open, close, toggle };
+}
 
 export function ShareDialog() {
   const { docId } = useParams();
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure({});
+  const { isOpen, open, toggle, close } = useDisclosure();
   const [searchParams, setSearchParams] = useSearchParams();
   const roomId = searchParams.get("roomId");
   // if (!roomId) console.warn("No room id specified");
@@ -98,7 +97,7 @@ export function ShareDialog() {
       <Button
         variant={isSharing ? "solid" : "ghost"}
         color={isSharing ? "warning" : "primary"}
-        onClick={onOpen}
+        onClick={open}
         isIconOnly={true}
         className="w-auto px-4"
       >
@@ -107,7 +106,7 @@ export function ShareDialog() {
       </Button>
       <Dialog
         open={isOpen}
-        onOpenChange={onOpenChange}
+        onOpenChange={toggle}
         placement="top"
         classNames={{
           wrapper: "z-[500]",
@@ -295,7 +294,7 @@ export function ShareDialog() {
                 )}
               </div>
               <DialogFooter>
-                <Button variant="light" onClick={onClose}>
+                <Button variant="light" onClick={close}>
                   Close
                 </Button>
                 {isSharing ? (
@@ -328,3 +327,25 @@ export function ShareDialog() {
 function UserName({ userName, color }: { userName: string; color: string }) {
   return <span style={{ color }}>{userName}</span>;
 }
+
+const Snippet = forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex flex-col space-y-1.5 p-6", className)}
+    {...props}
+  />
+));
+Snippet.displayName = "Snippet";
+
+const User = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn("flex flex-col space-y-1.5 p-6", className)}
+      {...props}
+    />
+  ),
+);
