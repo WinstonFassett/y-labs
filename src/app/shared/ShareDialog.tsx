@@ -26,6 +26,7 @@ import {
 } from "./store/trystero-doc-room";
 import { generateId } from "./generateId";
 import { cn } from "@/lib/utils";
+import { AdvancedSharingDialog } from "@/components/advanced-sharing-dialog";
 
 function useDisclosure(initialState = false) {
   const [isOpen, setIsOpen] = useState(initialState);
@@ -113,7 +114,9 @@ export function ShareDialog() {
           backdrop: "z-[500]",
         }}
       >
-        <DialogContent>Yooo</DialogContent>
+        <DialogContent>
+          <AdvancedSharingDialog onClose={close} />
+        </DialogContent>
       </Dialog>
     </>
   );

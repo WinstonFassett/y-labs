@@ -200,7 +200,7 @@ export function AdvancedSharingDialog({ onClose }: AdvancedSharingDialogProps) {
   };
 
   return (
-    <Card className="w-full max-w-lg overflow-hidde">
+    <Card className="w-full max-w-lg overflow-hidden">
       <CardHeader className="flex flex-row items-start justify-between space-y-0">
         <div className="flex items-start space-x-2">
           <Share2 className="h-6 w-6 mt-1" />
