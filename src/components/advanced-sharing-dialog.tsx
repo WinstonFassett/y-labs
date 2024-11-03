@@ -1,16 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { nanoid } from "nanoid";
-import {
-  Copy,
-  Check,
-  X,
-  Eye,
-  EyeOff,
-  Users,
-  Share2,
-  StopCircle,
-} from "lucide-react";
+import { Copy, Check, X, Users, Share2, StopCircle } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,115 +30,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
-interface CopyButtonProps {
-  value: string;
-  label: string;
-}
-
-const CopyButton = ({ value, label }: CopyButtonProps) => {
-  const [isCopied, setIsCopied] = useState(false);
-
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(value);
-    setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 2000);
-  };
-
-  return (
-    <Button
-      size="icon"
-      variant="outline"
-      onClick={handleCopy}
-      aria-label={isCopied ? "Copied" : `Copy ${label}`}
-    >
-      <AnimatePresence initial={false} mode="wait">
-        {isCopied ? (
-          <motion.div
-            key="check"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <Check className="h-4 w-4 text-green-500" />
-          </motion.div>
-        ) : (
-          <motion.div
-            key="copy"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <Copy className="h-4 w-4" />
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </Button>
-  );
-};
-
-interface PasswordInputProps {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  disabled?: boolean;
-  readOnly?: boolean;
-}
-
-const PasswordInput = ({
-  value,
-  onChange,
-  disabled,
-  readOnly,
-}: PasswordInputProps) => {
-  const [showPassword, setShowPassword] = useState(false);
-
-  return (
-    <div className="flex space-x-2">
-      <div className="relative flex-1">
-        <Input
-          type={showPassword ? "text" : "password"}
-          value={value}
-          onChange={onChange}
-          disabled={disabled}
-          readOnly={readOnly}
-        />
-        <Button
-          size="icon"
-          variant="ghost"
-          className="absolute right-0 top-0 h-full"
-          onClick={() => setShowPassword(!showPassword)}
-        >
-          <AnimatePresence initial={false} mode="wait">
-            {showPassword ? (
-              <motion.div
-                key="eyeoff"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <EyeOff className="h-4 w-4" />
-              </motion.div>
-            ) : (
-              <motion.div
-                key="eye"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <Eye className="h-4 w-4" />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </Button>
-      </div>
-      <CopyButton value={value} label="password" />
-    </div>
-  );
-};
+import { CopyButton } from "./ui/copy-button";
+import { PasswordInput } from "./ui/password-input";
 
 const UserList = () => {
   const users = [
@@ -211,13 +95,6 @@ export function AdvancedSharingDialog({ onClose }: AdvancedSharingDialogProps) {
             </CardDescription>
           </div>
         </div>
-        {/* <Button variant="ghost" size="icon" onClick={onClose} className="mt-0">
-          <X className="h-4 w-4" />
-        </Button> */}
-        {/* <Button variant="ghost" size="icon" onClick={onClose} className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-          <X className="h-4 w-4" />
-          <span className="sr-only">Close</span>
-        </Button>         */}
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex items-center justify-between">
