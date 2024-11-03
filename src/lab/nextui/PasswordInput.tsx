@@ -1,5 +1,4 @@
-import { Input } from "@nextui-org/react";
-import type { InputProps } from "@nextui-org/react";
+import { Input, type InputProps } from "@/components/ui/input";
 import { VisibilityToggle, type VisibilityProps } from "./VisibilityToggle";
 import React, { useState, type FC } from "react";
 
