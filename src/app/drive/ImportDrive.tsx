@@ -1,21 +1,39 @@
-import React, { useState } from "react";
+import { useState } from "react";
+// import {
+//   Button,
+//   Modal,
+//   Spinner,
+//   ModalBody,
+//   ModalHeader,
+//   ModalFooter,
+//   ModalContent,
+//   Card,
+//   CardBody,
+// } from "@nextui-org/react";
 import {
-  Button,
-  Modal,
-  Spinner,
-  ModalBody,
-  ModalHeader,
-  ModalFooter,
-  ModalContent,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogHeader,
+  DialogTrigger,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import {
   Card,
-  CardBody,
-} from "@nextui-org/react";
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+  CardDescription,
+} from "@/components/ui/card";
 import { useDropzone } from "react-dropzone";
 import { getOfflineDoc } from "../shared/store/local-yjs-idb";
 import * as Y from "yjs";
 import { CheckCircleIcon, UploadCloudIcon, XCircle } from "lucide-react";
 import { useStore } from "@nanostores/react";
 import { map } from "nanostores";
+import { Spinner } from "@/components/ui/spinner";
 
 const importDriveState = map({
   visible: false,
@@ -81,16 +99,16 @@ export function ImportDriveModal() {
     setUploadState("initial");
   };
   return (
-    <Modal placement="top" isOpen={isOpen} onClose={closeModal}>
-      <ModalContent>
-        <ModalHeader>Upload Yjs Document</ModalHeader>
-        <ModalBody>
+    <Dialog placement="top" isOpen={isOpen} onClose={closeModal}>
+      <DialogContent>
+        <DialogHeader>Upload Yjs Document</DialogHeader>
+        <div>
           {["initial", "uploading", "error"].includes(uploadState) && (
             <Card
               isPressable
               className={`rounded-lg border-2 border-dashed p-6 text-center cursor-pointer ${isDragActive ? "bg-primary-300" : "bg-primary"} hover:bg-primary-300 text-primary-foreground`}
             >
-              <CardBody>
+              <CardContent>
                 <div {...getRootProps()}>
                   <input {...getInputProps()} />
 
@@ -110,7 +128,7 @@ export function ImportDriveModal() {
                     {uploadState === "uploading" && <Spinner />}
                   </div>
                 </div>
-              </CardBody>
+              </CardContent>
             </Card>
           )}
           {uploadState === "success" && (
@@ -125,10 +143,10 @@ export function ImportDriveModal() {
               <p className="text-danger-foreground">Import failed</p>
             </div>
           )}
-        </ModalBody>
-        <ModalFooter></ModalFooter>
-      </ModalContent>
-    </Modal>
+        </div>
+        <DialogFooter></DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 

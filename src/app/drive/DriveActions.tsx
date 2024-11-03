@@ -1,12 +1,19 @@
 import { useTheme } from "@/lib/astro-tailwind-themes/useTheme";
+// import {
+//   Button,
+//   Divider,
+//   Dropdown,
+//   DropdownItem,
+//   DropdownMenu,
+//   DropdownTrigger,
+// } from "@nextui-org/react";
+import { Button } from "@/components/ui/button";
 import {
-  Button,
-  Divider,
-  Dropdown,
-  DropdownItem,
   DropdownMenu,
-  DropdownTrigger,
-} from "@nextui-org/react";
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   DownloadIcon,
   FileText,
@@ -33,64 +40,71 @@ export function DriveActions() {
 function MoreMenu() {
   const [theme, setTheme] = useTheme();
   return (
-    <Dropdown>
-      <DropdownTrigger>
-        <Button variant="light" isIconOnly>
-          <MoreVertical size={20} />
-        </Button>
-      </DropdownTrigger>
-      <DropdownMenu
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <MoreVertical size={20} />
+        {/* <Button variant="light" isIconOnly>
+        </Button> */}
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
         aria-label="More Actions"
         color="default"
         selectionMode="none"
       >
-        <DropdownItem
-          onPress={createDocumentState.open}
+        <DropdownMenuItem
+          onClick={() => {
+            createDocumentState.open();
+            console.log("opened");
+          }}
           endContent={<FileText size={16} />}
         >
           New Document
-        </DropdownItem>
-        <DropdownItem>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
           <Divider />
-        </DropdownItem>
-        <DropdownItem
+        </DropdownMenuItem>
+        <DropdownMenuItem
           key="import"
-          onPress={startImport}
+          onClick={startImport}
           endContent={<UploadIcon size={16} />}
         >
           Import Drive
-        </DropdownItem>
-        <DropdownItem
+        </DropdownMenuItem>
+        <DropdownMenuItem
           key="export"
-          onPress={doExport}
+          onClick={doExport}
           endContent={<DownloadIcon size={16} />}
         >
           Export Drive
-        </DropdownItem>
-        <DropdownItem
+        </DropdownMenuItem>
+        <DropdownMenuItem
           key="export-json"
-          onPress={doExportJson}
+          onClick={doExportJson}
           endContent={<DownloadIcon size={16} />}
         >
           Export Drive to JSON
-        </DropdownItem>
-        <DropdownItem>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
           <Divider />
-        </DropdownItem>
-        <DropdownItem
+        </DropdownMenuItem>
+        <DropdownMenuItem
           key="toggleTheme"
           endContent={
             theme === "light" ? <Sun size={16} /> : <Moon size={16} />
           }
           closeOnSelect={false}
-          onPress={(e) => {
+          onClick={(e) => {
             console.log("click");
             setTheme(theme === "dark" ? "light" : "dark");
           }}
         >
           Change Theme
-        </DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
+}
+
+function Divider() {
+  return <div className="border-t border-default-200 my-2" />;
 }

@@ -1,25 +1,9 @@
 ---
-import { button, tv } from "@nextui-org/theme";
-import type { ButtonVariantProps } from "@nextui-org/theme";
-
-interface Props extends ButtonVariantProps {
-  href: string;
-}
-const { href, ...props } = Astro.props;
-
-const nextUiButton = tv({
-  extend: button,
-  base: ["hover:bg-content2"],
-});
-
-const styles = nextUiButton(props);
-
-let replaced = styles
-  .replaceAll("data-[hover=true]", "hover")
-  .replaceAll("data-[pressed=true]", "active")
-  .replaceAll("data-[focus-visible=true]", "focus-visible");
+import { Button } from "@/components/ui/button";
 ---
 
-<a href={href} class={replaced}>
-  <slot />
-</a>
+<Button asChild={true}>
+  <a href={Astro.props.href}>
+    <slot />
+  </a>
+</Button>

@@ -1,9 +1,10 @@
 import { useStore } from "@nanostores/react";
-import { Card, CardBody, CardFooter, cn } from "@nextui-org/react";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { FileQuestionIcon } from "lucide-react";
 import { documentsStore } from "./store.ts";
 import { ImportDriveModal } from "./ImportDrive.tsx";
 import { CreateDocumentDialog } from "./CreateDocumentDialogButton.tsx";
+import { cn } from "@/lib/utils.js";
 
 const typeIconMap = {
   codemirror: (
@@ -92,7 +93,7 @@ export function CreateDocButtons() {
               body: "flex items-center justify-center flex-grow",
             }}
           >
-            <CardBody>{docType.icon}</CardBody>
+            <CardContent>{docType.icon}</CardContent>
             <CardFooter className="pt-0 text-xs flex justify-center">
               {docType.label}
             </CardFooter>
