@@ -6,6 +6,8 @@ import {
   DialogContent,
   DialogFooter,
   DialogHeader,
+  DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
@@ -28,6 +30,23 @@ import { generateId } from "./generateId";
 import { cn } from "@/lib/utils";
 import { AdvancedSharingDialog } from "@/components/advanced-sharing-dialog";
 import { Avatar } from "@/components/ui/avatar";
+import { Label } from "@/components/ui/label";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { CopyButton } from "@/components/ui/copy-button";
+import { AnimatePresence, motion } from "framer-motion";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 function useDisclosure(initialState = false) {
   const [isOpen, setIsOpen] = useState(initialState);
@@ -109,7 +128,7 @@ export function ShareDialog() {
     }
   });
   const stopSharing = (e) => {
-    e.preventDefault();
+    e?.preventDefault();
     $config?.setKey("enabled", false);
     $collabRoom?.disconnect();
     navigate(`/edit/${docId}`);
@@ -147,14 +166,210 @@ export function ShareDialog() {
           backdrop: "z-[500]",
         }}
       >
+        {/* protoype, convert to Dialog: 
+    <Card className="w-full max-w-lg overflow-hidden">
+      <CardHeader className="flex flex-row items-start justify-between space-y-0">
+        <div className="flex items-start space-x-2">
+          <Share2 className="h-6 w-6 mt-1" />
+          <div>
+            <CardTitle>Share Access</CardTitle>
+            <CardDescription>
+              Configure online sharing for realtime collaboration
+            </CardDescription>
+          </div>
+        </div>
+      </CardHeader> end prototype        */}
         <DialogContent>
           {/* {(onClose) => ( */}
           <form onSubmit={submit} noValidate>
             <>
               <DialogHeader className="flex flex-col gap-1">
-                {actionLabel}
+                <DialogTitle>{actionLabel}</DialogTitle>
+                <DialogDescription>
+                  Configure online sharing for realtime collaboration
+                </DialogDescription>
               </DialogHeader>
-              <div className="gap-6">
+              <div className="py-4 gap-6 space-y-4">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="sharing-toggle">
+                    Sharing is {isSharing ? "on" : "off"}
+                  </Label>
+                  <Switch
+                    id="sharing-toggle"
+                    checked={isSharing}
+                    onCheckedChange={(value) => {
+                      console.log("change", { isSharing });
+                      console.log((!value ? stopSharing : submit)(null));
+                    }}
+                  />
+                </div>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className={`space-y-4 rounded-md bg-muted p-4`}>
+                        <div className="space-y-2">
+                          <Label htmlFor="room">Room</Label>
+                          <div className="flex space-x-2">
+                            <Input
+                              id="room"
+                              value={roomId}
+                              onChange={(e) => setRoom(e.target.value)}
+                              readOnly={isSharing}
+                            />
+                            <CopyButton value={roomId} label="room" />
+                          </div>
+                        </div>
+                        <Controller
+                          name="encrypt"
+                          defaultValue={encrypt ?? false}
+                          control={control}
+                          render={({ field }) => (
+                            // <Switch
+                            //   isSelected={field.value}
+                            //   isDisabled={isSharing}
+                            //   onValueChange={(v) => {
+                            //     setValue("encrypt", v);
+                            //   }}
+                            // >
+                            //   Encrypt communication
+                            // </Switch>
+                            <div className="flex items-center justify-between">
+                              <Label htmlFor="encrypt">
+                                Encrypt communication
+                              </Label>
+                              <Switch
+                                id="encrypt"
+                                checked={field.value}
+                                onCheckedChange={(v) => {
+                                  setValue("encrypt", v);
+                                }}
+                                disabled={isSharing}
+                              />
+                            </div>
+                          )}
+                        ></Controller>
+                        {/* {!isSharing && getValues().encrypt && (
+                            
+                           )} */}
+
+                        <AnimatePresence>
+                          {getValues().encrypt && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: "auto" }}
+                              exit={{ opacity: 0, height: 0 }}
+                              transition={{ duration: 0.3 }}
+                              className="space-y-4 overflow-hidden"
+                            >
+                              <Controller
+                                name="password"
+                                defaultValue={password || generateId()}
+                                rules={{ required: true }}
+                                control={control}
+                                render={({ field }) => (
+                                  <div className="space-y-2">
+                                    <Label htmlFor="password">Password</Label>
+                                    {/* <PasswordInput
+                                      value={password}
+                                      onChange={(e) => setPassword(e.target.value)}
+                                      readOnly={isSharing}
+                                    /> */}
+                                    <PasswordInput
+                                      {...field}
+                                      readOnly={isSharing}
+                                      className="text-default-400"
+                                      value={field.value || ""}
+                                      isDisabled={isSharing}
+                                      isInvalid={!!errors.password}
+                                      isRequired
+                                      endContent={
+                                        <KeyRoundIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                                      }
+                                      label="Password"
+                                      placeholder="Enter a password to enable encryption"
+                                      variant="bordered"
+                                    />
+                                  </div>
+                                )}
+                              ></Controller>
+
+                              {/* <div className="flex items-center space-x-2">
+                                <Checkbox
+                                  id="include-password"
+                                  checked={includePassword}
+                                  onCheckedChange={(checked) =>
+                                    setIncludePasswordInLink(checked === true)
+                                  }
+                                  disabled={isSharing}
+                                />
+                                <Label htmlFor="include-password">
+                                  Include password in sharing link
+                                </Label>
+                              </div> */}
+
+                              <Controller
+                                name="includePassword"
+                                defaultValue={false}
+                                control={control}
+                                render={({ field }) => (
+                                  <div className="flex items-center space-x-2">
+                                    <Checkbox
+                                      id="include-password"
+                                      checked={field.value}
+                                      onCheckedChange={(v) => {
+                                        setValue("includePassword", v);
+                                      }}
+                                      disabled={isSharing}
+                                    />
+                                    <Label htmlFor="include-password">
+                                      Include password in sharing link
+                                    </Label>
+                                  </div>
+                                )}
+                              ></Controller>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                        <Controller
+                          name="accessLevel"
+                          defaultValue={"edit"}
+                          rules={{ required: true }}
+                          control={control}
+                          render={({ field }) => (
+                            <div className="flex items-center justify-between">
+                              <Label htmlFor="access-level">
+                                Anyone with the link can
+                              </Label>
+                              <Select
+                                value={field.value}
+                                onValueChange={(v) => {
+                                  setValue("accessLevel", v);
+                                }}
+                                disabled={isSharing}
+                              >
+                                <SelectTrigger
+                                  id="access-level"
+                                  className="w-[100px]"
+                                >
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="view">View</SelectItem>
+                                  <SelectItem value="edit">Edit</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          )}
+                        ></Controller>
+                      </div>
+                    </TooltipTrigger>
+                    {isSharing && (
+                      <TooltipContent>
+                        <p>Stop sharing to edit configuration</p>
+                      </TooltipContent>
+                    )}
+                  </Tooltip>
+                </TooltipProvider>
                 {
                   <>
                     {!isSharing && (
@@ -176,48 +391,6 @@ export function ShareDialog() {
                               }
                               label="Room"
                               placeholder="Enter a room name to connect to"
-                              variant="bordered"
-                            />
-                          </div>
-                        )}
-                      ></Controller>
-                    )}
-                    <Controller
-                      name="encrypt"
-                      defaultValue={encrypt ?? false}
-                      control={control}
-                      render={({ field }) => (
-                        <Switch
-                          isSelected={field.value}
-                          isDisabled={isSharing}
-                          onValueChange={(v) => {
-                            setValue("encrypt", v);
-                          }}
-                        >
-                          Encrypt communication
-                        </Switch>
-                      )}
-                    ></Controller>
-                    {!isSharing && getValues().encrypt && (
-                      <Controller
-                        name="password"
-                        defaultValue={password || generateId()}
-                        rules={{ required: true }}
-                        control={control}
-                        render={({ field }) => (
-                          <div>
-                            <PasswordInput
-                              {...field}
-                              className="text-default-400"
-                              value={field.value || ""}
-                              isDisabled={isSharing}
-                              isInvalid={!!errors.password}
-                              isRequired
-                              endContent={
-                                <KeyRoundIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                              }
-                              label="Password"
-                              placeholder="Enter a password to enable encryption"
                               variant="bordered"
                             />
                           </div>

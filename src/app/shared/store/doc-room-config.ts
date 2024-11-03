@@ -5,12 +5,16 @@ export interface DocRoomConfigFields {
   enabled: boolean;
   encrypt: boolean;
   password: string | undefined;
+  accessLevel: "view" | "edit";
+  includePassword: boolean;
 }
 
 const FieldDefaults: DocRoomConfigFields = {
   enabled: true,
   encrypt: false,
   password: undefined,
+  accessLevel: "edit",
+  includePassword: true,
 };
 
 export const roomConfigsByDocId = map(

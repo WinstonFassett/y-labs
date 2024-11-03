@@ -10,7 +10,8 @@ interface CopyButtonProps {
 export const CopyButton = ({ value, label }: CopyButtonProps) => {
   const [isCopied, setIsCopied] = useState(false);
 
-  const handleCopy = async () => {
+  const handleCopy = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
     await navigator.clipboard.writeText(value);
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2000);
