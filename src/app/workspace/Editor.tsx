@@ -1,11 +1,12 @@
 import { cn } from "@/lib/utils";
 import AppBar from "../shared/AppBar";
+import { Workspace } from "./Workspace";
 
 export function Editor({ className }: { className?: string }) {
   return (
     <div className={cn("flex flex-col", className)}>
       <AppBar />
-      <div>Editor goes here</div>
+      <Workspace />
     </div>
   );
 }
