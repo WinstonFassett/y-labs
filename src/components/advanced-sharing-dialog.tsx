@@ -1,26 +1,58 @@
-import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { nanoid } from "nanoid"
-import { Copy, Check, X, Eye, EyeOff, Users, Share2, StopCircle } from "lucide-react"
-import { Switch } from "@/components/ui/switch"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { nanoid } from "nanoid";
+import {
+  Copy,
+  Check,
+  X,
+  Eye,
+  EyeOff,
+  Users,
+  Share2,
+  StopCircle,
+} from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
-const CopyButton = ({ value, label }) => {
-  const [isCopied, setIsCopied] = useState(false)
+interface CopyButtonProps {
+  value: string;
+  label: string;
+}
+
+const CopyButton = ({ value, label }: CopyButtonProps) => {
+  const [isCopied, setIsCopied] = useState(false);
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(value)
-    setIsCopied(true)
-    setTimeout(() => setIsCopied(false), 2000)
-  }
+    await navigator.clipboard.writeText(value);
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
+  };
 
   return (
     <Button
@@ -53,11 +85,23 @@ const CopyButton = ({ value, label }) => {
         )}
       </AnimatePresence>
     </Button>
-  )
+  );
+};
+
+interface PasswordInputProps {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
+  readOnly?: boolean;
 }
 
-const PasswordInput = ({ value, onChange, disabled, readOnly }) => {
-  const [showPassword, setShowPassword] = useState(false)
+const PasswordInput = ({
+  value,
+  onChange,
+  disabled,
+  readOnly,
+}: PasswordInputProps) => {
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="flex space-x-2">
@@ -102,8 +146,8 @@ const PasswordInput = ({ value, onChange, disabled, readOnly }) => {
       </div>
       <CopyButton value={value} label="password" />
     </div>
-  )
-}
+  );
+};
 
 const UserList = () => {
   const users = [
@@ -112,7 +156,7 @@ const UserList = () => {
     { id: 3, name: "Charlie", image: "/placeholder.svg?height=32&width=32" },
     { id: 4, name: "David", image: "/placeholder.svg?height=32&width=32" },
     { id: 5, name: "Eve", image: "/placeholder.svg?height=32&width=32" },
-  ]
+  ];
 
   return (
     <ScrollArea className="h-[180px] border rounded-md p-2">
@@ -128,28 +172,32 @@ const UserList = () => {
         ))}
       </div>
     </ScrollArea>
-  )
+  );
+};
+
+interface AdvancedSharingDialogProps {
+  onClose: () => void;
 }
 
-export function AdvancedSharingDialogComponent({ onClose }) {
-  const [isSharing, setIsSharing] = useState(false)
-  const [room, setRoom] = useState(nanoid(6))
-  const [isEncrypted, setIsEncrypted] = useState(false)
-  const [password, setPassword] = useState("")
-  const [includePasswordInLink, setIncludePasswordInLink] = useState(false)
-  const [accessLevel, setAccessLevel] = useState("edit")
-  const [linkCopied, setLinkCopied] = useState(false)
+export function AdvancedSharingDialog({ onClose }: AdvancedSharingDialogProps) {
+  const [isSharing, setIsSharing] = useState(false);
+  const [room, setRoom] = useState(nanoid(6));
+  const [isEncrypted, setIsEncrypted] = useState(false);
+  const [password, setPassword] = useState("");
+  const [includePasswordInLink, setIncludePasswordInLink] = useState(false);
+  const [accessLevel, setAccessLevel] = useState("edit");
+  const [linkCopied, setLinkCopied] = useState(false);
 
   const handleCopyLink = async () => {
-    const baseUrl = "https://example.com/share/"
-    let shareUrl = `${baseUrl}${room}`
+    const baseUrl = "https://example.com/share/";
+    let shareUrl = `${baseUrl}${room}`;
     if (isEncrypted && includePasswordInLink) {
-      shareUrl += `#pwd=${encodeURIComponent(password)}`
+      shareUrl += `#pwd=${encodeURIComponent(password)}`;
     }
-    await navigator.clipboard.writeText(shareUrl)
-    setLinkCopied(true)
-    setTimeout(() => setLinkCopied(false), 2000)
-  }
+    await navigator.clipboard.writeText(shareUrl);
+    setLinkCopied(true);
+    setTimeout(() => setLinkCopied(false), 2000);
+  };
 
   return (
     <Card className="w-full max-w-lg overflow-hidde">
@@ -158,7 +206,9 @@ export function AdvancedSharingDialogComponent({ onClose }) {
           <Share2 className="h-6 w-6 mt-1" />
           <div>
             <CardTitle>Share Access</CardTitle>
-            <CardDescription>Configure online sharing for realtime collaboration</CardDescription>
+            <CardDescription>
+              Configure online sharing for realtime collaboration
+            </CardDescription>
           </div>
         </div>
         {/* <Button variant="ghost" size="icon" onClick={onClose} className="mt-0">
@@ -171,7 +221,9 @@ export function AdvancedSharingDialogComponent({ onClose }) {
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex items-center justify-between">
-          <Label htmlFor="sharing-toggle">Sharing is {isSharing ? "on" : "off"}</Label>
+          <Label htmlFor="sharing-toggle">
+            Sharing is {isSharing ? "on" : "off"}
+          </Label>
           <Switch
             id="sharing-toggle"
             checked={isSharing}
@@ -224,10 +276,14 @@ export function AdvancedSharingDialogComponent({ onClose }) {
                         <Checkbox
                           id="include-password"
                           checked={includePasswordInLink}
-                          onCheckedChange={setIncludePasswordInLink}
+                          onCheckedChange={(checked) =>
+                            setIncludePasswordInLink(checked === true)
+                          }
                           disabled={isSharing}
                         />
-                        <Label htmlFor="include-password">Include password in sharing link</Label>
+                        <Label htmlFor="include-password">
+                          Include password in sharing link
+                        </Label>
                       </div>
                     </motion.div>
                   )}
@@ -259,7 +315,8 @@ export function AdvancedSharingDialogComponent({ onClose }) {
         </TooltipProvider>
         <AnimatePresence>
           {isSharing && (
-            <motion.div className="overflow-hidden"
+            <motion.div
+              className="overflow-hidden"
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
@@ -283,7 +340,11 @@ export function AdvancedSharingDialogComponent({ onClose }) {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
             >
-              <Button onClick={handleCopyLink} variant="outline" className="relative">
+              <Button
+                onClick={handleCopyLink}
+                variant="outline"
+                className="relative"
+              >
                 <AnimatePresence mode="wait">
                   {linkCopied ? (
                     <motion.div
@@ -307,7 +368,9 @@ export function AdvancedSharingDialogComponent({ onClose }) {
                     </motion.div>
                   )}
                 </AnimatePresence>
-                <span className="ml-2">{linkCopied ? "Copied!" : "Copy Link"}</span>
+                <span className="ml-2">
+                  {linkCopied ? "Copied!" : "Copy Link"}
+                </span>
               </Button>
             </motion.div>
           )}
@@ -344,5 +407,5 @@ export function AdvancedSharingDialogComponent({ onClose }) {
         </AnimatePresence>
       </CardFooter>
     </Card>
-  )
+  );
 }
