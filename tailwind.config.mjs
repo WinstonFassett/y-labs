@@ -1,12 +1,8 @@
 /** @type {import('tailwindcss').Config} */
-import { nextui } from "@nextui-org/react";
 const { fontFamily } = require("tailwindcss/defaultTheme");
 
 export default {
-  content: [
-    "./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}",
-    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   darkMode: ["class", '[data-theme="dark"]'],
 
   theme: {
@@ -24,15 +20,14 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        // Let nextui handle these
-        // primary: {
-        //   DEFAULT: "hsl(var(--primary))",
-        //   foreground: "hsl(var(--primary-foreground))",
-        // },
-        // secondary: {
-        //   DEFAULT: "hsl(var(--secondary))",
-        //   foreground: "hsl(var(--secondary-foreground))",
-        // },
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
@@ -79,25 +74,5 @@ export default {
     },
   },
 
-  plugins: [
-    require("@tailwindcss/typography"),
-    require("tailwindcss-animate"),
-    nextui({
-      // addCommonColors: false,
-      themes: {
-        light: {
-          colors: {
-            // background: "#ff0000",
-          },
-        },
-        dark: {
-          colors: {
-            // background: "background",
-            // background: "dark-bg", // Updated background color in HEX
-            // foreground: "dark-fg", // Updated foreground color in HEX
-          },
-        },
-      },
-    }),
-  ],
+  plugins: [require("@tailwindcss/typography"), require("tailwindcss-animate")],
 };
