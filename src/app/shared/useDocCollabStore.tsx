@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { getTrysteroDocRoom } from "./store/trystero-doc-room";
 import { getYdoc } from "./store/yjs-docs";
 import { useDocParams } from "../blocknote/Editor";
+import { getDocRoomConfig } from "./store/doc-room-config";
 
 export function useDocCollabStore() {
   const { docId } = useDocParams();
@@ -16,5 +17,6 @@ export function useDocCollabStore() {
   const roomId = searchParams.get("roomId") ?? undefined;
 
   const $room = roomId ? getTrysteroDocRoom(docId!, roomId) : undefined;
-  return { ydoc, docId, roomId, $room };
+  const $roomConfig = roomId ? getDocRoomConfig(docId!, roomId) : undefined;
+  return { ydoc, docId, roomId, $room, $roomConfig };
 }

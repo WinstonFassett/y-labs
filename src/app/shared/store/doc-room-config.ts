@@ -1,5 +1,6 @@
 import { mapTemplate } from "@/lib/nanostores-utils/mapTemplate";
 import { map, type MapStore } from "nanostores";
+import { z } from "zod";
 
 export interface DocRoomConfigFields {
   enabled: boolean;
@@ -23,6 +24,17 @@ export const roomConfigsByDocId = map(
 
 export const latestDocRoom = map({} as Record<string, string>);
 
+export const RoomConfigSchema = z.object({
+  // username: z.string().min(2).max(50),
+  id: z.string(),
+  docId: z.string(),
+  roomId: z.string(),
+  enabled: z.boolean(),
+  encrypt: z.boolean(),
+  password: z.string().optional(),
+  accessLevel: z.enum(["view", "edit"]),
+});
+
 const docRoomConfigsT = mapTemplate(
   (
     id: string,
@@ -41,7 +53,15 @@ const docRoomConfigsT = mapTemplate(
 );
 export function getDocRoomConfig(docId: string, roomId: string) {
   const docRoomId = getDocRoomId(docId, roomId);
-  const $model = docRoomConfigsT(docRoomId, docId, roomId);
+
+  const $model = Object.assign(docRoomConfigsT(docRoomId, docId, roomId), {
+    startSharing() {
+      $model.setKey("enabled", true);
+    },
+    stopSharing() {
+      $model.setKey("enabled", false);
+    },
+  });
   return $model;
 }
 

@@ -44,6 +44,9 @@ importers:
       '@codemirror/view':
         specifier: ^6.25.0
         version: 6.25.0
+      '@hookform/resolvers':
+        specifier: ^3.9.1
+        version: 3.9.1(react-hook-form@7.50.1(react@18.2.0))
       '@nanostores/react':
         specifier: ^0.7.2
         version: 0.7.2(nanostores@0.10.0)(react@18.2.0)
@@ -127,7 +130,7 @@ importers:
         version: 18.2.19
       ai:
         specifier: ^3.2.22
-        version: 3.2.22(openai@4.52.7(encoding@0.1.13))(react@18.2.0)(svelte@4.2.12)(vue@3.4.31(typescript@5.3.3))(zod@3.22.4)
+        version: 3.2.22(openai@4.52.7(encoding@0.1.13))(react@18.2.0)(svelte@4.2.12)(vue@3.4.31(typescript@5.3.3))(zod@3.23.8)
       astro:
         specifier: ^4.4.2
         version: 4.4.2(@types/node@20.11.24)(sass@1.72.0)(terser@5.29.1)(typescript@5.3.3)
@@ -266,6 +269,9 @@ importers:
       yjs:
         specifier: ^13.6.12
         version: 13.6.12
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
     devDependencies:
       '@tinacms/cli':
         specifier: ^1.5.40
@@ -1872,6 +1878,11 @@ packages:
     resolution: {integrity: sha512-JJCXydOFWMDpCP4q13iEplA503MQO3xLoZiKum+955ZCtHINWnx26CUxVxxFQu/uLb4LW3ge15ZpzIkXKkJ8oQ==}
     peerDependencies:
       react: '>= 16'
+
+  '@hookform/resolvers@3.9.1':
+    resolution: {integrity: sha512-ud2HqmGBM0P0IABqoskKWI6PEf6ZDDBZkFqe2Vnl+mTHCEHzr3ISjjZyCwTjC/qpL25JC9aIDkloQejvMeq0ug==}
+    peerDependencies:
+      react-hook-form: ^7.0.0
 
   '@iarna/toml@2.2.5':
     resolution: {integrity: sha512-trnsAYxU3xnS1gPHPyU961coFyLkh4gAD/0zQ5mymY4yOZ+CYvsPqUbOFSw0aDM4y0tV7tiFxL/1XfXPNC6IPg==}
@@ -10709,8 +10720,8 @@ packages:
     peerDependencies:
       zod: ^3.22.4
 
-  zod@3.22.4:
-    resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
+  zod@3.23.8:
+    resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
 
   zustand@3.7.2:
     resolution: {integrity: sha512-PIJDIZKtokhof+9+60cpockVOq05sJzHCriyvaLBmEJixseQ1a5Kdov6fWZfWOu5SK9c+FhH1jU0tntLxRJYMA==}
@@ -10761,23 +10772,23 @@ snapshots:
       merge-options: 3.0.4
       xml2js: 0.6.2
 
-  '@ai-sdk/provider-utils@0.0.14(zod@3.22.4)':
+  '@ai-sdk/provider-utils@0.0.14(zod@3.23.8)':
     dependencies:
       '@ai-sdk/provider': 0.0.10
       eventsource-parser: 1.1.2
       nanoid: 3.3.6
       secure-json-parse: 2.7.0
     optionalDependencies:
-      zod: 3.22.4
+      zod: 3.23.8
 
-  '@ai-sdk/provider-utils@1.0.2(zod@3.22.4)':
+  '@ai-sdk/provider-utils@1.0.2(zod@3.23.8)':
     dependencies:
       '@ai-sdk/provider': 0.0.12
       eventsource-parser: 1.1.2
       nanoid: 3.3.6
       secure-json-parse: 2.7.0
     optionalDependencies:
-      zod: 3.22.4
+      zod: 3.23.8
 
   '@ai-sdk/provider@0.0.10':
     dependencies:
@@ -10787,42 +10798,42 @@ snapshots:
     dependencies:
       json-schema: 0.4.0
 
-  '@ai-sdk/react@0.0.20(react@18.2.0)(zod@3.22.4)':
+  '@ai-sdk/react@0.0.20(react@18.2.0)(zod@3.23.8)':
     dependencies:
-      '@ai-sdk/provider-utils': 1.0.2(zod@3.22.4)
-      '@ai-sdk/ui-utils': 0.0.12(zod@3.22.4)
+      '@ai-sdk/provider-utils': 1.0.2(zod@3.23.8)
+      '@ai-sdk/ui-utils': 0.0.12(zod@3.23.8)
       swr: 2.2.0(react@18.2.0)
     optionalDependencies:
       react: 18.2.0
-      zod: 3.22.4
+      zod: 3.23.8
 
-  '@ai-sdk/solid@0.0.14(zod@3.22.4)':
+  '@ai-sdk/solid@0.0.14(zod@3.23.8)':
     dependencies:
-      '@ai-sdk/ui-utils': 0.0.12(zod@3.22.4)
+      '@ai-sdk/ui-utils': 0.0.12(zod@3.23.8)
     transitivePeerDependencies:
       - zod
 
-  '@ai-sdk/svelte@0.0.15(svelte@4.2.12)(zod@3.22.4)':
+  '@ai-sdk/svelte@0.0.15(svelte@4.2.12)(zod@3.23.8)':
     dependencies:
-      '@ai-sdk/provider-utils': 1.0.2(zod@3.22.4)
-      '@ai-sdk/ui-utils': 0.0.12(zod@3.22.4)
+      '@ai-sdk/provider-utils': 1.0.2(zod@3.23.8)
+      '@ai-sdk/ui-utils': 0.0.12(zod@3.23.8)
       sswr: 2.1.0(svelte@4.2.12)
     optionalDependencies:
       svelte: 4.2.12
     transitivePeerDependencies:
       - zod
 
-  '@ai-sdk/ui-utils@0.0.12(zod@3.22.4)':
+  '@ai-sdk/ui-utils@0.0.12(zod@3.23.8)':
     dependencies:
-      '@ai-sdk/provider-utils': 1.0.2(zod@3.22.4)
+      '@ai-sdk/provider-utils': 1.0.2(zod@3.23.8)
       secure-json-parse: 2.7.0
     optionalDependencies:
-      zod: 3.22.4
+      zod: 3.23.8
 
-  '@ai-sdk/vue@0.0.15(vue@3.4.31(typescript@5.3.3))(zod@3.22.4)':
+  '@ai-sdk/vue@0.0.15(vue@3.4.31(typescript@5.3.3))(zod@3.23.8)':
     dependencies:
-      '@ai-sdk/provider-utils': 0.0.14(zod@3.22.4)
-      '@ai-sdk/ui-utils': 0.0.12(zod@3.22.4)
+      '@ai-sdk/provider-utils': 0.0.14(zod@3.23.8)
+      '@ai-sdk/ui-utils': 0.0.12(zod@3.23.8)
       swrv: 1.0.4(vue@3.4.31(typescript@5.3.3))
     optionalDependencies:
       vue: 3.4.31(typescript@5.3.3)
@@ -12841,6 +12852,10 @@ snapshots:
   '@heroicons/react@1.0.6(react@18.2.0)':
     dependencies:
       react: 18.2.0
+
+  '@hookform/resolvers@3.9.1(react-hook-form@7.50.1(react@18.2.0))':
+    dependencies:
+      react-hook-form: 7.50.1(react@18.2.0)
 
   '@iarna/toml@2.2.5': {}
 
@@ -16870,7 +16885,7 @@ snapshots:
       tailwindcss: 3.4.1
       tinacms: 1.5.29(@babel/core@7.23.6)(@babel/template@7.22.15)(@types/react-dom@18.2.19)(@types/react@18.2.58)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       typescript: 4.9.5
-      zod: 3.22.4
+      zod: 3.23.8
     transitivePeerDependencies:
       - '@babel/core'
       - '@babel/template'
@@ -16962,7 +16977,7 @@ snapshots:
       vite: 4.5.2(@types/node@20.11.24)(sass@1.72.0)(terser@5.29.1)
       yarn: 1.22.21
       yup: 0.32.11
-      zod: 3.22.4
+      zod: 3.23.8
     transitivePeerDependencies:
       - '@babel/core'
       - '@babel/template'
@@ -17154,7 +17169,7 @@ snapshots:
       react: 17.0.2
       url-pattern: 1.0.3
       yup: 0.32.11
-      zod: 3.22.4
+      zod: 3.23.8
 
   '@tinacms/schema-tools@1.4.15(react@18.2.0)(yup@0.32.11)':
     dependencies:
@@ -17162,7 +17177,7 @@ snapshots:
       react: 18.2.0
       url-pattern: 1.0.3
       yup: 0.32.11
-      zod: 3.22.4
+      zod: 3.23.8
 
   '@tinacms/search@1.0.18(encoding@0.1.13)(react@17.0.2)(yup@0.32.11)':
     dependencies:
@@ -20307,15 +20322,15 @@ snapshots:
     dependencies:
       humanize-ms: 1.2.1
 
-  ai@3.2.22(openai@4.52.7(encoding@0.1.13))(react@18.2.0)(svelte@4.2.12)(vue@3.4.31(typescript@5.3.3))(zod@3.22.4):
+  ai@3.2.22(openai@4.52.7(encoding@0.1.13))(react@18.2.0)(svelte@4.2.12)(vue@3.4.31(typescript@5.3.3))(zod@3.23.8):
     dependencies:
       '@ai-sdk/provider': 0.0.12
-      '@ai-sdk/provider-utils': 1.0.2(zod@3.22.4)
-      '@ai-sdk/react': 0.0.20(react@18.2.0)(zod@3.22.4)
-      '@ai-sdk/solid': 0.0.14(zod@3.22.4)
-      '@ai-sdk/svelte': 0.0.15(svelte@4.2.12)(zod@3.22.4)
-      '@ai-sdk/ui-utils': 0.0.12(zod@3.22.4)
-      '@ai-sdk/vue': 0.0.15(vue@3.4.31(typescript@5.3.3))(zod@3.22.4)
+      '@ai-sdk/provider-utils': 1.0.2(zod@3.23.8)
+      '@ai-sdk/react': 0.0.20(react@18.2.0)(zod@3.23.8)
+      '@ai-sdk/solid': 0.0.14(zod@3.23.8)
+      '@ai-sdk/svelte': 0.0.15(svelte@4.2.12)(zod@3.23.8)
+      '@ai-sdk/ui-utils': 0.0.12(zod@3.23.8)
+      '@ai-sdk/vue': 0.0.15(vue@3.4.31(typescript@5.3.3))(zod@3.23.8)
       '@opentelemetry/api': 1.9.0
       eventsource-parser: 1.1.2
       json-schema: 0.4.0
@@ -20323,12 +20338,12 @@ snapshots:
       nanoid: 3.3.6
       secure-json-parse: 2.7.0
       sswr: 2.1.0(svelte@4.2.12)
-      zod-to-json-schema: 3.22.5(zod@3.22.4)
+      zod-to-json-schema: 3.22.5(zod@3.23.8)
     optionalDependencies:
       openai: 4.52.7(encoding@0.1.13)
       react: 18.2.0
       svelte: 4.2.12
-      zod: 3.22.4
+      zod: 3.23.8
     transitivePeerDependencies:
       - solid-js
       - vue
@@ -20504,7 +20519,7 @@ snapshots:
       vitefu: 0.2.5(vite@5.1.4(@types/node@20.11.24)(sass@1.72.0)(terser@5.29.1))
       which-pm: 2.1.1
       yargs-parser: 21.1.1
-      zod: 3.22.4
+      zod: 3.23.8
     optionalDependencies:
       sharp: 0.32.6
     transitivePeerDependencies:
@@ -26538,7 +26553,7 @@ snapshots:
       slate-react: 0.97.2(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(slate@0.94.1)
       webfontloader: 1.6.28
       yup: 0.32.11
-      zod: 3.22.4
+      zod: 3.23.8
     transitivePeerDependencies:
       - '@babel/core'
       - '@babel/template'
@@ -26612,7 +26627,7 @@ snapshots:
       slate-react: 0.97.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(slate@0.94.1)
       webfontloader: 1.6.28
       yup: 0.32.11
-      zod: 3.22.4
+      zod: 3.23.8
     transitivePeerDependencies:
       - '@babel/core'
       - '@babel/template'
@@ -27669,11 +27684,11 @@ snapshots:
       property-expr: 2.0.6
       toposort: 2.0.2
 
-  zod-to-json-schema@3.22.5(zod@3.22.4):
+  zod-to-json-schema@3.22.5(zod@3.23.8):
     dependencies:
-      zod: 3.22.4
+      zod: 3.23.8
 
-  zod@3.22.4: {}
+  zod@3.23.8: {}
 
   zustand@3.7.2(react@17.0.2):
     optionalDependencies:

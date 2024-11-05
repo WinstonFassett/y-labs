@@ -31,13 +31,50 @@ import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Copy, Share2, Share2Icon, StopCircle } from "lucide-react";
 import { useState } from "react";
+import { useDocCollabStore } from "./useDocCollabStore";
+import {
+  type DocRoomConfigFields,
+  RoomConfigSchema,
+} from "./store/doc-room-config";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+type ShareController = {
+  store: ReturnType<typeof useDocCollabStore>;
+  startSharing: () => void;
+  stopSharing: () => void;
+  updateConfig: (config: Partial<DocRoomConfigFields>) => void;
+};
+
+const formSchema = z.object({
+  username: z.string().min(2, {
+    message: "Username must be at least 2 characters.",
+  }),
+});
 
 export function ShareDialog() {
   const [isOpen, setIsOpen] = useState(true);
-  const [isSharing, setIsSharing] = useState(true);
-  const open = () => {};
+  // const [isSharing, setIsSharing] = useState(true);
+  const { docId, roomId, $room, ydoc, $roomConfig } = useDocCollabStore();
+  console.log({ docId, roomId, $room, ydoc });
+  const isSharing = $roomConfig?.get().enabled ?? false;
   const actionLabel = isSharing ? "Sharing" : "Share";
 
+  const form = useForm<z.infer<typeof RoomConfigSchema>>({
+    resolver: zodResolver(RoomConfigSchema),
+    defaultValues: {
+      docId,
+      roomId,
+      enabled: false,
+      encrypt: false,
+      password: "",
+      accessLevel: "view",
+    },
+  });
+  const onSubmit = form.handleSubmit((data) => {});
+  const open = () => {};
+  const setIsSharing = () => {};
   return (
     <Dialog open={isOpen}>
       <DialogTrigger>
@@ -184,12 +221,16 @@ function SharingActions({
   isSharing,
   setIsSharing,
   handleCopyLink,
+  submit,
 }: {
   isSharing: boolean;
   setIsSharing: (v: boolean) => void;
   handleCopyLink: () => void;
+  submit: () => void;
 }) {
   const [linkCopied, setLinkCopied] = useState(false);
+  const $roomConfig = useDocCollabStore().$roomConfig;
+
   return (
     <>
       <AnimatePresence mode="wait">
@@ -246,7 +287,10 @@ function SharingActions({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <Button onClick={() => setIsSharing(false)} variant="destructive">
+            <Button
+              onClick={() => $roomConfig!.stopSharing()}
+              variant="destructive"
+            >
               <StopCircle className="mr-2 h-4 w-4" />
               Stop Sharing
             </Button>
