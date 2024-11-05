@@ -35,10 +35,19 @@ import { useDocCollabStore } from "./useDocCollabStore";
 import {
   type DocRoomConfigFields,
   RoomConfigSchema,
+  latestDocRoom,
 } from "./store/doc-room-config";
-import { useForm } from "react-hook-form";
+import { useForm, useFormContext } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
+import { generateId } from "./generateId";
 
 type ShareController = {
   store: ReturnType<typeof useDocCollabStore>;
@@ -57,6 +66,7 @@ export function ShareDialog() {
   const [isOpen, setIsOpen] = useState(true);
   // const [isSharing, setIsSharing] = useState(true);
   const { docId, roomId, $room, ydoc, $roomConfig } = useDocCollabStore();
+  // const initialRoomId = roomId ?? latestDocRoom.get()[docId!] ?? generateId();
   console.log({ docId, roomId, $room, ydoc });
   const isSharing = $roomConfig?.get().enabled ?? false;
   const actionLabel = isSharing ? "Sharing" : "Share";
@@ -65,7 +75,7 @@ export function ShareDialog() {
     resolver: zodResolver(RoomConfigSchema),
     defaultValues: {
       docId,
-      roomId,
+      roomId: roomId ?? generateId(),
       enabled: false,
       encrypt: false,
       password: "",
@@ -73,8 +83,19 @@ export function ShareDialog() {
     },
   });
   const onSubmit = form.handleSubmit((data) => {});
-  const open = () => {};
+  const open = () => {
+    setIsOpen(true);
+  };
+  const close = () => {
+    setIsOpen(false);
+  };
   const setIsSharing = () => {};
+  // const controller: ShareController = {
+  //   store: { docId, roomId, $room, ydoc, $roomConfig },
+  //   startSharing: () => {},
+  //   stopSharing: () => {},
+  //   updateConfig: (config) => {},
+  // };
   return (
     <Dialog open={isOpen}>
       <DialogTrigger>
@@ -90,33 +111,62 @@ export function ShareDialog() {
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Share</DialogTitle>
-          <DialogDescription>
-            Share with people to collaborate in realtime
-          </DialogDescription>
-        </DialogHeader>
-        <div className="py-4 gap-6 space-y-4">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="sharing-toggle">
-              Sharing is {isSharing ? "on" : "off"}
-            </Label>
-            <Switch
-              id="sharing-toggle"
-              checked={isSharing}
-              onCheckedChange={setIsSharing}
-            />
-          </div>
-        </div>
-        <SharingConfiguration isSharing={isSharing} />
+        <Form {...form}>
+          <form onSubmit={onSubmit}>
+            <DialogHeader>
+              <DialogTitle>Share</DialogTitle>
+              <DialogDescription>
+                Share with people to collaborate in realtime
+              </DialogDescription>
+            </DialogHeader>
+            <div className="py-4 gap-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="sharing-toggle">
+                  Sharing is {isSharing ? "on" : "off"}
+                </Label>
+                <Switch
+                  id="sharing-toggle"
+                  checked={isSharing}
+                  onCheckedChange={setIsSharing}
+                />
+              </div>
+            </div>
 
-        <DialogFooter>
-          <SharingActions />
-        </DialogFooter>
+            {/* <FormField
+              control={form.control}
+              name="roomId"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel>Room!!</FormLabel>
+                    <FormControl>
+                      <Input
+                        // id="room"
+                        // value={room}
+                        // onChange={(e) => setRoom(e.target.value)}
+                        {...field}
+                        readOnly={isSharing}
+                      />
+                      <CopyButton value={field.value} label="room" />
+                    </FormControl>
+                  </FormItem>
+                );
+              }}
+            /> */}
+            <SharingConfiguration isSharing={isSharing} />
+            <DialogFooter>
+              <SharingActions isSharing={isSharing} />
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );
 }
+
+type SharingProps = {
+  isSharing: boolean;
+};
 
 function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
   const [room, setRoom] = useState("1234");
@@ -124,7 +174,7 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
   const [password, setPassword] = useState("");
   const [includePasswordInLink, setIncludePasswordInLink] = useState(false);
   const [accessLevel, setAccessLevel] = useState("edit");
-
+  const form = useFormContext<z.infer<typeof RoomConfigSchema>>();
   return (
     <TooltipProvider>
       <Tooltip>
@@ -135,18 +185,26 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
               !isSharing && "bg-muted/50",
             )}
           >
-            <div className="space-y-2">
-              <Label htmlFor="room">Room</Label>
-              <div className="flex space-x-2">
-                <Input
-                  id="room"
-                  value={room}
-                  onChange={(e) => setRoom(e.target.value)}
-                  readOnly={isSharing}
-                />
-                <CopyButton value={room} label="room" />
-              </div>
-            </div>
+            <FormField
+              control={form.control}
+              name="roomId"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel>Room!!</FormLabel>
+                    <div className="flex items-center gap-2">
+                      <FormControl>
+                        <Input {...field} readOnly={isSharing} />
+                      </FormControl>
+                      <CopyButton value={field.value} label="room" />
+                    </div>
+                    {/*
+                     */}
+                  </FormItem>
+                );
+              }}
+            />
+
             <div className="flex items-center justify-between">
               <Label htmlFor="access-level">Anyone with the link can</Label>
               <Select
@@ -189,7 +247,7 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
                       readOnly={isSharing}
                     />
                   </div>
-                  <div className="flex items-center space-x-2">
+                  {/* <div className="flex items-center space-x-2">
                     <Checkbox
                       id="include-password"
                       checked={includePasswordInLink}
@@ -201,7 +259,7 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
                     <Label htmlFor="include-password">
                       Include password in sharing link
                     </Label>
-                  </div>
+                  </div> */}
                 </motion.div>
               )}
             </AnimatePresence>
@@ -219,18 +277,16 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
 
 function SharingActions({
   isSharing,
-  setIsSharing,
-  handleCopyLink,
-  submit,
+  // setIsSharing,
+  // handleCopyLink,
+  // submit,
 }: {
   isSharing: boolean;
-  setIsSharing: (v: boolean) => void;
-  handleCopyLink: () => void;
-  submit: () => void;
 }) {
+  const handleCopyLink = () => {};
   const [linkCopied, setLinkCopied] = useState(false);
   const $roomConfig = useDocCollabStore().$roomConfig;
-
+  const form = useFormContext<typeof RoomConfigSchema>();
   return (
     <>
       <AnimatePresence mode="wait">
@@ -303,7 +359,7 @@ function SharingActions({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <Button onClick={() => setIsSharing(true)}>
+            <Button type="submit">
               <Share2 className="mr-2 h-4 w-4" />
               Share Now
             </Button>
