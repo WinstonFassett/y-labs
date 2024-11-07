@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { CopyButton } from "@/components/ui/copy-button";
 import {
   Dialog,
@@ -10,6 +9,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PasswordInput } from "@/components/ui/password-input";
@@ -28,82 +34,97 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Copy, Share2, Share2Icon, StopCircle } from "lucide-react";
-import { useState } from "react";
-import { useDocCollabStore } from "./useDocCollabStore";
-import {
-  type DocRoomConfigFields,
-  RoomConfigSchema,
-  latestDocRoom,
-} from "./store/doc-room-config";
+import { useRef, useState } from "react";
 import { useForm, useFormContext } from "react-hook-form";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form";
 import { generateId } from "./generateId";
+import {
+  RoomConfigSchema,
+  getDocRoomConfig,
+  roomConfigsByDocId,
+} from "./store/doc-room-config";
+import { useDocCollabStore } from "./useDocCollabStore";
+import { useStoreIfPresent } from "./useStoreIfPresent";
 
-type ShareController = {
-  store: ReturnType<typeof useDocCollabStore>;
-  startSharing: () => void;
-  stopSharing: () => void;
-  updateConfig: (config: Partial<DocRoomConfigFields>) => void;
-};
-
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-});
+// function useRoomStuffIfRoomId() {
+//   const { docId, roomId, $room, ydoc, $roomConfig } = useDocCollabStore();
+//   const isSharing = $roomConfig?.get().enabled ?? false;
+//   const room = useStore($room ?? (atom() as typeof $room));
+//   const roomConfig = useStore($roomConfig ?? (atom() as typeof $roomConfig));
+//   return {
+//     docId,
+//     roomId,
+//     ydoc,
+//     isSharing,
+//     $room,
+//     room: $room ? room : undefined,
+//     $roomConfig,
+//     roomConfig: $roomConfig ? roomConfig : undefined,
+//   };
+// }
 
 export function ShareDialog() {
   const [isOpen, setIsOpen] = useState(true);
-  // const [isSharing, setIsSharing] = useState(true);
   const { docId, roomId, $room, ydoc, $roomConfig } = useDocCollabStore();
-  // const initialRoomId = roomId ?? latestDocRoom.get()[docId!] ?? generateId();
-  console.log({ docId, roomId, $room, ydoc });
+  // const latestRoomConfig = useStore(roomConfigsByDocId)[docId];
+  // console.log("latestRoomConfig", latestRoomConfig?.get());
+  const room = useStoreIfPresent($room);
+  const roomConfig = useStoreIfPresent($roomConfig);
+  console.log({ $room, $roomConfig });
+  // const isEncrypted = roomConfig?.encrypt ?? false;
   const isSharing = $roomConfig?.get().enabled ?? false;
+  // const {
+  //   docId,
+  //   roomId,
+  //   ydoc,
+  //   isSharing,
+  //   $room,
+  //   $roomConfig,
+  //   room,
+  //   roomConfig,
+  // } = useRoomStuffIfRoomId();
   const actionLabel = isSharing ? "Sharing" : "Share";
 
+  // const configAtRender = useStore
   const form = useForm<z.infer<typeof RoomConfigSchema>>({
     resolver: zodResolver(RoomConfigSchema),
-    defaultValues: {
+    defaultValues: async () => ({
       docId,
       roomId: roomId ?? generateId(),
       enabled: false,
       encrypt: false,
       password: "",
       accessLevel: "view",
-    },
+    }),
   });
-  const onSubmit = form.handleSubmit((data) => {});
-  const open = () => {
-    setIsOpen(true);
-  };
-  const close = () => {
-    setIsOpen(false);
-  };
-  const setIsSharing = () => {};
-  // const controller: ShareController = {
-  //   store: { docId, roomId, $room, ydoc, $roomConfig },
-  //   startSharing: () => {},
-  //   stopSharing: () => {},
-  //   updateConfig: (config) => {},
-  // };
+  const onSubmit = form.handleSubmit(
+    (data) => {
+      console.log("submitted", { data });
+      const { roomId, docId } = data;
+      const $roomConfig = getDocRoomConfig(docId, roomId);
+      $roomConfig?.set({
+        ...$roomConfig.get(),
+        enabled: true,
+        ...data,
+      });
+      $roomConfig?.startSharing();
+    },
+    (errors) => {
+      console.log({ errors });
+    },
+  );
+  const formRef = useRef<HTMLFormElement>(null);
+  const switchRef = useRef<any>(null);
   return (
     <Dialog open={isOpen}>
       <DialogTrigger>
         <Button
-          variant={isSharing ? "solid" : "ghost"}
+          // variant={isSharing ? "solid" : "ghost"}
           color={isSharing ? "warning" : "primary"}
-          onClick={open}
-          isIconOnly={true}
+          // isIconOnly={true}
           className="w-auto px-4"
         >
           <div className="sr-only sm:not-sr-only !pr-1">{actionLabel}</div>
@@ -112,13 +133,14 @@ export function ShareDialog() {
       </DialogTrigger>
       <DialogContent>
         <Form {...form}>
-          <form onSubmit={onSubmit}>
+          <form ref={formRef} onSubmit={onSubmit}>
             <DialogHeader>
               <DialogTitle>Share</DialogTitle>
               <DialogDescription>
                 Share with people to collaborate in realtime
               </DialogDescription>
             </DialogHeader>
+
             <div className="py-4 gap-6 space-y-4">
               <div className="flex items-center justify-between">
                 <Label htmlFor="sharing-toggle">
@@ -126,35 +148,30 @@ export function ShareDialog() {
                 </Label>
                 <Switch
                   id="sharing-toggle"
+                  ref={switchRef}
                   checked={isSharing}
-                  onCheckedChange={setIsSharing}
+                  onCheckedChange={(checked) => {
+                    if (checked) {
+                      formRef.current?.requestSubmit();
+                      // form.handleSubmit(
+                      //   (data) => {
+                      //     console.log("started sharing", { data });
+                      //   },
+                      //   (errors) => {
+                      //     console.log({ errors });
+                      //   },
+                      // );
+                    } else {
+                      $roomConfig?.stopSharing();
+                    }
+                  }}
                 />
               </div>
             </div>
 
-            {/* <FormField
-              control={form.control}
-              name="roomId"
-              render={({ field }) => {
-                return (
-                  <FormItem>
-                    <FormLabel>Room!!</FormLabel>
-                    <FormControl>
-                      <Input
-                        // id="room"
-                        // value={room}
-                        // onChange={(e) => setRoom(e.target.value)}
-                        {...field}
-                        readOnly={isSharing}
-                      />
-                      <CopyButton value={field.value} label="room" />
-                    </FormControl>
-                  </FormItem>
-                );
-              }}
-            /> */}
             <SharingConfiguration isSharing={isSharing} />
-            <DialogFooter>
+
+            <DialogFooter className="pt-4">
               <SharingActions isSharing={isSharing} />
             </DialogFooter>
           </form>
@@ -169,12 +186,8 @@ type SharingProps = {
 };
 
 function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
-  const [room, setRoom] = useState("1234");
-  const [isEncrypted, setIsEncrypted] = useState(false);
-  const [password, setPassword] = useState("");
-  const [includePasswordInLink, setIncludePasswordInLink] = useState(false);
-  const [accessLevel, setAccessLevel] = useState("edit");
   const form = useFormContext<z.infer<typeof RoomConfigSchema>>();
+  const isEncrypted = form.watch("encrypt");
   return (
     <TooltipProvider>
       <Tooltip>
@@ -204,8 +217,32 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
                 );
               }}
             />
-
-            <div className="flex items-center justify-between">
+            <FormField
+              control={form.control}
+              name="accessLevel"
+              defaultValue="view"
+              disabled={isSharing}
+              render={({ field }) => {
+                return (
+                  <FormItem className="flex items-center justify-between">
+                    <FormLabel>
+                      Anyone with the link can{" "}
+                      {form.watch("accessLevel") === "view" ? "view" : "edit"}
+                    </FormLabel>
+                    <Select {...field} disabled={isSharing}>
+                      <SelectTrigger className="w-[100px]">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="view">View</SelectItem>
+                        <SelectItem value="edit">Edit</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                );
+              }}
+            />
+            {/* <div className="flex items-center justify-between">
               <Label htmlFor="access-level">Anyone with the link can</Label>
               <Select
                 value={accessLevel}
@@ -220,8 +257,8 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
                   <SelectItem value="edit">Edit</SelectItem>
                 </SelectContent>
               </Select>
-            </div>
-            <div className="flex items-center justify-between">
+            </div> */}
+            {/* <div className="flex items-center justify-between">
               <Label htmlFor="encrypt">Encrypt communication</Label>
               <Switch
                 id="encrypt"
@@ -229,7 +266,28 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
                 onCheckedChange={setIsEncrypted}
                 disabled={isSharing}
               />
-            </div>
+             
+            </div> */}
+            <FormField
+              control={form.control}
+              name="encrypt"
+              render={({ field }) => {
+                const { value, onChange, ...rest } = field;
+
+                return (
+                  <FormItem className="flex items-center justify-between">
+                    <FormLabel>Encrypt communication</FormLabel>
+                    <Switch
+                      {...rest}
+                      disabled={isSharing}
+                      checked={value}
+                      onCheckedChange={onChange}
+                    />
+                  </FormItem>
+                );
+              }}
+            />
+
             <AnimatePresence>
               {isEncrypted && (
                 <motion.div
@@ -239,14 +297,20 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
                   transition={{ duration: 0.3 }}
                   className="space-y-4 overflow-hidden"
                 >
-                  <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
-                    <PasswordInput
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      readOnly={isSharing}
-                    />
-                  </div>
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => {
+                      return (
+                        <FormItem>
+                          <FormLabel>Password</FormLabel>
+                          <FormControl>
+                            <PasswordInput {...field} readOnly={isSharing} />
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
                   {/* <div className="flex items-center space-x-2">
                     <Checkbox
                       id="include-password"
@@ -275,18 +339,38 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
   );
 }
 
-function SharingActions({
-  isSharing,
-  // setIsSharing,
-  // handleCopyLink,
-  // submit,
-}: {
-  isSharing: boolean;
-}) {
-  const handleCopyLink = () => {};
+function SharingActions({ isSharing }: { isSharing: boolean }) {
   const [linkCopied, setLinkCopied] = useState(false);
-  const $roomConfig = useDocCollabStore().$roomConfig;
-  const form = useFormContext<typeof RoomConfigSchema>();
+  const { $roomConfig, roomId, $room } = useDocCollabStore();
+  // const roomConfig = useStoreIfPresent($roomConfig);
+
+  const form = useFormContext<z.infer<typeof RoomConfigSchema>>();
+  const handleCopyLink = async () => {
+    const baseUrl = "https://example.com/share/";
+    const data = form.getValues();
+    console.log("copy data", data);
+    // const {
+    //   roomId,
+    //   password,
+    //   includePasswordInLink,
+    // } = data;
+    let shareUrl = `${baseUrl}${roomId}`;
+    const {
+      encrypt: isEncrypted,
+      password,
+      // includePassword
+    } = form.getValues();
+    if (
+      isEncrypted
+      //  && includePasswordInLink
+    ) {
+      shareUrl += `#pwd=${encodeURIComponent(password)}`;
+    }
+    await navigator.clipboard.writeText(shareUrl);
+    setLinkCopied(true);
+    setTimeout(() => setLinkCopied(false), 2000);
+  };
+
   return (
     <>
       <AnimatePresence mode="wait">
@@ -344,6 +428,7 @@ function SharingActions({
             transition={{ duration: 0.2 }}
           >
             <Button
+              type="button"
               onClick={() => $roomConfig!.stopSharing()}
               variant="destructive"
             >
