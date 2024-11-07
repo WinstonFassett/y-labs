@@ -20,19 +20,14 @@ export function useDocCollabStore() {
     throw new Error("No document id specified");
   }
   const $latestRoomConfig = useStore(roomConfigsByDocId)[docId];
-  console.log("$latestRoomConfig", $latestRoomConfig);
-  // const latestRoomConfig = useStoreIfPresent($latestRoomConfig);
-  const [searchParams, setSearchParams] = useSearchParams();
+  // const [searchParams, setSearchParams] = useSearchParams();
   // const roomId = searchParams.get("roomId") ?? undefined;
   const latestRoomConfig = useStoreIfPresent($latestRoomConfig);
   const roomId = latestRoomConfig?.roomId;
-  console.log({ roomId, latestRoomConfig });
-  // const roomId = latestRoomConfig?.get()?.roomId;
   const { $ydoc, $room, $roomConfig } = useMemo(() => {
     const $ydoc = getYdoc(docId!);
     const $room = roomId && getTrysteroDocRoom(docId!, roomId);
     const $roomConfig = roomId && getDocRoomConfig(docId!, roomId);
-    console.log("got stuff", { $ydoc, $room, $roomConfig });
     return { $ydoc, $room, $roomConfig };
   }, [docId, roomId, latestRoomConfig]);
   const ydoc = useStore($ydoc);
