@@ -3,6 +3,8 @@ import { map, type MapStore } from "nanostores";
 import { z } from "zod";
 
 export interface DocRoomConfigFields {
+  docId: string;
+  roomId: string;
   enabled: boolean;
   encrypt: boolean;
   password: string | undefined;
@@ -11,11 +13,13 @@ export interface DocRoomConfigFields {
 }
 
 const FieldDefaults: DocRoomConfigFields = {
-  enabled: true,
+  docId: null,
+  roomId: null,
+  enabled: false,
   encrypt: false,
   password: undefined,
   accessLevel: "view",
-  includePassword: true,
+  includePassword: false,
 };
 
 export const roomConfigsByDocId = map(
@@ -26,7 +30,7 @@ export const latestDocRoom = map({} as Record<string, string>);
 
 export const RoomConfigSchema = z.object({
   // username: z.string().min(2).max(50),
-  id: z.string(),
+  // id: z.string(),
   docId: z.string(),
   roomId: z.string(),
   enabled: z.boolean(),
@@ -40,10 +44,15 @@ const docRoomConfigsT = mapTemplate(
     id: string,
     docId: string,
     roomId: string,
-    // fields: DocRoomConfigFields = FieldDefaults,
-  ) => map(FieldDefaults),
+    fields: DocRoomConfigFields = FieldDefaults,
+  ) => {
+    const store = map(fields);
+    return Object.assign(store, {
+      docId,
+      roomId,
+    });
+  },
   (store, id, docId, roomId, fields = FieldDefaults) => {
-    store.set(FieldDefaults);
     roomConfigsByDocId.setKey(docId, store);
     latestDocRoom.setKey(docId, roomId);
     return () => {
