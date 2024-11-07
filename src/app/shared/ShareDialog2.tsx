@@ -41,54 +41,16 @@ import { useRef, useState } from "react";
 import { useForm, useFormContext } from "react-hook-form";
 import { z } from "zod";
 import { generateId } from "./generateId";
-import {
-  RoomConfigSchema,
-  getDocRoomConfig,
-  roomConfigsByDocId,
-} from "./store/doc-room-config";
+import { RoomConfigSchema, getDocRoomConfig } from "./store/doc-room-config";
 import { useDocCollabStore } from "./useDocCollabStore";
 import { useStoreIfPresent } from "./useStoreIfPresent";
 
-// function useRoomStuffIfRoomId() {
-//   const { docId, roomId, $room, ydoc, $roomConfig } = useDocCollabStore();
-//   const isSharing = $roomConfig?.get().enabled ?? false;
-//   const room = useStore($room ?? (atom() as typeof $room));
-//   const roomConfig = useStore($roomConfig ?? (atom() as typeof $roomConfig));
-//   return {
-//     docId,
-//     roomId,
-//     ydoc,
-//     isSharing,
-//     $room,
-//     room: $room ? room : undefined,
-//     $roomConfig,
-//     roomConfig: $roomConfig ? roomConfig : undefined,
-//   };
-// }
-
 export function ShareDialog() {
   const [isOpen, setIsOpen] = useState(true);
-  const { docId, roomId, $room, ydoc, $roomConfig } = useDocCollabStore();
-  // const latestRoomConfig = useStore(roomConfigsByDocId)[docId];
-  // console.log("latestRoomConfig", latestRoomConfig?.get());
-  const room = useStoreIfPresent($room);
-  const roomConfig = useStoreIfPresent($roomConfig);
-  console.log({ $room, $roomConfig });
-  // const isEncrypted = roomConfig?.encrypt ?? false;
+  const { docId, roomId, $roomConfig } = useDocCollabStore();
   const isSharing = $roomConfig?.get().enabled ?? false;
-  // const {
-  //   docId,
-  //   roomId,
-  //   ydoc,
-  //   isSharing,
-  //   $room,
-  //   $roomConfig,
-  //   room,
-  //   roomConfig,
-  // } = useRoomStuffIfRoomId();
   const actionLabel = isSharing ? "Sharing" : "Share";
 
-  // const configAtRender = useStore
   const form = useForm<z.infer<typeof RoomConfigSchema>>({
     resolver: zodResolver(RoomConfigSchema),
     defaultValues: async () => ({
@@ -102,7 +64,6 @@ export function ShareDialog() {
   });
   const onSubmit = form.handleSubmit(
     (data) => {
-      console.log("submitted", { data });
       const { roomId, docId } = data;
       const $roomConfig = getDocRoomConfig(docId, roomId);
       $roomConfig?.set({
@@ -119,7 +80,7 @@ export function ShareDialog() {
   const formRef = useRef<HTMLFormElement>(null);
   const switchRef = useRef<any>(null);
   return (
-    <Dialog open={isOpen}>
+    <Dialog open={isOpen} onOpenChange={(val) => setIsOpen(val)}>
       <DialogTrigger>
         <Button
           // variant={isSharing ? "solid" : "ghost"}
@@ -153,14 +114,6 @@ export function ShareDialog() {
                   onCheckedChange={(checked) => {
                     if (checked) {
                       formRef.current?.requestSubmit();
-                      // form.handleSubmit(
-                      //   (data) => {
-                      //     console.log("started sharing", { data });
-                      //   },
-                      //   (errors) => {
-                      //     console.log({ errors });
-                      //   },
-                      // );
                     } else {
                       $roomConfig?.stopSharing();
                     }
@@ -181,10 +134,6 @@ export function ShareDialog() {
   );
 }
 
-type SharingProps = {
-  isSharing: boolean;
-};
-
 function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
   const form = useFormContext<z.infer<typeof RoomConfigSchema>>();
   const isEncrypted = form.watch("encrypt");
@@ -204,15 +153,13 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
               render={({ field }) => {
                 return (
                   <FormItem>
-                    <FormLabel>Room!!</FormLabel>
+                    <FormLabel>Room</FormLabel>
                     <div className="flex items-center gap-2">
                       <FormControl>
                         <Input {...field} readOnly={isSharing} />
                       </FormControl>
                       <CopyButton value={field.value} label="room" />
                     </div>
-                    {/*
-                     */}
                   </FormItem>
                 );
               }}
@@ -242,32 +189,7 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
                 );
               }}
             />
-            {/* <div className="flex items-center justify-between">
-              <Label htmlFor="access-level">Anyone with the link can</Label>
-              <Select
-                value={accessLevel}
-                onValueChange={setAccessLevel}
-                disabled={isSharing}
-              >
-                <SelectTrigger id="access-level" className="w-[100px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="view">View</SelectItem>
-                  <SelectItem value="edit">Edit</SelectItem>
-                </SelectContent>
-              </Select>
-            </div> */}
-            {/* <div className="flex items-center justify-between">
-              <Label htmlFor="encrypt">Encrypt communication</Label>
-              <Switch
-                id="encrypt"
-                checked={isEncrypted}
-                onCheckedChange={setIsEncrypted}
-                disabled={isSharing}
-              />
-             
-            </div> */}
+
             <FormField
               control={form.control}
               name="encrypt"
@@ -311,19 +233,6 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
                       );
                     }}
                   />
-                  {/* <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="include-password"
-                      checked={includePasswordInLink}
-                      onCheckedChange={(checked) =>
-                        setIncludePasswordInLink(checked === true)
-                      }
-                      disabled={isSharing}
-                    />
-                    <Label htmlFor="include-password">
-                      Include password in sharing link
-                    </Label>
-                  </div> */}
                 </motion.div>
               )}
             </AnimatePresence>
@@ -341,19 +250,11 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
 
 function SharingActions({ isSharing }: { isSharing: boolean }) {
   const [linkCopied, setLinkCopied] = useState(false);
-  const { $roomConfig, roomId, $room } = useDocCollabStore();
-  // const roomConfig = useStoreIfPresent($roomConfig);
+  const { $roomConfig, roomId } = useDocCollabStore();
 
   const form = useFormContext<z.infer<typeof RoomConfigSchema>>();
   const handleCopyLink = async () => {
     const baseUrl = "https://example.com/share/";
-    const data = form.getValues();
-    console.log("copy data", data);
-    // const {
-    //   roomId,
-    //   password,
-    //   includePasswordInLink,
-    // } = data;
     let shareUrl = `${baseUrl}${roomId}`;
     const {
       encrypt: isEncrypted,
