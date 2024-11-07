@@ -12,9 +12,11 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -44,34 +46,38 @@ import { generateId } from "./generateId";
 import { RoomConfigSchema, getDocRoomConfig } from "./store/doc-room-config";
 import { useDocCollabStore } from "./useDocCollabStore";
 import { useStoreIfPresent } from "./useStoreIfPresent";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export function ShareDialog() {
   const [isOpen, setIsOpen] = useState(true);
-  const { docId, roomId, $roomConfig } = useDocCollabStore();
+  const { docId, roomId, $roomConfig, startSharing, stopSharing } =
+    useDocCollabStore();
   const isSharing = $roomConfig?.get().enabled ?? false;
   const actionLabel = isSharing ? "Sharing" : "Share";
-
+  const [searchParams] = useSearchParams();
+  const roomParameter = searchParams.get("roomId");
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof RoomConfigSchema>>({
     resolver: zodResolver(RoomConfigSchema),
     defaultValues: async () => ({
       docId,
-      roomId: roomId ?? generateId(),
+      roomId: roomParameter ?? generateId(),
       enabled: false,
       encrypt: false,
-      password: "",
+      password: $roomConfig?.get().password ?? generateId(),
       accessLevel: "view",
     }),
   });
   const onSubmit = form.handleSubmit(
     (data) => {
       const { roomId, docId } = data;
-      const $roomConfig = getDocRoomConfig(docId, roomId);
-      $roomConfig?.set({
-        ...$roomConfig.get(),
-        enabled: true,
+      startSharing({
+        ...$roomConfig?.get(),
         ...data,
       });
-      $roomConfig?.startSharing();
+      if (roomParameter !== roomId) {
+        navigate(`?roomId=${roomId}`);
+      }
     },
     (errors) => {
       console.log({ errors });
@@ -115,7 +121,7 @@ export function ShareDialog() {
                     if (checked) {
                       formRef.current?.requestSubmit();
                     } else {
-                      $roomConfig?.stopSharing();
+                      stopSharing();
                     }
                   }}
                 />
@@ -125,7 +131,7 @@ export function ShareDialog() {
             <SharingConfiguration isSharing={isSharing} />
 
             <DialogFooter className="pt-4">
-              <SharingActions isSharing={isSharing} />
+              <SharingActions isSharing={isSharing} stopSharing={stopSharing} />
             </DialogFooter>
           </form>
         </Form>
@@ -137,6 +143,7 @@ export function ShareDialog() {
 function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
   const form = useFormContext<z.infer<typeof RoomConfigSchema>>();
   const isEncrypted = form.watch("encrypt");
+  const { errors } = form.formState;
   return (
     <TooltipProvider>
       <Tooltip>
@@ -160,6 +167,8 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
                       </FormControl>
                       <CopyButton value={field.value} label="room" />
                     </div>
+                    <FormDescription />
+                    <FormMessage />
                   </FormItem>
                 );
               }}
@@ -248,7 +257,13 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
   );
 }
 
-function SharingActions({ isSharing }: { isSharing: boolean }) {
+function SharingActions({
+  isSharing,
+  stopSharing,
+}: {
+  isSharing: boolean;
+  stopSharing: () => void;
+}) {
   const [linkCopied, setLinkCopied] = useState(false);
   const { $roomConfig, roomId } = useDocCollabStore();
 
@@ -284,6 +299,7 @@ function SharingActions({ isSharing }: { isSharing: boolean }) {
             transition={{ duration: 0.2 }}
           >
             <Button
+              type="button"
               onClick={handleCopyLink}
               variant="outline"
               className="relative"
@@ -330,7 +346,7 @@ function SharingActions({ isSharing }: { isSharing: boolean }) {
           >
             <Button
               type="button"
-              onClick={() => $roomConfig!.stopSharing()}
+              onClick={() => stopSharing()}
               variant="destructive"
             >
               <StopCircle className="mr-2 h-4 w-4" />
