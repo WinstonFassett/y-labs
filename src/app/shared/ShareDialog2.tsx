@@ -61,7 +61,7 @@ export function ShareDialog() {
     resolver: zodResolver(RoomConfigSchema),
     defaultValues: async () => ({
       docId,
-      roomId: roomParameter ?? generateId(),
+      roomId: roomParameter || generateId(),
       enabled: false,
       encrypt: false,
       password: $roomConfig?.get().password ?? generateId(),
@@ -75,6 +75,7 @@ export function ShareDialog() {
         ...$roomConfig?.get(),
         ...data,
       });
+      handleCopyLink();
       if (roomParameter !== roomId) {
         navigate(`?roomId=${roomId}`);
       }
@@ -83,8 +84,30 @@ export function ShareDialog() {
       console.log({ errors });
     },
   );
+  const [linkCopied, setLinkCopied] = useState(false);
+  const handleCopyLink = async () => {
+    const {
+      encrypt: isEncrypted,
+      password,
+      roomId,
+      // includePassword
+    } = form.getValues();
+    const baseUrl = "https://example.com/share/";
+    let shareUrl = `${baseUrl}${roomId}`;
+    if (
+      isEncrypted
+      //  && includePasswordInLink
+    ) {
+      shareUrl += `#pwd=${encodeURIComponent(password)}`;
+    }
+    await navigator.clipboard.writeText(shareUrl);
+    setLinkCopied(true);
+    setTimeout(() => setLinkCopied(false), 2000);
+  };
+
   const formRef = useRef<HTMLFormElement>(null);
   const switchRef = useRef<any>(null);
+
   return (
     <Dialog open={isOpen} onOpenChange={(val) => setIsOpen(val)}>
       <DialogTrigger>
@@ -131,7 +154,12 @@ export function ShareDialog() {
             <SharingConfiguration isSharing={isSharing} />
 
             <DialogFooter className="pt-4">
-              <SharingActions isSharing={isSharing} stopSharing={stopSharing} />
+              <SharingActions
+                isSharing={isSharing}
+                stopSharing={stopSharing}
+                handleCopyLink={handleCopyLink}
+                linkCopied={linkCopied}
+              />
             </DialogFooter>
           </form>
         </Form>
@@ -260,33 +288,14 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
 function SharingActions({
   isSharing,
   stopSharing,
+  handleCopyLink,
+  linkCopied,
 }: {
   isSharing: boolean;
   stopSharing: () => void;
+  linkCopied: boolean;
+  handleCopyLink: () => void;
 }) {
-  const [linkCopied, setLinkCopied] = useState(false);
-  const { $roomConfig, roomId } = useDocCollabStore();
-
-  const form = useFormContext<z.infer<typeof RoomConfigSchema>>();
-  const handleCopyLink = async () => {
-    const baseUrl = "https://example.com/share/";
-    let shareUrl = `${baseUrl}${roomId}`;
-    const {
-      encrypt: isEncrypted,
-      password,
-      // includePassword
-    } = form.getValues();
-    if (
-      isEncrypted
-      //  && includePasswordInLink
-    ) {
-      shareUrl += `#pwd=${encodeURIComponent(password)}`;
-    }
-    await navigator.clipboard.writeText(shareUrl);
-    setLinkCopied(true);
-    setTimeout(() => setLinkCopied(false), 2000);
-  };
-
   return (
     <>
       <AnimatePresence mode="wait">
@@ -327,8 +336,8 @@ function SharingActions({
                   </motion.div>
                 )}
               </AnimatePresence>
-              <span className="ml-2">
-                {linkCopied ? "Copied!" : "Copy Link"}
+              <span className="ml-2 min-w-24">
+                {linkCopied ? "Link Copied!" : "Copy Link"}
               </span>
             </Button>
           </motion.div>
