@@ -29,8 +29,6 @@
     "@hookform/resolvers": "^3.9.1",
     "@nanostores/react": "^0.7.2",
     "@next/font": "^14.2.5",
-    "@nextui-org/react": "^2.2.9",
-    "@nextui-org/theme": "^2.1.18",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-checkbox": "^1.1.2",
     "@radix-ui/react-dialog": "^1.0.5",
