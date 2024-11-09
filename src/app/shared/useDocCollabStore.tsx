@@ -63,7 +63,30 @@ export function useDocCollabStore() {
 
       return { $ydoc, $room, $roomConfig, startSharing, stopSharing };
     }, [docId, roomId, $latestRoomConfig]);
+  const password = $roomConfig?.get().password;
+  const sharingLink = useMemo(() => {
+    return [
+      window.location.protocol,
+      "//",
+      window.location.host,
+      window.location.pathname,
+      "#/edit/",
+      docId,
+      "?roomId=",
+      roomId,
+      password ? `&x=${password}` : "",
+    ].join("");
+  }, [docId, roomId, password]);
   const ydoc = useStore($ydoc);
 
-  return { ydoc, docId, roomId, $room, $roomConfig, startSharing, stopSharing };
+  return {
+    ydoc,
+    docId,
+    roomId,
+    $room,
+    $roomConfig,
+    startSharing,
+    stopSharing,
+    sharingLink,
+  };
 }

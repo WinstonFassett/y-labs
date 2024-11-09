@@ -50,7 +50,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 
 export function ShareDialog() {
   const [isOpen, setIsOpen] = useState(true);
-  const { docId, roomId, $roomConfig, startSharing, stopSharing } =
+  const { docId, roomId, $roomConfig, startSharing, stopSharing, sharingLink } =
     useDocCollabStore();
   const isSharing = $roomConfig?.get().enabled ?? false;
   const actionLabel = isSharing ? "Sharing" : "Share";
@@ -92,15 +92,13 @@ export function ShareDialog() {
       roomId,
       // includePassword
     } = form.getValues();
-    const baseUrl = "https://example.com/share/";
-    let shareUrl = `${baseUrl}${roomId}`;
     if (
       isEncrypted
       //  && includePasswordInLink
     ) {
-      shareUrl += `#pwd=${encodeURIComponent(password)}`;
+      // shareUrl += `#pwd=${encodeURIComponent(password)}`;
     }
-    await navigator.clipboard.writeText(shareUrl);
+    await navigator.clipboard.writeText(sharingLink);
     setLinkCopied(true);
     setTimeout(() => setLinkCopied(false), 2000);
   };
