@@ -50,6 +50,33 @@ const checkIsSynced = (room) => {
   }
 };
 
+const readSyncMessage = (decoder, encoder, doc, transactionOrigin, access_level) => {syncProtocol;
+  const messageType = decoding.readVarUint(decoder);
+  switch (messageType) {
+  case syncProtocol.messageYjsSyncStep1:
+    syncProtocol.readSyncStep1(decoder, encoder, doc);
+    break;
+  case syncProtocol.messageYjsSyncStep2:
+    if (access_level !== 'edit') {
+      // console.warn('edit disabled', doc.name);
+      return;
+    }
+    syncProtocol.readSyncStep2(decoder, doc, transactionOrigin);
+    break;
+  case syncProtocol.messageYjsUpdate:
+    if (access_level !== 'edit') {
+      // console.warn('edit disabled', doc.name);
+      return;
+    }
+    syncProtocol.readUpdate(decoder, doc, transactionOrigin);
+    break;
+  default:
+    throw new Error('Unknown message type');
+  }
+  return messageType;
+};
+
+
 /**
  * @param {TrysteroDocRoom} room
  * @param {Uint8Array} buf
@@ -68,12 +95,14 @@ const readMessage = (room, buf, syncedCallback) => {
   let sendReply = false;
   switch (messageType) {
     case messageSync: {
+      // console.log('sync message', 'access level', room.provider.accessLevel)
       encoding.writeVarUint(encoder, messageSync);
-      const syncMessageType = syncProtocol.readSyncMessage(
+      const syncMessageType = readSyncMessage(
         decoder,
         encoder,
         doc,
         room,
+        room.provider.accessLevel,
       );
       if (
         syncMessageType === syncProtocol.messageYjsSyncStep2 &&
@@ -566,22 +595,26 @@ export class TrysteroProvider extends ObservableV2 {
    * @param {Awareness} [options.awareness=new awarenessProtocol.Awareness(doc)] - The awareness instance.
    * @param {number} [options.maxConns=20 + Math.floor(Math.random() * 15)] - The maximum number of connections.
    * @param {boolean} [options.filterBcConns=true] - Whether to filter broadcast connections.
+   * @param {'view' | 'edit'} [options.accessLevel="edit"] - The access level.
    */
   constructor(
     doc,
     roomName,
     trysteroRoom,
     {
+      accessLevel = "edit",
       password,
       awareness = new awarenessProtocol.Awareness(doc),
       maxConns = 20 + math.floor(random.rand() * 15), // the random factor reduces the chance that n clients form a cluster
-      filterBcConns = true,
+      filterBcConns = true
     } = {},
   ) {
     super();
     this.doc = doc;
     this.maxConns = maxConns;
     this.filterBcConns = filterBcConns;
+    
+    this.accessLevel = accessLevel;
     /**
      * @type {PromiseLike<CryptoKey | null>}
      */
