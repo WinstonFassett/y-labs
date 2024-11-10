@@ -24,15 +24,19 @@ export default {
         // info: colors.blue,
         // accent: colors.orange,
         // muted: colors.gray,
-
+        // primary: colors.blue,
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        // primary: {
+        //   // DEFAULT: "hsl(var(--primary))",
+        //   // foreground: "hsl(var(--primary-foreground))",
+        // },
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: colors.blue[500],
+          foreground: colors.blue[50],
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -56,7 +60,7 @@ export default {
         },
         warning: {
           DEFAULT: colors.yellow[500],
-          foreground: colors.yellow[50],
+          foreground: colors.black,
         },
         info: {
           DEFAULT: colors.blue[500],

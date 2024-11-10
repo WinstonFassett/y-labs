@@ -45,10 +45,10 @@ export function DocTitle() {
   return (
     <>
       <Input
-        placeholder={ydoc.isLoaded ? "Untitled" : ""}
+        placeholder={"Add a Title"}
         value={pendingTitle}
         size="sm"
-        className=""
+        className="text-md text-center bg-transparent"
         classNames={{
           input: "text-xl text-center",
 

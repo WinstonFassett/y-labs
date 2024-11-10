@@ -1,17 +1,14 @@
-import React from "react";
-// import { useVisuallyHidden } from "@react-aria/visually-hidden";
-import { useCheckbox, VisuallyHidden } from "react-aria";
-import { AlertTriangleIcon, CheckIcon } from "lucide-react";
-import { useParams } from "react-router-dom";
-import { getDocIdbStore } from "./store/local-yjs-idb";
-import { useStore } from "@nanostores/react";
 import { Badge } from "@/components/ui/badge";
+import { useStore } from "@nanostores/react";
+import { AlertTriangleIcon, CheckIcon } from "lucide-react";
+import { VisuallyHidden } from "react-aria";
+import { useParams } from "react-router-dom";
 import { tv } from "tailwind-variants";
-import { cn } from "@/lib/utils";
+import { getDocIdbStore } from "./store/local-yjs-idb";
 
 const checkbox = tv({
   slots: {
-    base: "border-border border-4 hover:bg-border",
+    base: "border-border border-2 hover:bg-border",
     content: "text-default-500",
   },
   variants: {
