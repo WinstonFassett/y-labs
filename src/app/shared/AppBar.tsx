@@ -30,7 +30,7 @@ export default function AppBar() {
   const { frontmatter } = AppGlobals;
 
   return (
-    <Navbar isBordered className="bg-transparent" maxWidth="full">
+    <Navbar isBordered className="gap-2 flex z-50 w-full h-auto items-center justify-center data-[menu-open=true]:border-none fixed inset-x-0 border-b border-divider backdrop-blur-lg data-[menu-open=true]:backdrop-blur-xl backdrop-saturate-150 bg-transparent max-w-3xl mx-auto" maxWidth="full">
       <NavbarContent justify="start">
         <NavbarBrand className="gap-4">
           <Button
@@ -50,7 +50,7 @@ export default function AppBar() {
           </Suspense>
         </NavbarBrand>
       </NavbarContent>
-      <NavbarContent className="items-center gap-2" justify="center">
+      <NavbarContent className="flex-1 items-center gap-2">
         <DocTitle />
       </NavbarContent>
       <NavbarContent className="items-center gap-2" justify="end">

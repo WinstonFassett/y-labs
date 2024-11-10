@@ -52,7 +52,11 @@ export function ShareDialog() {
   const [isOpen, setIsOpen] = useState(true);
   const { docId, roomId, $roomConfig, startSharing, stopSharing, sharingLink } =
     useDocCollabStore();
-  const isSharing = $roomConfig?.get().enabled ?? false;
+
+
+  const roomConfigMaybe = useStoreIfPresent($roomConfig);
+  const isSharing = roomConfigMaybe?.enabled ?? false;
+  // const isSharing = $roomConfig?.get().enabled ?? false;
   const actionLabel = isSharing ? "Sharing" : "Share";
   const [searchParams] = useSearchParams();
   const roomParameter = searchParams.get("roomId");
@@ -108,12 +112,10 @@ export function ShareDialog() {
 
   return (
     <Dialog open={isOpen} onOpenChange={(val) => setIsOpen(val)}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button
-          // variant={isSharing ? "solid" : "ghost"}
-          color={isSharing ? "warning" : "primary"}
-          // isIconOnly={true}
-          className="w-auto px-4"
+          variant={isSharing ? "warning" : "outline"}
+          className="w-auto px-4 border-primary"
         >
           <div className="sr-only sm:not-sr-only !pr-1">{actionLabel}</div>
           <Share2Icon className="h-5 w-5" />
