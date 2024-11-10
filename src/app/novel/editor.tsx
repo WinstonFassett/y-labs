@@ -16,9 +16,10 @@ function Editor() {
   const u = user.get();
   return (
     <div className="h-full flex-1 flex flex-col max-w-3xl mx-auto w-full">
-      <AppBar />
+      <AppBar className="h-16" />
       {/* <p>{loadState}</p> */}
       <Novel
+        className="pt-16"
         disableHistory={true}
         extensions={[
           Collaboration.configure({
