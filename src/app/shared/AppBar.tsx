@@ -34,14 +34,15 @@ export default function AppBar() {
       <NavbarContent justify="start">
         <NavbarBrand className="gap-4">
           <Button
+            asChild
             title="Saved Documents"
             isIconOnly
             variant="light"
-            as="a"
-            href="/y-labs/app/drive/index.html"
             className="block flex items-center"
           >
-            <HardDriveIcon className="h-5 w-5" />
+            <a href="/y-labs/app/drive/index.html">
+              <HardDriveIcon className="h-5 w-5" />
+            </a>
           </Button>
 
           <Suspense>
