@@ -80,7 +80,7 @@ function createTrysteroDocRoom(
     );
   });
   const password = config.encrypt ? config.password : undefined;
-  const provider = new TrysteroProvider(y, roomId, trysteroRoom, { password });
+  const provider = new TrysteroProvider(y, roomId, trysteroRoom, { password, accessLevel: config.accessLevel });
 
   const unsubUser = user.subscribe((user) => {
     provider.awareness.setLocalStateField("user", {
