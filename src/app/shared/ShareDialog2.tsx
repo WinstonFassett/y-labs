@@ -49,7 +49,7 @@ import { useStoreIfPresent } from "./useStoreIfPresent";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 export function ShareDialog() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const { docId, roomId, $roomConfig, startSharing, stopSharing, sharingLink } =
     useDocCollabStore();
 
