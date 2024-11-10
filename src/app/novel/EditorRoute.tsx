@@ -15,9 +15,7 @@ export function EditorRoute() {
   const [searchParams, setSearchParams] = useSearchParams();
   const x = searchParams.get("x");
   const roomId = searchParams.get("roomId");
-  // const encrypt = searchParams.has("encrypt");
   const { frontmatter } = AppGlobals;
-  console.log({ roomId, docId, x, searchParams });
   // when docId, roomId or x changes, update password and encrypted
   useEffect(() => {
     if (x) {
@@ -29,14 +27,11 @@ export function EditorRoute() {
         docId = generateId();
       }
       roomKeys.setKey(docId!, x);
-      console.log("setKey", docId, x);
       if (isNewDoc) {
-        console.log("redirect to new doc", newSearchParams);
         navigate(`/edit/${docId}?roomId=${roomId}"}`, {
           replace: true,
         });
       } else {
-        console.log("setSearch params", newSearchParams);
         setSearchParams(newSearchParams, { replace: true });
       }
     }
