@@ -60,7 +60,7 @@ export default function AppBar({ className }: { className?: string }) {
         </Suspense>
 
         <DropdownMenu>
-          <DropdownMenuTrigger>
+          <DropdownMenuTrigger asChild>
             <Button variant="light" isIconOnly>
               <MoreVertical size={20} />
             </Button>
