@@ -115,7 +115,7 @@ export function ShareDialog() {
       <DialogTrigger asChild>
         <Button
           variant={isSharing ? "warning" : "outline"}
-          className="w-auto px-4 border-primary"
+          className="w-auto px-4  border-2 rounded-xl"
         >
           <div className="sr-only sm:not-sr-only !pr-1">{actionLabel}</div>
           <Share2Icon className="h-5 w-5" />
