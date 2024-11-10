@@ -38,20 +38,11 @@ export function useDocCollabStore() {
       function startSharing(config: typeof latestRoomConfig) {
         const { roomId } = config;
         const docRoomId = getDocRoomId(docId, roomId);
-        console.log("startSharing", roomId, docRoomId, config);
+        // console.log("startSharing", roomId, docRoomId, config);
         const $roomConfig = getDocRoomConfig(docId, roomId);
         $roomConfig.set({ ...$roomConfig.get(), ...config, enabled: true });
         roomConfigsByDocId.setKey(docId, $roomConfig);
-        navigate(`?roomId=${roomId}`);
-        // if ($latestRoomConfig) {
-        //   $latestRoomConfig?.set({
-        //     ...$latestRoomConfig.get(),
-        //     ...config,
-        //     enabled: true,
-        //   });
-        //   // $roomConfig.setKey("enabled", true);
-        //   navigate(`?roomId=${roomId}`);
-        // }
+        navigate(`?roomId=${roomId}`);        
       }
       function stopSharing() {
         if ($roomConfig) {
