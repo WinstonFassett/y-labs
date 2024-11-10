@@ -1,14 +1,15 @@
 import { Badge } from "@/components/ui/badge";
 import { useStore } from "@nanostores/react";
 import { AlertTriangleIcon, CheckIcon } from "lucide-react";
-import { VisuallyHidden } from "react-aria";
+// import { VisuallyHidden } from "react-aria";
+import { useVisuallyHidden } from "react-aria";
 import { useParams } from "react-router-dom";
 import { tv } from "tailwind-variants";
 import { getDocIdbStore } from "./store/local-yjs-idb";
 
 const checkbox = tv({
   slots: {
-    base: "border-border border-2 hover:bg-border",
+    base: "border-border border-2 hover:bg-border outline-none peer-focus:ring-2 ring-offset-2 ring-offset-background peer-focus:ring-ring",
     content: "text-default-500",
   },
   variants: {
@@ -46,18 +47,20 @@ export function DocPersistenceToggle() {
   //   defaultSelected: false,
   // });
 
-  // let { visuallyHiddenProps } = useVisuallyHidden();
+  let { visuallyHiddenProps } = useVisuallyHidden();
   return (
     <label>
-      <VisuallyHidden>
-        <input
-          type="checkbox"
-          onChange={() => {
-            console.log("onChange", enabled);
-            $docOfflineStore.setKey("enabled", !enabled);
-          }}
-        />
-      </VisuallyHidden>
+      {/* <VisuallyHidden>
+      </VisuallyHidden> */}
+      <input
+        type="checkbox"
+        {...visuallyHiddenProps}
+        className="peer"
+        onChange={() => {
+          console.log("onChange", enabled);
+          $docOfflineStore.setKey("enabled", !enabled);
+        }}
+      />
       <Badge variant="outline" className={styles.base()}>
         <span>
           {enabled ? (
