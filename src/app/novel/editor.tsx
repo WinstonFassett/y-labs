@@ -15,7 +15,7 @@ function Editor() {
   const provider = $room?.provider;
   const u = user.get();
   return (
-    <div className="h-full flex-1 flex flex-col max-w-3xl mx-auto">
+    <div className="h-full flex-1 flex flex-col max-w-3xl mx-auto w-full">
       <AppBar />
       {/* <p>{loadState}</p> */}
       <Novel
