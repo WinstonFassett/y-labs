@@ -69,7 +69,7 @@ export function ShareDialog() {
       enabled: false,
       encrypt: false,
       password: $roomConfig?.get().password ?? generateId(),
-      accessLevel: "view",
+      accessLevel: "edit",
     }),
   });
   const onSubmit = form.handleSubmit(
@@ -204,7 +204,6 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
             <FormField
               control={form.control}
               name="accessLevel"
-              defaultValue="view"
               disabled={isSharing}
               render={({ field }) => {
                 return (
@@ -213,7 +212,7 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
                       Anyone with the link can{" "}
                       {form.watch("accessLevel") === "view" ? "view" : "edit"}
                     </FormLabel>
-                    <Select {...field} disabled={isSharing}>
+                    <Select {...field} disabled={isSharing} onValueChange={field.onChange}>
                       <SelectTrigger className="w-[100px]">
                         <SelectValue />
                       </SelectTrigger>
