@@ -15,11 +15,11 @@ function Editor() {
   const provider = $room?.provider;
   const u = user.get();
   return (
-    <div className="h-full flex-1 flex flex-col max-w-3xl mx-auto w-full">
+    <div className="min-h-full flex-1 flex flex-col max-w-3xl mx-auto w-full">
       <AppBar className="h-16" />
       {/* <p>{loadState}</p> */}
       <Novel
-        className="pt-16"
+        className=""
         disableHistory={true}
         extensions={[
           Collaboration.configure({
