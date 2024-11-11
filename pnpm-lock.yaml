@@ -12751,8 +12751,6 @@ snapshots:
       protons-runtime: 5.4.0
       uint8arraylist: 2.4.8
       uint8arrays: 5.0.2
-    transitivePeerDependencies:
-      - supports-color
 
   '@libp2p/interface-internal@0.1.12':
     dependencies:
