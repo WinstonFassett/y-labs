@@ -37,7 +37,17 @@ export const RoomConfigSchema = z.object({
   encrypt: z.boolean(),
   password: z.string().optional(),
   accessLevel: z.enum(["view", "edit"]),
-});
+})
+.superRefine((values, ctx) => {
+  if (values.encrypt && !values.password) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Password is required when encryption is enabled",
+      path: ["password"],
+    });
+  }
+})
+;
 
 const docRoomConfigsT = mapTemplate(
   (
