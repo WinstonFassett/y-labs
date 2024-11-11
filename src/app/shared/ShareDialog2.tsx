@@ -188,7 +188,7 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
               render={({ field }) => {
                 return (
                   <FormItem>
-                    <FormLabel>Room</FormLabel>
+                    <FormLabel>Room*</FormLabel>
                     <div className="flex items-center gap-2">
                       <FormControl>
                         <Input {...field} readOnly={isSharing} />
@@ -234,7 +234,9 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
 
                 return (
                   <FormItem className="flex items-center justify-between">
-                    <FormLabel>Encrypt communication</FormLabel>
+                    <FormLabel>
+                      Encrypt communication
+                    </FormLabel>
                     <Switch
                       {...rest}
                       disabled={isSharing}
@@ -257,14 +259,16 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
                 >
                   <FormField
                     control={form.control}
-                    name="password"
+                    name="password"                    
                     render={({ field }) => {
                       return (
                         <FormItem>
-                          <FormLabel>Password</FormLabel>
+                          <FormLabel>Password{isEncrypted && "*"}</FormLabel>
                           <FormControl>
                             <PasswordInput {...field} readOnly={isSharing} />
                           </FormControl>
+                          <FormDescription />
+                          <FormMessage />                          
                         </FormItem>
                       );
                     }}
