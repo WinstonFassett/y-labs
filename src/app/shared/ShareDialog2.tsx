@@ -255,7 +255,7 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="space-y-4 overflow-hidden"
+                  className=""
                 >
                   <FormField
                     control={form.control}

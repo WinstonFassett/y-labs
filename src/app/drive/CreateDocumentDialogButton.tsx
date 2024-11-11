@@ -55,7 +55,7 @@ export function CreateDocumentDialog() {
             <CreateDocButtons />
             {/* </DialogBody> */}
             <DialogFooter>
-              <Button onClick={() => createDocumentState.setOpen(false)}>
+              <Button variant="outline" onClick={() => createDocumentState.setOpen(false)}>
                 Cancel
               </Button>
             </DialogFooter>
