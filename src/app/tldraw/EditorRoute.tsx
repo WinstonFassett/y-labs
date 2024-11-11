@@ -37,5 +37,5 @@ export function EditorRoute() {
     }
   }, [docId, roomId, x]);
 
-  return <Editor className="min-h-screen" />;
+  return <Editor className="h-screen" />;
 }
