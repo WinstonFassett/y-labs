@@ -84,23 +84,22 @@ export function CreateDocButtons() {
       <p className="text-default-600 text-center">Create a new document:</p>
       <div className="gap-2 grid grid-cols-2 justify-items-center items-center mt-8">
         {docTypes.map((docType) => (
-          <Card
-            key={docType.href}
-            isPressable
-            isHoverable
-            asChild
-            className={cn(base, body)}  
-          >
-            <a href={docType.href}>
-              <CardHeader className="items-center">
-                {docType.icon}
-              </CardHeader>
-              {/* <CardContent>{docType.icon}</CardContent> */}
-              <CardFooter className="text-sm">
-                {docType.label}
-              </CardFooter>
-            </a>
-          </Card>
+          <a href={docType.href}>
+            <Card
+              key={docType.href}
+              isPressable
+              isHoverable
+              className={cn(base, body)}  
+            >
+                <CardHeader className="items-center">
+                  {docType.icon}
+                </CardHeader>
+                {/* <CardContent>{docType.icon}</CardContent> */}
+                <CardFooter className="text-sm">
+                  {docType.label}
+                </CardFooter>
+            </Card>
+          </a>
         ))}
       </div>
     </div>
