@@ -29,7 +29,7 @@ export default function AppBar({ className }: { className?: string }) {
   return (
     <Navbar className={cn("gap-2 flex z-50 w-full h-auto items-center justify-center data-[menu-open=true]:border-none fixed inset-x-0 border-b border-divider backdrop-blur-lg data-[menu-open=true]:backdrop-blur-xl backdrop-saturate-150 bg-transparent max-w-3xl mx-auto", className)} maxWidth="full">
       <NavbarContent>
-        <NavbarBrand className="gap-4">
+        <NavbarBrand className="gap-1 sm:gap-2">
           <Button
             asChild
             title="Saved Documents"
