@@ -30,6 +30,7 @@ export const PasswordInput = ({
           readOnly={readOnly}
         />
         <Button
+          type="button"
           size="icon"
           variant="ghost"
           className="absolute right-0 top-0 h-full"

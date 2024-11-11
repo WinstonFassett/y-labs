@@ -19,6 +19,7 @@ export const CopyButton = ({ value, label }: CopyButtonProps) => {
 
   return (
     <Button
+      type="button"
       size="icon"
       variant="outline"
       onClick={handleCopy}

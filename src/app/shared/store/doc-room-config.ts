@@ -46,6 +46,9 @@ export const RoomConfigSchema = z.object({
       path: ["password"],
     });
   }
+  if (values.password) {
+    // validate password
+  }
 })
 ;
 

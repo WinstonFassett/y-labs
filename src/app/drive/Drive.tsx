@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/react";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { FileQuestionIcon } from "lucide-react";
 import { documentsStore } from "./store.ts";
 import { ImportDriveModal } from "./ImportDrive.tsx";
@@ -77,6 +77,8 @@ const EmptyState = () => (
 );
 
 export function CreateDocButtons() {
+  const base = "w-24 h-24 flex flex-col items-center justify-center transition-all shadow-medium hover:bg-secondary cursor-pointer  active:scale-[0.97]"
+  const body = "flex items-center justify-center flex-grow"
   return (
     <div>
       <p className="text-default-600 text-center">Create a new document:</p>
@@ -86,17 +88,18 @@ export function CreateDocButtons() {
             key={docType.href}
             isPressable
             isHoverable
-            as="a"
-            href={docType.href}
-            classNames={{
-              base: "w-24 h-24 flex flex-col items-center justify-center", // Adjust width and height as necessary
-              body: "flex items-center justify-center flex-grow",
-            }}
+            asChild
+            className={cn(base, body)}  
           >
-            <CardContent>{docType.icon}</CardContent>
-            <CardFooter className="pt-0 text-xs flex justify-center">
-              {docType.label}
-            </CardFooter>
+            <a href={docType.href}>
+              <CardHeader className="items-center">
+                {docType.icon}
+              </CardHeader>
+              {/* <CardContent>{docType.icon}</CardContent> */}
+              <CardFooter className="text-sm">
+                {docType.label}
+              </CardFooter>
+            </a>
           </Card>
         ))}
       </div>
