@@ -9,7 +9,7 @@ import { getDocIdbStore } from "./store/local-yjs-idb";
 
 const checkbox = tv({
   slots: {
-    base: "border-border border-2 hover:bg-border outline-none peer-focus:ring-2 ring-offset-2 ring-offset-background peer-focus:ring-ring",
+    base: "border-border border-2 hover:bg-border outline-none peer-focus:ring-2 ring-offset-2 ring-offset-background peer-focus:ring-ring w-8 h-8 p-0 sm:w-auto sm:px-2 items-center justify-center flex flex-col sm:flex-row",
     content: "text-default-500",
   },
   variants: {
@@ -62,14 +62,14 @@ export function DocPersistenceToggle() {
         }}
       />
       <Badge variant="outline" className={styles.base()}>
-        <span>
           {enabled ? (
-            <CheckIcon className="ml-1 text-success" />
+            <CheckIcon className="text-success" />
           ) : (
-            <AlertTriangleIcon size={18} className="ml-1 text-warning" />
+            <AlertTriangleIcon size={18} className="text-warning" />
           )}
+        <span className="hidden sm:block">
+          {enabled ? "Saved" : "Unsaved"}
         </span>
-        {enabled ? "Saved" : "Unsaved"}
       </Badge>
     </label>
   );

@@ -131,7 +131,7 @@ function OpenApiKeySetting() {
           <div className="flex-1">Using: {openaiApiKeyMasked}</div>
           <Button
             size="sm"
-            color="danger"
+            variant="destructive"
             isIconOnly
             onClick={() => {
               $openaiApiKey.set(undefined);
@@ -199,7 +199,7 @@ export function OpenAiKeyForm() {
         <Button size="sm" color="primary" type="submit" isIconOnly>
           <CheckIcon />
         </Button>
-        <Button size="sm" type="reset" isIconOnly onClick={reset}>
+        <Button size="sm" type="reset" variant="destructive" isIconOnly onClick={reset}>
           <XIcon />
         </Button>
       </div>
