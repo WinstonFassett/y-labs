@@ -121,8 +121,8 @@ function DriveListing({ className }: { className?: string }) {
         const url = getDocUrl(doc.name, doc.type);
         if (!url) return null;
         return (
-          <a href={getDocUrl(doc.name, doc.type)}>
-            <Card key={index} className="transition-all text-foreground box-border shadow-medium rounded-small hover:bg-secondary cursor-pointer  active:scale-[0.97]">
+          <a key={doc.name} href={getDocUrl(doc.name, doc.type)}>
+            <Card className="transition-all text-foreground box-border shadow-medium rounded-small hover:bg-secondary cursor-pointer  active:scale-[0.97]">
               <div className="w-full flex items-center p-4 gap-4">
                 <div className="flex-1 flex items-center gap-2">
                   {typeIconMap[doc.type] ?? typeIconMap["unknown"]}
