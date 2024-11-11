@@ -11,17 +11,19 @@ const frontmatter = {
 };
 ---
 
-<Layout frontmatter={frontmatter} class="max-w-3xl mx-auto">
-  <Navbar maxWidth="full">
-    <h2 slot="brand" class="flex items-center gap-2">
-      <LinkButton variant="light" href="/y-labs/index.html" isIconOnly>
-        <span set:html={logoRaw} />
-      </LinkButton>
-      <div>Saved Documents</div>
-    </h2>
-    <div slot="end" class="flex gap-2 items-center">
-      <DriveActions client:only="react" />
-    </div>
-  </Navbar>
-  <App client:only="react" frontmatter={frontmatter} />
+<Layout frontmatter={frontmatter} class="">
+  <div class="h-full w-full max-w-3xl m-auto">
+    <Navbar maxWidth="full">
+      <h2 slot="brand" class="flex items-center gap-2">
+        <LinkButton variant="light" href="/y-labs/index.html" isIconOnly>
+          <span set:html={logoRaw} />
+        </LinkButton>
+        <div>Saved Documents</div>
+      </h2>
+      <div slot="end" class="flex gap-2 items-center">
+        <DriveActions client:only="react" />
+      </div>
+    </Navbar>
+    <App client:only="react" frontmatter={frontmatter} />
+  </div>
 </Layout>

@@ -116,7 +116,7 @@ function DriveListing({ className }: { className?: string }) {
     return <EmptyState />;
   }
   return (
-    <div className="flex-1 flex flex-col gap-2 p-2">
+    <div className="w-full max-w-3xl mx-auto  flex-1 flex flex-col gap-2 p-2">
       {documents.map((doc, index) => {
         const url = getDocUrl(doc.name, doc.type);
         if (!url) return null;
@@ -151,11 +151,11 @@ function DriveListing({ className }: { className?: string }) {
   );
 }
 
-function Drive({ className }: { className: string }) {
+function Drive({ className }: { className?: string }) {
   return (
     <div className="flex flex-col min-h-screen">
-      <div className={cn("w-full flex-1 mx-auto relative")}>
-        <div className="max-w-3xl mx-auto h-full flex flex-col">
+      <div className={cn("w-full flex-1 mx-auto relative", className)}>
+        <div className="h-full flex flex-col">
           <DriveListing />
         </div>
       </div>
