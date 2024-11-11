@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Button as AriaButton } from "@/components/ui/aria-button";
 import { CopyButton } from "@/components/ui/copy-button";
 import {
   Dialog,
@@ -6,9 +7,10 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogOverlay,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/components/ui/aria-dialog";
 import {
   Form,
   FormControl,
@@ -47,6 +49,7 @@ import { RoomConfigSchema, getDocRoomConfig } from "./store/doc-room-config";
 import { useDocCollabStore } from "./useDocCollabStore";
 import { useStoreIfPresent } from "./useStoreIfPresent";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { TextField } from "@/components/ui/aria-textfield";
 
 export function ShareDialog() {
   const [isOpen, setIsOpen] = useState(false);
@@ -110,61 +113,68 @@ export function ShareDialog() {
   const formRef = useRef<HTMLFormElement>(null);
   const switchRef = useRef<any>(null);
 
+  // return <ModalDemo />;
+
   return (
-    <Dialog open={isOpen} onOpenChange={(val) => setIsOpen(val)}>
-      <DialogTrigger asChild>
-        <Button
+      <DialogTrigger>
+        <AriaButton
           variant={isSharing ? "warning" : "outline"}
           className="w-auto px-4  border-2 rounded-xl"
         >
           <div className="sr-only sm:not-sr-only !pr-1">{actionLabel}</div>
           <Share2Icon className="h-5 w-5" />
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <Form {...form}>
-          <form ref={formRef} onSubmit={onSubmit}>
-            <DialogHeader>
-              <DialogTitle>Share</DialogTitle>
-              <DialogDescription>
-                Share with people to collaborate in realtime
-              </DialogDescription>
-            </DialogHeader>
+        </AriaButton>        
+        <DialogOverlay>
+          <DialogContent className="">
+            {({ close }) => (
+              <>
+                <Form {...form}>
+                  <form ref={formRef} onSubmit={onSubmit}>
+                    <DialogHeader>
+                      <DialogTitle>Share</DialogTitle>
+                      <DialogDescription>
+                        Share with people to collaborate in realtime
+                      </DialogDescription>
+                    </DialogHeader>
 
-            <div className="py-4 gap-6 space-y-4">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="sharing-toggle">
-                  Sharing is {isSharing ? "on" : "off"}
-                </Label>
-                <Switch
-                  id="sharing-toggle"
-                  ref={switchRef}
-                  checked={isSharing}
-                  onCheckedChange={(checked) => {
-                    if (checked) {
-                      formRef.current?.requestSubmit();
-                    } else {
-                      stopSharing();
-                    }
-                  }}
-                />
-              </div>
-            </div>
+                    <div className="py-4 gap-6 space-y-4">
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="sharing-toggle">
+                          Sharing is {isSharing ? "on" : "off"}
+                        </Label>
+                        <Switch
+                          id="sharing-toggle"
+                          ref={switchRef}
+                          checked={isSharing}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              formRef.current?.requestSubmit();
+                            } else {
+                              stopSharing();
+                            }
+                          }}
+                        />
+                      </div>
+                    </div>
 
-            <SharingConfiguration isSharing={isSharing} />
+                    <SharingConfiguration isSharing={isSharing} />
 
-            <DialogFooter className="pt-4">
-              <SharingActions
-                isSharing={isSharing}
-                stopSharing={stopSharing}
-                handleCopyLink={handleCopyLink}
-                linkCopied={linkCopied}
-              />
-            </DialogFooter>
-          </form>
-        </Form>
-      </DialogContent>
-    </Dialog>
+                    <DialogFooter className="pt-4">
+                      <SharingActions
+                        isSharing={isSharing}
+                        stopSharing={stopSharing}
+                        handleCopyLink={handleCopyLink}
+                        linkCopied={linkCopied}
+                      />
+                    </DialogFooter>
+                  </form>
+                </Form>
+              </>
+            )}
+          </DialogContent>
+        </DialogOverlay>
+    </DialogTrigger>
+
   );
 }
 
@@ -382,4 +392,38 @@ function SharingActions({
       </AnimatePresence>
     </>
   );
+}
+
+function  ModalDemo() {
+  return (
+    <DialogTrigger>
+      <AriaButton variant="outline">Sign up...</AriaButton>
+      <DialogOverlay>
+        <DialogContent className="sm:max-w-[425px]">
+          {({ close }) => (
+            <>
+              <DialogHeader>
+                <DialogTitle>Sign up</DialogTitle>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <TextField autoFocus>
+                  <Label>First Name</Label>
+                  <Input />
+                </TextField>
+                <TextField>
+                  <Label>Last Name</Label>
+                  <Input />
+                </TextField>
+              </div>
+              <DialogFooter>
+                <Button onPress={close} type="submit">
+                  Save changes
+                </Button>
+              </DialogFooter>
+            </>
+          )}
+        </DialogContent>
+      </DialogOverlay>
+    </DialogTrigger>
+  )
 }
