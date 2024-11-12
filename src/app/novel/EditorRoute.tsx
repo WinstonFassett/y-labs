@@ -6,6 +6,7 @@ import { generateId } from "../shared/generateId";
 import Editor from "./editor";
 import { roomKeys } from "../shared/store/doc-room-keys";
 import AppBar from "../shared/AppBar";
+import { getDocRoomConfig, getDocRoomId, roomConfigsByDocId } from "../shared/store/doc-room-config";
 
 export function EditorRoute() {
   const params = useParams();
@@ -22,13 +23,27 @@ export function EditorRoute() {
       const newSearchParams = Object.fromEntries(
         Array.from(searchParams.entries()).filter(([key]) => key !== "x"),
       );
+      newSearchParams.encrypt = 'true'
       const isNewDoc = !docId;
       if (isNewDoc) {
         docId = generateId();
       }
-      roomKeys.setKey(docId!, x);
+      // const docRoomId = getDocRoomId(docId!, roomId!);
+      // console.log({ docRoomId });
+      // roomKeys.setKey(docRoomId, x);
+      const config = getDocRoomConfig(docId!, roomId!);
+      // config.setKey("password", x);
+      config.set({ 
+        ...config.get(), 
+        docId: docId,
+        roomId: roomId,
+        password: x,
+        encrypt: true,
+        enabled: true 
+      });
+      roomConfigsByDocId.setKey(docId!, config);
       if (isNewDoc) {
-        navigate(`/edit/${docId}?roomId=${roomId}"}`, {
+        navigate(`/edit/${docId}?roomId=${roomId}&encrypt=true"}`, {
           replace: true,
         });
       } else {
