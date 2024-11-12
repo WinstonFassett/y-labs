@@ -19,38 +19,53 @@ export function EditorRoute() {
   const { frontmatter } = AppGlobals;
   // when docId, roomId or x changes, update password and encrypted
   useEffect(() => {
-    if (x) {
-      const newSearchParams = Object.fromEntries(
-        Array.from(searchParams.entries()).filter(([key]) => key !== "x"),
-      );
-      newSearchParams.encrypt = 'true'
-      const isNewDoc = !docId;
-      if (isNewDoc) {
-        docId = generateId();
-      }
-      // const docRoomId = getDocRoomId(docId!, roomId!);
-      // console.log({ docRoomId });
-      // roomKeys.setKey(docRoomId, x);
+
+    if (roomId) {
       const config = getDocRoomConfig(docId!, roomId!);
-      // config.setKey("password", x);
+      if (x) {
+        const newSearchParams = Object.fromEntries(
+          Array.from(searchParams.entries()).filter(([key]) => key !== "x"),
+        );
+        newSearchParams.encrypt = 'true'
+        const isNewDoc = !docId;
+        if (isNewDoc) {
+          docId = generateId();
+        }
+        // const docRoomId = getDocRoomId(docId!, roomId!);
+        // console.log({ docRoomId });
+        // roomKeys.setKey(docRoomId, x);
+        // const config = getDocRoomConfig(docId!, roomId!);
+        // config.setKey("password", x);
+        config.set({ 
+          ...config.get(), 
+          docId: docId,
+          roomId: roomId,
+          password: x,
+          encrypt: true,
+          enabled: true,
+          accessLevel: "edit",
+        });
+        roomConfigsByDocId.setKey(docId!, config);
+        if (isNewDoc) {
+          navigate(`/edit/${docId}?roomId=${roomId}&encrypt=true"}`, {
+            replace: true,
+          });
+        } else {
+          setSearchParams(newSearchParams, { replace: true });
+        }
+        return
+      }
       config.set({ 
         ...config.get(), 
         docId: docId,
         roomId: roomId,
-        password: x,
-        encrypt: true,
+        // password: "",
+        encrypt: false,
         enabled: true,
         accessLevel: "edit",
       });
-      roomConfigsByDocId.setKey(docId!, config);
-      if (isNewDoc) {
-        navigate(`/edit/${docId}?roomId=${roomId}&encrypt=true"}`, {
-          replace: true,
-        });
-      } else {
-        setSearchParams(newSearchParams, { replace: true });
-      }
     }
+
   }, [docId, roomId, x]);
 
   return <Editor />;
