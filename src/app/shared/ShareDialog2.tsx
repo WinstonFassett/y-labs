@@ -105,9 +105,14 @@ export function ShareDialog() {
     ) {
       // shareUrl += `#pwd=${encodeURIComponent(password)}`;
     }
-    await navigator.clipboard.writeText(sharingLink);
-    setLinkCopied(true);
-    setTimeout(() => setLinkCopied(false), 2000);
+    if (navigator.clipboard){
+      await navigator.clipboard?.writeText(sharingLink);
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2000);
+    } else {
+      console.warn("Clipboard API not available");
+      console.log('sharingLink', sharingLink);
+    }
   };
 
   const formRef = useRef<HTMLFormElement>(null);
