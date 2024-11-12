@@ -53,7 +53,7 @@ import { TextField } from "@/components/ui/aria-textfield";
 
 export function ShareDialog() {
   const [isOpen, setIsOpen] = useState(false);
-  const { docId, roomId, $roomConfig, startSharing, stopSharing, sharingLink } =
+  const { docId, roomId, $roomConfig, startSharing, stopSharing } =
     useDocCollabStore();
 
 
@@ -93,19 +93,20 @@ export function ShareDialog() {
   );
   const [linkCopied, setLinkCopied] = useState(false);
   const handleCopyLink = async () => {
-    const {
-      encrypt: isEncrypted,
-      password,
-      roomId,
-      // includePassword
-    } = form.getValues();
-    if (
-      isEncrypted
-      //  && includePasswordInLink
-    ) {
-      // shareUrl += `#pwd=${encodeURIComponent(password)}`;
-    }
-    if (navigator.clipboard){
+    // const {
+    //   encrypt: isEncrypted,
+    //   password,
+    //   roomId,
+    //   // includePassword
+    // } = form.getValues();
+    // if (
+    //   isEncrypted
+    //   //  && includePasswordInLink
+    // ) {
+    //   // shareUrl += `#pwd=${encodeURIComponent(password)}`;
+    // }
+    const sharingLink = $roomConfig?.$sharingLink.get();
+    if (sharingLink && navigator.clipboard){
       await navigator.clipboard?.writeText(sharingLink);
       setLinkCopied(true);
       setTimeout(() => setLinkCopied(false), 2000);
