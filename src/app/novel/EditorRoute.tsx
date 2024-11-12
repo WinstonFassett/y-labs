@@ -39,7 +39,8 @@ export function EditorRoute() {
         roomId: roomId,
         password: x,
         encrypt: true,
-        enabled: true 
+        enabled: true,
+        accessLevel: "edit",
       });
       roomConfigsByDocId.setKey(docId!, config);
       if (isNewDoc) {
