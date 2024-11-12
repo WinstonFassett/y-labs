@@ -35,8 +35,8 @@ export function useDocCollabStore() {
   const { $ydoc, $room, $roomConfig, startSharing, stopSharing } =
     useMemo(() => {
       const $ydoc = getYdoc(docId!);
-      const $room = roomId && getTrysteroDocRoom(docId!, roomId);
-      const $roomConfig = roomId && getDocRoomConfig(docId!, roomId);
+      const $room = roomId ? getTrysteroDocRoom(docId!, roomId) : undefined;
+      const $roomConfig = roomId ? getDocRoomConfig(docId!, roomId) : undefined;
 
       function startSharing(config: typeof latestRoomConfig) {
         const { roomId } = config;
@@ -59,19 +59,7 @@ export function useDocCollabStore() {
     }, [docId, roomId, $latestRoomConfig]);
   const password = latestRoomConfig?.password;
   console.log({ docId, roomId, latestRoomConfig, password });
-  const sharingLink = useMemo(() => {
-    return [
-      window.location.protocol,
-      "//",
-      window.location.host,
-      window.location.pathname,
-      "#/edit/",
-      docId,
-      "?roomId=",
-      roomId,
-      password ? `&x=${password}` : "",
-    ].join("");
-  }, [docId, roomId, password]);
+  // const sharingLink = useStoreIfPresent($roomConfig?.$sharingLink)
   const ydoc = useStore($ydoc);
 
   return {
@@ -82,6 +70,6 @@ export function useDocCollabStore() {
     $roomConfig,
     startSharing,
     stopSharing,
-    sharingLink,
+    // sharingLink,
   };
 }

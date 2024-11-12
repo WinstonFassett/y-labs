@@ -1,5 +1,5 @@
 import { mapTemplate } from "@/lib/nanostores-utils/mapTemplate";
-import { map, type MapStore } from "nanostores";
+import { computed, map, type MapStore } from "nanostores";
 import { z } from "zod";
 
 export interface DocRoomConfigFields {
@@ -7,7 +7,7 @@ export interface DocRoomConfigFields {
   roomId: string;
   enabled: boolean;
   encrypt: boolean;
-  password: string | undefined;
+  password?: string | undefined;
   accessLevel: "view" | "edit";
   includePassword: boolean;
 }
@@ -60,9 +60,25 @@ const docRoomConfigsT = mapTemplate(
     fields: DocRoomConfigFields = FieldDefaults,
   ) => {
     const store = map(fields);
+    
+    const $sharingLink = computed(store, ({  roomId, password, encrypt }) => {
+      return [
+        window.location.protocol,
+        "//",
+        window.location.host,
+        window.location.pathname,
+        "#/edit/",
+        docId,
+        "?roomId=",
+        roomId,
+        (encrypt && password) ? `&x=${password}` : "",
+      ].join("")  
+    })
+
     return Object.assign(store, {
       docId,
       roomId,
+      $sharingLink
     });
   },
   (store, id, docId, roomId, fields = FieldDefaults) => {
@@ -75,7 +91,6 @@ const docRoomConfigsT = mapTemplate(
 );
 export function getDocRoomConfig(docId: string, roomId: string) {
   const docRoomId = getDocRoomId(docId, roomId);
-
   const $model = Object.assign(docRoomConfigsT(docRoomId, docId, roomId), {
     startSharing() {
       $model.setKey("enabled", true);
