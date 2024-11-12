@@ -69,9 +69,9 @@ export function ShareDialog() {
     defaultValues: async () => ({
       docId,
       roomId: roomParameter || generateId(),
-      enabled: false,
-      encrypt: false,
-      password: $roomConfig?.get().password ?? generateId(),
+      enabled: roomConfigMaybe?.enabled ?? false,
+      encrypt: roomConfigMaybe?.encrypt ?? false,
+      password: roomConfigMaybe?.password ?? generateId(),
       accessLevel: "edit",
     }),
   });

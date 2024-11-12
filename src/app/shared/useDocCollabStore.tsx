@@ -23,6 +23,9 @@ export function useDocCollabStore() {
   if (!docId) {
     throw new Error("No document id specified");
   }
+  // const [searchParams, setSearchParams] = useSearchParams();
+  // const encrypt = searchParams.get("encrypt") === "true";
+  // console.log('encrypt', encrypt);
   const navigate = useNavigate();
   const $latestRoomConfig = useStore(roomConfigsByDocId)[docId];
   // const [searchParams, setSearchParams] = useSearchParams();
@@ -54,7 +57,8 @@ export function useDocCollabStore() {
 
       return { $ydoc, $room, $roomConfig, startSharing, stopSharing };
     }, [docId, roomId, $latestRoomConfig]);
-  const password = $roomConfig?.get().password;
+  const password = latestRoomConfig?.password;
+  console.log({ docId, roomId, latestRoomConfig, password });
   const sharingLink = useMemo(() => {
     return [
       window.location.protocol,
