@@ -93,6 +93,8 @@ export function ShareDialog() {
   );
   const [linkCopied, setLinkCopied] = useState(false);
   const handleCopyLink = async () => {
+    const roomId = form.getValues("roomId");
+    const $roomConfig = getDocRoomConfig(docId, roomId);
     const sharingLink = $roomConfig?.$sharingLink.get();
     if (sharingLink && navigator.clipboard){
       await navigator.clipboard?.writeText(sharingLink);
