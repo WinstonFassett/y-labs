@@ -1,8 +1,8 @@
 import { Avatar } from "@/components/ui/avatar";
-import { ShareDialog } from "./ShareDialog2";
-import { useDocCollabStore } from "./useDocCollabStore";
 import { useStore } from "@nanostores/react";
 import { atom } from "nanostores";
+import { ShareDialog } from "./ShareDialog";
+import { useDocCollabStore } from "./useDocCollabStore";
 
 export function AppBarCollab() {
   const { $room } = useDocCollabStore();

@@ -1,21 +1,20 @@
-import React, { useState, type ReactNode } from "react";
-import { Controller, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
 } from "@/components/ui/dialog";
+import { type ReactNode } from "react";
+import { Controller, useForm } from "react-hook-form";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { $openaiApiKey, $openaiApiKey_masked } from "./store/secure-settings";
-import { $openAiConfigValid, validateOpenAiKey } from "./store/openai";
-import { map } from "nanostores";
+import { PasswordInput } from "@/components/ui/password-input";
 import { useStore } from "@nanostores/react";
 import { CheckIcon, KeyRoundIcon, XIcon } from "lucide-react";
-import { PasswordInput } from "@/components/ui/password-input";
+import { map } from "nanostores";
+import { $openAiConfigValid, validateOpenAiKey } from "./store/openai";
+import { $openaiApiKey, $openaiApiKey_masked } from "./store/secure-settings";
 
 export const $settingsStore = map({
   show: false,
@@ -36,7 +35,7 @@ export function SettingsDialog() {
     getValues,
   } = useForm();
   return (
-    <Dialog open={open} onOpenChange={setOpen} placement="center">
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
         <DialogHeader>
           <div>
@@ -101,14 +100,6 @@ function ThemeSettings() {
 function AiSettings() {
   return (
     <OpenApiKeySetting />
-    // <Card>
-    //   <CardHeader>
-    //     <CardTitle>AI Settings</CardTitle>
-    //   </CardHeader>
-    //   <CardBody>
-    //     <OpenApiKeySetting />
-    //   </CardBody>
-    // </Card>
   );
 }
 
@@ -132,7 +123,7 @@ function OpenApiKeySetting() {
           <Button
             size="sm"
             variant="destructive"
-            isIconOnly
+            // isIconOnly
             onClick={() => {
               $openaiApiKey.set(undefined);
             }}
@@ -184,14 +175,14 @@ export function OpenAiKeyForm() {
                 {...field}
                 // className="text-default-400"
                 value={field.value || ""}
-                isInvalid={!!errors.openaiApiKey}
-                isRequired
-                endContent={
-                  <KeyRoundIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                }
-                placeholder="Enter your OpenAI API Key"
-                variant="bordered"
-                errorMessage={errors?.openaiApiKey?.message as string}
+                // isInvalid={!!errors.openaiApiKey}
+                // isRequired
+                // endContent={
+                //   <KeyRoundIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                // }
+                // placeholder="Enter your OpenAI API Key"
+                // variant="bordered"
+                // errorMessage={errors?.openaiApiKey?.message as string}
               />
             </div>
           )}

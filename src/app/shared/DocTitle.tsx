@@ -2,8 +2,8 @@ import { Input } from "@/components/ui/input";
 import {
   useEffect,
   useState,
-  type ChangeEventHandler,
   type ChangeEvent,
+  type ChangeEventHandler,
 } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import type { YMapEvent } from "yjs";
@@ -47,7 +47,7 @@ export function DocTitle() {
       <Input
         placeholder={"Add a Title"}
         value={pendingTitle}
-        size="sm"
+        // size="sm"
         className="text-xl text-center bg-transparent border-transparent hover:border-border"
         onBlur={(e) => {
           updateTitle(e as ChangeEvent<HTMLInputElement>);

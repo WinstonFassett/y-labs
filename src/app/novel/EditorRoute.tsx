@@ -3,10 +3,8 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 import { AppGlobals } from "../../globals";
 import { generateId } from "../shared/generateId";
+import { getDocRoomConfig, roomConfigsByDocId } from "../shared/store/doc-room-config";
 import Editor from "./editor";
-import { roomKeys } from "../shared/store/doc-room-keys";
-import AppBar from "../shared/AppBar";
-import { getDocRoomConfig, getDocRoomId, roomConfigsByDocId } from "../shared/store/doc-room-config";
 
 export function EditorRoute() {
   const params = useParams();
@@ -31,11 +29,6 @@ export function EditorRoute() {
         if (isNewDoc) {
           docId = generateId();
         }
-        // const docRoomId = getDocRoomId(docId!, roomId!);
-        // console.log({ docRoomId });
-        // roomKeys.setKey(docRoomId, x);
-        // const config = getDocRoomConfig(docId!, roomId!);
-        // config.setKey("password", x);
         config.set({ 
           ...config.get(), 
           docId: docId,

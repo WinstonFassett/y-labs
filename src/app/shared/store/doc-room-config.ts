@@ -29,8 +29,6 @@ export const roomConfigsByDocId = map(
 export const latestDocRoom = map({} as Record<string, string>);
 
 export const RoomConfigSchema = z.object({
-  // username: z.string().min(2).max(50),
-  // id: z.string(),
   docId: z.string(),
   roomId: z.string().min(1, { message: "Required" }),
   enabled: z.boolean(),

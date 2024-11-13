@@ -95,7 +95,6 @@ const readMessage = (room, buf, syncedCallback) => {
   let sendReply = false;
   switch (messageType) {
     case messageSync: {
-      // console.log('sync message', 'access level', room.provider.accessLevel)
       encoding.writeVarUint(encoder, messageSync);
       const syncMessageType = readSyncMessage(
         decoder,

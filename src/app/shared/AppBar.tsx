@@ -49,7 +49,7 @@ export default function AppBar({ className }: { className?: string }) {
       <NavbarContent className="flex-1 items-center gap-2">
         <DocTitle />
       </NavbarContent>
-      <NavbarContent className="items-center gap-2" justify="end">
+      <NavbarContent className="items-center gap-2">
         <Suspense>
           <LazyAppBarCollab />
         </Suspense>
@@ -65,7 +65,6 @@ export default function AppBar({ className }: { className?: string }) {
               </MenuItem>
               <MenuItem
                 onAction={() => {
-                  console.log("click");
                   setTheme(theme === "dark" ? "light" : "dark");
                 }}
                 className="flex items-center gap-2"
@@ -81,7 +80,6 @@ export default function AppBar({ className }: { className?: string }) {
                 onAction={() => {
                   $settingsStore.setKey("show", true);
                 }}
-                className=""
               >
                 <Settings size={16} />
                 Settings

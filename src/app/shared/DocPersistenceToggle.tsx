@@ -1,7 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { useStore } from "@nanostores/react";
 import { AlertTriangleIcon, CheckIcon } from "lucide-react";
-// import { VisuallyHidden } from "react-aria";
 import { useVisuallyHidden } from "react-aria";
 import { useParams } from "react-router-dom";
 import { tv } from "tailwind-variants";
@@ -36,22 +35,9 @@ export function DocPersistenceToggle() {
 
   const styles = checkbox({ isSelected: enabled, isFocusVisible: false });
 
-  // const {
-  //   children,
-  //   // isSelected,
-  //   isFocusVisible,
-  //   getBaseProps,
-  //   getLabelProps,
-  //   getInputProps,
-  // } = useCheckbox({
-  //   defaultSelected: false,
-  // });
-
   let { visuallyHiddenProps } = useVisuallyHidden();
   return (
     <label>
-      {/* <VisuallyHidden>
-      </VisuallyHidden> */}
       <input
         type="checkbox"
         {...visuallyHiddenProps}

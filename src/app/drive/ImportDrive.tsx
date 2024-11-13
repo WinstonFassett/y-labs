@@ -1,28 +1,22 @@
-import { useState } from "react";
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogHeader,
-  DialogTrigger,
-  DialogFooter,
-} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-  CardDescription,
+  CardContent
 } from "@/components/ui/card";
-import { useDropzone } from "react-dropzone";
-import { getOfflineDoc } from "../shared/store/local-yjs-idb";
-import * as Y from "yjs";
-import { CheckCircleIcon, UploadCloudIcon, XCircle } from "lucide-react";
-import { useStore } from "@nanostores/react";
-import { map } from "nanostores";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader
+} from "@/components/ui/dialog";
 import { Spinner } from "@/components/ui/spinner";
+import { useStore } from "@nanostores/react";
+import { CheckCircleIcon, UploadCloudIcon, XCircle } from "lucide-react";
+import { map } from "nanostores";
+import { useState } from "react";
+import { useDropzone } from "react-dropzone";
+import * as Y from "yjs";
+import { getOfflineDoc } from "../shared/store/local-yjs-idb";
 
 const importDriveState = map({
   visible: false,
@@ -88,13 +82,13 @@ export function ImportDriveModal() {
     setUploadState("initial");
   };
   return (
-    <Dialog placement="top" isOpen={isOpen} onClose={closeModal}>
+    <Dialog open={isOpen} onOpenChange={isOpen ? closeModal : undefined}>
       <DialogContent>
         <DialogHeader>Upload Yjs Document</DialogHeader>
         <div>
           {["initial", "uploading", "error"].includes(uploadState) && (
             <Card
-              isPressable
+              // isPressable
               className={`rounded-lg border-2 border-dashed p-6 text-center cursor-pointer ${isDragActive ? "bg-primary-300" : "bg-primary"} hover:bg-primary-300 text-primary-foreground`}
             >
               <CardContent>
@@ -133,7 +127,6 @@ export function ImportDriveModal() {
             </div>
           )}
         </div>
-        <DialogFooter></DialogFooter>
       </DialogContent>
     </Dialog>
   );

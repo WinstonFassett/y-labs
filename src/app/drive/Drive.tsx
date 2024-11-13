@@ -1,10 +1,10 @@
-import { useStore } from "@nanostores/react";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { FileQuestionIcon } from "lucide-react";
-import { documentsStore } from "./store.ts";
-import { ImportDriveModal } from "./ImportDrive.tsx";
-import { CreateDocumentDialog } from "./CreateDocumentDialogButton.tsx";
+import { Card, CardFooter, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils.js";
+import { useStore } from "@nanostores/react";
+import { FileQuestionIcon } from "lucide-react";
+import { CreateDocumentDialog } from "./CreateDocumentDialogButton.tsx";
+import { ImportDriveModal } from "./ImportDrive.tsx";
+import { documentsStore } from "./store.ts";
 
 const typeIconMap = {
   codemirror: (
@@ -87,14 +87,13 @@ export function CreateDocButtons() {
           <a href={docType.href}>
             <Card
               key={docType.href}
-              isPressable
-              isHoverable
+              // isPressable
+              // isHoverable
               className={cn(base, body)}  
             >
                 <CardHeader className="items-center">
                   {docType.icon}
                 </CardHeader>
-                {/* <CardContent>{docType.icon}</CardContent> */}
                 <CardFooter className="text-sm">
                   {docType.label}
                 </CardFooter>
@@ -106,7 +105,7 @@ export function CreateDocButtons() {
   );
 }
 
-function DriveListing({ className }: { className?: string }) {
+function DriveListing() {
   const documents = useStore(documentsStore);
   if (!documents) {
     return <div>Loading...</div>;
@@ -124,7 +123,7 @@ function DriveListing({ className }: { className?: string }) {
             <Card className="transition-all text-foreground box-border shadow-medium rounded-small hover:bg-secondary cursor-pointer  active:scale-[0.97]">
               <div className="w-full flex items-center p-4 gap-4">
                 <div className="flex-1 flex items-center gap-2">
-                  {typeIconMap[doc.type] ?? typeIconMap["unknown"]}
+                  {typeIconMap[doc.type as keyof typeof typeIconMap] ?? typeIconMap["unknown"]}
                   <div className="text-sm font-semibold">
                     {doc.title || "[Untitled]"}
                   </div>
