@@ -26,7 +26,6 @@ export function DriveActions() {
         <Menu>
           <MenuItem onAction={() => {
             createDocumentState.open();
-            console.log("opened");
           }}>
             <FileText size={16} />
             New document

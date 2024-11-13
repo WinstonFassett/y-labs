@@ -6,9 +6,9 @@ import {
   DialogHeader,
 } from "@/components/ui/dialog.js";
 
-import { CreateDocButtons } from "./Drive.tsx";
 import { useStore } from "@nanostores/react";
 import { map } from "nanostores";
+import { CreateDocButtons } from "./Drive.tsx";
 
 export const createDocumentState = Object.assign(
   map({
@@ -42,7 +42,6 @@ export function CreateDocumentDialog() {
   return (
     <>
       <Dialog
-        placement="top"
         open={isOpen}
         onOpenChange={createDocumentState.setOpen}
       >
@@ -51,9 +50,9 @@ export function CreateDocumentDialog() {
             <DialogHeader className="flex flex-col gap-1">
               {/* Create new document */}
             </DialogHeader>
-            {/* <DialogBody> */}
+
             <CreateDocButtons />
-            {/* </DialogBody> */}
+            
             <DialogFooter>
               <Button variant="outline" onClick={() => createDocumentState.setOpen(false)}>
                 Cancel
