@@ -12,7 +12,9 @@ export default defineConfig({
   integrations: [
     react(),
     svelte(),
-    tailwind(),
+    tailwind({
+      applyBaseStyles: false,
+    }),
     mdx(),
     serviceWorker({
       registration: {

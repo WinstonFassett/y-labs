@@ -1,13 +1,14 @@
-import React from "react";
-import { useCheckbox, Chip, VisuallyHidden, tv } from "@nextui-org/react";
-import { AlertTriangleIcon, CheckIcon } from "lucide-react";
-import { useParams } from "react-router-dom";
-import { getDocIdbStore } from "./store/local-yjs-idb";
+import { Badge } from "@/components/ui/badge";
 import { useStore } from "@nanostores/react";
+import { AlertTriangleIcon, CheckIcon } from "lucide-react";
+import { useVisuallyHidden } from "react-aria";
+import { useParams } from "react-router-dom";
+import { tv } from "tailwind-variants";
+import { getDocIdbStore } from "./store/local-yjs-idb";
 
 const checkbox = tv({
   slots: {
-    base: "border-default hover:bg-default-200",
+    base: "border-border border-2 hover:bg-border outline-none peer-focus:ring-2 ring-offset-2 ring-offset-background peer-focus:ring-ring w-8 h-8 p-0 sm:w-auto sm:px-2 items-center justify-center flex flex-col sm:flex-row",
     content: "text-default-500",
   },
   variants: {
@@ -26,52 +27,36 @@ const checkbox = tv({
 });
 
 export function DocPersistenceToggle() {
-  const {
-    children,
-    // isSelected,
-    isFocusVisible,
-    getBaseProps,
-    getLabelProps,
-    getInputProps,
-  } = useCheckbox({
-    defaultSelected: false,
-  });
   const { docId } = useParams();
   if (!docId) throw new Error("No document id specified");
 
   const $docOfflineStore = getDocIdbStore(docId);
   const { enabled, persister } = useStore($docOfflineStore);
 
-  const styles = checkbox({ isSelected: enabled, isFocusVisible });
+  const styles = checkbox({ isSelected: enabled, isFocusVisible: false });
 
+  let { visuallyHiddenProps } = useVisuallyHidden();
   return (
-    <label {...getBaseProps()}>
-      <VisuallyHidden>
-        <input
-          {...getInputProps()}
-          onChange={() => {
-            console.log("onChange", enabled);
-            $docOfflineStore.setKey("enabled", !enabled);
-          }}
-        />
-      </VisuallyHidden>
-      <Chip
-        classNames={{
-          base: styles.base(),
-          content: styles.content(),
+    <label>
+      <input
+        type="checkbox"
+        {...visuallyHiddenProps}
+        className="peer"
+        onChange={() => {
+          console.log("onChange", enabled);
+          $docOfflineStore.setKey("enabled", !enabled);
         }}
-        startContent={
-          enabled ? (
-            <CheckIcon className="ml-1 text-success" />
+      />
+      <Badge variant="outline" className={styles.base()}>
+          {enabled ? (
+            <CheckIcon className="text-success" />
           ) : (
-            <AlertTriangleIcon size={18} className="ml-1 text-warning" />
-          )
-        }
-        variant="faded"
-        {...getLabelProps()}
-      >
-        {children ? children : enabled ? "Saved" : "Unsaved"}
-      </Chip>
+            <AlertTriangleIcon size={18} className="text-warning" />
+          )}
+        <span className="hidden sm:block">
+          {enabled ? "Saved" : "Unsaved"}
+        </span>
+      </Badge>
     </label>
   );
 }

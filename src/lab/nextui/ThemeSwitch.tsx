@@ -1,5 +1,5 @@
 import { useTheme } from "@/lib/astro-tailwind-themes/useTheme";
-import { cn } from "@nextui-org/react";
+import { cn } from "@/lib/utils";
 
 export function ThemeSwitch() {
   const [theme, setTheme] = useTheme();

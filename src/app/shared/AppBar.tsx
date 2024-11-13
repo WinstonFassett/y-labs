@@ -1,50 +1,44 @@
-import {
-  BreadcrumbItem,
-  Breadcrumbs,
-  Button,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-  Navbar,
-  NavbarBrand,
-  NavbarContent,
-} from "@nextui-org/react";
+import { Button } from "@/components/ui/button";
+
+import { AriaButton } from "@/components/ui/aria-button";
+import { Menu, MenuItem, MenuPopover, MenuTrigger } from "@/components/ui/aria-menu";
+import { cn } from "@/lib/utils";
 import {
   FileText,
   HardDriveIcon,
   Moon,
   MoreVertical,
-  Sun,
   Settings,
+  Sun,
 } from "lucide-react";
 import { Suspense } from "react";
 import { useResolvedPath } from "react-router-dom";
-import { useTheme } from "../../lib/astro-tailwind-themes/useTheme";
+import { Navbar, NavbarBrand, NavbarContent } from "../../components/ui/navbar";
 import { AppGlobals } from "../../globals";
-import { DocTitle } from "./DocTitle";
+import { useTheme } from "../../lib/astro-tailwind-themes/useTheme";
 import { LazyAppBarCollab } from "../blocknote/lazy/collab";
 import { LazyDocPersistenceToggle } from "../blocknote/lazy/storage";
+import { DocTitle } from "./DocTitle";
 import { $settingsStore } from "./SettingsDialog";
 
-export default function AppBar() {
+export default function AppBar({ className }: { className?: string }) {
   const [theme, setTheme] = useTheme();
   const newPath = useResolvedPath("/new");
   const { frontmatter } = AppGlobals;
 
   return (
-    <Navbar isBordered className="bg-transparent" maxWidth="full">
-      <NavbarContent justify="start">
-        <NavbarBrand className="gap-4">
+    <Navbar className={cn("gap-2 flex z-50 w-full h-auto items-center justify-center data-[menu-open=true]:border-none sticky top-0 inset-x-0 border-b border-divider backdrop-blur-lg data-[menu-open=true]:backdrop-blur-xl backdrop-saturate-150 bg-transparent max-w-3xl mx-auto", className)}>
+      <NavbarContent>
+        <NavbarBrand className="gap-1 sm:gap-2">
           <Button
+            asChild
             title="Saved Documents"
-            isIconOnly
-            variant="light"
-            as="a"
-            href="/y-labs/app/drive/index.html"
+            variant="ghost"
             className="block flex items-center"
           >
-            <HardDriveIcon className="h-5 w-5" />
+            <a href="/y-labs/app/drive/index.html">
+              <HardDriveIcon className="h-5 w-5" />
+            </a>
           </Button>
 
           <Suspense>
@@ -52,57 +46,48 @@ export default function AppBar() {
           </Suspense>
         </NavbarBrand>
       </NavbarContent>
-      <NavbarContent as="div" className="items-center gap-2" justify="center">
+      <NavbarContent className="flex-1 items-center gap-2">
         <DocTitle />
       </NavbarContent>
-      <NavbarContent as="div" className="items-center gap-2" justify="end">
+      <NavbarContent className="items-center gap-2">
         <Suspense>
           <LazyAppBarCollab />
         </Suspense>
+        <MenuTrigger>
+          <AriaButton aria-label="Menu" size="icon" variant="outline" className="rounded-full">
+            <MoreVertical size={20} />
+          </AriaButton>
+          <MenuPopover>
+            <Menu>
+              <MenuItem href="#/new">
+                <FileText size={16} />
+                New Document                
+              </MenuItem>
+              <MenuItem
+                onAction={() => {
+                  setTheme(theme === "dark" ? "light" : "dark");
+                }}
+                className="flex items-center gap-2"
+              >
+                {
+                  theme === "light" 
+                    ? <Sun size={16} /> 
+                    : <Moon size={16} />
+                }
+                Change Theme
+              </MenuItem>
+              <MenuItem
+                onAction={() => {
+                  $settingsStore.setKey("show", true);
+                }}
+              >
+                <Settings size={16} />
+                Settings
+              </MenuItem>
+            </Menu>
+          </MenuPopover>
+        </MenuTrigger>
 
-        <Dropdown>
-          <DropdownTrigger>
-            <Button variant="light" isIconOnly>
-              <MoreVertical size={20} />
-            </Button>
-          </DropdownTrigger>
-          <DropdownMenu
-            aria-label="More Actions"
-            color="default"
-            selectionMode="none"
-          >
-            <DropdownItem
-              href={`#/new`}
-              key="newDoc"
-              endContent={<FileText size={16} />}
-            >
-              New Document
-            </DropdownItem>
-
-            <DropdownItem
-              key="toggleTheme"
-              endContent={
-                theme === "light" ? <Sun size={16} /> : <Moon size={16} />
-              }
-              closeOnSelect={false}
-              onPress={(e) => {
-                console.log("click");
-                setTheme(theme === "dark" ? "light" : "dark");
-              }}
-            >
-              Change Theme
-            </DropdownItem>
-            <DropdownItem
-              key="settings"
-              endContent={<Settings size={16} />}
-              onPress={() => {
-                $settingsStore.setKey("show", true);
-              }}
-            >
-              Settings
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
       </NavbarContent>
     </Navbar>
   );

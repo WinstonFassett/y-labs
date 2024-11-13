@@ -1,0 +1,9 @@
+---
+import { Button } from "@/components/ui/button";
+---
+
+<Button asChild={true}>
+  <a href={Astro.props.href}>
+    <slot />
+  </a>
+</Button>

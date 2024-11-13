@@ -47,7 +47,7 @@ export function TlDrawHost({ className }: { className?: string }) {
   }, [isDark]);
 
   return (
-    <div className={cn(className, "flex flex-col")}>
+    <div className={cn(className, "min-h-screen flex flex-col")}>
       <AppBar />
 
       {tld.status === "loading" && (

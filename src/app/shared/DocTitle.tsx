@@ -1,9 +1,9 @@
-import { Input } from "@nextui-org/react";
+import { Input } from "@/components/ui/input";
 import {
   useEffect,
   useState,
-  type ChangeEventHandler,
   type ChangeEvent,
+  type ChangeEventHandler,
 } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import type { YMapEvent } from "yjs";
@@ -45,15 +45,10 @@ export function DocTitle() {
   return (
     <>
       <Input
-        placeholder={ydoc.isLoaded ? "Untitled" : ""}
+        placeholder={"Add a Title"}
         value={pendingTitle}
-        size="sm"
-        className=""
-        classNames={{
-          input: "text-xl text-center",
-
-          inputWrapper: "bg-transparent",
-        }}
+        // size="sm"
+        className="text-xl text-center bg-transparent border-transparent hover:border-border"
         onBlur={(e) => {
           updateTitle(e as ChangeEvent<HTMLInputElement>);
         }}

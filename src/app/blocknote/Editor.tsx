@@ -1,4 +1,3 @@
-import { cn } from "@nextui-org/react";
 import { Suspense } from "react";
 import { useParams } from "react-router-dom";
 import AppBar from "../shared/AppBar";
@@ -7,6 +6,7 @@ import { useDocCollabStore } from "../shared/useDocCollabStore";
 import { useStore } from "@nanostores/react";
 import { atom } from "nanostores";
 import { getDocLoadState } from "../shared/store/doc-loader";
+import { cn } from "@/lib/utils";
 
 export function useDocParams() {
   const { docId } = useParams();
