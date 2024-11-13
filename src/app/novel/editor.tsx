@@ -1,7 +1,6 @@
 import { useStore } from "@nanostores/react";
 import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
-import { StarterKit } from "novel/extensions";
 import AppBar from "../shared/AppBar";
 import { getDocLoadState } from "../shared/store/doc-loader";
 import { user } from "../shared/store/local-user";
@@ -15,8 +14,8 @@ function Editor() {
   const provider = $room?.provider;
   const u = user.get();
   return (
-    <div className="h-full flex-1 flex flex-col max-w-3xl mx-auto">
-      <AppBar />
+    <div className="min-h-full flex-1 flex flex-col max-w-3xl mx-auto w-full">
+      <AppBar className="h-16" />
       {/* <p>{loadState}</p> */}
       <Novel
         disableHistory={true}

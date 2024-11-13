@@ -1,9 +1,10 @@
+import { Card, CardFooter, CardHeader } from "@/components/ui/card";
+import { cn } from "@/lib/utils.js";
 import { useStore } from "@nanostores/react";
-import { Card, CardBody, CardFooter, cn } from "@nextui-org/react";
 import { FileQuestionIcon } from "lucide-react";
-import { documentsStore } from "./store.ts";
-import { ImportDriveModal } from "./ImportDrive.tsx";
 import { CreateDocumentDialog } from "./CreateDocumentDialogButton.tsx";
+import { ImportDriveModal } from "./ImportDrive.tsx";
+import { documentsStore } from "./store.ts";
 
 const typeIconMap = {
   codemirror: (
@@ -65,7 +66,7 @@ function getDocUrl(name: string, type: string) {
     case "tldraw":
       return `/y-labs/app/tldraw/index.html#/edit/${name}`;
     default:
-      return null;
+      return undefined;
   }
 }
 const EmptyState = () => (
@@ -76,34 +77,35 @@ const EmptyState = () => (
 );
 
 export function CreateDocButtons() {
+  const base = "w-24 h-24 flex flex-col items-center justify-center transition-all shadow-medium hover:bg-secondary cursor-pointer  active:scale-[0.97]"
+  const body = "flex items-center justify-center flex-grow"
   return (
     <div>
       <p className="text-default-600 text-center">Create a new document:</p>
       <div className="gap-2 grid grid-cols-2 justify-items-center items-center mt-8">
         {docTypes.map((docType) => (
-          <Card
-            key={docType.href}
-            isPressable
-            isHoverable
-            as="a"
-            href={docType.href}
-            classNames={{
-              base: "w-24 h-24 flex flex-col items-center justify-center", // Adjust width and height as necessary
-              body: "flex items-center justify-center flex-grow",
-            }}
-          >
-            <CardBody>{docType.icon}</CardBody>
-            <CardFooter className="pt-0 text-xs flex justify-center">
-              {docType.label}
-            </CardFooter>
-          </Card>
+          <a href={docType.href}>
+            <Card
+              key={docType.href}
+              // isPressable
+              // isHoverable
+              className={cn(base, body)}  
+            >
+                <CardHeader className="items-center">
+                  {docType.icon}
+                </CardHeader>
+                <CardFooter className="text-sm">
+                  {docType.label}
+                </CardFooter>
+            </Card>
+          </a>
         ))}
       </div>
     </div>
   );
 }
 
-function DriveListing({ className }: { className?: string }) {
+function DriveListing() {
   const documents = useStore(documentsStore);
   if (!documents) {
     return <div>Loading...</div>;
@@ -112,28 +114,22 @@ function DriveListing({ className }: { className?: string }) {
     return <EmptyState />;
   }
   return (
-    <div className="flex-1 flex flex-col gap-2 p-2">
+    <div className="w-full max-w-3xl mx-auto  flex-1 flex flex-col gap-2 p-2">
       {documents.map((doc, index) => {
         const url = getDocUrl(doc.name, doc.type);
         if (!url) return null;
         return (
-          <Card
-            as="a"
-            isPressable
-            isHoverable
-            key={index}
-            radius="sm"
-            href={getDocUrl(doc.name, doc.type)}
-          >
-            <div className="w-full flex items-center p-4 gap-4">
-              <div className="flex-1 flex items-center gap-2">
-                {typeIconMap[doc.type] ?? typeIconMap["unknown"]}
-                <div className="text-sm font-semibold">
-                  {doc.title || "[Untitled]"}
+          <a key={doc.name} href={getDocUrl(doc.name, doc.type)}>
+            <Card className="transition-all text-foreground box-border shadow-medium rounded-small hover:bg-secondary cursor-pointer  active:scale-[0.97]">
+              <div className="w-full flex items-center p-4 gap-4">
+                <div className="flex-1 flex items-center gap-2">
+                  {typeIconMap[doc.type as keyof typeof typeIconMap] ?? typeIconMap["unknown"]}
+                  <div className="text-sm font-semibold">
+                    {doc.title || "[Untitled]"}
+                  </div>
+                  <div className="text-sm text-default-500">{doc.type}</div>
                 </div>
-                <div className="text-sm text-default-500">{doc.type}</div>
-              </div>
-              {/* <Tooltip content="Delete document" color="danger">
+                {/* <Tooltip content="Delete document" color="danger">
                 <Button
                   color="danger"
                   size="sm"
@@ -144,19 +140,20 @@ function DriveListing({ className }: { className?: string }) {
                   <TrashIcon size={"16"} />
                 </Button>
               </Tooltip> */}
-            </div>
-          </Card>
+              </div>
+            </Card>
+          </a>
         );
       })}
     </div>
   );
 }
 
-function Drive({ className }: { className: string }) {
+function Drive({ className }: { className?: string }) {
   return (
     <div className="flex flex-col min-h-screen">
-      <div className={cn("w-full flex-1 mx-auto relative")}>
-        <div className="max-w-3xl mx-auto h-full flex flex-col">
+      <div className={cn("w-full flex-1 mx-auto relative", className)}>
+        <div className="h-full flex flex-col">
           <DriveListing />
         </div>
       </div>

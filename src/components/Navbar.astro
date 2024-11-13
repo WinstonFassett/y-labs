@@ -1,0 +1,19 @@
+---
+import {
+  Navbar as NavbarContainer,
+  NavbarBrand,
+  NavbarContent,
+} from "@/components/ui/navbar";
+---
+
+<NavbarContainer>
+  <NavbarBrand>
+    <slot name="brand" />
+  </NavbarBrand>
+  <NavbarContent>
+    <slot />
+  </NavbarContent>
+  <NavbarContent>
+    <slot name="end" />
+  </NavbarContent>
+</NavbarContainer>

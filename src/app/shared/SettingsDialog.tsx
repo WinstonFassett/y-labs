@@ -1,27 +1,20 @@
-import React, { useState, type ReactNode } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
 import {
-  Button,
-  Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  Snippet,
-  Switch,
-  User,
-  useDisclosure,
-  Card,
-  CardBody,
-  CardHeader,
-} from "@nextui-org/react";
-import { $openaiApiKey, $openaiApiKey_masked } from "./store/secure-settings";
-import { $openAiConfigValid, validateOpenAiKey } from "./store/openai";
-import { map } from "nanostores";
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+} from "@/components/ui/dialog";
+import { type ReactNode } from "react";
+import { Controller, useForm } from "react-hook-form";
+
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { PasswordInput } from "@/components/ui/password-input";
 import { useStore } from "@nanostores/react";
-import { PasswordInput } from "@/lab/nextui/PasswordInput";
 import { CheckIcon, KeyRoundIcon, XIcon } from "lucide-react";
+import { map } from "nanostores";
+import { $openAiConfigValid, validateOpenAiKey } from "./store/openai";
+import { $openaiApiKey, $openaiApiKey_masked } from "./store/secure-settings";
 
 export const $settingsStore = map({
   show: false,
@@ -42,21 +35,21 @@ export function SettingsDialog() {
     getValues,
   } = useForm();
   return (
-    <Modal isOpen={open} onOpenChange={setOpen} placement="center">
-      <ModalContent>
-        <ModalHeader>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogContent>
+        <DialogHeader>
           <div>
             <h2 className="text-2xl font-bold">Settings</h2>
             {/* <p className="text-muted-foreground font-thin">
               Customize your experience.
             </p> */}
           </div>
-        </ModalHeader>
-        <ModalBody>
+        </DialogHeader>
+        <div>
           {/* <ThemeSettings /> */}
           <AiSettings />
-        </ModalBody>
-        <ModalFooter>
+        </div>
+        <DialogFooter>
           <Button
             type="reset"
             onClick={() => {
@@ -65,9 +58,9 @@ export function SettingsDialog() {
           >
             Close
           </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -97,9 +90,9 @@ function ThemeSettings() {
       <CardHeader>
         <CardTitle>Appearance</CardTitle>
       </CardHeader>
-      <CardBody>
+      <CardContent>
         <div>Theme</div>
-      </CardBody>
+      </CardContent>
     </Card>
   );
 }
@@ -107,14 +100,6 @@ function ThemeSettings() {
 function AiSettings() {
   return (
     <OpenApiKeySetting />
-    // <Card>
-    //   <CardHeader>
-    //     <CardTitle>AI Settings</CardTitle>
-    //   </CardHeader>
-    //   <CardBody>
-    //     <OpenApiKeySetting />
-    //   </CardBody>
-    // </Card>
   );
 }
 
@@ -137,8 +122,8 @@ function OpenApiKeySetting() {
           <div className="flex-1">Using: {openaiApiKeyMasked}</div>
           <Button
             size="sm"
-            color="danger"
-            isIconOnly
+            variant="destructive"
+            // isIconOnly
             onClick={() => {
               $openaiApiKey.set(undefined);
             }}
@@ -188,16 +173,16 @@ export function OpenAiKeyForm() {
             <div className="flex-1">
               <PasswordInput
                 {...field}
-                className="text-default-400"
+                // className="text-default-400"
                 value={field.value || ""}
-                isInvalid={!!errors.openaiApiKey}
-                isRequired
-                endContent={
-                  <KeyRoundIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                }
-                placeholder="Enter your OpenAI API Key"
-                variant="bordered"
-                errorMessage={errors?.openaiApiKey?.message as string}
+                // isInvalid={!!errors.openaiApiKey}
+                // isRequired
+                // endContent={
+                //   <KeyRoundIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                // }
+                // placeholder="Enter your OpenAI API Key"
+                // variant="bordered"
+                // errorMessage={errors?.openaiApiKey?.message as string}
               />
             </div>
           )}
@@ -205,7 +190,7 @@ export function OpenAiKeyForm() {
         <Button size="sm" color="primary" type="submit" isIconOnly>
           <CheckIcon />
         </Button>
-        <Button size="sm" type="reset" isIconOnly onClick={reset}>
+        <Button size="sm" type="reset" variant="destructive" isIconOnly onClick={reset}>
           <XIcon />
         </Button>
       </div>

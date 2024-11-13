@@ -1,324 +1,423 @@
-import { useStore } from "@nanostores/react";
+import { Button } from "@/components/ui/button";
+import { Button as AriaButton } from "@/components/ui/aria-button";
+import { CopyButton } from "@/components/ui/copy-button";
 import {
-  Button,
-  Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  Snippet,
-  Switch,
-  User,
-  useDisclosure,
-} from "@nextui-org/react";
-import { KeyRoundIcon, Share2Icon } from "lucide-react";
-import { atom } from "nanostores";
-import { useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { PasswordInput } from "../../lab/nextui/PasswordInput";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogOverlay,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/aria-dialog";
 import {
-  getDocRoomConfig,
-  latestDocRoom,
-  type DocRoomConfigFields,
-} from "./store/doc-room-config";
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { PasswordInput } from "@/components/ui/password-input";
 import {
-  getTrysteroDocRoom,
-  type OnlineDocRoomFields,
-} from "./store/trystero-doc-room";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { AnimatePresence, motion } from "framer-motion";
+import { Check, Copy, Share2, Share2Icon, StopCircle } from "lucide-react";
+import { useRef, useState } from "react";
+import { useForm, useFormContext } from "react-hook-form";
+import { z } from "zod";
 import { generateId } from "./generateId";
+import { RoomConfigSchema, getDocRoomConfig } from "./store/doc-room-config";
+import { useDocCollabStore } from "./useDocCollabStore";
+import { useStoreIfPresent } from "./useStoreIfPresent";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { TextField } from "@/components/ui/aria-textfield";
 
 export function ShareDialog() {
-  const { docId } = useParams();
-  const { isOpen, onOpen, onOpenChange } = useDisclosure({});
-  const [searchParams, setSearchParams] = useSearchParams();
-  const roomId = searchParams.get("roomId");
-  // if (!roomId) console.warn("No room id specified");
-  if (!docId) throw new Error("No document id specified");
-  const {
-    register,
-    trigger,
-    reset,
-    handleSubmit,
-    watch,
-    formState: { errors },
-    control,
-    setValue,
-    getValues,
-  } = useForm();
+  const [isOpen, setIsOpen] = useState(false);
+  const { docId, roomId, $roomConfig, startSharing, stopSharing } =
+    useDocCollabStore();
 
-  const $config = roomId
-    ? getDocRoomConfig(docId, roomId, {
-        encrypt: false,
-        enabled: true,
-        password: undefined,
-      })
-    : undefined;
-  let currentConfig = useStore($config || atom()) as
-    | DocRoomConfigFields
-    | undefined;
 
-  const isSharing = !!roomId && currentConfig?.enabled;
-
-  const $collabRoom = roomId ? getTrysteroDocRoom(docId!, roomId!) : undefined;
-  const collabRoom = useStore($collabRoom || atom({} as OnlineDocRoomFields));
-  const awarenessUsers = useStore(
-    $collabRoom?.$awarenessStates ?? atom(new Map()),
-  );
-  const awarenessClientID = $collabRoom?.provider?.awareness.clientID;
-  const peers = collabRoom?.peerIds ?? [];
-  const navigate = useNavigate();
-  const password = currentConfig?.password;
-  const encrypt = currentConfig?.encrypt;
+  const roomConfigMaybe = useStoreIfPresent($roomConfig);
+  const isSharing = roomConfigMaybe?.enabled ?? false;
+  // const isSharing = $roomConfig?.get().enabled ?? false;
   const actionLabel = isSharing ? "Sharing" : "Share";
+  const [searchParams] = useSearchParams();
+  const roomParameter = searchParams.get("roomId");
+  const navigate = useNavigate();
+  const form = useForm<z.infer<typeof RoomConfigSchema>>({
+    resolver: zodResolver(RoomConfigSchema),
+    defaultValues: async () => ({
+      docId,
+      roomId: roomParameter || generateId(),
+      enabled: roomConfigMaybe?.enabled ?? false,
+      encrypt: roomConfigMaybe?.encrypt ?? false,
+      password: roomConfigMaybe?.password ?? generateId(),
+      accessLevel: "edit",
+    }),
+  });
+  const onSubmit = form.handleSubmit(
+    (data) => {
+      const { roomId, docId } = data;
+      startSharing({
+        ...$roomConfig?.get(),
+        ...data,
+      });
+      handleCopyLink();
+      if (roomParameter !== roomId) {
+        navigate(`?roomId=${roomId}`);
+      }
+    },
+    (errors) => {
+      console.log({ errors });
+    },
+  );
+  const [linkCopied, setLinkCopied] = useState(false);
+  const handleCopyLink = async () => {
+    const roomId = form.getValues("roomId");
+    const $roomConfig = getDocRoomConfig(docId, roomId);
+    const sharingLink = $roomConfig?.$sharingLink.get();
+    if (sharingLink && navigator.clipboard){
+      await navigator.clipboard?.writeText(sharingLink);
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2000);
+    } else {
+      console.warn("Clipboard API not available");
+      console.log('sharingLink', sharingLink);
+    }
+  };
 
-  // TODO: improve this
-  useEffect(() => {
-    setValue("roomId", roomId || latestDocRoom.get()[docId!]);
-  }, [roomId]);
-  useEffect(() => {
-    setValue("password", password);
-  }, [password]);
-  useEffect(() => {
-    setValue("encrypt", encrypt);
-  }, [encrypt]);
-  watch();
+  const formRef = useRef<HTMLFormElement>(null);
+  const switchRef = useRef<any>(null);
+
+  return (
+      <DialogTrigger>
+        <AriaButton
+          variant={isSharing ? "warning" : "outline"}
+          className="w-auto px-4  border-2 rounded-xl"
+        >
+          <div className="sr-only sm:not-sr-only !pr-1">{actionLabel}</div>
+          <Share2Icon className="h-5 w-5" />
+        </AriaButton>        
+        <DialogOverlay>
+          <DialogContent className="">
+            {({ close }) => (
+              <>
+                <Form {...form}>
+                  <form ref={formRef} onSubmit={onSubmit}>
+                    <DialogHeader>
+                      <DialogTitle>Share</DialogTitle>
+                      <DialogDescription>
+                        Share with people to collaborate in realtime
+                      </DialogDescription>
+                    </DialogHeader>
+
+                    <div className="py-4 gap-6 space-y-4">
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="sharing-toggle">
+                          Sharing is {isSharing ? "on" : "off"}
+                        </Label>
+                        <Switch
+                          id="sharing-toggle"
+                          ref={switchRef}
+                          checked={isSharing}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              formRef.current?.requestSubmit();
+                            } else {
+                              stopSharing();
+                            }
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <SharingConfiguration isSharing={isSharing} />
+
+                    <DialogFooter className="pt-4">
+                      <SharingActions
+                        isSharing={isSharing}
+                        stopSharing={stopSharing}
+                        handleCopyLink={handleCopyLink}
+                        linkCopied={linkCopied}
+                      />
+                    </DialogFooter>
+                  </form>
+                </Form>
+              </>
+            )}
+          </DialogContent>
+        </DialogOverlay>
+    </DialogTrigger>
+
+  );
+}
+
+function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
+  const form = useFormContext<z.infer<typeof RoomConfigSchema>>();
+  const isEncrypted = form.watch("encrypt");
+  const { errors } = form.formState;
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <div
+            className={cn(
+              `space-y-4 rounded-md p-4`,
+              !isSharing && "bg-muted/50",
+            )}
+          >
+            <FormField
+              control={form.control}
+              name="roomId"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel>Room*</FormLabel>
+                    <div className="flex items-center gap-2">
+                      <FormControl>
+                        <Input {...field} readOnly={isSharing} />
+                      </FormControl>
+                      <CopyButton value={field.value} label="room" />
+                    </div>
+                    <FormDescription />
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+            <FormField
+              control={form.control}
+              name="accessLevel"
+              disabled={isSharing}
+              render={({ field }) => {
+                return (
+                  <FormItem className="flex items-center justify-between">
+                    <FormLabel>
+                      Anyone with the link can{" "}
+                      {form.watch("accessLevel") === "view" ? "view" : "edit"}
+                    </FormLabel>
+                    <Select {...field} disabled={isSharing} onValueChange={field.onChange}>
+                      <SelectTrigger className="w-[100px]">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="view">View</SelectItem>
+                        <SelectItem value="edit">Edit</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                );
+              }}
+            />
+
+            <FormField
+              control={form.control}
+              name="encrypt"
+              render={({ field }) => {
+                const { value, onChange, ...rest } = field;
+
+                return (
+                  <FormItem className="flex items-center justify-between">
+                    <FormLabel>
+                      Encrypt communication
+                    </FormLabel>
+                    <Switch
+                      {...rest}
+                      disabled={isSharing}
+                      checked={value}
+                      onCheckedChange={onChange}
+                    />
+                  </FormItem>
+                );
+              }}
+            />
+
+            <AnimatePresence>
+              {isEncrypted && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className=""
+                >
+                  <FormField
+                    control={form.control}
+                    name="password"                    
+                    render={({ field }) => {
+                      return (
+                        <FormItem>
+                          <FormLabel>Password{isEncrypted && "*"}</FormLabel>
+                          <FormControl>
+                            <PasswordInput {...field} readOnly={isSharing} />
+                          </FormControl>
+                          <FormDescription />
+                          <FormMessage />                          
+                        </FormItem>
+                      );
+                    }}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </TooltipTrigger>
+        {isSharing && (
+          <TooltipContent>
+            <p>Stop sharing to edit configuration</p>
+          </TooltipContent>
+        )}
+      </Tooltip>
+    </TooltipProvider>
+  );
+}
+
+function SharingActions({
+  isSharing,
+  stopSharing,
+  handleCopyLink,
+  linkCopied,
+}: {
+  isSharing: boolean;
+  stopSharing: () => void;
+  linkCopied: boolean;
+  handleCopyLink: () => void;
+}) {
   return (
     <>
-      <Button
-        variant={isSharing ? "solid" : "ghost"}
-        color={isSharing ? "warning" : "primary"}
-        onPress={onOpen}
-        isIconOnly={true}
-        className="w-auto px-4"
-      >
-        <div className="sr-only sm:not-sr-only !pr-1">{actionLabel}</div>
-        <Share2Icon className="h-5 w-5" />
-      </Button>
-      <Modal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        placement="top"
-        classNames={{
-          wrapper: "z-[500]",
-          backdrop: "z-[500]",
-        }}
-      >
-        <ModalContent>
-          {(onClose) => (
-            <form
-              onSubmit={handleSubmit((data) => {
-                if ($config) {
-                  $config.set({
-                    ...currentConfig,
-                    ...data,
-                    enabled: true,
-                  } as any);
-                } else {
-                  const { roomId, password } = data;
-                  navigate(
-                    `/edit/${docId}?roomId=${roomId}${password ? `&encrypt&x=${password}` : ""}`,
-                  );
-                }
-                // // onClose();
-              })}
-              noValidate
+      <AnimatePresence mode="wait">
+        {isSharing && (
+          <motion.div
+            key="copy-link"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Button
+              type="button"
+              onClick={handleCopyLink}
+              variant="outline"
+              className="relative"
             >
-              <>
-                <ModalHeader className="flex flex-col gap-1">
-                  {actionLabel}
-                </ModalHeader>
-                <ModalBody className="gap-6">
-                  {
-                    <>
-                      {!isSharing && (
-                        <Controller
-                          name="roomId"
-                          defaultValue={
-                            roomId ??
-                            latestDocRoom.get()[docId!] ??
-                            generateId()
-                          }
-                          rules={{ required: true }}
-                          control={control}
-                          render={({ field }) => (
-                            <div>
-                              <Input
-                                {...field}
-                                value={field.value || ""}
-                                isDisabled={isSharing}
-                                isRequired
-                                isInvalid={!!errors.roomId}
-                                errorMessage={
-                                  errors.roomId && "Room name is required"
-                                }
-                                label="Room"
-                                placeholder="Enter a room name to connect to"
-                                variant="bordered"
-                              />
-                            </div>
-                          )}
-                        ></Controller>
-                      )}
-                      <Controller
-                        name="encrypt"
-                        defaultValue={encrypt ?? false}
-                        control={control}
-                        render={({ field }) => (
-                          <Switch
-                            isSelected={field.value}
-                            isDisabled={isSharing}
-                            onValueChange={(v) => {
-                              setValue("encrypt", v);
-                            }}
-                          >
-                            Encrypt communication
-                          </Switch>
-                        )}
-                      ></Controller>
-                      {!isSharing && getValues().encrypt && (
-                        <Controller
-                          name="password"
-                          defaultValue={password || generateId()}
-                          rules={{ required: true }}
-                          control={control}
-                          render={({ field }) => (
-                            <div>
-                              <PasswordInput
-                                {...field}
-                                className="text-default-400"
-                                value={field.value || ""}
-                                isDisabled={isSharing}
-                                isInvalid={!!errors.password}
-                                isRequired
-                                endContent={
-                                  <KeyRoundIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                                }
-                                label="Password"
-                                placeholder="Enter a password to enable encryption"
-                                variant="bordered"
-                              />
-                            </div>
-                          )}
-                        ></Controller>
-                      )}
-                    </>
-                  }
-                  {!!isSharing && (
-                    <>
-                      <div>
-                        <p className="my-2">Sharing Link:</p>
-                        <div className="">
-                          <Snippet
-                            size="lg"
-                            symbol=""
-                            variant="flat"
-                            color="primary"
-                            classNames={{
-                              base: "text-xs max-w-full",
-                              pre: "overflow-hidden",
-                            }}
-                          >
-                            {[
-                              window.location.protocol,
-                              "//",
-                              window.location.host,
-                              window.location.pathname,
-                              "#/edit/",
-                              docId,
-                              "?roomId=",
-                              roomId,
-                              password ? `&x=${password}` : "",
-                            ].join("")}
-                          </Snippet>
-                        </div>
-                      </div>
-                      <div>
-                        <div>
-                          {(awarenessUsers?.size ?? 1) - 1} peers connected
-                        </div>
-                        {!!awarenessUsers &&
-                          Array.from(awarenessUsers).map(
-                            ([peerId, awareness]) => {
-                              console.log("awareness", peerId, awareness);
-                              const data = awareness.presence ?? awareness.user;
-                              if (!data) {
-                                return (
-                                  <div key={peerId}>
-                                    Missing data {peerId}:{" "}
-                                    {JSON.stringify(data)}
-                                  </div>
-                                );
-                              }
-                              const { userName, color } = data;
-
-                              const isYou = peerId === awarenessClientID;
-                              if (isYou) return null;
-                              return (
-                                <div key={peerId}>
-                                  <User
-                                    className="py-4"
-                                    key={peerId}
-                                    name={
-                                      userName ? (
-                                        <UserName {...{ userName, color }} />
-                                      ) : (
-                                        peerId
-                                      )
-                                    }
-                                    description={
-                                      isYou
-                                        ? "YOU"
-                                        : userName
-                                          ? undefined
-                                          : JSON.stringify(awareness)
-                                      //"Anonymous"
-                                    }
-                                    avatarProps={{
-                                      // src: `https://i.pravatar.cc/150?u=${peerId}`,
-                                      src: `https://avatar.vercel.sh/${userName}?size=32`,
-                                    }}
-                                  />
-                                </div>
-                              );
-                            },
-                          )}
-                      </div>
-                    </>
-                  )}
-                </ModalBody>
-                <ModalFooter>
-                  <Button variant="light" onPress={onClose}>
-                    Close
-                  </Button>
-                  {isSharing ? (
-                    <Button
-                      color="danger"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        $config?.setKey("enabled", false);
-                        $collabRoom?.disconnect();
-                        navigate(`/edit/${docId}`);
-                      }}
-                    >
-                      Stop Sharing
-                    </Button>
-                  ) : (
-                    <Button color="primary" type="submit">
-                      Share
-                    </Button>
-                  )}
-                </ModalFooter>
-              </>
-            </form>
-          )}
-        </ModalContent>
-      </Modal>
+              <AnimatePresence mode="wait">
+                {linkCopied ? (
+                  <motion.div
+                    key="check"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    exit={{ scale: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Check className="h-4 w-4 text-green-500" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="copy"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    exit={{ scale: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Copy className="h-4 w-4" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              <span className="ml-2 min-w-24">
+                {linkCopied ? "Link Copied!" : "Copy Link"}
+              </span>
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <div className="flex-grow" />
+      <AnimatePresence mode="wait">
+        {isSharing ? (
+          <motion.div
+            key="stop-sharing"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Button
+              type="button"
+              onClick={() => stopSharing()}
+              variant="destructive"
+            >
+              <StopCircle className="mr-2 h-4 w-4" />
+              Stop Sharing
+            </Button>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="share-now"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Button type="submit">
+              <Share2 className="mr-2 h-4 w-4" />
+              Share Now
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
 
-function UserName({ userName, color }: { userName: string; color: string }) {
-  return <span style={{ color }}>{userName}</span>;
+function  ModalDemo() {
+  return (
+    <DialogTrigger>
+      <AriaButton variant="outline">Sign up...</AriaButton>
+      <DialogOverlay>
+        <DialogContent className="sm:max-w-[425px]">
+          {({ close }) => (
+            <>
+              <DialogHeader>
+                <DialogTitle>Sign up</DialogTitle>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <TextField autoFocus>
+                  <Label>First Name</Label>
+                  <Input />
+                </TextField>
+                <TextField>
+                  <Label>Last Name</Label>
+                  <Input />
+                </TextField>
+              </div>
+              <DialogFooter>
+                <Button onClick={close} type="submit">
+                  Save changes
+                </Button>
+              </DialogFooter>
+            </>
+          )}
+        </DialogContent>
+      </DialogOverlay>
+    </DialogTrigger>
+  )
 }

@@ -1,16 +1,18 @@
 ---
 import ThemeSwitch from "@/lib/astro-tailwind-themes/ThemeSwitch.svelte";
-import Navbar from "@/components/NextuiNavbar.astro";
+import Navbar from "@/components/Navbar.astro";
 import logoRaw from "../../public/lab-icon.svg?raw";
-import LinkButton from "@/components/NextuiLinkButton.astro";
+import LinkButton from "@/components/LinkButton.astro";
 import { SITE_TITLE } from "@/consts";
 ---
 
 <Navbar maxWidth="full">
-  <h2 slot="brand">
+  <h2 slot="brand" class="flex">
     <LinkButton variant="light" href="/y-labs/index.html">
-      <span set:html={logoRaw} class="h-6 w-6" />
-      <h2>{SITE_TITLE}</h2>
+      <div class="flex">
+        <div set:html={logoRaw} class="h-6 w-6" />
+        <h2>{SITE_TITLE}</h2>
+      </div>
     </LinkButton>
   </h2>
   <div slot="end">

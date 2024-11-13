@@ -1,10 +1,10 @@
-import { Button } from "@nextui-org/react";
+import { Button } from "@/components/ui/button";
 import * as Y from "yjs";
 import { getOfflineDoc } from "../shared/store/local-yjs-idb";
 import { resolveShare } from "../shared/store/resolveShare";
 
 export function ExportDriveButton() {
-  return <Button onPress={doExport}>Export Drive</Button>;
+  return <Button onClick={doExport}>Export Drive</Button>;
 }
 
 export async function doExport() {

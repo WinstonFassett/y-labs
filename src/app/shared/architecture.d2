@@ -1,0 +1,42 @@
+direction: up
+shareDialog -> useSearchParams
+# shareDialog -> getDocRoomConfig
+# shareDialog -> getTrysteroDocRoom
+shareDialog -> useDocCollabStore
+
+getDocRoomConfig -> docRoomConfigsT
+getTrysteroDocRoom -> trysteroDocRoomT
+trysteroDocRoomT -> getDocRoomConfig
+
+docRoomConfigsT -> roomConfigsByDocId
+
+useDocCollabStore -> useDocParams -> useRouteParams
+useDocCollabStore -> getTrysteroDocRoom
+useDocCollabStore -> useSearchParams
+useDocCollabStore -> useYDoc -> getYDoc
+
+Widgets -> useDocCollabStore
+
+getYDoc -> ydocsT
+
+getDocLoadState -> docLoadStateT
+
+docLoadStateT -> getTrysteroDocRoom
+docLoadStateT -> getDocRoomConfig
+docLoadStateT -> getDocIdbStore
+docLoadStateT -> getYDoc
+
+Editors -> getDocLoadState
+Editors: {
+}
+Editors -> Widgets
+
+Widgets: {
+  grid-columns: 3
+  Novel
+  CodeMirror
+  TlDraw
+  BlockNote
+  DocTitle
+  AppBarCollab
+}

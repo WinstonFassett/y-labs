@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { cn } from "@/lib/utils";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
-import { cn } from "@nextui-org/react";
 
 export interface VisibilityProps {
   visible: boolean;
