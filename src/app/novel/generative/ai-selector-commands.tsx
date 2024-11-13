@@ -8,7 +8,7 @@ import {
   WrapText,
 } from "lucide-react";
 import { useEditor } from "novel";
-import { getPrevText } from "novel/extensions";
+import { getPrevText } from "novel/utils";
 
 const options = [
   {
