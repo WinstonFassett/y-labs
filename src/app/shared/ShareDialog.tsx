@@ -70,7 +70,7 @@ export function ShareDialog() {
       docId,
       roomId: roomParameter || generateId(),
       enabled: roomConfigMaybe?.enabled ?? false,
-      encrypt: roomConfigMaybe?.encrypt ?? false,
+      encrypt: roomConfigMaybe?.encrypt ?? true,
       password: roomConfigMaybe?.password ?? generateId(),
       accessLevel: "edit",
     }),
@@ -263,13 +263,15 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
                 >
                   <FormField
                     control={form.control}
-                    name="password"                    
+                    name="password"
                     render={({ field }) => {
                       return (
                         <FormItem>
                           <FormLabel>Password{isEncrypted && "*"}</FormLabel>
                           <FormControl>
-                            <PasswordInput {...field} readOnly={isSharing} />
+                            <div>
+                              <PasswordInput {...field} value={field.value ?? ""} readOnly={isSharing} />
+                            </div>
                           </FormControl>
                           <FormDescription />
                           <FormMessage />                          
@@ -304,53 +306,54 @@ function SharingActions({
   handleCopyLink: () => void;
 }) {
   return (
-    <>
-      <AnimatePresence mode="wait">
-        {isSharing && (
-          <motion.div
-            key="copy-link"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <Button
-              type="button"
-              onClick={handleCopyLink}
-              variant="outline"
-              className="relative"
+    <div className="flex flex-row items-center">
+      <div className="flex-1">
+        <AnimatePresence mode="wait">
+          {isSharing && (
+            <motion.div
+              key="copy-link"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
             >
-              <AnimatePresence mode="wait">
-                {linkCopied ? (
-                  <motion.div
-                    key="check"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    exit={{ scale: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Check className="h-4 w-4 text-green-500" />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="copy"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    exit={{ scale: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Copy className="h-4 w-4" />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-              <span className="ml-2 min-w-24">
-                {linkCopied ? "Link Copied!" : "Copy Link"}
-              </span>
-            </Button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      <div className="flex-grow" />
+              <Button
+                type="button"
+                onClick={handleCopyLink}
+                variant="outline"
+                className="relative"
+              >
+                <AnimatePresence mode="wait">
+                  {linkCopied ? (
+                    <motion.div
+                      key="check"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      exit={{ scale: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Check className="h-4 w-4 text-green-500" />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="copy"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      exit={{ scale: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Copy className="h-4 w-4" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                <span className="ml-2 min-w-24">
+                  {linkCopied ? "Link Copied!" : "Copy Link"}
+                </span>
+              </Button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
       <AnimatePresence mode="wait">
         {isSharing ? (
           <motion.div
@@ -384,7 +387,7 @@ function SharingActions({
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </div>
   );
 }
 
