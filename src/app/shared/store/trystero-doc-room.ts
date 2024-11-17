@@ -100,6 +100,10 @@ function createTrysteroDocRoom(
     }
   });
 
+  provider.on("peers", ({ added, removed }:{removed: string[], added: string[]}) => {
+    store.setKey("peerIds", store.get().peerIds.concat(added).filter((it) => !removed.includes(it)));
+  })
+
   function disconnect() {
     unsubUser();
     const { provider, room } = model;

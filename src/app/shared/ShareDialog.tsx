@@ -417,7 +417,7 @@ function UserList({
   awarenessClientID: number | undefined;
 }) {
   const userAwareness = isSharing && (awarenessUsers as Map<any, any>)?.get(awarenessClientID);
-  const connectedCount= awarenessUsers?.size > 0 ? awarenessUsers?.size - 1 : 0
+  const connectedCount= awarenessUsers?.size > 1 ? awarenessUsers?.size - 1 : 0
   return (
     <div>
       {isSharing && userAwareness ? <div>
