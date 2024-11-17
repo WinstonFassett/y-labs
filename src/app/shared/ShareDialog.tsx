@@ -414,6 +414,7 @@ function UserList({
   awarenessClientID: number | undefined;
 }) {
   const userAwareness = (awarenessUsers as Map<any, any>).get(awarenessClientID);
+  const connectedCount= awarenessUsers?.size > 0 ? awarenessUsers?.size - 1 : 0
   return (
     <div>
       <div>
@@ -428,10 +429,10 @@ function UserList({
           }}
         />
       </div>
-      <div>{(awarenessUsers?.size ?? 1) - 1} peer{awarenessUsers?.size > 2 ? 's':''} connected</div>
+      <div>{connectedCount} peer{connectedCount !== 1 ? 's':''} connected</div>
       {!!awarenessUsers &&
         Array.from(awarenessUsers).map(([peerId, awareness]) => {
-          console.log("awareness", peerId, awareness);
+          // console.log("awareness", peerId, awareness);
           const data = awareness.presence ?? awareness.user;
           if (!data) {
             return (
@@ -443,8 +444,8 @@ function UserList({
           const { userName, color } = data;
 
           const isYou = peerId === awarenessClientID;
-          if (isYou) return null;
-  return (
+          if (isYou) return <div key={peerId}></div>;
+          return (
             <div key={peerId}>
               <User
                 className="py-4"

@@ -104,6 +104,7 @@ function createTrysteroDocRoom(
     unsubUser();
     const { provider, room } = model;
     trysteroRoom.leave();
+    $awarenessStates.set(new Map());
     (trysteroRoom as any).leftAt = new Date();
     console.log("left", trysteroRoom);
     provider.destroy();
