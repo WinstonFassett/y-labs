@@ -41,7 +41,7 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Copy, Share2, Share2Icon, StopCircle } from "lucide-react";
-import { useRef, useState } from "react";
+import { forwardRef, useRef, useState } from "react";
 import { useForm, useFormContext } from "react-hook-form";
 import { z } from "zod";
 import { generateId } from "./generateId";
@@ -50,14 +50,23 @@ import { useDocCollabStore } from "./useDocCollabStore";
 import { useStoreIfPresent } from "./useStoreIfPresent";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { TextField } from "@/components/ui/aria-textfield";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useStore } from "@nanostores/react";
 
 export function ShareDialog() {
   const [isOpen, setIsOpen] = useState(false);
-  const { docId, roomId, $roomConfig, startSharing, stopSharing } =
+  const { docId, roomId, $room, $roomConfig, startSharing, stopSharing } =
     useDocCollabStore();
 
 
   const roomConfigMaybe = useStoreIfPresent($roomConfig);
+  const roomMaybe = useStoreIfPresent($room);
+  const awarenessUsers = useStoreIfPresent(
+    $room?.$awarenessStates
+  );
+  const awarenessClientID = $room?.provider?.awareness.clientID;
+  const collabRoom = $room?.room;
+  const peers = roomMaybe?.peerIds
   const isSharing = roomConfigMaybe?.enabled ?? false;
   // const isSharing = $roomConfig?.get().enabled ?? false;
   const actionLabel = isSharing ? "Sharing" : "Share";
@@ -70,7 +79,7 @@ export function ShareDialog() {
       docId,
       roomId: roomParameter || generateId(),
       enabled: roomConfigMaybe?.enabled ?? false,
-      encrypt: roomConfigMaybe?.encrypt ?? true,
+      encrypt: (roomConfigMaybe?.encrypt === true || roomConfigMaybe?.password != '') ?? true,
       password: roomConfigMaybe?.password ?? generateId(),
       accessLevel: "edit",
     }),
@@ -152,6 +161,11 @@ export function ShareDialog() {
                     </div>
 
                     <SharingConfiguration isSharing={isSharing} />
+
+                    <UserList
+                      awarenessUsers={awarenessUsers}
+                      awarenessClientID={awarenessClientID}
+                    />
 
                     <DialogFooter className="pt-4">
                       <SharingActions
@@ -391,36 +405,99 @@ function SharingActions({
   );
 }
 
-function  ModalDemo() {
+
+function UserList({
+  awarenessUsers,
+  awarenessClientID,
+}: {
+  awarenessUsers: Map<string, any> | Map<any, any>;
+  awarenessClientID: number | undefined;
+}) {
+  const userAwareness = (awarenessUsers as Map<any, any>).get(awarenessClientID);
   return (
-    <DialogTrigger>
-      <AriaButton variant="outline">Sign up...</AriaButton>
-      <DialogOverlay>
-        <DialogContent className="sm:max-w-[425px]">
-          {({ close }) => (
-            <>
-              <DialogHeader>
-                <DialogTitle>Sign up</DialogTitle>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <TextField autoFocus>
-                  <Label>First Name</Label>
-                  <Input />
-                </TextField>
-                <TextField>
-                  <Label>Last Name</Label>
-                  <Input />
-                </TextField>
-              </div>
-              <DialogFooter>
-                <Button onClick={close} type="submit">
-                  Save changes
-                </Button>
-              </DialogFooter>
-            </>
-          )}
-        </DialogContent>
-      </DialogOverlay>
-    </DialogTrigger>
-  )
+    <div>
+      <div>
+        <div>
+          You are sharing as: 
+        </div>
+        <User 
+          name={userAwareness?.user?.userName ?? "Anonymous"}
+          description="YOU"
+          avatarProps={{
+            src: `https://avatar.vercel.sh/${userAwareness?.user?.userName}?size=32`,
+          }}
+        />
+      </div>
+      <div>{(awarenessUsers?.size ?? 1) - 1} peer{awarenessUsers?.size > 2 ? 's':''} connected</div>
+      {!!awarenessUsers &&
+        Array.from(awarenessUsers).map(([peerId, awareness]) => {
+          console.log("awareness", peerId, awareness);
+          const data = awareness.presence ?? awareness.user;
+          if (!data) {
+            return (
+              <div key={peerId}>
+                Missing data {peerId}: {JSON.stringify(data)}
+    </div>
+  );
 }
+          const { userName, color } = data;
+
+          const isYou = peerId === awarenessClientID;
+          if (isYou) return null;
+  return (
+            <div key={peerId}>
+              <User
+                className="py-4"
+                key={peerId}
+                name={userName ? <UserName {...{ userName, color }} /> : peerId}
+                description={
+                  isYou
+                    ? "YOU"
+                    : userName
+                      ? undefined
+                      : JSON.stringify(awareness)
+                  //"Anonymous"
+                }
+                avatarProps={{
+                  // src: `https://i.pravatar.cc/150?u=${peerId}`,
+                  src: `https://avatar.vercel.sh/${userName}?size=32`,
+                }}
+              />
+            </div>
+          );
+        })}
+              </div>
+  );
+}
+
+
+function UserName({ userName, color }: { userName: string; color: string }) {
+  return <span style={{ color }}>{userName}</span>;
+}
+
+interface UserProps extends React.HTMLAttributes<HTMLDivElement> {
+  name?: string;
+  description?: string;
+  avatarProps?: { src: string };
+}
+
+const User = forwardRef<HTMLDivElement, UserProps>(
+  ({ className, avatarProps, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn("flex flex-col space-y-1.5 p-6", className)}
+      {...props}
+    >
+      <div className="flex items-center gap-2">
+        <Avatar>
+          <AvatarImage {...avatarProps} />
+          <AvatarFallback>?</AvatarFallback>
+        </Avatar>
+        <div className="flex flex-col">
+          <div className="text-sm font-semibold">{props.name}</div>
+          <div className="text-xs text-default-500">{props.description}</div>
+        </div>
+      </div>
+    </div>
+  ),
+);
