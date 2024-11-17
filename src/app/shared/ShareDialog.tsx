@@ -163,6 +163,7 @@ export function ShareDialog() {
                     <SharingConfiguration isSharing={isSharing} />
 
                     <UserList
+                      isSharing={isSharing}
                       awarenessUsers={awarenessUsers}
                       awarenessClientID={awarenessClientID}
                     />
@@ -407,17 +408,19 @@ function SharingActions({
 
 
 function UserList({
+  isSharing,
   awarenessUsers,
   awarenessClientID,
 }: {
+  isSharing: boolean;
   awarenessUsers: Map<string, any> | Map<any, any>;
   awarenessClientID: number | undefined;
 }) {
-  const userAwareness = (awarenessUsers as Map<any, any>).get(awarenessClientID);
+  const userAwareness = isSharing && (awarenessUsers as Map<any, any>)?.get(awarenessClientID);
   const connectedCount= awarenessUsers?.size > 0 ? awarenessUsers?.size - 1 : 0
   return (
     <div>
-      <div>
+      {isSharing && userAwareness ? <div>
         <div>
           You are sharing as: 
         </div>
@@ -428,9 +431,9 @@ function UserList({
             src: `https://avatar.vercel.sh/${userAwareness?.user?.userName}?size=32`,
           }}
         />
-      </div>
+      </div> : null}
       <div>{connectedCount} peer{connectedCount !== 1 ? 's':''} connected</div>
-      {!!awarenessUsers &&
+      {isSharing && !!awarenessUsers &&
         Array.from(awarenessUsers).map(([peerId, awareness]) => {
           // console.log("awareness", peerId, awareness);
           const data = awareness.presence ?? awareness.user;

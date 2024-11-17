@@ -107,8 +107,12 @@ function createTrysteroDocRoom(
     $awarenessStates.set(new Map());
     (trysteroRoom as any).leftAt = new Date();
     console.log("left", trysteroRoom);
+
     provider.destroy();
     store.setKey("peerIds", []);
+
+    // delete from cache
+    (trysteroDocRoomT as any).evict(docRoomId);
   }
   const model = Object.assign(store, {
     y,
