@@ -16,7 +16,7 @@ export function AppBarCollab() {
   const awarenessUsers = useStoreIfPresent($room?.$awarenessStates);
   return (
     <>
-      { !isSharing ? <></> : Array.from(awarenessUsers).map(([peerId, entry]) => {
+      { !isSharing ? <></> : Array.from(awarenessUsers??[]).map(([peerId, entry]) => {
         const isYou = peerId === awarenessClientID;
         if (isYou) return <div></div>;
         const {

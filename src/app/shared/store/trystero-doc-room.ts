@@ -10,7 +10,7 @@ import {
 import { selfId, type Room } from "trystero";
 import type { Doc } from "yjs";
 import { createRoom } from "../createRoom";
-import { getDocRoomConfig, type DocRoomConfigFields } from "./doc-room-config";
+import { getDocRoomConfig, type DocRoomConfigFields, roomConfigsByDocId } from "./doc-room-config";
 import { getYdoc } from "./yjs-docs";
 import { user } from "./local-user";
 
@@ -125,24 +125,38 @@ function createTrysteroDocRoom(
     console.log('disconnect doc room')
     unsubUser();
     const { provider, room } = model;
+    // trystero rooms cannot be rejoined
     trysteroRoom.leave();
+    
     $awarenessStates.set(new Map());
     (trysteroRoom as any).leftAt = new Date();
     console.log("left", trysteroRoom);
 
-    provider.destroy();
+    // provider.destroy();
     store.setKey("peerIds", []);
 
     // delete from cache
-    (trysteroDocRoomT as any).evict(docRoomId);
     // console.log('evicting', docRoomId, trysteroDocRoomT);
     // (trysteroDocRoomT as any).evict(docRoomId);
     // roomConfigsByDocId.setKey(docRoomId, undefined as any);
   }
+
+  function reconnect () {
+    
+  }
+  // ooof ok 
+  // provider depends on enablement
+  // when we disable, provider gets destroyed
+  // so provider needs to be state
+  // awareness states depends on provider
+  // room also changes on disconnect
+  // so we need to destroy the provider and room and awareness states
+  // or can we just destroy the whole doc room?
   const model = Object.assign(store, {
     y,
     peerId,
     disconnect,
+    reconnect,
     room: trysteroRoom,
     provider,
     $awarenessStates,
