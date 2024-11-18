@@ -36,7 +36,7 @@ export function useDocCollabStore() {
         // if reconnect, provider was destroyed
         $room = getTrysteroDocRoom(docId, roomId);
         console.log('start sharing in room', $room)
-        if ($room.room.leftAt) {
+        if ($room.room?.leftAt) {
           console.log('need to reconnect!')
           $room.reconnect();
         }

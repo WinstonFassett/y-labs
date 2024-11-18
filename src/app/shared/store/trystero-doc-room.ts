@@ -116,7 +116,8 @@ function createTrysteroDocRoom(
     unsubUser();
     const { provider, room } = model;
     // trystero rooms cannot be rejoined
-    trysteroRoom.leave();
+    provider.room?.disconnect()
+    
     
     $awarenessStates.set(new Map());
     (trysteroRoom as any).leftAt = new Date();
@@ -134,8 +135,7 @@ function createTrysteroDocRoom(
   function reconnect () {
     console.log("RECONNECT")
     const trysteroRoom = createRoomForStore(roomId, store)
-    provider.connectRoom(trysteroRoom)
-    provider.room?.connectToDoc()
+    provider.connectTrystero(trysteroRoom)
   }
   // ooof ok 
   // provider depends on enablement

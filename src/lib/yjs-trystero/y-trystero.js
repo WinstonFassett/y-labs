@@ -457,7 +457,8 @@ export class TrysteroDocRoom {
 
   bindToTrystero () {
     const provider = this.provider;
-    provider.trystero.onPeerJoin((peerId) => {
+    const trysteroRoom = provider.trystero;
+    trysteroRoom.onPeerJoin((peerId) => {
       log(`${peerId} joined`);
       if (this.trysteroConns.size < provider.maxConns) {
         map.setIfUndefined(
@@ -467,7 +468,7 @@ export class TrysteroDocRoom {
         );
       }
     });
-    provider.trystero.onPeerLeave((peerId) => {
+    trysteroRoom.onPeerLeave((peerId) => {
       const conn = this.trysteroConns.get(peerId);
       conn.onClose();
       if (this.trysteroConns.has(peerId)) {
@@ -488,7 +489,7 @@ export class TrysteroDocRoom {
   
   startSync() {
 
-    
+    console.log('start sync!')
     this.bcconnected = true;
     // // broadcast peerId via broadcastchannel
     broadcastBcPeerId(this);
@@ -521,7 +522,7 @@ export class TrysteroDocRoom {
 
   disconnect() {
     console.log("DISCONNECT", this);
-
+    this.provider.trystero?.leave()
     awarenessProtocol.removeAwarenessStates(
       this.awareness,
       [this.doc.clientID],
@@ -539,6 +540,8 @@ export class TrysteroDocRoom {
     this.doc.off("update", this._docUpdateHandler);
     this.awareness.off("update", this._awarenessUpdateHandler);
     this.trysteroConns.forEach((conn) => conn.destroy());
+    console.log('removing from rooms')
+    rooms.delete(this.name);
   }
 
   destroy() {
@@ -648,14 +651,21 @@ export class TrysteroProvider extends ObservableV2 {
      */
     this.awareness = awareness;
     doc.on("destroy", () => this.destroy);
-
-    this.bindToTrystero(trysteroRoom)
     
-    this.key.then((key) => {
-      this.room = openRoom(doc, this, roomName, key);
-    });
+    this.connectTrystero(trysteroRoom)
     // return;
     
+  }
+  connectTrystero (trysteroRoom) {
+    this.bindToTrystero(trysteroRoom)
+    this.openDocRoom()
+  }
+  openDocRoom() {
+    const { doc, roomName } = this;
+    return this.key.then((key) => {
+      this.room = openRoom(doc, this, roomName, key);
+      console.log('set room', this.room)
+    });
   }
   bindToTrystero(trysteroRoom) {
     this.trystero = trysteroRoom;
