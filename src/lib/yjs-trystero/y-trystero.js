@@ -254,9 +254,10 @@ export class TrysteroConn {
    * @param {TrysteroDocRoom} room
    */
   constructor(remotePeerId, room) {
-    log("connected to ", logging.BOLD, remotePeerId);
     this.room = room;
     this.remotePeerId = remotePeerId;
+    // alert('connected')
+    log("connected to ", logging.BOLD, remotePeerId);
     this.closed = false;
     this.connected = false;
     this.synced = false;
@@ -315,6 +316,7 @@ export class TrysteroConn {
   }
   destroy() {
     // console.log("todo: destroy conn(?)");
+    this.onClose()
   }
 }
 
@@ -440,6 +442,21 @@ export class TrysteroDocRoom {
       process.on("exit", this._beforeUnloadHandler);
     }
 
+    this.bindToDoc()
+    this.bindToTrystero()
+  }
+
+  bindToDoc () {
+    this.doc.on("update", this._docUpdateHandler);
+    this.awareness.on("update", this._awarenessUpdateHandler);
+    
+    const roomName = this.name;
+    bc.subscribe(roomName, this._bcSubscriber);
+    
+  }
+
+  bindToTrystero () {
+    const provider = this.provider;
     provider.trystero.onPeerJoin((peerId) => {
       log(`${peerId} joined`);
       if (this.trysteroConns.size < provider.maxConns) {
@@ -468,12 +485,10 @@ export class TrysteroDocRoom {
       log("closed connection to ", logging.BOLD, peerId);
     });
   }
+  
+  startSync() {
 
-  connectToDoc() {
-    this.doc.on("update", this._docUpdateHandler);
-    this.awareness.on("update", this._awarenessUpdateHandler);
-    const roomName = this.name;
-    bc.subscribe(roomName, this._bcSubscriber);
+    
     this.bcconnected = true;
     // // broadcast peerId via broadcastchannel
     broadcastBcPeerId(this);
@@ -549,7 +564,10 @@ const openRoom = (doc, provider, name, key) => {
     throw error.create(`A Yjs Doc connected to room "${name}" already exists!`);
   }
   const room = new TrysteroDocRoom(doc, provider, name, key);
-  room.connectToDoc();
+  room.startSync();
+  
+  // this.bindToTrystero(trysteroRoom)
+    
   rooms.set(name, /** @type {TrysteroDocRoom} */ (room));
   return room;
 };
@@ -620,7 +638,6 @@ export class TrysteroProvider extends ObservableV2 {
     this.key = password
       ? cryptoutils.deriveKey(password, roomName)
       : /** @type {PromiseLike<null>} */ (promise.resolve(null));
-    this.trystero = trysteroRoom;
     /**
      * @type {TrysteroDocRoom|null}
      */
@@ -630,39 +647,21 @@ export class TrysteroProvider extends ObservableV2 {
      * @type {awarenessProtocol.Awareness}
      */
     this.awareness = awareness;
+    doc.on("destroy", () => this.destroy);
+
+    this.bindToTrystero(trysteroRoom)
+    
     this.key.then((key) => {
       this.room = openRoom(doc, this, roomName, key);
     });
-    doc.on("destroy", () => this.destroy);
     // return;
+    
+  }
+  bindToTrystero(trysteroRoom) {
+    this.trystero = trysteroRoom;
     const [sendDocData, listenDocData] = trysteroRoom.makeAction("docdata");
     this.sendDocData = sendDocData;
     this.listenDocData = listenDocData;
-  }
-  connected() {
-    log("connected to ", logging.BOLD, remotePeerId);
-    this.connected = true;
-    // send sync step 1
-    const provider = room.provider;
-    const doc = provider.doc;
-    const awareness = room.awareness;
-    const encoder = encoding.createEncoder();
-    encoding.writeVarUint(encoder, messageSync);
-    syncProtocol.writeSyncStep1(encoder, doc);
-    sendTrysteroConn(this, encoder);
-    const awarenessStates = awareness.getStates();
-    if (awarenessStates.size > 0) {
-      const encoder = encoding.createEncoder();
-      encoding.writeVarUint(encoder, messageAwareness);
-      encoding.writeVarUint8Array(
-        encoder,
-        awarenessProtocol.encodeAwarenessUpdate(
-          awareness,
-          Array.from(awarenessStates.keys()),
-        ),
-      );
-      sendTrysteroConn(this, encoder);
-    }
   }
   destroy() {
     this.doc.off("destroy", this.destroy);

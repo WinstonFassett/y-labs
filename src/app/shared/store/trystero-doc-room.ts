@@ -80,18 +80,8 @@ function createTrysteroDocRoom(
   const peerId = selfId;
 
   console.log('creating trysteroRoom')
-  const trysteroRoom = createRoom(roomId);
-  trysteroRoom.onPeerJoin((peerId) => {
-    console.log("peer join", peerId);
-    store.setKey("peerIds", store.get().peerIds.concat(peerId));
-  });
-  trysteroRoom.onPeerLeave((peerId) => {
-    console.log("peer leave", peerId);
-    store.setKey(
-      "peerIds",
-      store.get().peerIds.filter((it) => it !== peerId),
-    );
-  });
+  
+  const trysteroRoom = createRoomForStore(roomId, store);
 
   const password = config.encrypt ? config.password : undefined;
   
@@ -142,7 +132,10 @@ function createTrysteroDocRoom(
   }
 
   function reconnect () {
-    
+    console.log("RECONNECT")
+    const trysteroRoom = createRoomForStore(roomId, store)
+    provider.connectRoom(trysteroRoom)
+    provider.room?.connectToDoc()
   }
   // ooof ok 
   // provider depends on enablement
@@ -194,6 +187,22 @@ const trysteroDocRoomT = mapTemplate(
     };
   },
 );
+
+function createRoomForStore(roomId: string, store: MapStore<OnlineDocRoomFields>) {
+  const trysteroRoom = createRoom(roomId);
+  trysteroRoom.onPeerJoin((peerId) => {
+    console.log("peer join", peerId);
+    store.setKey("peerIds", store.get().peerIds.concat(peerId));
+  });
+  trysteroRoom.onPeerLeave((peerId) => {
+    console.log("peer leave", peerId);
+    store.setKey(
+      "peerIds",
+      store.get().peerIds.filter((it) => it !== peerId)
+    );
+  });
+  return trysteroRoom;
+}
 
 export function getTrysteroDocRoom(docId: string, roomId: string) {
   const key = getDocRoomId(docId, roomId);
