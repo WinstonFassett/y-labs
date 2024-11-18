@@ -49,9 +49,7 @@ import { RoomConfigSchema, getDocRoomConfig } from "./store/doc-room-config";
 import { useDocCollabStore } from "./useDocCollabStore";
 import { useStoreIfPresent } from "./useStoreIfPresent";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { TextField } from "@/components/ui/aria-textfield";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useStore } from "@nanostores/react";
 
 export function ShareDialog() {
   const [isOpen, setIsOpen] = useState(false);
@@ -64,10 +62,8 @@ export function ShareDialog() {
   const awarenessUsers = useStoreIfPresent(
     $room?.$awarenessStates
   );
-  console.log('ShareDialog awarenessUsers', awarenessUsers);
+  // console.log('ShareDialog awarenessUsers', awarenessUsers);
   const awarenessClientID = $room?.provider?.awareness.clientID;
-  const collabRoom = $room?.room;
-  const peers = roomMaybe?.peerIds
   const isSharing = roomConfigMaybe?.enabled ?? false;
   // const isSharing = $roomConfig?.get().enabled ?? false;
   const actionLabel = isSharing ? "Sharing" : "Share";
@@ -419,7 +415,7 @@ function UserList({
 }) {
   const userAwareness = isSharing && (awarenessUsers as Map<any, any>)?.get(awarenessClientID);
   const connectedCount= awarenessUsers?.size > 1 ? awarenessUsers?.size - 1 : 0
-  console.log('connectedCount', connectedCount, awarenessUsers)
+  // console.log('connectedCount', connectedCount, awarenessUsers)
   return (
     <div>
       {isSharing && userAwareness ? <div>

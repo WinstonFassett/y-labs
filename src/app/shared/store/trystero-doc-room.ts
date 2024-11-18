@@ -46,13 +46,13 @@ function createTrysteroDocRoom(
     synced: false,
   } as OnlineDocRoomFields),
 ) {
-  console.log('create doc room', {
-    docRoomId,
-    y,
-    roomId,
-    config,
-    store
-  })
+  // console.log('create doc room', {
+  //   docRoomId,
+  //   y,
+  //   roomId,
+  //   config,
+  //   store
+  // })
   store.setKey("peerIds", [] as string[]);
 
   const $awarenessStates = atom(new Map());
@@ -66,9 +66,9 @@ function createTrysteroDocRoom(
       updated: number[];
       removed: number[];
     }) => {
-      console.log('awareness change', {added, updated, removed});
+      // console.log('awareness change', {added, updated, removed});
       const states = provider.awareness.getStates();
-      console.log('awareness states', states);
+      // console.log('awareness states', states);
       $awarenessStates.set(states);
     };
     provider.awareness.on("change", onChange);
@@ -79,7 +79,6 @@ function createTrysteroDocRoom(
 
   const peerId = selfId;
 
-  console.log('creating trysteroRoom')
   
   const trysteroRoom = createRoomForStore(roomId, store);
 
@@ -96,7 +95,7 @@ function createTrysteroDocRoom(
   });
 
   provider.on("synced", ({ synced }: { synced: boolean }) => {
-    console.log("sync state", synced);
+    // console.log("sync state", synced);
     store.setKey("synced", synced);
     if (synced && !store.get().loaded) {
       store.setKey("loaded", true);
@@ -107,44 +106,30 @@ function createTrysteroDocRoom(
   });
 
   provider.on("peers", ({ added, removed }:{removed: string[], added: string[]}) => {
-    console.log('peers', { added, removed});
+    // console.log('peers', { added, removed});
     store.setKey("peerIds", store.get().peerIds.concat(added).filter((it) => !removed.includes(it)));
   })
 
   function disconnect() {
-    console.log('disconnect doc room')
+    // console.log('disconnect doc room')
     unsubUser();
     const { provider, room } = model;
-    // trystero rooms cannot be rejoined
+        
     provider.room?.disconnect()
-    
     
     $awarenessStates.set(new Map());
     (trysteroRoom as any).leftAt = new Date();
-    console.log("left", trysteroRoom);
-
-    // provider.destroy();
+    // console.log("left", trysteroRoom);
     store.setKey("peerIds", []);
 
-    // delete from cache
-    // console.log('evicting', docRoomId, trysteroDocRoomT);
-    // (trysteroDocRoomT as any).evict(docRoomId);
-    // roomConfigsByDocId.setKey(docRoomId, undefined as any);
   }
 
   function reconnect () {
-    console.log("RECONNECT")
+    // console.log("RECONNECT")
     const trysteroRoom = createRoomForStore(roomId, store)
     provider.connectTrystero(trysteroRoom)
   }
-  // ooof ok 
-  // provider depends on enablement
-  // when we disable, provider gets destroyed
-  // so provider needs to be state
-  // awareness states depends on provider
-  // room also changes on disconnect
-  // so we need to destroy the provider and room and awareness states
-  // or can we just destroy the whole doc room?
+  
   const model = Object.assign(store, {
     y,
     peerId,
@@ -171,7 +156,7 @@ const trysteroDocRoomT = mapTemplate(
     const $ydoc = getYdoc(docId);
     let y: Doc = $ydoc.get();
     const unsubDoc = $ydoc.listen(() => {});
-    console.log('new doc room template', docRoomKey)
+    // console.log('new doc room template', docRoomKey)
     const $docRoom = createTrysteroDocRoom(
       docRoomKey,
       y,
@@ -189,6 +174,7 @@ const trysteroDocRoomT = mapTemplate(
 );
 
 function createRoomForStore(roomId: string, store: MapStore<OnlineDocRoomFields>) {
+  // console.log('creating trysteroRoom')
   const trysteroRoom = createRoom(roomId);
   trysteroRoom.onPeerJoin((peerId) => {
     console.log("peer join", peerId);
@@ -206,9 +192,7 @@ function createRoomForStore(roomId: string, store: MapStore<OnlineDocRoomFields>
 
 export function getTrysteroDocRoom(docId: string, roomId: string) {
   const key = getDocRoomId(docId, roomId);
-  console.log('get trystero doc room', key)
   const model = trysteroDocRoomT(key, docId, roomId);
-  console.log('got trystero doc room', model)
   return model as typeof model & TrysteroDocRoomModel;
 }
 

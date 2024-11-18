@@ -254,10 +254,9 @@ export class TrysteroConn {
    * @param {TrysteroDocRoom} room
    */
   constructor(remotePeerId, room) {
+    log("connected to ", logging.BOLD, remotePeerId);
     this.room = room;
     this.remotePeerId = remotePeerId;
-    // alert('connected')
-    log("connected to ", logging.BOLD, remotePeerId);
     this.closed = false;
     this.connected = false;
     this.synced = false;
@@ -489,7 +488,7 @@ export class TrysteroDocRoom {
   
   startSync() {
 
-    console.log('start sync!')
+    // console.log('start sync!')
     this.bcconnected = true;
     // // broadcast peerId via broadcastchannel
     broadcastBcPeerId(this);
@@ -521,7 +520,7 @@ export class TrysteroDocRoom {
   }
 
   disconnect() {
-    console.log("DISCONNECT", this);
+    // console.log("DISCONNECT", this);
     this.provider.trystero?.leave()
     awarenessProtocol.removeAwarenessStates(
       this.awareness,
@@ -540,7 +539,7 @@ export class TrysteroDocRoom {
     this.doc.off("update", this._docUpdateHandler);
     this.awareness.off("update", this._awarenessUpdateHandler);
     this.trysteroConns.forEach((conn) => conn.destroy());
-    console.log('removing from rooms')
+    // console.log('removing from rooms')
     rooms.delete(this.name);
   }
 
@@ -567,11 +566,8 @@ const openRoom = (doc, provider, name, key) => {
     throw error.create(`A Yjs Doc connected to room "${name}" already exists!`);
   }
   const room = new TrysteroDocRoom(doc, provider, name, key);
-  room.startSync();
-  
-  // this.bindToTrystero(trysteroRoom)
-    
   rooms.set(name, /** @type {TrysteroDocRoom} */ (room));
+  room.startSync();
   return room;
 };
 
@@ -664,7 +660,7 @@ export class TrysteroProvider extends ObservableV2 {
     const { doc, roomName } = this;
     return this.key.then((key) => {
       this.room = openRoom(doc, this, roomName, key);
-      console.log('set room', this.room)
+      // console.log('set room', this.room)
     });
   }
   bindToTrystero(trysteroRoom) {

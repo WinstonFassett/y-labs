@@ -32,12 +32,12 @@ export function useDocCollabStore() {
         const $roomConfig = getDocRoomConfig(docId, roomId);
         $roomConfig.set({ ...$roomConfig.get(), ...config, enabled: true });
         roomConfigsByDocId.setKey(docId, $roomConfig);
-        console.log('ensure doc room')
+        // console.log('ensure doc room')
         // if reconnect, provider was destroyed
         $room = getTrysteroDocRoom(docId, roomId);
-        console.log('start sharing in room', $room)
+        // console.log('start sharing in room', $room)
         if ($room.room?.leftAt) {
-          console.log('need to reconnect!')
+          // console.log('need to reconnect!')
           $room.reconnect();
         }
         navigate(`?roomId=${roomId}`);        
