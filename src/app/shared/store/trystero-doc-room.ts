@@ -46,6 +46,13 @@ function createTrysteroDocRoom(
     synced: false,
   } as OnlineDocRoomFields),
 ) {
+  console.log('create doc room', {
+    docRoomId,
+    y,
+    roomId,
+    config,
+    store
+  })
   store.setKey("peerIds", [] as string[]);
 
   const $awarenessStates = atom(new Map());
@@ -59,7 +66,9 @@ function createTrysteroDocRoom(
       updated: number[];
       removed: number[];
     }) => {
+      console.log('awareness change', {added, updated, removed});
       const states = provider.awareness.getStates();
+      console.log('awareness states', states);
       $awarenessStates.set(states);
     };
     provider.awareness.on("change", onChange);
@@ -69,18 +78,25 @@ function createTrysteroDocRoom(
   });
 
   const peerId = selfId;
+
+  console.log('creating trysteroRoom')
   const trysteroRoom = createRoom(roomId);
   trysteroRoom.onPeerJoin((peerId) => {
+    console.log("peer join", peerId);
     store.setKey("peerIds", store.get().peerIds.concat(peerId));
   });
   trysteroRoom.onPeerLeave((peerId) => {
+    console.log("peer leave", peerId);
     store.setKey(
       "peerIds",
       store.get().peerIds.filter((it) => it !== peerId),
     );
   });
+
   const password = config.encrypt ? config.password : undefined;
+  
   const provider = new TrysteroProvider(y, roomId, trysteroRoom, { password, accessLevel: config.accessLevel });
+  
   const unsubUser = user.subscribe((user) => {
     provider.awareness.setLocalStateField("user", {
       color: user.color,
@@ -101,10 +117,12 @@ function createTrysteroDocRoom(
   });
 
   provider.on("peers", ({ added, removed }:{removed: string[], added: string[]}) => {
+    console.log('peers', { added, removed});
     store.setKey("peerIds", store.get().peerIds.concat(added).filter((it) => !removed.includes(it)));
   })
 
   function disconnect() {
+    console.log('disconnect doc room')
     unsubUser();
     const { provider, room } = model;
     trysteroRoom.leave();
@@ -117,6 +135,9 @@ function createTrysteroDocRoom(
 
     // delete from cache
     (trysteroDocRoomT as any).evict(docRoomId);
+    // console.log('evicting', docRoomId, trysteroDocRoomT);
+    // (trysteroDocRoomT as any).evict(docRoomId);
+    // roomConfigsByDocId.setKey(docRoomId, undefined as any);
   }
   const model = Object.assign(store, {
     y,
@@ -143,6 +164,7 @@ const trysteroDocRoomT = mapTemplate(
     const $ydoc = getYdoc(docId);
     let y: Doc = $ydoc.get();
     const unsubDoc = $ydoc.listen(() => {});
+    console.log('new doc room template', docRoomKey)
     const $docRoom = createTrysteroDocRoom(
       docRoomKey,
       y,
@@ -161,7 +183,9 @@ const trysteroDocRoomT = mapTemplate(
 
 export function getTrysteroDocRoom(docId: string, roomId: string) {
   const key = getDocRoomId(docId, roomId);
+  console.log('get trystero doc room', key)
   const model = trysteroDocRoomT(key, docId, roomId);
+  console.log('got trystero doc room', model)
   return model as typeof model & TrysteroDocRoomModel;
 }
 

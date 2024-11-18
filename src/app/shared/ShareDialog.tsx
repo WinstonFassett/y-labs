@@ -64,6 +64,7 @@ export function ShareDialog() {
   const awarenessUsers = useStoreIfPresent(
     $room?.$awarenessStates
   );
+  console.log('ShareDialog awarenessUsers', awarenessUsers);
   const awarenessClientID = $room?.provider?.awareness.clientID;
   const collabRoom = $room?.room;
   const peers = roomMaybe?.peerIds
@@ -418,6 +419,7 @@ function UserList({
 }) {
   const userAwareness = isSharing && (awarenessUsers as Map<any, any>)?.get(awarenessClientID);
   const connectedCount= awarenessUsers?.size > 1 ? awarenessUsers?.size - 1 : 0
+  console.log('connectedCount', connectedCount, awarenessUsers)
   return (
     <div>
       {isSharing && userAwareness ? <div>
