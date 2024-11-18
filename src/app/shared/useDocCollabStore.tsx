@@ -23,7 +23,7 @@ export function useDocCollabStore() {
   const { $ydoc, $room, $roomConfig, startSharing, stopSharing } =
     useMemo(() => {
       const $ydoc = getYdoc(docId!);
-      const $room = roomId ? getTrysteroDocRoom(docId!, roomId) : undefined;
+      let $room = roomId ? getTrysteroDocRoom(docId!, roomId) : undefined;
       const $roomConfig = roomId ? getDocRoomConfig(docId!, roomId) : undefined;
 
       function startSharing(config: typeof latestRoomConfig) {
@@ -32,6 +32,14 @@ export function useDocCollabStore() {
         const $roomConfig = getDocRoomConfig(docId, roomId);
         $roomConfig.set({ ...$roomConfig.get(), ...config, enabled: true });
         roomConfigsByDocId.setKey(docId, $roomConfig);
+        console.log('ensure doc room')
+        // if reconnect, provider was destroyed
+        $room = getTrysteroDocRoom(docId, roomId);
+        console.log('start sharing in room', $room)
+        if ($room.room.leftAt) {
+          console.log('need to reconnect!')
+          $room.reconnect();
+        }
         navigate(`?roomId=${roomId}`);        
       }
 
