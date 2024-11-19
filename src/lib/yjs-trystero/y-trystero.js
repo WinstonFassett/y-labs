@@ -263,14 +263,17 @@ export class TrysteroConn {
 
     // already connected
     this.connected = true;
+   
     // send sync step 1
     const provider = room.provider;
     const doc = provider.doc;
     const awareness = room.awareness;
+
     const encoder = encoding.createEncoder();
     encoding.writeVarUint(encoder, messageSync);
     syncProtocol.writeSyncStep1(encoder, doc);
     sendTrysteroConn(this, encoder);
+    
     const awarenessStates = awareness.getStates();
     if (awarenessStates.size > 0) {
       const encoder = encoding.createEncoder();
@@ -468,9 +471,9 @@ export class TrysteroDocRoom {
       }
     });
     trysteroRoom.onPeerLeave((peerId) => {
-      const conn = this.trysteroConns.get(peerId);
-      conn.onClose();
       if (this.trysteroConns.has(peerId)) {
+        const conn = this.trysteroConns.get(peerId);
+        conn.onClose();
         this.trysteroConns.delete(peerId);
         this.provider.emit("peers", [
           {
