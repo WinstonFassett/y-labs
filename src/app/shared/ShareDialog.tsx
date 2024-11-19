@@ -318,7 +318,7 @@ function SharingActions({
   handleCopyLink: () => void;
 }) {
   return (
-    <div className="flex flex-row items-center">
+    <div className="flex flex-row items-center gap-2">
       <div className="flex-1">
         <AnimatePresence mode="wait">
           {isSharing && (
