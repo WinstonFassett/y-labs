@@ -417,11 +417,11 @@ function UserList({
   const connectedCount= awarenessUsers?.size > 1 ? awarenessUsers?.size - 1 : 0
   // console.log('connectedCount', connectedCount, awarenessUsers)
   return (
-    <div>
+    <div>isSharing ={isSharing?'true':'false'}
+      <div>
+        You are sharing as: {awarenessClientID}
+      </div>
       {isSharing && userAwareness ? <div>
-        <div>
-          You are sharing as: 
-        </div>
         <User 
           name={userAwareness?.user?.userName ?? "Anonymous"}
           description="YOU"
