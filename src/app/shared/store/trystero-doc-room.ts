@@ -10,7 +10,7 @@ import {
 import { selfId, type Room } from "trystero";
 import type { Doc } from "yjs";
 import { createRoom } from "../createRoom";
-import { getDocRoomConfig, type DocRoomConfigFields } from "./doc-room-config";
+import { getDocRoomConfig, type DocRoomConfigFields, roomConfigsByDocId } from "./doc-room-config";
 import { getYdoc } from "./yjs-docs";
 import { user } from "./local-user";
 
@@ -69,28 +69,25 @@ function createTrysteroDocRoom(
   });
 
   const peerId = selfId;
-  const trysteroRoom = createRoom(roomId);
-  trysteroRoom.onPeerJoin((peerId) => {
-    store.setKey("peerIds", store.get().peerIds.concat(peerId));
-  });
-  trysteroRoom.onPeerLeave((peerId) => {
-    store.setKey(
-      "peerIds",
-      store.get().peerIds.filter((it) => it !== peerId),
-    );
-  });
+
+  
+  const trysteroRoom = createTrysteroRoomForStore(roomId, store);
+
   const password = config.encrypt ? config.password : undefined;
+  
   const provider = new TrysteroProvider(y, roomId, trysteroRoom, { password, accessLevel: config.accessLevel });
+  
   const unsubUser = user.subscribe((user) => {
-    provider.awareness.setLocalStateField("user", {
-      color: user.color,
-      name: user.username, // for y codemirror
-      userName: user.username, // for tiptap, blocknote
-    });
+    setUserInAwareness(user);
+  });
+
+  provider.on('status', ({ connected }: { connected: boolean }) => {
+    if (connected) {
+      provider.awareness.setLocalState(provider.awareness.getLocalState());
+    }
   });
 
   provider.on("synced", ({ synced }: { synced: boolean }) => {
-    console.log("sync state", synced);
     store.setKey("synced", synced);
     if (synced && !store.get().loaded) {
       store.setKey("loaded", true);
@@ -100,19 +97,45 @@ function createTrysteroDocRoom(
     }
   });
 
-  function disconnect() {
-    unsubUser();
-    const { provider, room } = model;
-    trysteroRoom.leave();
-    (trysteroRoom as any).leftAt = new Date();
-    console.log("left", trysteroRoom);
-    provider.destroy();
-    store.setKey("peerIds", []);
+  provider.on("peers", ({ added, removed }:{removed: string[], added: string[]}) => {
+    store.setKey("peerIds", store.get().peerIds.concat(added).filter((it) => !removed.includes(it)));
+  })
+
+  function setUserInAwareness(user: Readonly<{ username: string; color: string; }>) {
+    provider.awareness.setLocalState({
+      user: {
+        color: user.color,
+        name: user.username, // for y codemirror
+        userName: user.username,
+      },
+    })
   }
+
+  function disconnect() {
+    const { provider } = model;
+    provider.room?.disconnect()
+    ;(trysteroRoom as any).leftAt = new Date();
+    store.setKey("peerIds", []);
+
+  }
+
+  function destroy () {
+    disconnect();
+    unsubUser();
+  }
+
+  async function reconnect () {
+    setUserInAwareness(user.get());
+    const trysteroRoom = createTrysteroRoomForStore(roomId, store)
+    await provider.connectTrystero(trysteroRoom)
+  }
+  
   const model = Object.assign(store, {
     y,
     peerId,
     disconnect,
+    reconnect,
+    destroy,
     room: trysteroRoom,
     provider,
     $awarenessStates,
@@ -149,6 +172,20 @@ const trysteroDocRoomT = mapTemplate(
     };
   },
 );
+
+function createTrysteroRoomForStore(roomId: string, store: MapStore<OnlineDocRoomFields>) {
+  const trysteroRoom = createRoom(roomId);
+  trysteroRoom.onPeerJoin((peerId) => {
+    store.setKey("peerIds", store.get().peerIds.concat(peerId));
+  });
+  trysteroRoom.onPeerLeave((peerId) => {
+    store.setKey(
+      "peerIds",
+      store.get().peerIds.filter((it) => it !== peerId)
+    );
+  });
+  return trysteroRoom;
+}
 
 export function getTrysteroDocRoom(docId: string, roomId: string) {
   const key = getDocRoomId(docId, roomId);
