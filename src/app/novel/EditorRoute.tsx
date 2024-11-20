@@ -45,7 +45,7 @@ export function EditorRoute() {
           });
         } else {
           setSearchParams(newSearchParams, { replace: true });
-        }
+        }        
         return
       }
       config.set({ 

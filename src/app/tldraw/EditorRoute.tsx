@@ -4,6 +4,7 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { generateId } from "../shared/generateId";
 import { roomKeys } from "../shared/store/doc-room-keys";
 import Editor from "./Tldraw";
+import { getDocRoomConfig, roomConfigsByDocId } from "../shared/store/doc-room-config";
 
 export function EditorRoute() {
   const params = useParams();
@@ -17,23 +18,46 @@ export function EditorRoute() {
 
   // when docId, roomId or x changes, update password and encrypted
   useEffect(() => {
-    if (x) {
-      const newSearchParams = Object.fromEntries(
-        Array.from(searchParams.entries()).filter(([key]) => key !== "x"),
-      );
-      const isNewDoc = !docId;
-      if (isNewDoc) {
-        docId = generateId();
-      }
-      roomKeys.setKey(docId!, x);
-      if (isNewDoc) {
-        navigate(
-          `/edit/${docId}?roomId=${roomId}${x || encrypt ? "&encrypt" : ""}`,
-          { replace: true },
+
+    if (roomId) {
+      const config = getDocRoomConfig(docId!, roomId!);
+      if (x) {
+        const newSearchParams = Object.fromEntries(
+          Array.from(searchParams.entries()).filter(([key]) => key !== "x"),
         );
-      } else {
-        setSearchParams(newSearchParams, { replace: true });
+        newSearchParams.encrypt = 'true'
+        const isNewDoc = !docId;
+        if (isNewDoc) {
+          docId = generateId();
+        }
+        config.set({ 
+          ...config.get(), 
+          docId: docId,
+          roomId: roomId,
+          password: x,
+          encrypt: true,
+          enabled: true,
+          accessLevel: "edit",
+        });
+        roomConfigsByDocId.setKey(docId!, config);
+        if (isNewDoc) {
+          navigate(`/edit/${docId}?roomId=${roomId}&encrypt=true"}`, {
+            replace: true,
+          });
+        } else {
+          setSearchParams(newSearchParams, { replace: true });
+        }
+        return
       }
+      config.set({ 
+        ...config.get(), 
+        docId: docId,
+        roomId: roomId,
+        // password: "",
+        encrypt: false,
+        enabled: true,
+        accessLevel: "edit",
+      });
     }
   }, [docId, roomId, x]);
 

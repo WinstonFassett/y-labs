@@ -76,7 +76,7 @@ export function ShareDialog() {
     defaultValues: async () => {
       const enabled = roomConfigMaybe?.enabled ?? false;
       const inRoom = roomParameter
-      const encrypt = inRoom ? (roomConfigMaybe?.encrypt || !!roomConfigMaybe.password) : true;
+      const encrypt = inRoom ? (roomConfigMaybe?.encrypt || !!roomConfigMaybe?.password) : true;
       return {
         docId,
         roomId: roomParameter || generateId(),
