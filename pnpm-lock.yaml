@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  y-protocols@1.0.6:
+    hash: 6rjmg7fv4ajtsntteqrxseg2xq
+    path: patches/y-protocols@1.0.6.patch
+
 importers:
 
   .:
@@ -106,10 +111,10 @@ importers:
         version: 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(@tiptap/extension-code-block@2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(@tiptap/pm@2.2.4))(@tiptap/pm@2.2.4)
       '@tiptap/extension-collaboration':
         specifier: ^2.2.4
-        version: 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(@tiptap/pm@2.2.4)(y-prosemirror@1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.33.1)(y-protocols@1.0.6(yjs@13.6.12))(yjs@13.6.12))
+        version: 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(@tiptap/pm@2.2.4)(y-prosemirror@1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.33.1)(y-protocols@1.0.6(patch_hash=6rjmg7fv4ajtsntteqrxseg2xq)(yjs@13.6.12))(yjs@13.6.12))
       '@tiptap/extension-collaboration-cursor':
         specifier: ^2.2.4
-        version: 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(y-prosemirror@1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.33.1)(y-protocols@1.0.6(yjs@13.6.12))(yjs@13.6.12))
+        version: 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(y-prosemirror@1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.33.1)(y-protocols@1.0.6(patch_hash=6rjmg7fv4ajtsntteqrxseg2xq)(yjs@13.6.12))(yjs@13.6.12))
       '@tiptap/react':
         specifier: ^2.2.4
         version: 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(@tiptap/pm@2.2.4)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -265,7 +270,7 @@ importers:
         version: 9.0.12(yjs@13.6.12)
       y-protocols:
         specifier: ^1.0.6
-        version: 1.0.6(yjs@13.6.12)
+        version: 1.0.6(patch_hash=6rjmg7fv4ajtsntteqrxseg2xq)(yjs@13.6.12)
       y-utility:
         specifier: ^0.1.3
         version: 0.1.3(yjs@13.6.12)
@@ -2201,9 +2206,6 @@ packages:
 
   '@noble/ciphers@0.4.1':
     resolution: {integrity: sha512-QCOA9cgf3Rc33owG0AYBB9wszz+Ul2kramWN8tXG44Gyciud/tbkEqvxRF/IpqQaBpRBNi9f4jdNxqB2CQCIXg==}
-
-  '@noble/curves@1.3.0':
-    resolution: {integrity: sha512-t01iSXPuN+Eqzb4eBX0S5oubSqXbK/xXa1Ne18Hj8f9pStxztHCE2gfboSp/dZRLSqfuLpRK2nDXDK+W9puocA==}
 
   '@noble/curves@1.6.0':
     resolution: {integrity: sha512-TlaHRXDehJuRNR9TfZDNQ45mMEd5dwUwmicsafcIX4SsNiqnCHKjE/1alYPd/lDRVhxdhUAlv8uEhMCI5zjIJQ==}
@@ -11647,8 +11649,8 @@ snapshots:
       '@tiptap/core': 2.2.4(@tiptap/pm@2.2.4)
       '@tiptap/extension-bold': 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))
       '@tiptap/extension-code': 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))
-      '@tiptap/extension-collaboration': 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(@tiptap/pm@2.2.4)(y-prosemirror@1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.33.1)(y-protocols@1.0.6(yjs@13.6.12))(yjs@13.6.12))
-      '@tiptap/extension-collaboration-cursor': 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(y-prosemirror@1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.33.1)(y-protocols@1.0.6(yjs@13.6.12))(yjs@13.6.12))
+      '@tiptap/extension-collaboration': 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(@tiptap/pm@2.2.4)(y-prosemirror@1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.33.1)(y-protocols@1.0.6(patch_hash=6rjmg7fv4ajtsntteqrxseg2xq)(yjs@13.6.12))(yjs@13.6.12))
+      '@tiptap/extension-collaboration-cursor': 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(y-prosemirror@1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.33.1)(y-protocols@1.0.6(patch_hash=6rjmg7fv4ajtsntteqrxseg2xq)(yjs@13.6.12))(yjs@13.6.12))
       '@tiptap/extension-dropcursor': 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(@tiptap/pm@2.2.4)
       '@tiptap/extension-gapcursor': 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(@tiptap/pm@2.2.4)
       '@tiptap/extension-hard-break': 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))
@@ -11680,8 +11682,8 @@ snapshots:
       remark-stringify: 10.0.3
       unified: 10.1.2
       uuid: 8.3.2
-      y-prosemirror: 1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.33.1)(y-protocols@1.0.6(yjs@13.6.12))(yjs@13.6.12)
-      y-protocols: 1.0.6(yjs@13.6.12)
+      y-prosemirror: 1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.33.1)(y-protocols@1.0.6(patch_hash=6rjmg7fv4ajtsntteqrxseg2xq)(yjs@13.6.12))(yjs@13.6.12)
+      y-protocols: 1.0.6(patch_hash=6rjmg7fv4ajtsntteqrxseg2xq)(yjs@13.6.12)
       yjs: 13.6.12
     transitivePeerDependencies:
       - supports-color
@@ -11725,7 +11727,7 @@ snapshots:
       '@libp2p/logger': 3.1.0
       '@libp2p/peer-id': 3.0.6
       '@libp2p/pubsub': 8.0.14
-      '@multiformats/multiaddr': 12.1.14
+      '@multiformats/multiaddr': 12.3.1
       abortable-iterator: 5.0.1
       denque: 2.1.0
       it-length-prefixed: 9.0.4
@@ -11758,6 +11760,8 @@ snapshots:
       uint8arraylist: 2.4.8
       uint8arrays: 5.0.2
       wherearewe: 2.0.1
+    transitivePeerDependencies:
+      - supports-color
 
   '@chainsafe/netmask@2.0.0':
     dependencies:
@@ -12841,15 +12845,13 @@ snapshots:
   '@libp2p/crypto@2.0.8':
     dependencies:
       '@libp2p/interface': 0.1.6
-      '@noble/curves': 1.3.0
-      '@noble/hashes': 1.3.3
+      '@noble/curves': 1.6.0
+      '@noble/hashes': 1.5.0
       multiformats: 12.1.3
       node-forge: 1.3.1
       protons-runtime: 5.4.0
       uint8arraylist: 2.4.8
       uint8arrays: 4.0.10
-    transitivePeerDependencies:
-      - supports-color
 
   '@libp2p/crypto@3.0.4':
     dependencies:
@@ -12861,6 +12863,8 @@ snapshots:
       protons-runtime: 5.4.0
       uint8arraylist: 2.4.8
       uint8arrays: 5.0.2
+    transitivePeerDependencies:
+      - supports-color
 
   '@libp2p/crypto@4.1.9':
     dependencies:
@@ -12891,10 +12895,8 @@ snapshots:
     dependencies:
       '@libp2p/interface': 0.1.6
       '@libp2p/peer-collections': 4.0.11
-      '@multiformats/multiaddr': 12.1.14
+      '@multiformats/multiaddr': 12.3.1
       uint8arraylist: 2.4.8
-    transitivePeerDependencies:
-      - supports-color
 
   '@libp2p/interface-internal@1.3.4':
     dependencies:
@@ -12906,16 +12908,14 @@ snapshots:
 
   '@libp2p/interface@0.1.6':
     dependencies:
-      '@multiformats/multiaddr': 12.1.14
+      '@multiformats/multiaddr': 12.3.1
       abortable-iterator: 5.0.1
       it-pushable: 3.2.3
       it-stream-types: 2.0.1
       multiformats: 12.1.3
-      p-defer: 4.0.0
+      p-defer: 4.0.1
       race-signal: 1.0.2
       uint8arraylist: 2.4.8
-    transitivePeerDependencies:
-      - supports-color
 
   '@libp2p/interface@1.1.3':
     dependencies:
@@ -12940,8 +12940,8 @@ snapshots:
   '@libp2p/logger@3.1.0':
     dependencies:
       '@libp2p/interface': 0.1.6
-      '@multiformats/multiaddr': 12.1.14
-      debug: 4.3.4
+      '@multiformats/multiaddr': 12.3.1
+      debug: 4.3.7
       interface-datastore: 8.2.11
       multiformats: 12.1.3
     transitivePeerDependencies:
@@ -12982,8 +12982,6 @@ snapshots:
     dependencies:
       '@libp2p/interface': 0.1.6
       '@libp2p/peer-id': 3.0.6
-    transitivePeerDependencies:
-      - supports-color
 
   '@libp2p/peer-collections@5.2.9':
     dependencies:
@@ -13005,8 +13003,6 @@ snapshots:
       '@libp2p/interface': 0.1.6
       multiformats: 12.1.3
       uint8arrays: 4.0.10
-    transitivePeerDependencies:
-      - supports-color
 
   '@libp2p/peer-id@4.0.6':
     dependencies:
@@ -13312,10 +13308,6 @@ snapshots:
     optional: true
 
   '@noble/ciphers@0.4.1': {}
-
-  '@noble/curves@1.3.0':
-    dependencies:
-      '@noble/hashes': 1.3.3
 
   '@noble/curves@1.6.0':
     dependencies:
@@ -16651,16 +16643,16 @@ snapshots:
     dependencies:
       '@tiptap/core': 2.2.4(@tiptap/pm@2.2.4)
 
-  '@tiptap/extension-collaboration-cursor@2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(y-prosemirror@1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.33.1)(y-protocols@1.0.6(yjs@13.6.12))(yjs@13.6.12))':
+  '@tiptap/extension-collaboration-cursor@2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(y-prosemirror@1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.33.1)(y-protocols@1.0.6(patch_hash=6rjmg7fv4ajtsntteqrxseg2xq)(yjs@13.6.12))(yjs@13.6.12))':
     dependencies:
       '@tiptap/core': 2.2.4(@tiptap/pm@2.2.4)
-      y-prosemirror: 1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.33.1)(y-protocols@1.0.6(yjs@13.6.12))(yjs@13.6.12)
+      y-prosemirror: 1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.33.1)(y-protocols@1.0.6(patch_hash=6rjmg7fv4ajtsntteqrxseg2xq)(yjs@13.6.12))(yjs@13.6.12)
 
-  '@tiptap/extension-collaboration@2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(@tiptap/pm@2.2.4)(y-prosemirror@1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.33.1)(y-protocols@1.0.6(yjs@13.6.12))(yjs@13.6.12))':
+  '@tiptap/extension-collaboration@2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(@tiptap/pm@2.2.4)(y-prosemirror@1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.33.1)(y-protocols@1.0.6(patch_hash=6rjmg7fv4ajtsntteqrxseg2xq)(yjs@13.6.12))(yjs@13.6.12))':
     dependencies:
       '@tiptap/core': 2.2.4(@tiptap/pm@2.2.4)
       '@tiptap/pm': 2.2.4
-      y-prosemirror: 1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.33.1)(y-protocols@1.0.6(yjs@13.6.12))(yjs@13.6.12)
+      y-prosemirror: 1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.33.1)(y-protocols@1.0.6(patch_hash=6rjmg7fv4ajtsntteqrxseg2xq)(yjs@13.6.12))(yjs@13.6.12)
 
   '@tiptap/extension-color@2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(@tiptap/extension-text-style@2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4)))':
     dependencies:
@@ -19561,13 +19553,13 @@ snapshots:
 
   '@waku/core@0.0.26(@multiformats/multiaddr@12.3.1)(libp2p@1.9.4)':
     dependencies:
-      '@noble/hashes': 1.3.3
+      '@noble/hashes': 1.5.0
       '@waku/enr': 0.0.20
       '@waku/interfaces': 0.0.21
       '@waku/proto': 0.0.6
       '@waku/utils': 0.0.14
-      debug: 4.3.4
-      it-all: 3.0.4
+      debug: 4.3.7
+      it-all: 3.0.6
       it-length-prefixed: 9.0.4
       it-pipe: 3.0.1
       libp2p: 1.9.4
@@ -19597,10 +19589,10 @@ snapshots:
       '@ethersproject/rlp': 5.7.0
       '@libp2p/crypto': 3.0.4
       '@libp2p/peer-id': 3.0.6
-      '@multiformats/multiaddr': 12.1.14
+      '@multiformats/multiaddr': 12.3.1
       '@noble/secp256k1': 1.7.1
       '@waku/utils': 0.0.14
-      debug: 4.3.4
+      debug: 4.3.7
       js-sha3: 0.9.3
     transitivePeerDependencies:
       - supports-color
@@ -19613,7 +19605,7 @@ snapshots:
 
   '@waku/message-hash@0.1.17':
     dependencies:
-      '@noble/hashes': 1.3.3
+      '@noble/hashes': 1.5.0
       '@waku/utils': 0.0.21
     transitivePeerDependencies:
       - supports-color
@@ -19633,13 +19625,13 @@ snapshots:
   '@waku/relay@0.0.9(@multiformats/multiaddr@12.3.1)(libp2p@1.9.4)':
     dependencies:
       '@chainsafe/libp2p-gossipsub': 10.1.1
-      '@noble/hashes': 1.3.3
+      '@noble/hashes': 1.5.0
       '@waku/core': 0.0.26(@multiformats/multiaddr@12.3.1)(libp2p@1.9.4)
       '@waku/interfaces': 0.0.21
       '@waku/proto': 0.0.6
       '@waku/utils': 0.0.14
       chai: 4.4.1
-      debug: 4.3.4
+      debug: 4.3.7
       fast-check: 3.15.1
     transitivePeerDependencies:
       - '@multiformats/multiaddr'
@@ -19668,21 +19660,21 @@ snapshots:
 
   '@waku/utils@0.0.14':
     dependencies:
-      '@noble/hashes': 1.3.3
+      '@noble/hashes': 1.5.0
       '@waku/interfaces': 0.0.21
       chai: 4.4.1
-      debug: 4.3.4
+      debug: 4.3.7
       uint8arrays: 4.0.10
     transitivePeerDependencies:
       - supports-color
 
   '@waku/utils@0.0.21':
     dependencies:
-      '@noble/hashes': 1.3.3
+      '@noble/hashes': 1.5.0
       '@waku/interfaces': 0.0.28
       chai: 4.4.1
-      debug: 4.3.4
-      uint8arrays: 5.0.2
+      debug: 4.3.7
+      uint8arrays: 5.1.0
     transitivePeerDependencies:
       - supports-color
 
@@ -27083,16 +27075,16 @@ snapshots:
       lib0: 0.2.89
       yjs: 13.6.12
 
-  y-prosemirror@1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.33.1)(y-protocols@1.0.6(yjs@13.6.12))(yjs@13.6.12):
+  y-prosemirror@1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.33.1)(y-protocols@1.0.6(patch_hash=6rjmg7fv4ajtsntteqrxseg2xq)(yjs@13.6.12))(yjs@13.6.12):
     dependencies:
       lib0: 0.2.89
       prosemirror-model: 1.19.4
       prosemirror-state: 1.4.3
       prosemirror-view: 1.33.1
-      y-protocols: 1.0.6(yjs@13.6.12)
+      y-protocols: 1.0.6(patch_hash=6rjmg7fv4ajtsntteqrxseg2xq)(yjs@13.6.12)
       yjs: 13.6.12
 
-  y-protocols@1.0.6(yjs@13.6.12):
+  y-protocols@1.0.6(patch_hash=6rjmg7fv4ajtsntteqrxseg2xq)(yjs@13.6.12):
     dependencies:
       lib0: 0.2.89
       yjs: 13.6.12

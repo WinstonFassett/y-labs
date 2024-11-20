@@ -254,7 +254,7 @@ export class TrysteroConn {
    * @param {TrysteroDocRoom} room
    */
   constructor(remotePeerId, room) {
-    log("connected to ", logging.BOLD, remotePeerId);
+    console.log("connected to ", logging.BOLD, remotePeerId);
     this.room = room;
     this.remotePeerId = remotePeerId;
     this.closed = false;
@@ -275,6 +275,7 @@ export class TrysteroConn {
     sendTrysteroConn(this, encoder);
     
     const awarenessStates = awareness.getStates();
+    console.log('initial awareness', awarenessStates)
     if (awarenessStates.size > 0) {
       const encoder = encoding.createEncoder();
       encoding.writeVarUint(encoder, messageAwareness);
@@ -287,7 +288,10 @@ export class TrysteroConn {
       );
       sendTrysteroConn(this, encoder);
     }
+
+    // listen for messages
     room.provider.listenDocData((data, peerId) => {
+      // console.log('docdata', {peerId, data})
       try {
         const answer = readPeerMessage(this, data);
         if (answer !== null) {
@@ -302,7 +306,9 @@ export class TrysteroConn {
     this.connected = false;
     this.closed = true;
     const { room, remotePeerId } = this;
+    console.log('closing', room, remotePeerId)
     if (room.trysteroConns.has(remotePeerId)) {
+      console.log('deleting trysteroConn', remotePeerId)
       room.trysteroConns.delete(remotePeerId);
       room.provider.emit("peers", [
         {
@@ -314,7 +320,7 @@ export class TrysteroConn {
       ]);
     }
     checkIsSynced(room);
-    log("closed connection to ", logging.BOLD, remotePeerId);
+    console.log("closed connection to ", logging.BOLD, remotePeerId);
   }
   destroy() {
     // console.log("todo: destroy conn(?)");
@@ -330,6 +336,12 @@ const broadcastBcMessage = (room, m) =>
   cryptoutils
     .encrypt(m, room.key)
     .then((data) => room.mux(() => bc.publish(room.name, data)));
+
+// const broadcastBcMessage = async (room, m) => {
+//   const roomKey = await room.key;  
+//   const data = roomKey ? await cryptoutils.encrypt(m, room.key) : m;
+//   room.mux(() => bc.publish(room.name, data));
+// }
 
 /**
  * @param {TrysteroDocRoom} room
@@ -397,6 +409,18 @@ export class TrysteroDocRoom {
           }
         }),
       );
+
+    // this._bcSubscriber = async (data) => {
+    //   const key = this.key;
+    //   console.log('KEY', key)
+    //   const m = key ? await cryptoutils.decrypt(new Uint8Array(data), key) : data;
+    //   this.mux(() => {
+    //     const reply = readMessage(this, m, () => {});
+    //     if (reply) {
+    //       broadcastBcMessage(this, encoding.toUint8Array(reply));
+    //     }
+    //   });
+    // }      
     /**
      * Listens to Yjs updates and sends them to remote peers
      *
@@ -456,21 +480,31 @@ export class TrysteroDocRoom {
     bc.subscribe(roomName, this._bcSubscriber);
     
   }
-
+  async connect () {
+    this.bindToTrystero()
+    this.startSync()
+  }
+  async reconnect () {
+    await this.connect()
+  }
   bindToTrystero () {
     const provider = this.provider;
     const trysteroRoom = provider.trystero;
     trysteroRoom.onPeerJoin((peerId) => {
-      log(`${peerId} joined`);
+      console.log(`${peerId} joined`);
       if (this.trysteroConns.size < provider.maxConns) {
         map.setIfUndefined(
           this.trysteroConns,
           peerId,
-          () => new TrysteroConn(peerId, provider.room),
+          () => {
+            console.log('creating TrysteroConn!', peerId, provider.room)
+            return new TrysteroConn(peerId, provider.room)
+          },
         );
       }
     });
     trysteroRoom.onPeerLeave((peerId) => {
+      console.log('leaving', { peerId, conns: this.trysteroConns.keys()})
       if (this.trysteroConns.has(peerId)) {
         const conn = this.trysteroConns.get(peerId);
         conn.onClose();
@@ -485,13 +519,14 @@ export class TrysteroDocRoom {
         ]);
       }
       checkIsSynced(this);
-      log("closed connection to ", logging.BOLD, peerId);
+      console.log("closed connection to ", logging.BOLD, peerId);
     });
   }
   
+  
   startSync() {
 
-    // console.log('start sync!')
+    console.log('start sync!')
     this.bcconnected = true;
     // // broadcast peerId via broadcastchannel
     broadcastBcPeerId(this);
@@ -520,34 +555,61 @@ export class TrysteroDocRoom {
     );
     broadcastBcMessage(this, encoding.toUint8Array(encoderAwarenessState));
     log("connected room to doc", this);
+    
+    this.provider.emit("status", [
+      {
+        connected: true,
+      },
+    ]);
   }
 
   disconnect() {
-    // console.log("DISCONNECT", this);
-    this.provider.trystero?.leave()
+    console.log("DISCONNECT", this);
     awarenessProtocol.removeAwarenessStates(
       this.awareness,
       [this.doc.clientID],
       "disconnect",
     );
+    // this.awareness.setLocalState(null);
+
+/**
+ * OK
+ * reconnecting awareness seems like a headache
+ * why not just create a new awareness with new id on reconnect?
+ */
+
+    this.provider.trystero?.leave()
+
     // broadcast peerId removal via broadcastchannel
     const encoderPeerIdBc = encoding.createEncoder();
     encoding.writeVarUint(encoderPeerIdBc, messageBcPeerId);
     encoding.writeUint8(encoderPeerIdBc, 0); // remove peerId from other bc peers
     encoding.writeVarString(encoderPeerIdBc, this.peerId);
     broadcastBcMessage(this, encoding.toUint8Array(encoderPeerIdBc));
-
     bc.unsubscribe(this.name, this._bcSubscriber);
+
     this.bcconnected = false;
+
     this.doc.off("update", this._docUpdateHandler);
     this.awareness.off("update", this._awarenessUpdateHandler);
+    
+    // destroy and remove all connections
     this.trysteroConns.forEach((conn) => conn.destroy());
-    // console.log('removing from rooms')
-    rooms.delete(this.name);
+
+    this.provider.emit('status', [{
+      status: 'disconnected'
+    }])
+
   }
 
   destroy() {
     this.disconnect();
+    
+    
+    // this.trysteroConns.forEach((conn) => conn.destroy());
+    // console.log('removing from rooms')
+    rooms.delete(this.name);
+
     if (typeof window !== "undefined") {
       window.removeEventListener("beforeunload", this._beforeUnloadHandler);
     } else if (typeof process !== "undefined") {
@@ -556,23 +618,6 @@ export class TrysteroDocRoom {
   }
 }
 
-/**
- * @param {Y.Doc} doc
- * @param {TrysteroProvider} provider
- * @param {string} name
- * @param {CryptoKey|null} key
- * @return {TrysteroDocRoom}
- */
-const openRoom = (doc, provider, name, key) => {
-  // there must only be one room
-  if (rooms.has(name)) {
-    throw error.create(`A Yjs Doc connected to room "${name}" already exists!`);
-  }
-  const room = new TrysteroDocRoom(doc, provider, name, key);
-  rooms.set(name, /** @type {TrysteroDocRoom} */ (room));
-  room.startSync();
-  return room;
-};
 
 /**
  * @typedef {Object} ProviderOptions
@@ -583,17 +628,6 @@ const openRoom = (doc, provider, name, key) => {
  * @property {boolean} [filterBcConns]
  * @property {any} [peerOpts]
  */
-
-/**
- * @param {TrysteroProvider} provider
- */
-const emitStatus = (provider) => {
-  provider.emit("status", [
-    {
-      connected: provider.connected,
-    },
-  ]);
-};
 
 /**
  * @typedef {Object} TrysteroProviderEvents
@@ -655,16 +689,36 @@ export class TrysteroProvider extends ObservableV2 {
     // return;
     
   }
-  connectTrystero (trysteroRoom) {
+  async connectTrystero (trysteroRoom) {
     this.bindToTrystero(trysteroRoom)
-    this.openDocRoom()
+    await this.connectDocRoom()
   }
-  openDocRoom() {
+  async connectDocRoom() {
     const { doc, roomName } = this;
-    return this.key.then((key) => {
-      this.room = openRoom(doc, this, roomName, key);
-      // console.log('set room', this.room)
-    });
+    // return this.key.then((key) => {
+    //   this.room = connectRoom(doc, this, roomName, key);
+    //   // console.log('set room', this.room)
+    // });
+    // this.room = await connectRoom(doc, this, roomName, key); 
+    
+    // there must only be one room
+    console.log("connectRoom", roomName);
+    if (rooms.has(roomName)) {
+      // if already connected,
+      // throw error.create(`A Yjs Doc connected to room "${roomName}" already exists!`);
+      // reconnect room
+      const room = rooms.get(roomName);
+      console.log('reconnecting room', room)
+      await room.reconnect()
+      return
+    }
+    const provider = this
+    const key = await this.key;
+    const room = new TrysteroDocRoom(doc, provider, roomName, key);
+    this.room = room
+    rooms.set(roomName, /** @type {TrysteroDocRoom} */ (room));
+    await room.connect();
+    return room;
   }
   bindToTrystero(trysteroRoom) {
     this.trystero = trysteroRoom;

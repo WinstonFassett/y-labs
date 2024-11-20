@@ -44,8 +44,10 @@ export function useDocCollabStore() {
       }
 
       function stopSharing() {
+        console.log('stopSharing')
         if ($roomConfig) {
           $roomConfig.setKey("enabled", false);
+          console.log('disconnecting', {$room})
           $room?.disconnect();
           navigate(`?roomId=`);
         }

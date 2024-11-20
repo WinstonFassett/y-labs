@@ -1,0 +1,94 @@
+diff --git a/node_modules/y-protocols/awareness.js b/node_modules/y-protocols/awareness.js
+index 8f9ae94..b4a4603 100644
+--- a/node_modules/y-protocols/awareness.js
++++ b/node_modules/y-protocols/awareness.js
+@@ -10,7 +10,7 @@ import { Observable } from 'lib0/observable'
+ import * as f from 'lib0/function'
+ import * as Y from 'yjs' // eslint-disable-line
+ 
+-export const outdatedTimeout = 30000
++export const outdatedTimeout = 70000
+ 
+ /**
+  * @typedef {Object} MetaClientState
+@@ -245,6 +245,7 @@ export const applyAwarenessUpdate = (awareness, update, origin) => {
+   const updated = []
+   const filteredUpdated = []
+   const removed = []
++  const resurrected = []
+   const len = decoding.readVarUint(decoder)
+   for (let i = 0; i < len; i++) {
+     const clientID = decoding.readVarUint(decoder)
+@@ -275,7 +276,10 @@ export const applyAwarenessUpdate = (awareness, update, origin) => {
+       } else if (clientMeta !== undefined && state === null) {
+         removed.push(clientID)
+       } else if (state !== null) {
+-        if (!f.equalityDeep(state, prevState)) {
++          if (clientMeta !== undefined && prevState === undefined) {
++              resurrected.push(clientID)
++          }
++          if (!f.equalityDeep(state, prevState)) {
+           filteredUpdated.push(clientID)
+         }
+         updated.push(clientID)
+@@ -284,12 +288,12 @@ export const applyAwarenessUpdate = (awareness, update, origin) => {
+   }
+   if (added.length > 0 || filteredUpdated.length > 0 || removed.length > 0) {
+     awareness.emit('change', [{
+-      added, updated: filteredUpdated, removed
++      added, updated: filteredUpdated, removed, resurrected
+     }, origin])
+   }
+   if (added.length > 0 || updated.length > 0 || removed.length > 0) {
+     awareness.emit('update', [{
+-      added, updated, removed
++      added, updated, removed, resurrected
+     }, origin])
+   }
+ }
+diff --git a/node_modules/y-protocols/dist/awareness.cjs b/node_modules/y-protocols/dist/awareness.cjs
+index e52c5d3..f1e649c 100644
+--- a/node_modules/y-protocols/dist/awareness.cjs
++++ b/node_modules/y-protocols/dist/awareness.cjs
+@@ -40,7 +40,7 @@ var f__namespace = /*#__PURE__*/_interopNamespace(f);
+  * @module awareness-protocol
+  */
+ 
+-const outdatedTimeout = 30000;
++const outdatedTimeout = 70000;
+ 
+ /**
+  * @typedef {Object} MetaClientState
+@@ -275,6 +275,7 @@ const applyAwarenessUpdate = (awareness, update, origin) => {
+   const updated = [];
+   const filteredUpdated = [];
+   const removed = [];
++  const resurrected = [];
+   const len = decoding__namespace.readVarUint(decoder);
+   for (let i = 0; i < len; i++) {
+     const clientID = decoding__namespace.readVarUint(decoder);
+@@ -305,6 +306,9 @@ const applyAwarenessUpdate = (awareness, update, origin) => {
+       } else if (clientMeta !== undefined && state === null) {
+         removed.push(clientID);
+       } else if (state !== null) {
++        if (clientMeta !== undefined && prevState === undefined) {
++          resurrected.push(clientID)
++        }
+         if (!f__namespace.equalityDeep(state, prevState)) {
+           filteredUpdated.push(clientID);
+         }
+@@ -314,12 +318,12 @@ const applyAwarenessUpdate = (awareness, update, origin) => {
+   }
+   if (added.length > 0 || filteredUpdated.length > 0 || removed.length > 0) {
+     awareness.emit('change', [{
+-      added, updated: filteredUpdated, removed
++      added, updated: filteredUpdated, removed, resurrected
+     }, origin]);
+   }
+   if (added.length > 0 || updated.length > 0 || removed.length > 0) {
+     awareness.emit('update', [{
+-      added, updated, removed
++      added, updated, removed, resurrected
+     }, origin]);
+   }
+ };

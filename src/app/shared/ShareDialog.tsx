@@ -59,6 +59,7 @@ export function ShareDialog() {
 
   const roomConfigMaybe = useStoreIfPresent($roomConfig);
   const roomMaybe = useStoreIfPresent($room);
+  const peerIds = roomMaybe?.peerIds ?? [];
   const awarenessUsers = useStoreIfPresent(
     $room?.$awarenessStates
   );
@@ -72,14 +73,21 @@ export function ShareDialog() {
   const navigate = useNavigate();
   const form = useForm<z.infer<typeof RoomConfigSchema>>({
     resolver: zodResolver(RoomConfigSchema),
-    defaultValues: async () => ({
-      docId,
-      roomId: roomParameter || generateId(),
-      enabled: roomConfigMaybe?.enabled ?? false,
-      encrypt: (roomConfigMaybe?.encrypt === true || roomConfigMaybe?.password != '') ?? true,
-      password: roomConfigMaybe?.password ?? generateId(),
-      accessLevel: "edit",
-    }),
+    defaultValues: async () => {
+      const enabled = roomConfigMaybe?.enabled ?? false;
+      const inRoom = roomParameter
+      const encrypt = inRoom ? (roomConfigMaybe?.encrypt || !!roomConfigMaybe.password) : true;
+      return {
+        docId,
+        roomId: roomParameter || generateId(),
+        enabled,
+        encrypt,
+          // (roomConfigMaybe?.encrypt === true || roomConfigMaybe?.password != '') ?? true,
+        // always generates default password
+        password: roomConfigMaybe?.password ?? generateId(),
+        accessLevel: "edit",
+      }
+    },
   });
   const onSubmit = form.handleSubmit(
     (data) => {
@@ -161,6 +169,7 @@ export function ShareDialog() {
 
                     <UserList
                       isSharing={isSharing}
+                      peerIds={peerIds}
                       awarenessUsers={awarenessUsers}
                       awarenessClientID={awarenessClientID}
                     />
@@ -406,15 +415,17 @@ function SharingActions({
 
 function UserList({
   isSharing,
+  peerIds,
   awarenessUsers,
   awarenessClientID,
 }: {
   isSharing: boolean;
+  peerIds: string[];
   awarenessUsers: Map<string, any> | Map<any, any>;
   awarenessClientID: number | undefined;
 }) {
   const userAwareness = isSharing && (awarenessUsers as Map<any, any>)?.get(awarenessClientID);
-  const connectedCount= awarenessUsers?.size > 1 ? awarenessUsers?.size - 1 : 0
+  const connectedCount= peerIds?.length ?? 0;
   // console.log('connectedCount', connectedCount, awarenessUsers)
   return (
     <div>isSharing ={isSharing?'true':'false'}
@@ -433,7 +444,7 @@ function UserList({
       <div>{connectedCount} peer{connectedCount !== 1 ? 's':''} connected</div>
       {isSharing && !!awarenessUsers &&
         Array.from(awarenessUsers).map(([peerId, awareness]) => {
-          // console.log("awareness", peerId, awareness);
+          console.log("awareness", peerId, awareness);
           const data = awareness.presence ?? awareness.user;
           if (!data) {
             return (
