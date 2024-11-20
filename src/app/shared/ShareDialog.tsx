@@ -50,6 +50,7 @@ import { useDocCollabStore } from "./useDocCollabStore";
 import { useStoreIfPresent } from "./useStoreIfPresent";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { user } from "./store/local-user";
 
 export function ShareDialog() {
   const [isOpen, setIsOpen] = useState(false);
@@ -164,12 +165,24 @@ export function ShareDialog() {
 
                     <SharingConfiguration isSharing={isSharing} />
 
-                    <UserList
-                      isSharing={isSharing}
-                      peerIds={peerIds}
-                      awarenessUsers={awarenessUsers}
-                      awarenessClientID={awarenessClientID}
-                    />
+                    <AnimatePresence>
+                      {isSharing && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className=""
+                        >
+                          <UserList
+                            isSharing={isSharing}
+                            peerIds={peerIds}
+                            awarenessUsers={awarenessUsers}
+                            awarenessClientID={awarenessClientID}
+                          />                  
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
 
                     <DialogFooter className="pt-4">
                       <SharingActions
@@ -422,58 +435,60 @@ function UserList({
   awarenessClientID: number | undefined;
 }) {
   const userAwareness = isSharing && (awarenessUsers as Map<any, any>)?.get(awarenessClientID);
+  const userInfo = user.get();
   const connectedCount= peerIds?.length ?? 0;
   return (
-    <div>isSharing ={isSharing?'true':'false'}
-      <div>
-        You are sharing as: {awarenessClientID}
-      </div>
-      {isSharing && userAwareness ? <div>
-        <User 
-          name={userAwareness?.user?.userName ?? "Anonymous"}
-          description="YOU"
-          avatarProps={{
-            src: `https://avatar.vercel.sh/${userAwareness?.user?.userName}?size=32`,
-          }}
-        />
-      </div> : null}
-      <div>{connectedCount} peer{connectedCount !== 1 ? 's':''} connected</div>
-      {isSharing && !!awarenessUsers &&
-        Array.from(awarenessUsers).map(([peerId, awareness]) => {
-          const data = awareness.presence ?? awareness.user;
-          if (!data) {
+    <div>
+      {isSharing && <div>
+        <div>You are sharing as:</div>
+        { !!userInfo && <div>
+          <User 
+            name={userInfo?.user?.userName ?? "Anonymous"}
+            description="YOU"
+            avatarProps={{
+              src: `https://avatar.vercel.sh/${userInfo?.user?.userName}?size=32`,
+            }}
+          />
+        </div>}
+        
+        <div>{connectedCount} peer{connectedCount !== 1 ? 's':''} connected</div>
+        
+        {!!awarenessUsers &&
+          Array.from(awarenessUsers).map(([peerId, awareness]) => {
+            const data = awareness.presence ?? awareness.user;
+            if (!data) {
+              return (
+                <div key={peerId}>
+                  Missing data {peerId}: {JSON.stringify(data)}
+              </div>
+            );
+  }
+            const { userName, color } = data;
+            const isYou = peerId === awarenessClientID;
+            if (isYou) return <div key={peerId}></div>;
             return (
               <div key={peerId}>
-                Missing data {peerId}: {JSON.stringify(data)}
-    </div>
-  );
-}
-          const { userName, color } = data;
-
-          const isYou = peerId === awarenessClientID;
-          if (isYou) return <div key={peerId}></div>;
-          return (
-            <div key={peerId}>
-              <User
-                className="py-4"
-                key={peerId}
-                name={userName ? <UserName {...{ userName, color }} /> : peerId}
-                description={
-                  isYou
-                    ? "YOU"
-                    : userName
-                      ? undefined
-                      : JSON.stringify(awareness)
-                  //"Anonymous"
-                }
-                avatarProps={{
-                  // src: `https://i.pravatar.cc/150?u=${peerId}`,
-                  src: `https://avatar.vercel.sh/${userName}?size=32`,
-                }}
-              />
-            </div>
-          );
-        })}
+                <User
+                  className="py-4"
+                  key={peerId}
+                  name={userName ? <UserName {...{ userName, color }} /> : peerId}
+                  description={
+                    isYou
+                      ? "YOU"
+                      : userName
+                        ? undefined
+                        : JSON.stringify(awareness)
+                  }
+                  avatarProps={{
+                    // src: `https://i.pravatar.cc/150?u=${peerId}`,
+                    src: `https://avatar.vercel.sh/${userName}?size=32`,
+                  }}
+                />
+              </div>
+            );
+          })}
+        
+      </div>}
               </div>
   );
 }
