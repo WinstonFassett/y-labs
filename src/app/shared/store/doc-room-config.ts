@@ -12,8 +12,8 @@ export interface DocRoomConfigFields {
 }
 
 const FieldDefaults: DocRoomConfigFields = {
-  docId: null,
-  roomId: null,
+  docId: '',
+  roomId: '',
   enabled: false,
   encrypt: false,
   password: undefined,

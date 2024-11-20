@@ -63,7 +63,6 @@ export function ShareDialog() {
   const awarenessUsers = useStoreIfPresent(
     $room?.$awarenessStates
   );
-  // console.log('ShareDialog awarenessUsers', awarenessUsers);
   const awarenessClientID = $room?.provider?.awareness.clientID;
   const isSharing = roomConfigMaybe?.enabled ?? false;
   // const isSharing = $roomConfig?.get().enabled ?? false;
@@ -82,8 +81,6 @@ export function ShareDialog() {
         roomId: roomParameter || generateId(),
         enabled,
         encrypt,
-          // (roomConfigMaybe?.encrypt === true || roomConfigMaybe?.password != '') ?? true,
-        // always generates default password
         password: roomConfigMaybe?.password ?? generateId(),
         accessLevel: "edit",
       }
@@ -426,7 +423,6 @@ function UserList({
 }) {
   const userAwareness = isSharing && (awarenessUsers as Map<any, any>)?.get(awarenessClientID);
   const connectedCount= peerIds?.length ?? 0;
-  // console.log('connectedCount', connectedCount, awarenessUsers)
   return (
     <div>isSharing ={isSharing?'true':'false'}
       <div>
@@ -444,7 +440,6 @@ function UserList({
       <div>{connectedCount} peer{connectedCount !== 1 ? 's':''} connected</div>
       {isSharing && !!awarenessUsers &&
         Array.from(awarenessUsers).map(([peerId, awareness]) => {
-          console.log("awareness", peerId, awareness);
           const data = awareness.presence ?? awareness.user;
           if (!data) {
             return (
