@@ -24,7 +24,7 @@ interface TrysteroDocRoom extends TrysteroDocRoomProps {
   room: Room;
   provider: TrysteroProvider;
   disconnect: () => void;
-  $awarenessStates: ReadableAtom<Map<string, any>>;
+  $awarenessStates: ReadableAtom<Map<number, any>>;
 }
 export interface OnlineDocRoomFields {
   peerIds: string[];

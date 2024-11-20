@@ -443,10 +443,10 @@ function UserList({
         <div>You are sharing as:</div>
         { !!userInfo && <div>
           <User 
-            name={userInfo?.user?.userName ?? "Anonymous"}
+            name={userInfo.username ?? "Anonymous"}
             description="YOU"
             avatarProps={{
-              src: `https://avatar.vercel.sh/${userInfo?.user?.userName}?size=32`,
+              src: `https://avatar.vercel.sh/${userInfo.username}?size=32`,
             }}
           />
         </div>}
