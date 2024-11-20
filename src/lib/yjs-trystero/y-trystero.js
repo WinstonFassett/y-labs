@@ -549,9 +549,7 @@ export class TrysteroDocRoom {
 
     this.bcconnected = false;
 
-    this.doc.off("update", this._docUpdateHandler);
-    this.awareness.off("update", this._awarenessUpdateHandler);
-    
+
     this.trysteroConns.forEach((conn) => conn.destroy());
 
     this.provider.emit('status', [{
@@ -561,6 +559,9 @@ export class TrysteroDocRoom {
   }
 
   destroy() {
+    this.doc.off("update", this._docUpdateHandler);
+    this.awareness.off("update", this._awarenessUpdateHandler);
+    
     this.disconnect();
     awarenessProtocol.removeAwarenessStates(
       this.awareness,
@@ -568,6 +569,7 @@ export class TrysteroDocRoom {
       "disconnect",
     );
     rooms.delete(this.name);
+    
     if (typeof window !== "undefined") {
       window.removeEventListener("beforeunload", this._beforeUnloadHandler);
     } else if (typeof process !== "undefined") {
