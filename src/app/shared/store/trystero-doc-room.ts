@@ -50,7 +50,7 @@ function createTrysteroDocRoom(
 
   const $awarenessStates = atom(new Map());
   onMount($awarenessStates, () => {
-    console.log('mount awareness')
+    // console.log('mount awareness')
     const onChange = ({
       added,
       updated,
@@ -66,11 +66,11 @@ function createTrysteroDocRoom(
         states = new Map(states);
       }
       $awarenessStates.set(states);
-      console.log('updated awareness store', states)
+      // console.log('updated awareness store', states)
     };
     provider.awareness.on("change", onChange);
     return () => {
-      console.log('unmount awareness')
+      // console.log('unmount awareness')
       provider.awareness.off("change", onChange);
     };
   });
