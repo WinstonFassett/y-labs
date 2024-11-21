@@ -17,23 +17,24 @@ export function AppBarCollab() {
   return (
     <>
       { !isSharing ? <></> : Array.from(awarenessUsers??[]).map(([peerId, entry]) => {
-        const isYou = peerId === awarenessClientID?.toString();
+        console.log({ peerId, awarenessClientID })
+        const isYou = peerId === awarenessClientID
         if (isYou) return <div></div>;
         const {
-          user: { color, userName },
+          user: { color, username },
         } = entry;
         return (
           <Avatar
             key={peerId}
             >
             <AvatarImage 
-              alt={userName}
-              title={userName}            
+              alt={username}
+              title={username}            
               src={
                 // `https://i.pravatar.cc/150?u=${peerId}`
-                `https://avatar.vercel.sh/${userName}?size=32`
+                `https://avatar.vercel.sh/${username}?size=32`
               }/>
-            <AvatarFallback>Yo</AvatarFallback>
+            {/* <AvatarFallback>Yo</AvatarFallback> */}
           </Avatar>
         );
       })}

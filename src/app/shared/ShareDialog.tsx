@@ -64,6 +64,7 @@ export function ShareDialog() {
   const awarenessUsers = useStoreIfPresent(
     $room?.$awarenessStates
   );
+  console.log('rendering share dialog', { awarenessUsers });
   const awarenessClientID = $room?.provider?.awareness.clientID;
   const isSharing = roomConfigMaybe?.enabled ?? false;
   // const isSharing = $roomConfig?.get().enabled ?? false;
@@ -463,7 +464,7 @@ function UserList({
               </div>
             );
   }
-            const { userName, color } = data;
+            const { username, color } = data;
             const isYou = peerId === awarenessClientID;
             if (isYou) return <div key={peerId}></div>;
             return (
@@ -471,17 +472,17 @@ function UserList({
                 <User
                   className="py-4"
                   key={peerId}
-                  name={userName ? <UserName {...{ userName, color }} /> : peerId}
+                  name={username ? <UserName {...{ username: username, color }} /> : peerId}
                   description={
                     isYou
                       ? "YOU"
-                      : userName
+                      : username
                         ? undefined
                         : JSON.stringify(awareness)
                   }
                   avatarProps={{
                     // src: `https://i.pravatar.cc/150?u=${peerId}`,
-                    src: `https://avatar.vercel.sh/${userName}?size=32`,
+                    src: `https://avatar.vercel.sh/${username}?size=32`,
                   }}
                 />
               </div>
@@ -494,8 +495,8 @@ function UserList({
 }
 
 
-function UserName({ userName, color }: { userName: string; color: string }) {
-  return <span style={{ color }}>{userName}</span>;
+function UserName({ username, color }: { username: string; color: string }) {
+  return <span style={{ color }}>{username}</span>;
 }
 
 interface UserProps extends React.HTMLAttributes<HTMLDivElement> {

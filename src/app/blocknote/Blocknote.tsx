@@ -24,7 +24,7 @@ export function Blocknote(
       fragment,
       user: {
         name: u.username,
-        userName: u.username,
+        // username: u.username,
         color: u.color,
       },
     },

@@ -13,6 +13,8 @@ function Editor() {
   const fragment = ydoc.getXmlFragment("novel");
   const provider = $room?.provider;
   const u = user.get();
+  console.log('user', u)
+  console.log('provider', provider)
   return (
     <div className="min-h-full flex-1 flex flex-col max-w-3xl mx-auto w-full">
       <AppBar className="h-16" />

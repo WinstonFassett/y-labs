@@ -50,6 +50,7 @@ function createTrysteroDocRoom(
 
   const $awarenessStates = atom(new Map());
   onMount($awarenessStates, () => {
+    console.log('mount awareness')
     const onChange = ({
       added,
       updated,
@@ -59,11 +60,17 @@ function createTrysteroDocRoom(
       updated: number[];
       removed: number[];
     }) => {
-      const states = provider.awareness.getStates();
+      let states = provider.awareness.getStates();
+      // force new map for react because state changed
+      if (states === $awarenessStates.get()) {
+        states = new Map(states);
+      }
       $awarenessStates.set(states);
+      console.log('updated awareness store', states)
     };
     provider.awareness.on("change", onChange);
     return () => {
+      console.log('unmount awareness')
       provider.awareness.off("change", onChange);
     };
   });
@@ -106,7 +113,7 @@ function createTrysteroDocRoom(
       user: {
         color: user.color,
         name: user.username, // for y codemirror
-        userName: user.username,
+        username: user.username,
       },
     })
   }
@@ -125,9 +132,9 @@ function createTrysteroDocRoom(
   }
 
   async function reconnect () {
-    setUserInAwareness(user.get());
     const trysteroRoom = createTrysteroRoomForStore(roomId, store)
     await provider.connectTrystero(trysteroRoom)
+    setUserInAwareness(user.get());
   }
   
   const model = Object.assign(store, {
