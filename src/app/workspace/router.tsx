@@ -8,10 +8,10 @@ export const routes = [
     path: "/",
     element: <Workspace />,
   },
-  { path: "/new", element: <Workspace /> },
+  { path: "/new", element: <NewDocRoute /> },
   {
     path: "/edit/:docId",
-    element: <Workspace />,
+    element: <EditorRoute />,
   },
 ];
 

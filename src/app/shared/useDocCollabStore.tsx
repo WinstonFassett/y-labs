@@ -10,10 +10,13 @@ import { getTrysteroDocRoom } from "./store/trystero-doc-room";
 import { getYdoc } from "./store/yjs-docs";
 import { useStoreIfPresent } from "./useStoreIfPresent";
 
-export function useDocCollabStore() {
+export function useDocCollabStore(requireDocId = true) {
   const { docId } = useDocParams();
   if (!docId) {
-    throw new Error("No document id specified");
+    if (requireDocId) {
+      throw new Error("No document id specified");
+    }
+    return {  };
   }
   const navigate = useNavigate();
 
