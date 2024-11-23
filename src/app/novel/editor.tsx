@@ -1,6 +1,8 @@
 import { useStore } from "@nanostores/react";
 import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
+import { Color } from '@tiptap/extension-color';
+import TextStyle from '@tiptap/extension-text-style';
 import AppBar from "../shared/AppBar";
 import { getDocLoadState } from "../shared/store/doc-loader";
 import { user } from "../shared/store/local-user";
@@ -24,6 +26,8 @@ function Editor() {
         <Novel
           disableHistory={true}
           extensions={[
+            TextStyle as any, 
+            Color,
             Collaboration.configure({
               fragment,
             }),
