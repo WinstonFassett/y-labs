@@ -1,0 +1,14 @@
+---
+import Button from './Button.astro';
+import logoRaw from "../../public/lab-icon.svg?raw";
+
+---
+<Button
+  asChild
+  title="Y-Labs"
+  variant="ghost"
+  className="[&_svg]:pointer-events-none [&_svg]:size-5 [&_svg]:shrink-0"
+>
+  <a href="/y-labs/index.html" set:html={logoRaw}>
+  </a>
+</Button>

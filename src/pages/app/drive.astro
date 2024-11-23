@@ -1,10 +1,9 @@
 ---
 import App from "@/app/drive/App";
 import { DriveActions } from "@/app/drive/DriveActions";
-import Button from "@/components/Button.astro";
+import HomeButton from "@/components/HomeButton.astro";
 import { Navbar, NavbarBrand, NavbarContent } from "@/components/ui/navbar";
 import Layout from "@/layouts/LabLayout.astro";
-import logoRaw from "../../../public/lab-icon.svg?raw";
 const frontmatter = {
   title: "Saved Documents",
   favicon: "/y-labs/logos/lucide-drive.svg",
@@ -16,15 +15,7 @@ const frontmatter = {
     <Navbar className="sticky top-0 z-50">
       <NavbarContent>
         <NavbarBrand className="gap-1 sm:gap-2">
-          <Button
-            asChild
-            title="Y-Labs"
-            variant="ghost"
-            className="[&_svg]:pointer-events-none [&_svg]:size-5 [&_svg]:shrink-0"
-          >
-            <a href="/y-labs/index.html" set:html={logoRaw}>
-            </a>
-          </Button>
+          <HomeButton />
         </NavbarBrand>        
       </NavbarContent>
       <NavbarContent className="flex-1">

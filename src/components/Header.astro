@@ -1,21 +1,26 @@
 ---
 import ThemeSwitch from "@/lib/astro-tailwind-themes/ThemeSwitch.svelte";
-import Navbar from "@/components/Navbar.astro";
+import { Navbar, NavbarBrand, NavbarContent } from "@/components/ui/navbar";
 import logoRaw from "../../public/lab-icon.svg?raw";
 import LinkButton from "@/components/LinkButton.astro";
 import { SITE_TITLE } from "@/consts";
+import HomeButton from "./HomeButton.astro";
 ---
 
-<Navbar maxWidth="full">
-  <h2 slot="brand" class="flex">
-    <LinkButton variant="light" href="/y-labs/index.html">
-      <div class="flex">
-        <div set:html={logoRaw} class="h-6 w-6" />
-        <h2>{SITE_TITLE}</h2>
-      </div>
-    </LinkButton>
-  </h2>
-  <div slot="end">
+<Navbar>
+  <NavbarContent>
+    <NavbarBrand>
+      <HomeButton />          
+    </NavbarBrand>
+  </NavbarContent>
+  <NavbarContent className="flex-1">
+    <h2>
+      <a href="/y-labs/index.html">
+        {SITE_TITLE}
+      </a>
+    </h2>
+  </NavbarContent>
+  <NavbarContent>
     <ThemeSwitch client:load />
-  </div>
+  </NavbarContent>
 </Navbar>

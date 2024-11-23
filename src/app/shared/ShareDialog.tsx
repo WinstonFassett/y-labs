@@ -127,7 +127,7 @@ export function ShareDialog() {
           variant={isSharing ? "warning" : "outline"}
           className={cn(
             "w-auto px-4  border-2 rounded-xl",
-            !isSharing && "border-primary text-primary-foreground hover:bg-primary data-[hovered=true]:bg-primary focus:bg-primary transition-colors",
+            !isSharing && "border-primary text-foreground hover:bg-primary hover:text-primary-foreground data-[hovered=true]:bg-primary data-[hovered=true]:text-primary-foreground focus:bg-primary focus:text-primary-foreground transition-colors",
           )}
         >
           <div className="sr-only sm:not-sr-only !pr-1">{actionLabel}</div>
