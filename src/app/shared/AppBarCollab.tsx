@@ -1,9 +1,7 @@
 import { Avatar } from "@/components/ui/avatar";
-import { useStore } from "@nanostores/react";
-import { atom } from "nanostores";
+import { AvatarImage } from "@radix-ui/react-avatar";
 import { ShareDialog } from "./ShareDialog";
 import { useDocCollabStore } from "./useDocCollabStore";
-import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useStoreIfPresent } from "./useStoreIfPresent";
 
 export function AppBarCollab() {
@@ -17,7 +15,6 @@ export function AppBarCollab() {
   return (
     <>
       { !isSharing ? <></> : Array.from(awarenessUsers??[]).map(([peerId, entry]) => {
-        // console.log({ peerId, awarenessClientID })
         const isYou = peerId === awarenessClientID
         if (isYou) return <div key="you"></div>;
         const {
@@ -34,7 +31,6 @@ export function AppBarCollab() {
                 // `https://i.pravatar.cc/150?u=${peerId}`
                 `https://avatar.vercel.sh/${username}?size=32`
               }/>
-            {/* <AvatarFallback>Yo</AvatarFallback> */}
           </Avatar>
         );
       })}

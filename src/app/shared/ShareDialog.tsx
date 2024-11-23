@@ -1,16 +1,24 @@
-import { Button } from "@/components/ui/button";
 import { Button as AriaButton } from "@/components/ui/aria-button";
-import { CopyButton } from "@/components/ui/copy-button";
 import {
-  Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogOverlay,
   DialogTitle,
-  DialogTrigger,
+  DialogTrigger
 } from "@/components/ui/aria-dialog";
+import {
+  Select,
+  SelectItem,
+  SelectListBox,
+  SelectPopover,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/aria-select";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { CopyButton } from "@/components/ui/copy-button";
 import {
   Form,
   FormControl,
@@ -23,14 +31,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PasswordInput } from "@/components/ui/password-input";
-import {
-  // Select,
-  // SelectContent,
-  // SelectItem,
-  // SelectTrigger,
-  // SelectValue,
-  Select, SelectTrigger, SelectItem, SelectValue, SelectPopover, SelectListBox
-} from "@/components/ui/aria-select";
 import { Switch } from "@/components/ui/switch";
 import {
   Tooltip,
@@ -44,14 +44,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Check, Copy, Share2, Share2Icon, StopCircle } from "lucide-react";
 import { forwardRef, useRef, useState } from "react";
 import { useForm, useFormContext } from "react-hook-form";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { z } from "zod";
 import { generateId } from "./generateId";
 import { RoomConfigSchema, getDocRoomConfig } from "./store/doc-room-config";
+import { user } from "./store/local-user";
 import { useDocCollabStore } from "./useDocCollabStore";
 import { useStoreIfPresent } from "./useStoreIfPresent";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { user } from "./store/local-user";
 
 export function ShareDialog() {
   const [isOpen, setIsOpen] = useState(false);
@@ -65,7 +64,6 @@ export function ShareDialog() {
   const awarenessUsers = useStoreIfPresent(
     $room?.$awarenessStates
   );
-  console.log('rendering share dialog', { awarenessUsers });
   const awarenessClientID = $room?.provider?.awareness.clientID;
   const isSharing = roomConfigMaybe?.enabled ?? false;
   // const isSharing = $roomConfig?.get().enabled ?? false;
@@ -85,13 +83,12 @@ export function ShareDialog() {
         enabled,
         encrypt,
         password: roomConfigMaybe?.password ?? generateId(),
-        accessLevel: "edit",
+        accessLevel: roomConfigMaybe?.accessLevel ?? "edit",
       }
     },
   });
   const onSubmit = form.handleSubmit(
     (data) => {
-      console.log('submit', data);
       const { roomId, docId } = data;
       startSharing({
         ...$roomConfig?.get(),
@@ -250,12 +247,14 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
                       Anyone with the link can{" "}
                       {field.value === "edit" ? "edit" : "view"}
                     </FormLabel>
-                    <Select className="w-[100px]"                    
+                    <Select className="w-[100px]"
+                      {...field}               
                       isDisabled={isSharing}
                       onSelectionChange={field.onChange}
                       selectedKey={field.value}
-                      // onValueChange={field.onChange}
                     >
+
+                      
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
@@ -266,23 +265,6 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
                         </SelectListBox>
                       </SelectPopover>
                     </Select>
-    {/* <Select className="w-[200px]" placeholder="Select an animal">
-      <Label>Favorite Animal</Label>
-      <SelectTrigger>
-        <SelectValue />
-      </SelectTrigger>
-      <SelectPopover>
-        <SelectListBox>
-          <SelectItem>Aardvark</SelectItem>
-          <SelectItem>Cat</SelectItem>
-          <SelectItem>Dog</SelectItem>
-          <SelectItem>Kangaroo</SelectItem>
-          <SelectItem>Panda</SelectItem>
-          <SelectItem>Snake</SelectItem>
-        </SelectListBox>
-      </SelectPopover>
-    </Select> */}
-
                   </FormItem>
                 );
               }}

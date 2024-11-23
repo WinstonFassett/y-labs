@@ -10,7 +10,7 @@ import {
 import { selfId, type Room } from "trystero";
 import type { Doc } from "yjs";
 import { createRoom } from "../createRoom";
-import { getDocRoomConfig, type DocRoomConfigFields, roomConfigsByDocId } from "./doc-room-config";
+import { getDocRoomConfig, type DocRoomConfigFields } from "./doc-room-config";
 import { getYdoc } from "./yjs-docs";
 import { user } from "./local-user";
 
@@ -46,12 +46,10 @@ function createTrysteroDocRoom(
     synced: false,
   } as OnlineDocRoomFields),
 ) {
-  console.log('createTrysteroDocRoom', docRoomId, y, roomId, config, store)
   store.setKey("peerIds", [] as string[]);
 
   const $awarenessStates = atom(new Map());
   onMount($awarenessStates, () => {
-    // console.log('mount awareness')
     const onChange = ({
       added,
       updated,
@@ -67,11 +65,9 @@ function createTrysteroDocRoom(
         states = new Map(states);
       }
       $awarenessStates.set(states);
-      // console.log('updated awareness store', states)
     };
     provider.awareness.on("change", onChange);
     return () => {
-      // console.log('unmount awareness')
       provider.awareness.off("change", onChange);
     };
   });

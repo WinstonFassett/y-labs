@@ -35,7 +35,6 @@ export function useDocCollabStore() {
     if ($room.room?.leftAt) {
       $room.reconnect();
     }
-    console.log('got room', $room)
     navigate(`?roomId=${roomId}`);        
   }
 

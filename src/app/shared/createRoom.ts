@@ -4,11 +4,7 @@ import { appId } from "./store/constants";
 
 export function createRoom(roomId: string) {
   const config = { appId };
-  const room = joinRoom(config, roomId, (error) => {
-    if (error) {
-      console.error("Failed to join room", error);
-    }
-  });
+  const room = joinRoom(config, roomId);
   ["onPeerJoin", "onPeerLeave", "onPeerStream", "onPeerTrack"].forEach(
     (methodName) => makeMultiHandler(room, methodName),
   );

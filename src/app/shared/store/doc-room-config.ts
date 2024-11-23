@@ -11,21 +11,6 @@ export interface DocRoomConfigFields {
   accessLevel: "view" | "edit";
 }
 
-// const FieldDefaults: DocRoomConfigFields = {
-//   docId: '',
-//   roomId: '',
-//   enabled: false,
-//   encrypt: false,
-//   password: undefined,
-//   accessLevel: "view",
-// };
-
-export const roomConfigsByDocId = map(
-  {} as Record<string, MapStore<DocRoomConfigFields>>,
-);
-
-export const latestDocRoom = map({} as Record<string, string>);
-
 export const RoomConfigSchema = z.object({
   docId: z.string(),
   roomId: z.string().min(1, { message: "Required" }),
@@ -77,10 +62,7 @@ const docRoomConfigsT = mapTemplate(
     });
   },
   (store, id, docId, roomId) => {
-    roomConfigsByDocId.setKey(docId, store);
-    latestDocRoom.setKey(docId, roomId);
     return () => {
-      roomConfigsByDocId.setKey(id, undefined as any);
     };
   },
 );
