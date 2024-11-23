@@ -72,6 +72,7 @@ export function ShareDialog() {
   const roomParameter = searchParams.get("roomId");
   const navigate = useNavigate();
   const form = useForm<z.infer<typeof RoomConfigSchema>>({
+    
     resolver: zodResolver(RoomConfigSchema),
     defaultValues: async () => {
       const enabled = roomConfigMaybe?.enabled ?? false;
@@ -124,11 +125,7 @@ export function ShareDialog() {
   return (
       <DialogTrigger>
         <AriaButton
-          variant={isSharing ? "warning" : "outline"}
-          className={cn(
-            "w-auto px-4  border-2 rounded-xl",
-            !isSharing && "border-primary text-foreground hover:bg-primary hover:text-primary-foreground data-[hovered=true]:bg-primary data-[hovered=true]:text-primary-foreground focus:bg-primary focus:text-primary-foreground transition-colors",
-          )}
+          variant={isSharing ? "sharing" : "share"}          
         >
           <div className="sr-only sm:not-sr-only !pr-1">{actionLabel}</div>
           <Share2Icon className="h-5 w-5" />
