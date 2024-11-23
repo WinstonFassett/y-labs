@@ -124,7 +124,7 @@ function DriveListing() {
               <div className="w-full flex items-center p-4 gap-4">
                 <div className="flex-1 flex items-center gap-2">
                   {typeIconMap[doc.type as keyof typeof typeIconMap] ?? typeIconMap["unknown"]}
-                  <div className="text-sm font-semibold">
+                  <div className="text-sm font-semibold flex-1">
                     {doc.title || "[Untitled]"}
                   </div>
                   <div className="text-sm text-default-500">{doc.type}</div>
