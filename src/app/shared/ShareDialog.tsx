@@ -135,7 +135,7 @@ export function ShareDialog() {
             {({ close }) => (
               <>
                 <Form {...form}>
-                  <form ref={formRef} onSubmit={onSubmit}>
+                  <form ref={formRef} onSubmit={onSubmit} autoComplete="off">
                     <DialogHeader>
                       <DialogTitle>Share</DialogTitle>
                       <DialogDescription>
@@ -310,7 +310,7 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
                           <FormLabel>Password{isEncrypted && "*"}</FormLabel>
                           <FormControl>
                             <div>
-                              <PasswordInput {...field} value={field.value ?? ""} readOnly={isSharing} autoComplete="off" />
+                              <PasswordInput {...field} value={field.value ?? ""} readOnly={isSharing} autoComplete="room-number" />
                             </div>
                           </FormControl>
                           <FormDescription />

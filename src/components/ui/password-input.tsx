@@ -16,6 +16,7 @@ export const PasswordInput = ({
   onChange,
   disabled,
   readOnly,
+  ...props
 }: PasswordInputProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -23,6 +24,7 @@ export const PasswordInput = ({
     <div className="flex space-x-2">
       <div className="relative flex-1">
         <Input
+          {...props}
           type={showPassword ? "text" : "password"}
           value={value}
           onChange={onChange}
