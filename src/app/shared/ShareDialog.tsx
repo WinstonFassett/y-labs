@@ -24,12 +24,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PasswordInput } from "@/components/ui/password-input";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  // Select,
+  // SelectContent,
+  // SelectItem,
+  // SelectTrigger,
+  // SelectValue,
+  Select, SelectTrigger, SelectItem, SelectValue, SelectPopover, SelectListBox
+} from "@/components/ui/aria-select";
 import { Switch } from "@/components/ui/switch";
 import {
   Tooltip,
@@ -90,6 +91,7 @@ export function ShareDialog() {
   });
   const onSubmit = form.handleSubmit(
     (data) => {
+      console.log('submit', data);
       const { roomId, docId } = data;
       startSharing({
         ...$roomConfig?.get(),
@@ -246,17 +248,41 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
                   <FormItem className="flex items-center justify-between">
                     <FormLabel>
                       Anyone with the link can{" "}
-                      {form.watch("accessLevel") === "view" ? "view" : "edit"}
+                      {field.value === "edit" ? "edit" : "view"}
                     </FormLabel>
-                    <Select {...field} disabled={isSharing} onValueChange={field.onChange}>
-                      <SelectTrigger className="w-[100px]">
+                    <Select className="w-[100px]"                    
+                      isDisabled={isSharing}
+                      onSelectionChange={field.onChange}
+                      selectedKey={field.value}
+                      // onValueChange={field.onChange}
+                    >
+                      <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="view">View</SelectItem>
-                        <SelectItem value="edit">Edit</SelectItem>
-                      </SelectContent>
+                      <SelectPopover>
+                        <SelectListBox>
+                          <SelectItem id="view">View</SelectItem>
+                          <SelectItem id="edit">Edit</SelectItem>
+                        </SelectListBox>
+                      </SelectPopover>
                     </Select>
+    {/* <Select className="w-[200px]" placeholder="Select an animal">
+      <Label>Favorite Animal</Label>
+      <SelectTrigger>
+        <SelectValue />
+      </SelectTrigger>
+      <SelectPopover>
+        <SelectListBox>
+          <SelectItem>Aardvark</SelectItem>
+          <SelectItem>Cat</SelectItem>
+          <SelectItem>Dog</SelectItem>
+          <SelectItem>Kangaroo</SelectItem>
+          <SelectItem>Panda</SelectItem>
+          <SelectItem>Snake</SelectItem>
+        </SelectListBox>
+      </SelectPopover>
+    </Select> */}
+
                   </FormItem>
                 );
               }}

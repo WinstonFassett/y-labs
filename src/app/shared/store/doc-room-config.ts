@@ -11,14 +11,14 @@ export interface DocRoomConfigFields {
   accessLevel: "view" | "edit";
 }
 
-const FieldDefaults: DocRoomConfigFields = {
-  docId: '',
-  roomId: '',
-  enabled: false,
-  encrypt: false,
-  password: undefined,
-  accessLevel: "view",
-};
+// const FieldDefaults: DocRoomConfigFields = {
+//   docId: '',
+//   roomId: '',
+//   enabled: false,
+//   encrypt: false,
+//   password: undefined,
+//   accessLevel: "view",
+// };
 
 export const roomConfigsByDocId = map(
   {} as Record<string, MapStore<DocRoomConfigFields>>,
@@ -52,10 +52,9 @@ const docRoomConfigsT = mapTemplate(
   (
     id: string,
     docId: string,
-    roomId: string,
-    fields: DocRoomConfigFields = FieldDefaults,
+    roomId: string,    
   ) => {
-    const store = map(fields);
+    const store = map();
     
     const $sharingLink = computed(store, ({  roomId, password, encrypt }) => {
       return [
@@ -77,7 +76,7 @@ const docRoomConfigsT = mapTemplate(
       $sharingLink
     });
   },
-  (store, id, docId, roomId, fields = FieldDefaults) => {
+  (store, id, docId, roomId) => {
     roomConfigsByDocId.setKey(docId, store);
     latestDocRoom.setKey(docId, roomId);
     return () => {

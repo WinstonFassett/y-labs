@@ -17,6 +17,7 @@ export function useEditorRoute() {
   useEffect(() => {
 
     if (roomId) {
+      console.log('roomId effect')
       const config = getDocRoomConfig(docId!, roomId!);
       if (x) {
         const newSearchParams = Object.fromEntries(
@@ -27,6 +28,7 @@ export function useEditorRoute() {
         if (isNewDoc) {
           docId = generateId();
         }
+        console.log('setting config');
         config.set({
           ...config.get(),
           docId: docId,
@@ -36,6 +38,7 @@ export function useEditorRoute() {
           enabled: true,
           accessLevel: "edit",
         });
+        console.log('set config to', config.get())
         roomConfigsByDocId.setKey(docId!, config);
         if (isNewDoc) {
           navigate(`/edit/${docId}?roomId=${roomId}&encrypt=true"}`, {
@@ -46,6 +49,7 @@ export function useEditorRoute() {
         }
         return;
       }
+      console.log('setting config');
       config.set({
         ...config.get(),
         docId: docId,
@@ -55,6 +59,7 @@ export function useEditorRoute() {
         enabled: true,
         accessLevel: "edit",
       });
+      console.log('set config to', config.get())
     }
 
   }, [docId, roomId, x]);

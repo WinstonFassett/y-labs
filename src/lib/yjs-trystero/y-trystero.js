@@ -46,26 +46,31 @@ const checkIsSynced = (room) => {
   if ((!synced && room.synced) || (synced && !room.synced)) {
     room.synced = synced;
     room.provider.emit("synced", [{ synced }]);
-    log("synced ", logging.BOLD, room.name, logging.UNBOLD, " with all peers");
+    console.log("synced ", logging.BOLD, room.name, logging.UNBOLD, " with all peers");
+  } else {
+    console.log('not synced yet', room.name)
   }
+  
 };
 
 const readSyncMessage = (decoder, encoder, doc, transactionOrigin, access_level) => {syncProtocol;
   const messageType = decoding.readVarUint(decoder);
   switch (messageType) {
   case syncProtocol.messageYjsSyncStep1:
+    console.log('reading step 1', doc)
     syncProtocol.readSyncStep1(decoder, encoder, doc);
     break;
   case syncProtocol.messageYjsSyncStep2:
+    console.log('reading step 2', doc)
     if (access_level !== 'edit') {
-      // console.warn('edit disabled', doc.name);
+      console.warn('edit disabled', doc.name);
       return;
     }
     syncProtocol.readSyncStep2(decoder, doc, transactionOrigin);
     break;
   case syncProtocol.messageYjsUpdate:
     if (access_level !== 'edit') {
-      // console.warn('edit disabled', doc.name);
+      console.warn('edit disabled', doc.name, access_level);
       return;
     }
     syncProtocol.readUpdate(decoder, doc, transactionOrigin);
@@ -96,6 +101,7 @@ const readMessage = (room, buf, syncedCallback) => {
   switch (messageType) {
     case messageSync: {
       encoding.writeVarUint(encoder, messageSync);
+      console.log('read', { accessLevel: room.provider.accessLevel })
       const syncMessageType = readSyncMessage(
         decoder,
         encoder,
@@ -132,35 +138,35 @@ const readMessage = (room, buf, syncedCallback) => {
         room,
       );
       break;
-    case messageBcPeerId: {
-      const add = decoding.readUint8(decoder) === 1;
-      const peerName = decoding.readVarString(decoder);
-      if (
-        peerName !== room.peerId &&
-        ((room.bcConns.has(peerName) && !add) ||
-          (!room.bcConns.has(peerName) && add))
-      ) {
-        const removed = [];
-        const added = [];
-        if (add) {
-          room.bcConns.add(peerName);
-          added.push(peerName);
-        } else {
-          room.bcConns.delete(peerName);
-          removed.push(peerName);
-        }
-        room.provider.emit("peers", [
-          {
-            added,
-            removed,
-            trysteroPeers: Array.from(room.trysteroConns.keys()),
-            bcPeers: Array.from(room.bcConns),
-          },
-        ]);
-        broadcastBcPeerId(room);
-      }
-      break;
-    }
+    // case messageBcPeerId: {
+    //   const add = decoding.readUint8(decoder) === 1;
+    //   const peerName = decoding.readVarString(decoder);
+    //   if (
+    //     peerName !== room.peerId &&
+    //     ((room.bcConns.has(peerName) && !add) ||
+    //       (!room.bcConns.has(peerName) && add))
+    //   ) {
+    //     const removed = [];
+    //     const added = [];
+    //     if (add) {
+    //       room.bcConns.add(peerName);
+    //       added.push(peerName);
+    //     } else {
+    //       room.bcConns.delete(peerName);
+    //       removed.push(peerName);
+    //     }
+    //     room.provider.emit("peers", [
+    //       {
+    //         added,
+    //         removed,
+    //         trysteroPeers: Array.from(room.trysteroConns.keys()),
+    //         bcPeers: Array.from(room.bcConns),
+    //       },
+    //     ]);
+    //     broadcastBcPeerId(room);
+    //   }
+    //   break;
+    // }
     default:
       console.error("Unable to compute message");
       return encoder;
@@ -179,20 +185,20 @@ const readMessage = (room, buf, syncedCallback) => {
  */
 const readPeerMessage = (peerConn, buf) => {
   const room = peerConn.room;
-  log(
-    "received message from ",
-    logging.BOLD,
-    peerConn.remotePeerId,
-    logging.GREY,
-    " (",
-    room.name,
-    ")",
-    logging.UNBOLD,
-    logging.UNCOLOR,
-  );
+  // console.log(
+  //   "received message from ",
+  //   logging.BOLD,
+  //   peerConn.remotePeerId,
+  //   logging.GREY,
+  //   " (",
+  //   room.name,
+  //   ")",
+  //   logging.UNBOLD,
+  //   logging.UNCOLOR,
+  // );
   return readMessage(room, buf, () => {
     peerConn.synced = true;
-    log(
+    console.log(
       "synced ",
       logging.BOLD,
       room.name,
@@ -210,17 +216,17 @@ const readPeerMessage = (peerConn, buf) => {
  * @param {encoding.Encoder} encoder
  */
 const sendTrysteroConn = (trysteroConn, encoder) => {
-  log(
-    "send message to ",
-    logging.BOLD,
-    trysteroConn.remotePeerId,
-    logging.UNBOLD,
-    logging.GREY,
-    " (",
-    trysteroConn.room.name,
-    ")",
-    logging.UNCOLOR,
-  );
+  // console.log(
+  //   "send message to ",
+  //   logging.BOLD,
+  //   trysteroConn.remotePeerId,
+  //   logging.UNBOLD,
+  //   logging.GREY,
+  //   " (",
+  //   trysteroConn.room.name,
+  //   ")",
+  //   logging.UNCOLOR,
+  // );
   try {
     trysteroConn.room.provider.sendDocData(
       encoding.toUint8Array(encoder),
@@ -236,9 +242,10 @@ const sendTrysteroConn = (trysteroConn, encoder) => {
  * @param {Uint8Array} m
  */
 const broadcastTrysteroConn = (room, m) => {
-  log("broadcast message in ", logging.BOLD, room.name, logging.UNBOLD);
+  // console.log("broadcast message in ", logging.BOLD, room.name, logging.UNBOLD);
   room.trysteroConns.forEach((conn) => {
     try {
+      console.log('sending via trystero', conn.room.name)
       conn.room.provider.sendDocData(m);
     } catch (e) {
       console.log("error broadcasting", e);
@@ -254,7 +261,7 @@ export class TrysteroConn {
    * @param {TrysteroDocRoom} room
    */
   constructor(remotePeerId, room) {
-    log("connected to ", logging.BOLD, remotePeerId);
+    console.log("new TrysteroConn to ", logging.BOLD, remotePeerId);
     this.room = room;
     this.remotePeerId = remotePeerId;
     this.closed = false;
@@ -268,7 +275,6 @@ export class TrysteroConn {
     const provider = room.provider;
     const doc = provider.doc;
     const awareness = room.awareness;
-
     const encoder = encoding.createEncoder();
     encoding.writeVarUint(encoder, messageSync);
     syncProtocol.writeSyncStep1(encoder, doc);
@@ -289,6 +295,7 @@ export class TrysteroConn {
     }
 
     room.provider.listenDocData((data, peerId) => {
+      console.log('received doc data', { data, peerId })
       try {
         const answer = readPeerMessage(this, data);
         if (answer !== null) {
@@ -298,6 +305,7 @@ export class TrysteroConn {
         console.log(err);
       }
     });
+    room.provider.trystero.on
   }
   onClose() {
     this.connected = false;
@@ -315,7 +323,7 @@ export class TrysteroConn {
       ]);
     }
     checkIsSynced(room);
-    log("closed connection to ", logging.BOLD, remotePeerId);
+    console.log("closed connection to ", logging.BOLD, remotePeerId);
   }
   destroy() {
     this.onClose()
@@ -336,25 +344,25 @@ const broadcastBcMessage = (room, m) =>
  * @param {Uint8Array} m
  */
 const broadcastRoomMessage = (room, m) => {
-  if (room.bcconnected) {
-    broadcastBcMessage(room, m);
-  }
+  // if (room.bcconnected) {
+  //   broadcastBcMessage(room, m);
+  // }
   broadcastTrysteroConn(room, m);
 };
 
 /**
  * @param {TrysteroDocRoom} room
  */
-const broadcastBcPeerId = (room) => {
-  if (room.provider.filterBcConns) {
-    // broadcast peerId via broadcastchannel
-    const encoderPeerIdBc = encoding.createEncoder();
-    encoding.writeVarUint(encoderPeerIdBc, messageBcPeerId);
-    encoding.writeUint8(encoderPeerIdBc, 1);
-    encoding.writeVarString(encoderPeerIdBc, room.peerId);
-    broadcastBcMessage(room, encoding.toUint8Array(encoderPeerIdBc));
-  }
-};
+// const broadcastBcPeerId = (room) => {
+//   if (room.provider.filterBcConns) {
+//     // broadcast peerId via broadcastchannel
+//     const encoderPeerIdBc = encoding.createEncoder();
+//     encoding.writeVarUint(encoderPeerIdBc, messageBcPeerId);
+//     encoding.writeUint8(encoderPeerIdBc, 1);
+//     encoding.writeVarString(encoderPeerIdBc, room.peerId);
+//     broadcastBcMessage(room, encoding.toUint8Array(encoderPeerIdBc));
+//   }
+// };
 
 export class TrysteroDocRoom {
   /**
@@ -443,30 +451,21 @@ export class TrysteroDocRoom {
       process.on("exit", this._beforeUnloadHandler);
     }
 
-    this.bindToDoc()
-    this.bindToTrystero()
-  }
-
-  bindToDoc () {
-    this.doc.on("update", this._docUpdateHandler);
-    this.awareness.on("update", this._awarenessUpdateHandler);
-    
-    const roomName = this.name;
-    bc.subscribe(roomName, this._bcSubscriber);
-    
   }
   async connect () {
-    this.bindToTrystero()
-    this.startSync()
-  }
-  async reconnect () {
-    await this.connect()
-  }
-  bindToTrystero () {
+    const roomName = this.name;
+
+    // Bind to YJS model
+    this.doc.on("update", this._docUpdateHandler);
+    this.awareness.on("update", this._awarenessUpdateHandler);
+        
+    console.log('binding TrysteroDocRoom', this)    
+    
+    //#region Bind to Trystero Room
     const provider = this.provider;
     const trysteroRoom = provider.trystero;
     trysteroRoom.onPeerJoin((peerId) => {
-      log(`${peerId} joined`);
+      console.log(`${peerId} joined`);
       if (this.trysteroConns.size < provider.maxConns) {
         map.setIfUndefined(
           this.trysteroConns,
@@ -478,7 +477,7 @@ export class TrysteroDocRoom {
       }
     });
     trysteroRoom.onPeerLeave((peerId) => {
-      log('leaving', { peerId, conns: this.trysteroConns.keys()})
+      console.log('leaving', { peerId, conns: this.trysteroConns.keys()})
       if (this.trysteroConns.has(peerId)) {
         const conn = this.trysteroConns.get(peerId);
         conn.onClose();
@@ -493,15 +492,16 @@ export class TrysteroDocRoom {
         ]);
       }
       checkIsSynced(this);
-      log("closed connection to ", logging.BOLD, peerId);
+      console.log("closed connection to ", logging.BOLD, peerId);
     });
-  }
-  
-  
-  startSync() {
+    //#endregion
+
+    //#region Sync over Broadcast Channel
+    bc.subscribe(roomName, this._bcSubscriber);
+    console.log('start sync')
     this.bcconnected = true;
     // // broadcast peerId via broadcastchannel
-    broadcastBcPeerId(this);
+    // broadcastBcPeerId(this);
     // write sync step 1
     const encoderSync = encoding.createEncoder();
     encoding.writeVarUint(encoderSync, messageSync);
@@ -526,14 +526,19 @@ export class TrysteroDocRoom {
       ]),
     );
     broadcastBcMessage(this, encoding.toUint8Array(encoderAwarenessState));
-    log("connected room to doc", this);
-    
+    console.log("connected bc", this.name);
+    //#endregion
+  
     this.provider.emit("status", [
       {
         connected: true,
       },
     ]);
   }
+  async reconnect () {
+    await this.connect()
+  }
+
 
   disconnect() {
     this.awareness.setLocalState(null);
@@ -578,6 +583,11 @@ export class TrysteroDocRoom {
   }
 }
 
+const emitStatus = provider => {
+  provider.emit('status', [{
+    connected: provider.connected
+  }])
+}
 
 /**
  * @typedef {Object} ProviderOptions
@@ -643,23 +653,44 @@ export class TrysteroProvider extends ObservableV2 {
      * @type {awarenessProtocol.Awareness}
      */
     this.awareness = awareness;
+    this.shouldConnect = false;
     doc.on("destroy", () => this.destroy);
     
-    this.connectTrystero(trysteroRoom)
+    this.connect(trysteroRoom)
     // return;
     
   }
-  async connectTrystero (trysteroRoom) {
-    this.bindToTrystero(trysteroRoom)
-    await this.connectDocRoom()
-  }
-  async connectDocRoom() {
+  /**
+   * Indicates whether the provider is looking for other peers.
+   *
+   * Other peers can be found via signaling servers or via broadcastchannel (cross browser-tab
+   * communication). You never know when you are connected to all peers. You also don't know if
+   * there are other peers. connected doesn't mean that you are connected to any physical peers
+   * working on the same resource as you. It does not change unless you call provider.disconnect()
+   *
+   * `this.on('status', (event) => { console.log(event.connected) })`
+   *
+   * @type {boolean}
+   */
+  get connected () {
+    return this.room !== null && this.shouldConnect
+  }  
+  async connect (trysteroRoom) {
+    this.shouldConnect = true
+    // Bind
+    this.trystero = trysteroRoom;
+    const [sendDocData, listenDocData] = trysteroRoom.makeAction("docdata");
+    this.sendDocData = sendDocData;
+    this.listenDocData = listenDocData;    
+    
+    // Reconnect
     const { doc, roomName } = this;
     if (rooms.has(roomName)) {
       const room = rooms.get(roomName);
       await room.reconnect()
       return room
     }
+    // Connect
     const provider = this
     const key = await this.key;
     const room = new TrysteroDocRoom(doc, provider, roomName, key);
@@ -668,12 +699,14 @@ export class TrysteroProvider extends ObservableV2 {
     await room.connect();
     return room;
   }
-  bindToTrystero(trysteroRoom) {
-    this.trystero = trysteroRoom;
-    const [sendDocData, listenDocData] = trysteroRoom.makeAction("docdata");
-    this.sendDocData = sendDocData;
-    this.listenDocData = listenDocData;
+
+  disconnect () {
+    this.shouldConnect = false;
+    if (this.room) {
+      this.room.disconnect()      
+    }
   }
+
   destroy() {
     this.doc.off("destroy", this.destroy);
     // need to wait for key before deleting room

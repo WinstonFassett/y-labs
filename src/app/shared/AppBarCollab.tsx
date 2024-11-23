@@ -19,7 +19,7 @@ export function AppBarCollab() {
       { !isSharing ? <></> : Array.from(awarenessUsers??[]).map(([peerId, entry]) => {
         // console.log({ peerId, awarenessClientID })
         const isYou = peerId === awarenessClientID
-        if (isYou) return <div></div>;
+        if (isYou) return <div key="you"></div>;
         const {
           user: { color, username },
         } = entry;

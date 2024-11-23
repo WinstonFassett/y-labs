@@ -46,6 +46,7 @@ function createTrysteroDocRoom(
     synced: false,
   } as OnlineDocRoomFields),
 ) {
+  console.log('createTrysteroDocRoom', docRoomId, y, roomId, config, store)
   store.setKey("peerIds", [] as string[]);
 
   const $awarenessStates = atom(new Map());
@@ -133,7 +134,7 @@ function createTrysteroDocRoom(
 
   async function reconnect () {
     const trysteroRoom = createTrysteroRoomForStore(roomId, store)
-    await provider.connectTrystero(trysteroRoom)
+    await provider.connect(trysteroRoom)
     setUserInAwareness(user.get());
   }
   

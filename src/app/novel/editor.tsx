@@ -12,32 +12,39 @@ function Editor() {
   const loadState = useStore(getDocLoadState(docId, roomId));
   const fragment = ydoc.getXmlFragment("novel");
   const provider = $room?.provider;
+  const loading = loadState === "loading";
+  const ready = loadState === "loaded";
+  const providerReady = roomId ? !!provider : true;
   const u = user.get();
   console.log('user', u)
-  console.log('provider', provider)
+  console.log('provider', provider, { $room })
+  console.log('providerReady', providerReady)
+  const waiting = loading || !providerReady || !ready;
   return (
     <div className="min-h-full flex-1 flex flex-col max-w-3xl mx-auto w-full">
       <AppBar className="h-16" />
-      {/* <p>{loadState}</p> */}
-      <Novel
-        disableHistory={true}
-        extensions={[
-          Collaboration.configure({
-            fragment,
-          }),
-          ...(provider
-            ? [
-                CollaborationCursor.configure({
-                  provider,
-                  user: {
-                    name: u.username,
-                    color: u.color,
-                  },
-                }),
-              ]
-            : []),
-        ].filter((x) => !!x)}
-      />
+      {waiting && <div>Loading...</div>}
+      {!waiting && 
+        <Novel
+          disableHistory={true}
+          extensions={[
+            Collaboration.configure({
+              fragment,
+            }),
+            ...(provider
+              ? [
+                  CollaborationCursor.configure({
+                    provider,
+                    user: {
+                      name: u.username,
+                      color: u.color,
+                    },
+                  }),
+                ]
+              : []),
+          ].filter((x) => !!x)}
+        />
+      }
     </div>
   );
 }
