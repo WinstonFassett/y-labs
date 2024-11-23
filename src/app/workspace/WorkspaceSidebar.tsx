@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/sidebar"
 import { useStore } from "@nanostores/react"
 import { Button } from "../../components/ui/button"
+import logoRaw from  "../../images/lab-icon.svg?raw";
 
 function getDocUrl(name: string, type: string) {
   return `/y-labs/app/workspace/index.html#/edit/${name}`;  
@@ -39,16 +40,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar {...props}>
       <SidebarContent>
         <SidebarGroup className="items-start">
-          <Button
-            asChild
-            title="Saved Documents"
-            variant="ghost"
-            className="block flex items-center"
-          >
-            <a href="/y-labs/index.html">
-              <HardDriveIcon className="h-5 w-5" />
-            </a>
-          </Button>
+        <Button
+          asChild
+          title="Y-Labs"
+          variant="ghost"
+          className="[&_svg]:pointer-events-none [&_svg]:size-5 [&_svg]:shrink-0"
+        >
+          <a href="/y-labs/index.html" dangerouslySetInnerHTML={{ __html: logoRaw }}>
+          </a>
+        </Button>
         </SidebarGroup>
         <SidebarGroup>
           <SidebarGroupLabel>Files</SidebarGroupLabel>
