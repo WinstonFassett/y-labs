@@ -10,7 +10,7 @@ import {
 import { selfId, type Room } from "trystero";
 import type { Doc } from "yjs";
 import { createRoom } from "../createRoom";
-import { getDocRoomConfig, type DocRoomConfigFields, roomConfigsByDocId } from "./doc-room-config";
+import { getDocRoomConfig, type DocRoomConfigFields } from "./doc-room-config";
 import { getYdoc } from "./yjs-docs";
 import { user } from "./local-user";
 
@@ -24,7 +24,7 @@ interface TrysteroDocRoom extends TrysteroDocRoomProps {
   room: Room;
   provider: TrysteroProvider;
   disconnect: () => void;
-  $awarenessStates: ReadableAtom<Map<string, any>>;
+  $awarenessStates: ReadableAtom<Map<number, any>>;
 }
 export interface OnlineDocRoomFields {
   peerIds: string[];
@@ -59,7 +59,11 @@ function createTrysteroDocRoom(
       updated: number[];
       removed: number[];
     }) => {
-      const states = provider.awareness.getStates();
+      let states = provider.awareness.getStates();
+      // force new map for react because state changed
+      if (states === $awarenessStates.get()) {
+        states = new Map(states);
+      }
       $awarenessStates.set(states);
     };
     provider.awareness.on("change", onChange);
@@ -106,7 +110,7 @@ function createTrysteroDocRoom(
       user: {
         color: user.color,
         name: user.username, // for y codemirror
-        userName: user.username,
+        username: user.username,
       },
     })
   }
@@ -125,9 +129,9 @@ function createTrysteroDocRoom(
   }
 
   async function reconnect () {
-    setUserInAwareness(user.get());
     const trysteroRoom = createTrysteroRoomForStore(roomId, store)
-    await provider.connectTrystero(trysteroRoom)
+    await provider.connect(trysteroRoom)
+    setUserInAwareness(user.get());
   }
   
   const model = Object.assign(store, {

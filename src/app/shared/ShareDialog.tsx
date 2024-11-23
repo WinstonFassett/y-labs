@@ -1,16 +1,24 @@
-import { Button } from "@/components/ui/button";
 import { Button as AriaButton } from "@/components/ui/aria-button";
-import { CopyButton } from "@/components/ui/copy-button";
 import {
-  Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogOverlay,
   DialogTitle,
-  DialogTrigger,
+  DialogTrigger
 } from "@/components/ui/aria-dialog";
+import {
+  Select,
+  SelectItem,
+  SelectListBox,
+  SelectPopover,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/aria-select";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { CopyButton } from "@/components/ui/copy-button";
 import {
   Form,
   FormControl,
@@ -23,13 +31,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PasswordInput } from "@/components/ui/password-input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import {
   Tooltip,
@@ -43,14 +44,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Check, Copy, Share2, Share2Icon, StopCircle } from "lucide-react";
 import { forwardRef, useRef, useState } from "react";
 import { useForm, useFormContext } from "react-hook-form";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { z } from "zod";
 import { generateId } from "./generateId";
 import { RoomConfigSchema, getDocRoomConfig } from "./store/doc-room-config";
+import { user } from "./store/local-user";
 import { useDocCollabStore } from "./useDocCollabStore";
 import { useStoreIfPresent } from "./useStoreIfPresent";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { user } from "./store/local-user";
 
 export function ShareDialog() {
   const [isOpen, setIsOpen] = useState(false);
@@ -76,14 +76,14 @@ export function ShareDialog() {
     defaultValues: async () => {
       const enabled = roomConfigMaybe?.enabled ?? false;
       const inRoom = roomParameter
-      const encrypt = inRoom ? (roomConfigMaybe?.encrypt || !!roomConfigMaybe.password) : true;
+      const encrypt = inRoom ? (roomConfigMaybe?.encrypt || !!roomConfigMaybe?.password) : true;
       return {
         docId,
         roomId: roomParameter || generateId(),
         enabled,
         encrypt,
         password: roomConfigMaybe?.password ?? generateId(),
-        accessLevel: "edit",
+        accessLevel: roomConfigMaybe?.accessLevel ?? "edit",
       }
     },
   });
@@ -245,16 +245,25 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
                   <FormItem className="flex items-center justify-between">
                     <FormLabel>
                       Anyone with the link can{" "}
-                      {form.watch("accessLevel") === "view" ? "view" : "edit"}
+                      {field.value === "edit" ? "edit" : "view"}
                     </FormLabel>
-                    <Select {...field} disabled={isSharing} onValueChange={field.onChange}>
-                      <SelectTrigger className="w-[100px]">
+                    <Select className="w-[100px]"
+                      {...field}               
+                      isDisabled={isSharing}
+                      onSelectionChange={field.onChange}
+                      selectedKey={field.value}
+                    >
+
+                      
+                      <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="view">View</SelectItem>
-                        <SelectItem value="edit">Edit</SelectItem>
-                      </SelectContent>
+                      <SelectPopover>
+                        <SelectListBox>
+                          <SelectItem id="view">View</SelectItem>
+                          <SelectItem id="edit">Edit</SelectItem>
+                        </SelectListBox>
+                      </SelectPopover>
                     </Select>
                   </FormItem>
                 );
@@ -443,10 +452,10 @@ function UserList({
         <div>You are sharing as:</div>
         { !!userInfo && <div>
           <User 
-            name={userInfo?.user?.userName ?? "Anonymous"}
+            name={userInfo.username ?? "Anonymous"}
             description="YOU"
             avatarProps={{
-              src: `https://avatar.vercel.sh/${userInfo?.user?.userName}?size=32`,
+              src: `https://avatar.vercel.sh/${userInfo.username}?size=32`,
             }}
           />
         </div>}
@@ -463,7 +472,7 @@ function UserList({
               </div>
             );
   }
-            const { userName, color } = data;
+            const { username, color } = data;
             const isYou = peerId === awarenessClientID;
             if (isYou) return <div key={peerId}></div>;
             return (
@@ -471,17 +480,17 @@ function UserList({
                 <User
                   className="py-4"
                   key={peerId}
-                  name={userName ? <UserName {...{ userName, color }} /> : peerId}
+                  name={username ? <UserName {...{ username: username, color }} /> : peerId}
                   description={
                     isYou
                       ? "YOU"
-                      : userName
+                      : username
                         ? undefined
                         : JSON.stringify(awareness)
                   }
                   avatarProps={{
                     // src: `https://i.pravatar.cc/150?u=${peerId}`,
-                    src: `https://avatar.vercel.sh/${userName}?size=32`,
+                    src: `https://avatar.vercel.sh/${username}?size=32`,
                   }}
                 />
               </div>
@@ -494,8 +503,8 @@ function UserList({
 }
 
 
-function UserName({ userName, color }: { userName: string; color: string }) {
-  return <span style={{ color }}>{userName}</span>;
+function UserName({ username, color }: { username: string; color: string }) {
+  return <span style={{ color }}>{username}</span>;
 }
 
 interface UserProps extends React.HTMLAttributes<HTMLDivElement> {
