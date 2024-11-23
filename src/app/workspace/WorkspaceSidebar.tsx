@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/sidebar"
 import { documentsStore } from "@/app/drive/store"
 import { useStore } from "@nanostores/react"
-import { Button } from "./ui/button"
+import { Button } from "../../components/ui/button"
 
 function getDocUrl(name: string, type: string) {
   return `/y-labs/app/workspace/index.html#/edit/${name}`;  
