@@ -8,7 +8,7 @@ const frontmatter = { title: "Novel", favicon: "/y-labs/logos/novel.svg" };
   console.log("Service worker registration started");
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker
-      .register("./service-worker.js")
+      .register("/y-labs/service-worker.js")
       .then((registration) => {
         console.log(
           "Service worker successfully registered on page",
