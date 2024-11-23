@@ -25,12 +25,12 @@ export function Workspace() {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="#">components</BreadcrumbLink>
+                <BreadcrumbLink href="#">files</BreadcrumbLink>
               </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
+              {/* <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem className="hidden md:block">
                 <BreadcrumbLink href="#">ui</BreadcrumbLink>
-              </BreadcrumbItem>
+              </BreadcrumbItem> */}
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
                 <BreadcrumbPage>button.tsx</BreadcrumbPage>

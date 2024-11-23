@@ -19,6 +19,8 @@ import {
   SidebarMenuSub,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { documentsStore } from "@/app/drive/store"
+import { useStore } from "@nanostores/react"
 
 // This is sample data.
 const data = {
@@ -37,38 +39,45 @@ const data = {
     },
   ],
   tree: [
-    [
-      "app",
-      [
-        "api",
-        ["hello", ["route.ts"]],
-        "page.tsx",
-        "layout.tsx",
-        ["blog", ["page.tsx"]],
-      ],
-    ],
-    [
-      "components",
-      ["ui", "button.tsx", "card.tsx"],
-      "header.tsx",
-      "footer.tsx",
-    ],
-    ["lib", ["util.ts"]],
-    ["public", "favicon.ico", "vercel.svg"],
-    ".eslintrc.json",
-    ".gitignore",
-    "next.config.js",
-    "tailwind.config.js",
-    "package.json",
-    "README.md",
+    // [
+    //   "app",
+    //   [
+    //     "api",
+    //     ["hello", ["route.ts"]],
+    //     "page.tsx",
+    //     "layout.tsx",
+    //     ["blog", ["page.tsx"]],
+    //   ],
+    // ],
+    // [
+    //   "components",
+    //   ["ui", "button.tsx", "card.tsx"],
+    //   "header.tsx",
+    //   "footer.tsx",
+    // ],
+    // ["lib", ["util.ts"]],
+    // ["public", "favicon.ico", "vercel.svg"],
+    // ".eslintrc.json",
+    // ".gitignore",
+    // "next.config.js",
+    // "tailwind.config.js",
+    // "package.json",
+    // "README.md",
   ],
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const documents = useStore(documentsStore);
+  if (!documents) {
+    return <div>Loading...</div>;
+  }
+  if (documents.length === 0) {
+    return "No documents found";
+  }
   return (
     <Sidebar {...props}>
       <SidebarContent>
-        <SidebarGroup>
+        {/* <SidebarGroup>
           <SidebarGroupLabel>Changes</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -83,14 +92,22 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
-        </SidebarGroup>
+        </SidebarGroup> */}
         <SidebarGroup>
           <SidebarGroupLabel>Files</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {data.tree.map((item, index) => (
-                <Tree key={index} item={item} />
+              {documents.map((doc, index) => (
+                <SidebarMenuItem key={index}>
+                  <SidebarMenuButton>
+                    <File />
+                    {doc.title || "[Untitled]"}.{doc.type}
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
               ))}
+              {/* {data.tree.map((item, index) => (
+                <Tree key={index} item={item} />
+              ))} */}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
