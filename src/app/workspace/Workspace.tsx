@@ -1,12 +1,7 @@
+import { AppSidebar } from "@/components/app-sidebar";
+
 export function Workspace({}: {}) {
-  return (
-    <div className="h-full flex gap-2 bg-blue-200">
-      <FileExplorer />
-      <div className="flex-1 bg-content2">
-        <FileEditor />
-      </div>
-    </div>
-  );
+  return <AppSidebar />;
 }
 
 function FileExplorer({}: {}) {
