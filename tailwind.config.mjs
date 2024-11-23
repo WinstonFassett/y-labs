@@ -1,14 +1,17 @@
 /** @type {import('tailwindcss').Config} */
+import { nextui } from "@nextui-org/react";
 const { fontFamily } = require("tailwindcss/defaultTheme");
-const colors = require("tailwindcss/colors");
 
 export default {
-  content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
+  content: [
+    "./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}",
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
+  ],
   darkMode: ["class", '[data-theme="dark"]'],
 
   theme: {
     container: {
-      center: "true",
+      center: true,
       padding: "2rem",
       screens: {
         "2xl": "1400px",
@@ -16,27 +19,14 @@ export default {
     },
     extend: {
       colors: {
-        // brand: colors.purple,
-        neutral: colors.slate,
-        // error: colors.red,
-        // success: colors.green,
-        // warning: colors.yellow,
-        // info: colors.blue,
-        // accent: colors.orange,
-        // muted: colors.gray,
-        // primary: colors.blue,
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        // primary: {
-        //   // DEFAULT: "hsl(var(--primary))",
-        //   // foreground: "hsl(var(--primary-foreground))",
-        // },
         primary: {
-          DEFAULT: colors.blue[500],
-          foreground: colors.blue[50],
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -46,51 +36,6 @@ export default {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
-        brand: {
-          DEFAULT: colors.purple[500],
-          foreground: colors.purple[50],
-        },
-        error: {
-          DEFAULT: colors.pink[500],
-          foreground: colors.red[50],
-        },
-        success: {
-          DEFAULT: colors.green[500],
-          foreground: colors.green[50],
-        },
-        warning: {
-          DEFAULT: colors.yellow[500],
-          foreground: colors.black,
-        },
-        info: {
-          DEFAULT: colors.blue[500],
-          foreground: colors.blue[50],
-        },
-        accent: {
-          DEFAULT: colors.orange[500],
-          foreground: colors.orange[50],
-        },
-        muted: {
-          DEFAULT: colors.gray[500],
-          foreground: colors.gray[50],
-        },
-
-        // success: {
-        //   DEFAULT: "hsl(var(--success))",
-        //   foreground: "hsl(var(--success-foreground))",
-        // },
-        // warning: {
-        //   DEFAULT: "hsl(var(--warning))",
-        //   foreground: "hsl(var(--warning-foreground))",
-        // },
-        // info: {
-        //   DEFAULT: "hsl(var(--info))",
-        //   foreground: "hsl(var(--info-foreground))",
-        // },
-        // error: {
-        //   DEFAULT: "hsl(var(--error))",
-        //   foreground: "hsl(var(--error-foreground))",
-        // },
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
@@ -107,25 +52,10 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        chart: {
-          1: "hsl(var(--chart-1))",
-          2: "hsl(var(--chart-2))",
-          3: "hsl(var(--chart-3))",
-          4: "hsl(var(--chart-4))",
-          5: "hsl(var(--chart-5))",
-        },
       },
-      typography: (theme) => ({
-        DEFAULT: {
-          css: {           
-            '--tw-prose-bold': 'currentColor',
-            '--tw-prose-invert-bold': 'currentColor',
-          },
-        },
-      }),
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
+        lg: `var(--radius)`,
+        md: `calc(var(--radius) - 2px)`,
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
@@ -133,20 +63,12 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
         },
       },
       animation: {
@@ -156,5 +78,25 @@ export default {
     },
   },
 
-  plugins: [require("@tailwindcss/typography"), require("tailwindcss-animate")],
+  plugins: [
+    require("@tailwindcss/typography"),
+    require("tailwindcss-animate"),
+    nextui({
+      // addCommonColors: false,
+      themes: {
+        light: {
+          colors: {
+            // background: "#ff0000",
+          },
+        },
+        dark: {
+          colors: {
+            // background: "background",
+            // background: "dark-bg", // Updated background color in HEX
+            // foreground: "dark-fg", // Updated foreground color in HEX
+          },
+        },
+      },
+    }),
+  ],
 };
