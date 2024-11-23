@@ -1,18 +1,17 @@
 import { Navigate, createHashRouter } from "react-router-dom";
 import { EditorRoute } from "./EditorRoute";
 import { generateId } from "../shared/generateId";
-import { createHashRouter } from "react-router-dom";
 import { Workspace } from "./Workspace";
 
 export const routes = [
   {
     path: "/",
-    element: <NewDocRoute />,
+    element: <Workspace />,
   },
-  { path: "/new", element: <NewDocRoute /> },
+  { path: "/new", element: <Workspace /> },
   {
     path: "/edit/:docId",
-    element: <EditorRoute />,
+    element: <Workspace />,
   },
 ];
 
