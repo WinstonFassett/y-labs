@@ -33,21 +33,6 @@ export default function AppBar({ className }: { className?: string }) {
       <NavbarContent>
           <SidebarTrigger className="-ml-1" />
       </NavbarContent>
-
-      <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-          <Separator orientation="vertical" className="mr-2 h-4" />
-          {/* <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="#">files</BreadcrumbLink>
-              </BreadcrumbItem>              
-              <BreadcrumbSeparator className="hidden md:block" />
-              <BreadcrumbItem>
-                <BreadcrumbPage>button.tsx</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb> */}
-        </header>
       <NavbarContent className="flex-1 items-center gap-2">
         <DocTitle />
       </NavbarContent>
