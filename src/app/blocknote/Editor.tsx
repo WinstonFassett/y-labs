@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 export function useDocParams() {
   const { docId } = useParams();
   if (!docId) {
-    alert("No document id specified");
+    console.log("No document id specified");
   }
 
   return { docId };
