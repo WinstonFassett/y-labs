@@ -2,6 +2,7 @@ import { useStore } from "@nanostores/react";
 import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 import { Color } from '@tiptap/extension-color';
+import Highlight from '@tiptap/extension-highlight'
 import TextStyle from '@tiptap/extension-text-style';
 import AppBar from "../shared/AppBar";
 import { getDocLoadState } from "../shared/store/doc-loader";
@@ -28,6 +29,7 @@ function Editor() {
           extensions={[
             TextStyle as any, 
             Color,
+            Highlight.configure({ multicolor: true }),
             Collaboration.configure({
               fragment,
             }),
