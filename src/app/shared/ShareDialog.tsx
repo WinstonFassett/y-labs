@@ -464,7 +464,7 @@ function UserList({
         
         {!!awarenessUsers &&
           Array.from(awarenessUsers).map(([peerId, awareness]) => {
-            const data = awareness.presence ?? awareness.user;
+            const data = awareness.user;
             if (!data) {
               return (
                 <div key={peerId}>
@@ -472,7 +472,8 @@ function UserList({
               </div>
             );
   }
-            const { username, color } = data;
+            const { username, name, color } = data;
+            const bestName = username ?? name;
             const isYou = peerId === awarenessClientID;
             if (isYou) return <div key={peerId}></div>;
             return (
@@ -480,13 +481,11 @@ function UserList({
                 <User
                   className="py-4"
                   key={peerId}
-                  name={username ? <UserName {...{ username: username, color }} /> : peerId}
+                  name={bestName ? <UserName {...{ username: bestName, color }} /> : peerId}
                   description={
                     isYou
                       ? "YOU"
-                      : username
-                        ? undefined
-                        : JSON.stringify(awareness)
+                      : ''                        
                   }
                   avatarProps={{
                     // src: `https://i.pravatar.cc/150?u=${peerId}`,
