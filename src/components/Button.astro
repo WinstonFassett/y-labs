@@ -1,0 +1,12 @@
+---
+import { buttonVariants, type ButtonProps } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+
+export interface Props extends ButtonProps { 
+}
+const { className, variant, size, isIconOnly, ...props} = Astro.props
+---
+
+<button class={cn(buttonVariants({ variant, size, isIconOnly }), className)}>
+  <slot />
+</button>

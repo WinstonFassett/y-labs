@@ -8,10 +8,12 @@ const { class: className } = Astro.props;
 ---
 
 <NavbarContainer className={className}>
-  <NavbarBrand>
-    <slot name="brand" />
-  </NavbarBrand>
   <NavbarContent>
+    <NavbarBrand>
+      <slot name="brand" />
+    </NavbarBrand>
+  </NavbarContent>
+  <NavbarContent className="flex-1">
     <slot />
   </NavbarContent>
   <NavbarContent>
