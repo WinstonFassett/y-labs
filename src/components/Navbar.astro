@@ -4,9 +4,10 @@ import {
   NavbarBrand,
   NavbarContent,
 } from "@/components/ui/navbar";
+const { class: className } = Astro.props;
 ---
 
-<NavbarContainer>
+<NavbarContainer className={className}>
   <NavbarBrand>
     <slot name="brand" />
   </NavbarBrand>

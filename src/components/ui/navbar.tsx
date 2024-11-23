@@ -7,7 +7,10 @@ export const Navbar = forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex justify-between items-center", className)}
+    className={cn(
+      "flex justify-between",
+      "gap-2 flex w-full h-auto data-[menu-open=true]:border-none inset-x-0 border-b border-divider backdrop-blur-lg data-[menu-open=true]:backdrop-blur-xl backdrop-saturate-150 bg-transparent max-w-3xl mx-auto",
+      className)}
     {...props}
   />
 ));

@@ -27,7 +27,7 @@ export default function AppBar({ className }: { className?: string }) {
   const { frontmatter } = AppGlobals;
 
   return (
-    <Navbar className={cn("gap-2 flex z-50 w-full h-auto items-center justify-center data-[menu-open=true]:border-none sticky top-0 inset-x-0 border-b border-divider backdrop-blur-lg data-[menu-open=true]:backdrop-blur-xl backdrop-saturate-150 bg-transparent max-w-3xl mx-auto", className)}>
+    <Navbar className={cn("sticky top-0 z-50", className)}>
       <NavbarContent>
         <NavbarBrand className="gap-1 sm:gap-2">
           <Button
