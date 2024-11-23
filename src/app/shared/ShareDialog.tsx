@@ -310,7 +310,7 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
                           <FormLabel>Password{isEncrypted && "*"}</FormLabel>
                           <FormControl>
                             <div>
-                              <PasswordInput {...field} value={field.value ?? ""} readOnly={isSharing} autoComplete="room-number" />
+                              <PasswordInput {...field} value={field.value ?? ""} readOnly={isSharing} type="text" />
                             </div>
                           </FormControl>
                           <FormDescription />

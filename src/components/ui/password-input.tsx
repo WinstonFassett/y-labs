@@ -25,11 +25,15 @@ export const PasswordInput = ({
       <div className="relative flex-1">
         <Input
           {...props}
-          type={showPassword ? "text" : "password"}
+          type={showPassword ? "text" : props.type || "password"}
           value={value}
           onChange={onChange}
           disabled={disabled}
           readOnly={readOnly}
+          style={{
+            ...props.style??{}, 
+            ...(!showPassword ? {'-webkit-text-security': 'disc'} : {})
+          }}
         />
         <Button
           type="button"
