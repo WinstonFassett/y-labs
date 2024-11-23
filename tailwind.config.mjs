@@ -115,6 +115,14 @@ export default {
           5: "hsl(var(--chart-5))",
         },
       },
+      typography: (theme) => ({
+        DEFAULT: {
+          css: {           
+            '--tw-prose-bold': 'currentColor',
+            '--tw-prose-invert-bold': 'currentColor',
+          },
+        },
+      }),
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
