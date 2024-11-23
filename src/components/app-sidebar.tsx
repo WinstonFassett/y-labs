@@ -1,5 +1,5 @@
 import * as React from "react"
-import { ChevronRight, File, Folder } from "lucide-react"
+import { ChevronRight, File, Folder, HardDriveIcon } from "lucide-react"
 
 import {
   Collapsible,
@@ -21,6 +21,11 @@ import {
 } from "@/components/ui/sidebar"
 import { documentsStore } from "@/app/drive/store"
 import { useStore } from "@nanostores/react"
+import { Button } from "./ui/button"
+
+function getDocUrl(name: string, type: string) {
+  return `/y-labs/app/workspace/index.html#/edit/${name}`;  
+}
 
 // This is sample data.
 const data = {
@@ -93,18 +98,35 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup> */}
+        <SidebarGroup className="items-start">
+          <Button
+            asChild
+            title="Saved Documents"
+            variant="ghost"
+            className="block flex items-center"
+          >
+            <a href="/y-labs/index.html">
+              <HardDriveIcon className="h-5 w-5" />
+            </a>
+          </Button>
+        </SidebarGroup>
         <SidebarGroup>
           <SidebarGroupLabel>Files</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {documents.map((doc, index) => (
-                <SidebarMenuItem key={index}>
-                  <SidebarMenuButton>
-                    <File />
-                    {doc.title || "[Untitled]"}.{doc.type}
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {documents.map((doc, index) => {
+                
+                return (
+                  <SidebarMenuItem key={index}>
+                    <SidebarMenuButton asChild>
+                      <a key={doc.name} href={getDocUrl(doc.name, doc.type)}>
+                        <File />
+                        {doc.title || "[Untitled]"}.{doc.type}
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                )
+                })}
               {/* {data.tree.map((item, index) => (
                 <Tree key={index} item={item} />
               ))} */}

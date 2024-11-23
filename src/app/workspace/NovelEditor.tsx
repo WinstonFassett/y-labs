@@ -11,8 +11,10 @@ import { useDocCollabStore } from "@/app/shared/useDocCollabStore";
 
 // import "./tiptap-collab.css";
 import Novel from "@/app/novel/Novel";
+import { getDocRoomId } from "../shared/store/doc-room-config";
 function NovelEditor() {
   const { docId, ydoc, $room, roomId } = useDocCollabStore();
+  const docRoomId = getDocRoomId(docId, roomId);
   const loadState = useStore(getDocLoadState(docId, roomId));
   const fragment = ydoc.getXmlFragment("novel");
   const provider = $room?.provider;
@@ -22,10 +24,11 @@ function NovelEditor() {
   const waiting = !ready || !providerReady ;
   return (
     <div className="min-h-full flex-1 flex flex-col max-w-3xl mx-auto w-full">
-      <AppBar className="h-16" />
+      {/* <AppBar className="h-16" /> */}      
       {waiting && <div>Loading...</div>}
       {!waiting && 
         <Novel
+          key={docRoomId}
           disableHistory={true}
           extensions={[
             TextStyle as any, 

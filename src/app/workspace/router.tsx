@@ -10,6 +10,10 @@ export const routes = [
   },
   { path: "/new", element: <NewDocRoute /> },
   {
+    path: "/edit/:docId/:type",
+    element: <EditorRoute />,
+  },
+  {
     path: "/edit/:docId",
     element: <EditorRoute />,
   },
