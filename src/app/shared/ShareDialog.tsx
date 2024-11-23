@@ -125,7 +125,10 @@ export function ShareDialog() {
       <DialogTrigger>
         <AriaButton
           variant={isSharing ? "warning" : "outline"}
-          className="w-auto px-4  border-2 rounded-xl"
+          className={cn(
+            "w-auto px-4  border-2 rounded-xl",
+            !isSharing && "border-primary text-primary-foreground hover:bg-primary data-[hovered=true]:bg-primary focus:bg-primary transition-colors",
+          )}
         >
           <div className="sr-only sm:not-sr-only !pr-1">{actionLabel}</div>
           <Share2Icon className="h-5 w-5" />

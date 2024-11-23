@@ -48,7 +48,7 @@ export function DocTitle() {
         placeholder={"Add a Title"}
         value={pendingTitle}
         // size="sm"
-        className="text-xl text-center bg-transparent border-transparent hover:border-border"
+        className="text-lg text-center bg-transparent border-transparent hover:border-border"
         onBlur={(e) => {
           updateTitle(e as ChangeEvent<HTMLInputElement>);
         }}

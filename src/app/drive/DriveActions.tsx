@@ -19,7 +19,7 @@ export function DriveActions() {
   const [theme, setTheme] = useTheme();
   return (
     <MenuTrigger>
-      <AriaButton aria-label="Menu" size="icon" variant="outline" className="rounded-full">
+      <AriaButton aria-label="Menu" size="icon" variant="ghost" className="rounded-full">
         <MoreVertical size={20} />
       </AriaButton>
       <MenuPopover>
