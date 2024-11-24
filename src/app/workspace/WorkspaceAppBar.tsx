@@ -38,11 +38,11 @@ export default function AppBar({ className }: { className?: string }) {
         </NavbarContent>
         <NavbarContent className="items-center gap-2">
           <Suspense>
-            <LazyAppBarCollab />
-          </Suspense>
-          <Suspense>
             <LazyDocPersistenceToggle />
           </Suspense>        
+          <Suspense>
+            <LazyAppBarCollab />
+          </Suspense>
         </NavbarContent>
       </>}
       <NavbarContent>
