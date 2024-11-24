@@ -1,4 +1,4 @@
-import { ChevronRight, File, Folder, HardDriveIcon, PlusIcon } from "lucide-react"
+import { ChevronRight, File, FilePlusIcon, Folder } from "lucide-react"
 import * as React from "react"
 
 import { documentsStore } from "@/app/drive/store"
@@ -13,6 +13,7 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -21,9 +22,9 @@ import {
 } from "@/components/ui/sidebar"
 import { useStore } from "@nanostores/react"
 import { Button } from "../../components/ui/button"
-import logoRaw from  "../../images/lab-icon.svg?raw";
-import { createDocumentState } from "./CreateDocumentDialog"
+import logoRaw from "../../images/lab-icon.svg?raw"
 import { typeIconMap } from "../shared/typeIconMap"
+import { createDocumentState } from "./CreateDocumentDialog"
 import { EditorsByType } from "./Editor"
 
 
@@ -44,7 +45,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   }
   return (
     <Sidebar {...props}>
-      <SidebarContent>
+      <SidebarHeader>
+
         <SidebarGroup className="flex flex-row">
         <Button
           asChild
@@ -56,10 +58,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <a href="/y-labs/index.html" className="block" dangerouslySetInnerHTML={{ __html: logoRaw }}>
           </a>
         </Button>
-        <Button size="icon" variant="ghost" className="ml-auto" onClick={createDocumentState.open}>
-          <PlusIcon />
+        <Button size="icon" variant="default" className="ml-auto" onClick={createDocumentState.open}>
+          <FilePlusIcon />
         </Button>
         </SidebarGroup>
+      </SidebarHeader>
+
+      <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Files</SidebarGroupLabel>
           <SidebarGroupContent>

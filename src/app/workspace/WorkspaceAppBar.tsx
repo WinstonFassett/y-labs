@@ -30,16 +30,16 @@ export default function AppBar({ className }: { className?: string }) {
   return (
     <Navbar className={cn("sticky top-0 z-50", className)}>
       <NavbarContent>
-          <SidebarTrigger className="-ml-1" />
+          <SidebarTrigger className="ml-2" />
       </NavbarContent>
       {docId && <>
         <NavbarContent className="flex-1 items-center gap-2">
           <DocTitle />
         </NavbarContent>
         <NavbarContent className="items-center gap-2">
-          {/* <Suspense>
+          <Suspense>
             <LazyAppBarCollab />
-          </Suspense> */}
+          </Suspense>
           <Suspense>
             <LazyDocPersistenceToggle />
           </Suspense>        
