@@ -10,7 +10,7 @@ import {
   Sun
 } from "lucide-react";
 import { Suspense } from "react";
-import { useResolvedPath } from "react-router-dom";
+import { useParams, useResolvedPath } from "react-router-dom";
 import { Navbar, NavbarContent } from "../../components/ui/navbar";
 import { AppGlobals } from "../../globals";
 import { useTheme } from "../../lib/astro-tailwind-themes/useTheme";
@@ -25,22 +25,26 @@ export default function AppBar({ className }: { className?: string }) {
   const [theme, setTheme] = useTheme();
   const newPath = useResolvedPath("/new");
   const { frontmatter } = AppGlobals;
-
+  const { docId } = useParams<{ docId: string }>();
   return (
     <Navbar className={cn("sticky top-0 z-50", className)}>
       <NavbarContent>
           <SidebarTrigger className="-ml-1" />
       </NavbarContent>
-      <NavbarContent className="flex-1 items-center gap-2">
-        <DocTitle />
-      </NavbarContent>
-      <NavbarContent className="items-center gap-2">
-        <Suspense>
-          <LazyAppBarCollab />
-        </Suspense>
-        <Suspense>
-          <LazyDocPersistenceToggle />
-        </Suspense>        
+      {docId && <>
+        <NavbarContent className="flex-1 items-center gap-2">
+          <DocTitle />
+        </NavbarContent>
+        <NavbarContent className="items-center gap-2">
+          <Suspense>
+            <LazyAppBarCollab />
+          </Suspense>
+          <Suspense>
+            <LazyDocPersistenceToggle />
+          </Suspense>        
+        </NavbarContent>
+      </>}
+      <NavbarContent>
         <MenuTrigger>
           <AriaButton aria-label="Menu" size="icon" variant="ghost" className="rounded-full">
             <MoreVertical size={20} />
@@ -75,7 +79,6 @@ export default function AppBar({ className }: { className?: string }) {
             </Menu>
           </MenuPopover>
         </MenuTrigger>
-
       </NavbarContent>
     </Navbar>
   );

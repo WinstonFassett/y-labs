@@ -55,13 +55,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarGroupContent>
             <SidebarMenu>
               {documents.map((doc, index) => {
-                
+                const filename = `${doc.title || "[Untitled]"}.${doc.type}`
                 return (
                   <SidebarMenuItem key={index}>
                     <SidebarMenuButton asChild>
-                      <a key={doc.name} href={getDocUrl(doc.name, doc.type)}>
+                      <a key={doc.name} title={filename} href={getDocUrl(doc.name, doc.type)}>
                         <File />
-                        {doc.title || "[Untitled]"}.{doc.type}
+                        <span className="text-nowrap text-ellipsis">
+                          {filename}
+                        </span>
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
