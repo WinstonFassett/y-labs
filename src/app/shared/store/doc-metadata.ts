@@ -3,7 +3,7 @@ import { atom, onMount } from 'nanostores';
 import { listDatabases } from './listDatabases';
 import { getOfflineDocMeta } from './local-yjs-idb';
 
-interface DocMetadata {
+export interface DocMetadata {
   id: string;
   title?: string;
   type: string;

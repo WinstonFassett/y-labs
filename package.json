@@ -29,6 +29,7 @@
     "@hookform/resolvers": "^3.9.1",
     "@nanostores/react": "^0.7.2",
     "@next/font": "^14.2.5",
+    "@radix-ui/react-alert-dialog": "^1.1.2",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-checkbox": "^1.1.2",
     "@radix-ui/react-collapsible": "^1.1.1",

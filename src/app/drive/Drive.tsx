@@ -5,6 +5,13 @@ import { CreateDocumentDialog } from "./CreateDocumentDialogButton.tsx";
 import { ImportDriveModal } from "./ImportDrive.tsx";
 import { documentsStore } from "./store.ts";
 import { typeIconMap } from "../shared/typeIconMap.tsx";
+import { useMemo } from "react";
+import { $docMetas } from "../shared/store/doc-metadata.ts";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { TrashIcon } from "lucide-react";
+import { DeleteSavedDialog } from "../shared/DeleteSavedDialog.tsx";
+
 
 const docTypes = [
   {
@@ -80,7 +87,21 @@ export function CreateDocButtons() {
 }
 
 function DriveListing() {
-  const documents = useStore(documentsStore);
+  const allDocMetas = useStore($docMetas);
+
+  const documents = useMemo(() => {
+    if (!allDocMetas) return undefined;
+    // console.log('sorting', allDocMetas)
+    const sorted = [...allDocMetas] //.filter(m => ValidTypes.includes(m.type));
+    sorted.sort((a, b) => {
+      // sort by most recent, then by title
+      if (a.savedAt > b.savedAt) return -1;
+      if (a.savedAt < b.savedAt) return 1;
+      return (a.title ?? "").localeCompare(b.title ?? "");      
+    })
+    return sorted
+  }, [allDocMetas]);
+
   if (!documents) {
     return <div>Loading...</div>;
   }
@@ -104,16 +125,18 @@ function DriveListing() {
                   <div className="text-sm text-default-500">{doc.type}</div>
                 </div>
                 {/* <Tooltip content="Delete document" color="danger">
-                <Button
-                  color="danger"
-                  size="sm"
-                  variant="light"
-                  isIconOnly
-                  className="rounded-full"
-                >
-                  <TrashIcon size={"16"} />
-                </Button>
-              </Tooltip> */}
+                  <Button
+                    color="danger"
+                    size="sm"
+                    variant="light"
+                    isIconOnly
+                    className="rounded-full"
+                  >
+                    <TrashIcon size={"16"} />
+                  </Button>
+                </Tooltip> */}
+                <DeleteSavedDialog {...doc} />
+                
               </div>
             </Card>
           </a>
