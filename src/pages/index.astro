@@ -41,7 +41,7 @@ function compareDates(get = (x?: any) => x) {
       <h3 class="text-4xl font-bold pb-6 text-center">Local Apps</h3>
 
       <CardList>
-        {sortedLabs.slice(0, 5).map((lab) => <LabPreview {...lab.data} />)}
+        {sortedLabs.map((lab) => <LabPreview {...lab.data} />)}
       </CardList>
     </div>
   </div>
