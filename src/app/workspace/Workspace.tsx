@@ -5,6 +5,7 @@ import {
 } from "@/components/ui/sidebar"
 import AppBar from "./WorkspaceAppBar"
 import Editor from "./Editor"
+import { CreateDocumentDialog } from "./CreateDocumentDialog"
 
 export function Workspace() {
   return (
@@ -13,6 +14,7 @@ export function Workspace() {
       <SidebarInset>
         <AppBar />        
         <Editor />
+        <CreateDocumentDialog />
       </SidebarInset>
     </SidebarProvider>
   )

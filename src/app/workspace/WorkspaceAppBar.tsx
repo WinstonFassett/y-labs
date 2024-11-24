@@ -20,6 +20,7 @@ import { LazyDocPersistenceToggle } from "../blocknote/lazy/storage";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { DocTitle } from "../shared/DocTitle";
 import { $settingsStore } from "../shared/SettingsDialog";
+import { createDocumentState } from "./CreateDocumentDialog";
 
 export default function AppBar({ className }: { className?: string }) {
   const [theme, setTheme] = useTheme();
@@ -51,7 +52,10 @@ export default function AppBar({ className }: { className?: string }) {
           </AriaButton>
           <MenuPopover>
             <Menu>
-              <MenuItem href="#/new">
+              <MenuItem onAction={() => {
+                console.log("createDocumentState", createDocumentState);
+                createDocumentState.open();
+              }}>
                 <FileText size={16} />
                 New Document                
               </MenuItem>

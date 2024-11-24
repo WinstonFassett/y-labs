@@ -1,6 +1,7 @@
 import { Card, CardHeader, CardFooter } from "@/components/ui/card";
 import { typeIconMap } from "../shared/typeIconMap";
 import { cn } from "@/lib/utils";
+import { createDocumentState } from "./CreateDocumentDialog";
 
 const docTypes = [
   {
@@ -34,7 +35,7 @@ export function CreateDocButtons() {
       <p className="text-default-600 text-center">Create a new document:</p>
       <div className="gap-2 grid grid-cols-2 justify-items-center items-center mt-8">
         {docTypes.map((docType) => (
-          <a href={docType.href}>
+          <a href={docType.href} onClick={createDocumentState.close}>
             <Card
               key={docType.href}
               // isPressable
