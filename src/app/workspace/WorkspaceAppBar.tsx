@@ -53,7 +53,6 @@ export default function AppBar({ className }: { className?: string }) {
           <MenuPopover>
             <Menu>
               <MenuItem onAction={() => {
-                console.log("createDocumentState", createDocumentState);
                 createDocumentState.open();
               }}>
                 <FileText size={16} />

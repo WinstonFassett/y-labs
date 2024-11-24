@@ -1,4 +1,4 @@
-import { ChevronRight, File, Folder, HardDriveIcon } from "lucide-react"
+import { ChevronRight, File, Folder, HardDriveIcon, PlusIcon } from "lucide-react"
 import * as React from "react"
 
 import { documentsStore } from "@/app/drive/store"
@@ -22,6 +22,8 @@ import {
 import { useStore } from "@nanostores/react"
 import { Button } from "../../components/ui/button"
 import logoRaw from  "../../images/lab-icon.svg?raw";
+import { createDocumentState } from "./CreateDocumentDialog"
+import { typeIconMap } from "../shared/typeIconMap"
 
 function getDocUrl(name: string, type: string) {
   return `/y-labs/app/workspace/index.html#/edit/${name}`;  
@@ -39,15 +41,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar {...props}>
       <SidebarContent>
-        <SidebarGroup className="items-start">
+        <SidebarGroup className="flex flex-row">
         <Button
           asChild
           title="Y-Labs"
           variant="ghost"
+          size="icon"
           className="[&_svg]:pointer-events-none [&_svg]:size-5 [&_svg]:shrink-0"
         >
-          <a href="/y-labs/index.html" dangerouslySetInnerHTML={{ __html: logoRaw }}>
+          <a href="/y-labs/index.html" className="block" dangerouslySetInnerHTML={{ __html: logoRaw }}>
           </a>
+        </Button>
+        <Button size="icon" variant="ghost" className="ml-auto" onClick={createDocumentState.open}>
+          <PlusIcon />
         </Button>
         </SidebarGroup>
         <SidebarGroup>
@@ -55,12 +61,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarGroupContent>
             <SidebarMenu>
               {documents.map((doc, index) => {
-                const filename = `${doc.title || "[Untitled]"}.${doc.type}`
+                const filename = `${doc.title || "[Untitled]"}` //.${doc.type}`
                 return (
                   <SidebarMenuItem key={index}>
                     <SidebarMenuButton asChild>
                       <a key={doc.name} title={filename} href={getDocUrl(doc.name, doc.type)}>
-                        <File />
+                        {typeIconMap[doc.type as keyof typeof typeIconMap] ?? typeIconMap["unknown"]}
                         <span className="text-nowrap text-ellipsis">
                           {filename}
                         </span>
