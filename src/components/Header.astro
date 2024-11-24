@@ -1,13 +1,11 @@
 ---
-import ThemeSwitch from "@/lib/astro-tailwind-themes/ThemeSwitch.svelte";
 import { Navbar, NavbarBrand, NavbarContent } from "@/components/ui/navbar";
-import logoRaw from "../../public/lab-icon.svg?raw";
-import LinkButton from "@/components/LinkButton.astro";
 import { SITE_TITLE } from "@/consts";
+import ThemeSwitch from "@/lib/astro-tailwind-themes/ThemeSwitch.svelte";
 import HomeButton from "./HomeButton.astro";
 ---
 
-<Navbar>
+<Navbar className="border-none bg-transparent backdrop-blur-none backdrop-saturate-100">
   <NavbarContent>
     <NavbarBrand>
       <HomeButton />          
