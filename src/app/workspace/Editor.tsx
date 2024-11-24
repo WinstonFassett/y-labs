@@ -9,13 +9,13 @@ export const EditorsByType: Record<string, React.ComponentType>
   // tldraw: lazy(() => import("@/app/tldraw/TlDrawEditor")),
   codemirror: lazy(() => import("@/app/codemirror/Codemirror")),
   blocknote: lazy(() => import("@/app/blocknote/Blocknote")),
-
+  drive: lazy(() => import("@/app/drive/DriveListing")),
   UNKNOWN: UnknownEditorType,
 }
 
 export function Editor({ className }: { className?: string }) {
   const { docId, type } = useParams<{ docId: string, type: string }>();
-  if (!docId) return <Empty />;
+  if (!docId) return <FolderView />;
   const EditorComponent = (type && EditorsByType[type]) || EditorsByType.UNKNOWN;
   return (<Suspense fallback={<div>Loading...</div>}>    
     <EditorComponent key={docId} className={className} />
@@ -25,6 +25,19 @@ export function Editor({ className }: { className?: string }) {
 
 export default Editor;
 
+const FolderView = () => {
+  const DriveListing = EditorsByType.drive;
+  return (
+    <div className="flex flex-1 flex-col gap-4 p-4">
+      <h3>Recent Saved Files</h3>
+      <Suspense fallback="Loading drive...">
+
+        {/* <div className="text-center py-4">Folder view not implemented yet.</div> */}
+        <DriveListing />
+      </Suspense>
+    </div>
+  )
+}
 
 const Empty = () => {
   return (

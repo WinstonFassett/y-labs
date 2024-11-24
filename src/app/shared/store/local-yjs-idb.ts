@@ -24,10 +24,6 @@ const docIdbStoreT = mapTemplate(
     const $enabled = storeKey(store, "enabled");
     const $loaded = storeKey(store, "loaded");
 
-    getHasDocIdb(id).then((exists) => {
-      $enabled.update(exists);
-    });
-
     const $y = getYdoc(id);
     const $persister = computed([$y, $enabled], (y, enabled) => {
       if (!enabled) return undefined;
@@ -46,7 +42,7 @@ const docIdbStoreT = mapTemplate(
           id,
           savedAt: alreadySavedMetadata?.savedAt ?? Date.now(),
         });
-        
+
       });
       return persister;
     });
@@ -70,7 +66,11 @@ const docIdbStoreT = mapTemplate(
     });
   },
   (store, id) => {
-    const { $persister } = store;
+    const { $persister, $enabled } = store;
+    // move this to mount
+    getHasDocIdb(id).then((exists) => {
+      $enabled.update(exists);
+    });
     const unsubPersister = $persister?.subscribe((v) => {
       store.persister = v;
     });
@@ -160,4 +160,8 @@ function getDocMeta(doc: Y.Doc, name: string) {
   return Object.assign(meta, { name, type });
 }
 
+export async function deleteOfflineDoc(name: string) {
+  await deleteDocMetadata(name);
+  await idb.deleteDB(name);
+}
 

@@ -6,6 +6,8 @@ import {
 import AppBar from "./WorkspaceAppBar"
 import Editor from "./Editor"
 import { CreateDocumentDialog } from "./CreateDocumentDialog"
+import { Toaster } from "@/components/ui/toaster"
+
 
 export function Workspace() {
   return (
@@ -15,6 +17,7 @@ export function Workspace() {
         <AppBar />        
         <Editor />
         <CreateDocumentDialog />
+        <Toaster /> 
       </SidebarInset>
     </SidebarProvider>
   )
