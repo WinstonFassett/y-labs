@@ -26,6 +26,7 @@ import logoRaw from "../../images/lab-icon.svg?raw"
 import { typeIconMap } from "../shared/typeIconMap"
 import { createDocumentState } from "./CreateDocumentDialog"
 import { EditorsByType } from "./Editor"
+import { $docMetas } from "../shared/store/doc-metadata"
 
 
 const ValidTypes = Object.keys(EditorsByType).filter(t => t !== 'UNKNOWN');
@@ -35,14 +36,22 @@ function getDocUrl(name: string, type: string) {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const allDocuments = useStore(documentsStore);
-  const documents = allDocuments?.filter(doc => ValidTypes.includes(doc.type));
-  if (!documents) {
-    return <div>Loading...</div>;
-  }
-  if (documents.length === 0) {
-    return "No documents found";
-  }
+
+  const allDocMetas = useStore($docMetas);
+
+  const docMetasSorted = React.useMemo(() => {
+    if (!allDocMetas) return undefined;
+    // console.log('sorting', allDocMetas)
+    const sorted = allDocMetas.filter(m => ValidTypes.includes(m.type));
+    sorted.sort((a, b) => {
+      // sort by most recent, then by title
+      if (a.savedAt > b.savedAt) return -1;
+      if (a.savedAt < b.savedAt) return 1;
+      return (a.title ?? "").localeCompare(b.title ?? "");      
+    })
+    return sorted
+  }, [allDocMetas]);
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -69,12 +78,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarGroupLabel>Files</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {documents.map((doc, index) => {
+              { !docMetasSorted ? <div>Loading...</div> :
+               docMetasSorted.map((doc, index) => {
                 const filename = `${doc.title || "[Untitled]"}` //.${doc.type}`
                 return (
                   <SidebarMenuItem key={index}>
                     <SidebarMenuButton asChild>
-                      <a key={doc.name} title={filename} href={getDocUrl(doc.name, doc.type)}>
+                      <a key={doc.id} title={filename} href={getDocUrl(doc.id, doc.type)}>
                         {typeIconMap[doc.type as keyof typeof typeIconMap] ?? typeIconMap["unknown"]}
                         <span className="text-nowrap text-ellipsis">
                           {filename}

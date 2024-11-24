@@ -70,6 +70,7 @@
     "do_username": "^1.0.0",
     "framer-motion": "^11.0.6",
     "highlight.js": "^11.6.0",
+    "idb-keyval": "^6.2.1",
     "lib0": "^0.2.89",
     "lowlight": "^2.7.0",
     "lucide-react": "^0.338.0",

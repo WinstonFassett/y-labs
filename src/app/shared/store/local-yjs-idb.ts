@@ -4,7 +4,9 @@ import * as idb from "lib0/indexeddb";
 import { computed, map, onSet } from "nanostores";
 import { IndexeddbPersistence } from "y-indexeddb";
 import * as Y from "yjs";
+import { $docMetas, deleteDocMetadata, saveDocMetadata } from "./doc-metadata";
 import { getYdoc } from "./yjs-docs";
+import { debounce } from "../../../lib/debounce";
 
 interface DocIdbStoreFields {
   enabled: boolean;
@@ -33,19 +35,30 @@ const docIdbStoreT = mapTemplate(
       persister.once("synced", () => {
         if (!y.isLoaded) {
           y.emit("load", []);
-        }
+        } 
         store.setKey("loaded", true);
+
+        const alreadySavedMetadata = $docMetas.get()?.find((m) => m.id === id);
+        const meta = getDocMeta(y, id);
+        saveDocMetadata({
+          ...alreadySavedMetadata,
+          ...meta,
+          id,
+          savedAt: alreadySavedMetadata?.savedAt ?? Date.now(),
+        });
+        
       });
       return persister;
     });
 
-    onSet($persister, ({ newValue }) => {
+    onSet($persister, async ({ newValue }) => {
       const oldPersister = $persister.value;
       if (oldPersister) {
         oldPersister.destroy();
-        idb.deleteDB(id).then(() => {
-          // console.log("deleted", id);
-        });
+        await Promise.all([
+          idb.deleteDB(id),
+          deleteDocMetadata(id)
+        ])
       }
     });
 
@@ -61,9 +74,26 @@ const docIdbStoreT = mapTemplate(
     const unsubPersister = $persister?.subscribe((v) => {
       store.persister = v;
     });
-    // console.log("mount local-yjs-idb config");
+    // watch doc and update meta
+    const $y = getYdoc(id);
+    const ydoc = $y.get()
+    const saveMetadataDebounced = debounce(() => {
+      const meta = getDocMeta(ydoc, id);
+      saveDocMetadata({
+        ...meta,
+        id,
+        savedAt: Date.now(),
+      });
+    }, 1000)
+    
+    const onUpdate = (...args: any[]) => {
+      if (!ydoc.isLoaded) return;
+      saveMetadataDebounced();
+    }
+    ydoc.on("update", onUpdate);
+
     return () => {
-      // console.log("unload idb config");
+      ydoc.off("update", onUpdate);
       unsubPersister?.();
     };
   },
@@ -94,14 +124,6 @@ function checkDatabaseExists(dbName: string): Promise<boolean> {
   });
 }
 
-export async function listDatabases() {
-  if (!indexedDB?.databases) {
-    console.warn("unable to list databases");
-    return Promise.resolve([] as string[]);
-  }
-  return (await indexedDB.databases()).map(({ name }) => name!);
-}
-
 export function getOfflineDoc(name: string, destroy = true) {
   const onLoad = () => {
     // console.log("loaded", name);
@@ -127,11 +149,15 @@ export function getOfflineDoc(name: string, destroy = true) {
 
 export async function getOfflineDocMeta(name: string) {
   const doc = await getOfflineDoc(name);
-  const meta = doc.getMap("meta").toJSON();
-  meta.name = name;
-  const shares = Array.from(doc.share.keys()) as string[];
-  meta.type =
-    shares.find((s) => s !== "meta" && s !== "tldraw_meta") || "unknown";
+  const meta = getDocMeta(doc, name);
   doc.destroy();
   return meta;
 }
+function getDocMeta(doc: Y.Doc, name: string) {
+  const meta = doc.getMap("meta").toJSON() as { [key: string]: any; title?: string; };
+  const shares = Array.from(doc.share.keys()) as string[];
+  const type = shares.find((s) => s !== "meta" && s !== "tldraw_meta") || "unknown";
+  return Object.assign(meta, { name, type });
+}
+
+
