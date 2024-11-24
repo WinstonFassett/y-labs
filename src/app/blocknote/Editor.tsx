@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import AppBar from "../shared/AppBar";
 import { LazyBlocknote } from "./lazy/editor";
 import { useDocCollabStore } from "../shared/useDocCollabStore";
@@ -18,10 +18,11 @@ export function useDocParams() {
 }
 
 export function Editor({ className }: { className?: string }) {
-  const { docId, ydoc, $room, roomId } = useDocCollabStore();
+  const { docId } = useDocParams();
+  const [searchParams] = useSearchParams();
+  const roomId = searchParams.get("room")
   const $loader = getDocLoadState(docId, roomId);
   const loadState = useStore($loader);
-  const fragment = ydoc.getXmlFragment("blocknote");
   return (
     <div className={cn("w-full flex-1 mx-auto relative", className)}>
       <div className="max-w-3xl mx-auto h-full flex flex-col">
@@ -45,15 +46,13 @@ export function Editor({ className }: { className?: string }) {
               </div>
             </div>
           )}
-          {!!ydoc && (
-            <LazyBlocknote
-              autofocus
-              key={docId}
-              provider={$room?.provider}
-              fragment={fragment}
-              className={cn("flex-1", loadState === "loading" && "hidden")}
-            />
-          )}
+          
+          <LazyBlocknote
+            autofocus
+            key={docId}
+            className={cn("flex-1", loadState === "loading" && "hidden")}
+          />
+        
         </Suspense>
       </div>
     </div>

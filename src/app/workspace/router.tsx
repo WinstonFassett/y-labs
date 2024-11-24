@@ -1,4 +1,4 @@
-import { Navigate, createHashRouter } from "react-router-dom";
+import { Navigate, createHashRouter, useParams } from "react-router-dom";
 import { EditorRoute } from "./EditorRoute";
 import { generateId } from "../shared/generateId";
 import { Workspace } from "./Workspace";
@@ -23,5 +23,6 @@ export const router = createHashRouter(routes);
 
 function NewDocRoute() {
   const id = generateId();
-  return <Navigate to={`/edit/${id}`} replace />;
+  const { type } = useParams<{ type: string }>();
+  return <Navigate to={`/edit/${id}/${type}`} replace />;
 }

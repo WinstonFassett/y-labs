@@ -37,9 +37,9 @@ export default function AppBar({ className }: { className?: string }) {
           <DocTitle />
         </NavbarContent>
         <NavbarContent className="items-center gap-2">
-          <Suspense>
+          {/* <Suspense>
             <LazyAppBarCollab />
-          </Suspense>
+          </Suspense> */}
           <Suspense>
             <LazyDocPersistenceToggle />
           </Suspense>        

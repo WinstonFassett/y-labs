@@ -1,6 +1,6 @@
 
 import { useEditorRoute } from "../shared/useEditorRoute";
-import Editor from "./Tldraw";
+import Editor from "./TlDrawEditorApp";
 
 export function EditorRoute() {
   useEditorRoute()

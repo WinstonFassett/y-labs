@@ -5,17 +5,21 @@ import "./Blocknote.css";
 import { useEffect } from "react";
 import { user } from "../shared/store/local-user";
 import { useStore } from "@nanostores/react";
+import { useDocCollabStore } from "../shared/useDocCollabStore";
 
 export interface BlocknoteProps {
-  provider: any;
-  fragment: XmlFragment;
   autofocus?: boolean;
   className?: string;
 }
 
 export function Blocknote(
-  { provider, fragment, autofocus, className } = {} as BlocknoteProps,
+  { autofocus, className } = {} as BlocknoteProps,
 ) {
+  const { docId, ydoc, $room, roomId } = useDocCollabStore();
+  const fragment = ydoc.getXmlFragment("blocknote");
+  const provider=$room?.provider
+  
+
   const theme = "dark"; // useStore(store.theme)
   const u = useStore(user);
   const editor = useBlockNote({

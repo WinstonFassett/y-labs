@@ -24,14 +24,18 @@ import { Button } from "../../components/ui/button"
 import logoRaw from  "../../images/lab-icon.svg?raw";
 import { createDocumentState } from "./CreateDocumentDialog"
 import { typeIconMap } from "../shared/typeIconMap"
+import { EditorsByType } from "./Editor"
+
+
+const ValidTypes = Object.keys(EditorsByType).filter(t => t !== 'UNKNOWN');
 
 function getDocUrl(name: string, type: string) {
-  return `/y-labs/app/workspace/index.html#/edit/${name}`;  
+  return `/y-labs/app/workspace/index.html#/edit/${name}/${type}`;  
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const allDocuments = useStore(documentsStore);
-  const documents = allDocuments?.filter(doc => doc.type === 'novel');
+  const documents = allDocuments?.filter(doc => ValidTypes.includes(doc.type));
   if (!documents) {
     return <div>Loading...</div>;
   }

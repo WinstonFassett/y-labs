@@ -227,6 +227,9 @@ importers:
       react-hook-form:
         specifier: ^7.50.1
         version: 7.50.1(react@18.2.0)
+      react-lazily:
+        specifier: ^0.9.2
+        version: 0.9.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react-markdown:
         specifier: ^9.0.1
         version: 9.0.1(@types/react@18.2.58)(react@18.2.0)
@@ -8767,6 +8770,18 @@ packages:
 
   react-is@18.2.0:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
+
+  react-lazily@0.9.2:
+    resolution: {integrity: sha512-oBVRDQ+SuMPWenBO/0Kq+iZk34lOYJEmjiTto4bYRufndf8pux3E50BT3mJZbsq0vBsAVbX3fpQjlUvsXgDVag==}
+    peerDependencies:
+      react: '>=16.8'
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
 
   react-markdown@8.0.7:
     resolution: {integrity: sha512-bvWbzG4MtOU62XqBx3Xx+zB2raaFFsq4mYiAzfjXJMEz2sixgeAfraA3tvzULF02ZdOMUOKTBFFaZJDDrq+BJQ==}
@@ -24613,6 +24628,12 @@ snapshots:
   react-is@17.0.2: {}
 
   react-is@18.2.0: {}
+
+  react-lazily@0.9.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+    dependencies:
+      react: 18.2.0
+    optionalDependencies:
+      react-dom: 18.2.0(react@18.2.0)
 
   react-markdown@8.0.7(@types/react@18.2.58)(react@18.2.0):
     dependencies:
