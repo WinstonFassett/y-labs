@@ -74,8 +74,7 @@ function createTrysteroDocRoom(
 
   const peerId = selfId;
 
-  
-  const trysteroRoom = createTrysteroRoomForStore(roomId, store);
+  const trysteroRoom = createTrysteroRoomForStore(roomId, config, store);
 
   const password = config.encrypt ? config.password : undefined;
   
@@ -129,7 +128,7 @@ function createTrysteroDocRoom(
   }
 
   async function reconnect () {
-    const trysteroRoom = createTrysteroRoomForStore(roomId, store)
+    const trysteroRoom = createTrysteroRoomForStore(roomId, config, store)
     await provider.connect(trysteroRoom)
     setUserInAwareness(user.get());
   }
@@ -177,8 +176,9 @@ const trysteroDocRoomT = mapTemplate(
   },
 );
 
-function createTrysteroRoomForStore(roomId: string, store: MapStore<OnlineDocRoomFields>) {
-  const trysteroRoom = createRoom(roomId);
+function createTrysteroRoomForStore(roomId: string, config: DocRoomConfigFields, store: MapStore<OnlineDocRoomFields>) {
+  const encryptAwareRoomId = `${roomId}${config.encrypt ? "-enc" : ""}`;
+  const trysteroRoom = createRoom(encryptAwareRoomId);
   trysteroRoom.onPeerJoin((peerId) => {
     store.setKey("peerIds", store.get().peerIds.concat(peerId));
   });

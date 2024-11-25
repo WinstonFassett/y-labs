@@ -319,7 +319,7 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
                           <FormLabel>Password{isEncrypted && "*"}</FormLabel>
                           <FormControl>
                             <div>
-                              <PasswordInput {...field} value={field.value ?? ""} readOnly={isSharing} type="text" />
+                              <PasswordInput showCopyButton {...field} value={field.value ?? ""} readOnly={isSharing} type="text" />
                             </div>
                           </FormControl>
                           <FormDescription />

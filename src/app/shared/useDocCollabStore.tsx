@@ -28,7 +28,11 @@ export function useDocCollabStore(requireDocId = true) {
 
   const $roomConfig = roomId ? getDocRoomConfig(docId!, roomId) : undefined;
   const roomConfig = useStoreIfPresent($roomConfig);
-  const $room = roomConfig?.enabled ? getTrysteroDocRoom(docId!, roomId) : undefined;
+
+  // check if encrypt without password
+  const needsPasswordToConnect = roomConfig?.encrypt && !roomConfig.password
+  const canConnect = roomConfig?.enabled && !needsPasswordToConnect
+  const $room = canConnect ? getTrysteroDocRoom(docId!, roomId) : undefined;
 
   function startSharing(config: DocRoomConfigFields) {
     const { roomId } = config;
@@ -56,5 +60,6 @@ export function useDocCollabStore(requireDocId = true) {
     $roomConfig,
     startSharing,
     stopSharing,
+    needsPasswordToConnect,
   };
 }

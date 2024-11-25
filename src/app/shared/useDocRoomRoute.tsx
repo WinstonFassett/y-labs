@@ -12,6 +12,7 @@ export function useDocRoomRoute({ type }:{ type?:string } = {}) {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const x = searchParams.get("x");
+  const encryptParam = searchParams.get("encrypt") === 'true';
   const roomId = searchParams.get("roomId");
   const { frontmatter } = AppGlobals;
   // when docId, roomId or x changes, update password and encrypted
@@ -62,7 +63,7 @@ export function useDocRoomRoute({ type }:{ type?:string } = {}) {
         docId: docId,
         roomId: roomId,
         // password: "",
-        // encrypt: false,
+        encrypt: encryptParam,
         enabled: true,
         accessLevel: "edit",
       });

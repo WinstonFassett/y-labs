@@ -2,6 +2,8 @@
 import { useParams } from "react-router-dom";
 import { CreateDocButtons } from "./CreateDocMenu";
 import { Suspense, lazy } from "react";
+import { useDocCollabStore } from "../shared/useDocCollabStore";
+import { PasswordRequiredDialog } from "../shared/PasswordRequiredDialog";
 
 export const EditorsByType: Record<string, React.ComponentType>
  = {
@@ -16,10 +18,15 @@ export const EditorsByType: Record<string, React.ComponentType>
 export function Editor({ className }: { className?: string }) {
   const { docId, type } = useParams<{ docId: string, type: string }>();
   if (!docId) return <FolderView />;
+  const { needsPasswordToConnect } = useDocCollabStore(false)
+  const canShow = !needsPasswordToConnect
   const EditorComponent = (type && EditorsByType[type]) || EditorsByType.UNKNOWN;
-  return (<Suspense fallback={<div>Loading...</div>}>    
-    <EditorComponent key={docId} className={className} />
-  </Suspense>
+  return (<>
+    <Suspense fallback={<div>Loading...</div>}>    
+      {canShow && <EditorComponent key={docId} className={className} />}    
+    </Suspense>
+    <PasswordRequiredDialog />
+  </>
   );
 }
 
