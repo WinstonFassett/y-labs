@@ -86,7 +86,6 @@ export function ShareDialog({ type }: { type?: string }) {
       const inRoom = roomParameter
       const encrypt = inRoom ? (roomConfigMaybe?.encrypt || !!roomConfigMaybe?.password) : true;
       return {
-        docId,
         roomId: roomParameter || generateId(),
         enabled,
         encrypt,
@@ -97,10 +96,10 @@ export function ShareDialog({ type }: { type?: string }) {
   });
   const onSubmit = form.handleSubmit(
     (data) => {
-      const { roomId, docId } = data;
+      const { roomId } = data;
       startSharing({
-        ...$roomConfig?.get(),
         ...data,
+        docId
       });
       handleCopyLink();
       const newRoomConfig = getDocRoomConfig(docId, roomId).get();

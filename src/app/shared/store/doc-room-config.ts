@@ -12,7 +12,6 @@ export interface DocRoomConfigFields {
 }
 
 export const RoomConfigSchema = z.object({
-  docId: z.string(),
   roomId: z.string().min(1, { message: "Required" }),
   enabled: z.boolean(),
   encrypt: z.boolean(),
