@@ -11,6 +11,7 @@ import {
 import {
   Select,
   SelectItem,
+  SelectLabel,
   SelectListBox,
   SelectPopover,
   SelectTrigger,
@@ -244,17 +245,17 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
               render={({ field }) => {
                 return (
                   <FormItem className="flex items-center justify-between">
-                    <FormLabel>
-                      Anyone with the link can{" "}
-                      {field.value === "edit" ? "edit" : "view"}
-                    </FormLabel>
+
                     <Select className="w-[100px]"
                       {...field}               
                       isDisabled={isSharing}
                       onSelectionChange={field.onChange}
                       selectedKey={field.value}
                     >
-
+                      <SelectLabel>
+                        Anyone with the link can{" "}
+                        {field.value === "edit" ? "edit" : "view"}
+                      </SelectLabel>
                       
                       <SelectTrigger>
                         <SelectValue />

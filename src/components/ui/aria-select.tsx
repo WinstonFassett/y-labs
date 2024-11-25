@@ -35,6 +35,10 @@ const SelectSection = ListBoxSection
 
 const SelectCollection = ListBoxCollection
 
+const SelectLabel  = Label
+
+const SelectFieldError = FieldError
+
 const SelectValue = <T extends object>({
   className,
   ...props
@@ -148,6 +152,8 @@ export {
   SelectValue,
   SelectTrigger,
   SelectItem,
+  SelectLabel,
+  SelectFieldError,
   SelectPopover,
   SelectHeader,
   SelectListBox,
