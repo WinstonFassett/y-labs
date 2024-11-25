@@ -23,7 +23,7 @@ import {
 import { useStore } from "@nanostores/react"
 import { Button } from "../../components/ui/button"
 import logoRaw from "../../images/lab-icon.svg?raw"
-import { typeIconMap } from "../shared/typeIconMap"
+import { FileTypeIcons, typeIconMap } from "../shared/typeIconMap"
 import { createDocumentState } from "./CreateDocumentDialog"
 import { EditorsByType } from "./Editor"
 import { $docMetas } from "../shared/store/doc-metadata"
@@ -81,11 +81,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               { !docMetasSorted ? <div>Loading...</div> :
                docMetasSorted.map((doc, index) => {
                 const filename = `${doc.title || "[Untitled]"}` //.${doc.type}`
+                const FileIcon = FileTypeIcons[doc.type as keyof typeof typeIconMap] ?? FileTypeIcons["unknown"]
                 return (
                   <SidebarMenuItem key={index}>
                     <SidebarMenuButton asChild>
                       <a key={doc.id} title={filename} href={getDocUrl(doc.id, doc.type)}>
-                        {typeIconMap[doc.type as keyof typeof typeIconMap] ?? typeIconMap["unknown"]}
+                        <FileIcon className="h-5 w-5" />
                         <span className="text-nowrap text-ellipsis">
                           {filename}
                         </span>
