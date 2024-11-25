@@ -23,7 +23,7 @@ function NovelEditor() {
   const u = user.get();
   const waiting = !ready || !providerReady ;
   return (
-    <div className="min-h-full flex-1 flex flex-col max-w-3xl mx-auto w-full pt-6">
+    <div className="min-h-full flex-1 flex flex-col max-w-3xl mx-auto w-full p-4">
       {waiting && <div>Loading...</div>}
       {!waiting && 
         <Novel
