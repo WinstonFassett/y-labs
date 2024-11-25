@@ -1,20 +1,18 @@
 import { Card } from "@/components/ui/card";
-import { useStore } from "@nanostores/react";
-import { typeIconMap } from "../shared/typeIconMap.tsx";
-import { useMemo } from "react";
-import { $docMetas } from "../shared/store/doc-metadata.ts";
-import { DeleteSavedDialog } from "../shared/DeleteSavedDialog.tsx";
-import { EmptyState, getDocUrl } from "./Drive.tsx";
-import { ToastAction } from "@/components/ui/toast.tsx";
 import { useToast } from "@/hooks/use-toast.ts";
+import { useStore } from "@nanostores/react";
+import { useMemo } from "react";
+import { DeleteSavedDialog } from "../shared/DeleteSavedDialog.tsx";
+import { $docMetas } from "../shared/store/doc-metadata.ts";
+import { typeIconMap } from "../shared/typeIconMap.tsx";
+import { EmptyState, getDocUrl } from "./Drive.tsx";
 
 export default function DriveListing() {
   const allDocMetas = useStore($docMetas);
   const { toast } = useToast();
   const documents = useMemo(() => {
     if (!allDocMetas) return undefined;
-    // console.log('sorting', allDocMetas)
-    const sorted = [...allDocMetas]; //.filter(m => ValidTypes.includes(m.type));
+    const sorted = [...allDocMetas];
     sorted.sort((a, b) => {
       // sort by most recent, then by title
       if (a.savedAt > b.savedAt) return -1;
