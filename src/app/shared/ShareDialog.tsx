@@ -134,7 +134,7 @@ export function ShareDialog({ type }: { type?: string }) {
       <DialogTrigger>
         <AriaButton
           size="sm"
-          variant={isSharing ? "sharing" : "share"}
+          variant={isSharing ? "sharing" : "ghost"}
         >
           <div className="sr-only sm:not-sr-only !pr-1">{actionLabel}</div>
           <Share2Icon className="h-5 w-5" />

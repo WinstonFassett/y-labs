@@ -32,7 +32,8 @@ const buttonVariants = cva(
         ghost: "data-[hovered]:bg-accent data-[hovered]:text-accent-foreground",
         link: "text-primary underline-offset-4 data-[hovered]:underline",
         warning: "bg-warning text-warning-foreground data-[hovered]:bg-warning/90",
-        share: "rounded-xl border-2 border-primary text-foreground hover:bg-primary hover:text-primary-foreground data-[hovered=true]:bg-primary data-[hovered=true]:text-primary-foreground focus:bg-primary focus:text-primary-foreground transition-colors",
+        primaryOutline: "rounded-xl border-2 border-primary text-foreground hover:bg-primary hover:text-primary-foreground data-[hovered=true]:bg-primary data-[hovered=true]:text-primary-foreground focus:bg-primary focus:text-primary-foreground transition-colors",
+        share: "rounded-xl border border-primary text-foreground hover:bg-primary hover:text-primary-foreground data-[hovered=true]:bg-primary data-[hovered=true]:text-primary-foreground focus:bg-primary focus:text-primary-foreground transition-colors",
         sharing: "rounded-xl bg-warning text-warning-foreground data-[hovered]:bg-warning/90",
       },
       size: {

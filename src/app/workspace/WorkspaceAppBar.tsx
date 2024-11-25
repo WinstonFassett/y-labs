@@ -34,10 +34,10 @@ export default function AppBar({ className }: { className?: string }) {
           <SidebarTrigger className="ml-2" />
       </NavbarContent>
       {docId && <>
-        <NavbarContent className="flex-1 items-center gap-2">
+        <NavbarContent className="flex-1 items-center gap-1 sm:gap-2">
           <DocTitle />
         </NavbarContent>
-        <NavbarContent className="items-center gap-2">
+        <NavbarContent className="items-center gap-1 sm:gap-2">
           <Suspense>
             <LazyDocPersistenceToggle />
           </Suspense>        
@@ -64,7 +64,7 @@ export default function AppBar({ className }: { className?: string }) {
                 onAction={() => {
                   setTheme(theme === "dark" ? "light" : "dark");
                 }}
-                className="flex items-center gap-2"
+                className="flex items-center"
               >
                 {
                   theme === "light" 

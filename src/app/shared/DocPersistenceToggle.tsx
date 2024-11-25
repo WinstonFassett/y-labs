@@ -6,12 +6,12 @@ import { useParams } from "react-router-dom";
 import { getDocIdbStore } from "./store/local-yjs-idb";
 
 const buttonStyles = cva(
-  "rounded-full border-2",
+  "rounded-full transition-all w-9 sm:w-auto",
   {
     variants: {
       isSelected: {
-        true: "",
-        false: "border-warning",
+        true: "border-none",
+        false: "border-warning border-2",
       },
       isFocusVisible: {
         true: "outline-none ring-2 ring-focus ring-offset-2 ring-offset-background",
@@ -27,11 +27,12 @@ export function DocPersistenceToggle() {
   const $docOfflineStore = getDocIdbStore(docId);
   const { enabled, persister } = useStore($docOfflineStore);
 
-  
+  const label = enabled ? "Saved" : "Unsaved"
 
   return (
     <Button
-    size="sm"
+      title={label}
+      size="sm"
       variant="outline"
       className={buttonStyles({ isSelected: enabled, isFocusVisible: false })}
       onClick={() => {
@@ -45,7 +46,7 @@ export function DocPersistenceToggle() {
         <AlertTriangleIcon size={18} className="text-warning" />
       )}
       <span className="hidden sm:block">
-        {enabled ? "Saved" : "Unsaved"}
+        {label}
       </span>
     </Button>
   );

@@ -69,7 +69,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <a href="/y-labs/index.html" className="block" dangerouslySetInnerHTML={{ __html: logoRaw }}>
           </a>
         </Button>
-        <Button size="icon" variant="default" className="ml-auto" onClick={createDocumentState.open}>
+        <Button size="icon" variant="ghost" className="ml-auto" onClick={createDocumentState.open}>
           <FilePlusIcon />
         </Button>
         </SidebarGroup>
@@ -87,31 +87,35 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 return (
                   <DropdownMenu key={doc.id}>
 
-                    <SidebarMenuItem key={index} className="flex flex-row gap-2 items-center">
-                      <a key={doc.id} className="flex-1 flex flex-row gap-2 items-center overflow-hidden" title={filename} href={getDocUrl(doc.id, doc.type)}>
-                        <FileIcon className="h-5 w-5" />
-                        <div className="text-nowrap overflow-hidden text-ellipsis">
-                          {filename}
-                        </div>
-                      </a>
-                      <DropdownMenuTrigger asChild>
-                        <div>
-                        <SidebarMenuButton className="w-auto">
-                          <MoreHorizontal className="ml-auto" />
-                        </SidebarMenuButton>
-                        </div>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent                       
-                        side="right"
-                        align="start"
-                        className="min-w-56 rounded-lg">
-                        <DropdownMenuItem onClick={() => {
-                          setPendingDeleteItem(doc)
-                        }}>
-                          <TrashIcon className="h-5 w-5 text-destructive" />
-                          <span>Delete</span>
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
+                    <SidebarMenuItem key={index}>
+                      <SidebarMenuButton asChild>
+                        <a key={doc.id} className="flex-1 flex flex-row gap-2 items-center overflow-hidden" title={filename} href={getDocUrl(doc.id, doc.type)}>
+                          <FileIcon className="h-5 w-5" />
+                          <div className="flex-1 text-nowrap overflow-hidden">
+                            {filename}
+                          </div>
+
+                          <DropdownMenuTrigger asChild>
+                            <div>
+                            <SidebarMenuButton size="sm" className="text-muted-foreground rounded-xl p-0 h-6 w-6 flex items-center justify-center hover:bg-sidebar hover:text-foreground">
+                              <MoreHorizontal className="" />
+                            </SidebarMenuButton>
+                            </div>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent                       
+                            side="right"
+                            align="start"
+                            className="min-w-56 rounded-lg">
+                            <DropdownMenuItem onClick={() => {
+                              setPendingDeleteItem(doc)
+                            }}>
+                              <TrashIcon className="h-5 w-5 text-destructive" />
+                              <span>Delete</span>
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+
+                        </a>
+                      </SidebarMenuButton>
                     </SidebarMenuItem>
                   </DropdownMenu>
                 )
