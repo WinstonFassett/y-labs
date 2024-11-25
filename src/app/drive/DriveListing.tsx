@@ -45,15 +45,7 @@ export default function DriveListing() {
                   </div>
                   <div className="text-sm text-default-500">{type}</div>
                 </div>
-                <DeleteSavedDialog {...doc} onDeleted={() => {   
-                  toast({
-                    title: "Document deleted",
-                    description: title || id,
-                    // action: (
-                    //   <ToastAction altText="Goto schedule to undo">Undo</ToastAction>
-                    // ),
-                  })
-                }} />
+                <DeleteSavedDialog {...doc} />
               </div>
             </Card>
           </a>

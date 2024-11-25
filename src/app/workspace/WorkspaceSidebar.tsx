@@ -1,4 +1,4 @@
-import { ChevronRight, File, FilePlusIcon, Folder } from "lucide-react"
+import { ChevronRight, File, FilePlusIcon, Folder, MoreHorizontal, TrashIcon } from "lucide-react"
 import * as React from "react"
 
 import { documentsStore } from "@/app/drive/store"
@@ -26,7 +26,10 @@ import logoRaw from "../../images/lab-icon.svg?raw"
 import { FileTypeIcons, typeIconMap } from "../shared/typeIconMap"
 import { createDocumentState } from "./CreateDocumentDialog"
 import { EditorsByType } from "./Editor"
-import { $docMetas } from "../shared/store/doc-metadata"
+import { $docMetas, type DocMetadata } from "../shared/store/doc-metadata"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { DeleteSavedDialog, DeleteSavedDialogAlertContent } from "../shared/DeleteSavedDialog"
+import { AlertDialog } from "@radix-ui/react-alert-dialog"
 
 
 const ValidTypes = Object.keys(EditorsByType).filter(t => t !== 'UNKNOWN');
@@ -36,12 +39,11 @@ function getDocUrl(name: string, type: string) {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-
+  const [pendingDeleteItem, setPendingDeleteItem] = React.useState<DocMetadata | null>(null)
   const allDocMetas = useStore($docMetas);
 
   const docMetasSorted = React.useMemo(() => {
     if (!allDocMetas) return undefined;
-    // console.log('sorting', allDocMetas)
     const sorted = allDocMetas.filter(m => ValidTypes.includes(m.type));
     sorted.sort((a, b) => {
       // sort by most recent, then by title
@@ -83,18 +85,37 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 const filename = `${doc.title || "[Untitled]"}` //.${doc.type}`
                 const FileIcon = FileTypeIcons[doc.type as keyof typeof typeIconMap] ?? FileTypeIcons["unknown"]
                 return (
-                  <SidebarMenuItem key={index}>
-                    <SidebarMenuButton asChild>
-                      <a key={doc.id} title={filename} href={getDocUrl(doc.id, doc.type)}>
+                  <DropdownMenu key={doc.id}>
+
+                    <SidebarMenuItem key={index} className="flex flex-row gap-2 items-center">
+                      <a key={doc.id} className="flex-1 flex flex-row gap-2 items-center overflow-hidden" title={filename} href={getDocUrl(doc.id, doc.type)}>
                         <FileIcon className="h-5 w-5" />
-                        <span className="text-nowrap text-ellipsis">
+                        <div className="text-nowrap overflow-hidden text-ellipsis">
                           {filename}
-                        </span>
+                        </div>
                       </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
+                      <DropdownMenuTrigger asChild>
+                        <div>
+                        <SidebarMenuButton className="w-auto">
+                          <MoreHorizontal className="ml-auto" />
+                        </SidebarMenuButton>
+                        </div>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent                       
+                        side="right"
+                        align="start"
+                        className="min-w-56 rounded-lg">
+                        <DropdownMenuItem onClick={() => {
+                          setPendingDeleteItem(doc)
+                        }}>
+                          <TrashIcon className="h-5 w-5 text-destructive" />
+                          <span>Delete</span>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </SidebarMenuItem>
+                  </DropdownMenu>
                 )
-                })}
+              })}
               {/* {data.tree.map((item, index) => (
                 <Tree key={index} item={item} />
               ))} */}
@@ -103,6 +124,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarGroup>
       </SidebarContent>
       <SidebarRail />
+      <AlertDialog open={!!pendingDeleteItem} onOpenChange={open => {
+        if (!open) {
+          setPendingDeleteItem(null)
+        }
+      }}>
+        <DeleteSavedDialogAlertContent {...(pendingDeleteItem!)} />
+      </AlertDialog>alert
     </Sidebar>
   )
 }

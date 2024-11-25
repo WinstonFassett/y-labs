@@ -9,11 +9,7 @@ import { getDocLoadState } from "../shared/store/doc-loader";
 import { cn } from "@/lib/utils";
 
 export function useDocParams() {
-  const { docId } = useParams();
-  if (!docId) {
-    console.log("No document id specified");
-  }
-
+  const { docId } = useParams();  
   return { docId };
 }
 
