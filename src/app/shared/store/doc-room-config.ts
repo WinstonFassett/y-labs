@@ -39,7 +39,7 @@ const docRoomConfigsT = mapTemplate(
     docId: string,
     roomId: string,    
   ) => {
-    const store = map();
+    const store = map<DocRoomConfigFields>();
     
     const $sharingLink = computed(store, ({  roomId, password, encrypt }) => {
       return [
