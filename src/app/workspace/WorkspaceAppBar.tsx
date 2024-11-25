@@ -27,7 +27,7 @@ export default function AppBar({ className }: { className?: string }) {
   const [theme, setTheme] = useTheme();
   const newPath = useResolvedPath("/new");
   const { frontmatter } = AppGlobals;
-  const { docId } = useParams<{ docId: string }>();
+  const { docId, type } = useParams<{ docId: string, type?: string }>();
   return (
     <Navbar className={cn("sticky top-0 z-50", className)}>
       <NavbarContent>
@@ -44,7 +44,7 @@ export default function AppBar({ className }: { className?: string }) {
           <Suspense>
             <LazyAppBarCollab />
           </Suspense>
-          <ShareDialog type="workspace" />
+          <ShareDialog type={type} />
         </NavbarContent>
       </>}
       <NavbarContent>

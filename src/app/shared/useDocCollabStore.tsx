@@ -38,7 +38,6 @@ export function useDocCollabStore(requireDocId = true) {
     if ($room.room?.leftAt) {
       $room.reconnect();
     }
-    navigate(`?roomId=${roomId}`);        
   }
 
   function stopSharing() {

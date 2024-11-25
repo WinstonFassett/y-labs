@@ -3,8 +3,9 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { AppGlobals } from "../../globals";
 import { generateId } from "./generateId";
 import { getDocRoomConfig } from "./store/doc-room-config";
+import { buildUrl } from "../../lib/buildUrl";
 
-export function useDocRoomRoute() {
+export function useDocRoomRoute({ type }:{ type?:string } = {}) {
   const params = useParams();
   let { docId } = params;
 
@@ -27,9 +28,11 @@ export function useDocRoomRoute() {
         if (isNewDoc) {
           docId = generateId();
         }
+        
         config.set({
           ...config.get(),
           docId: docId,
+          type,
           roomId: roomId,
           password: x,
           encrypt: true,
@@ -37,20 +40,29 @@ export function useDocRoomRoute() {
           accessLevel: "edit",
         });
         if (isNewDoc) {
-          navigate(`/edit/${docId}?roomId=${roomId}&encrypt=true"}`, {
-            replace: true,
-          });
+          // navigate to editor route with params
+          const createParams = {
+            docId,
+            type,
+            roomId,
+            encrypt: true
+          }
+          const pathParts = ["/edit", docId, type]
+          const searchParts = createParams
+          const url = buildUrl(pathParts, searchParts);
+          navigate(url, { replace: true });          
         } else {
           setSearchParams(newSearchParams, { replace: true });
         }
         return;
       }
+
       config.set({
         ...config.get(),
         docId: docId,
         roomId: roomId,
         // password: "",
-        encrypt: false,
+        // encrypt: false,
         enabled: true,
         accessLevel: "edit",
       });

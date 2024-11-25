@@ -43,23 +43,28 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Copy, Share2, Share2Icon, StopCircle } from "lucide-react";
-import { forwardRef, useRef, useState } from "react";
+import { forwardRef, useMemo, useRef, useState } from "react";
 import { useForm, useFormContext } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { z } from "zod";
 import { generateId } from "./generateId";
-import { RoomConfigSchema, getDocRoomConfig } from "./store/doc-room-config";
+import { RoomConfigSchema, getDocRoomConfig, type DocRoomConfigFields } from "./store/doc-room-config";
 import { user } from "./store/local-user";
 import { useDocCollabStore } from "./useDocCollabStore";
 import { useStoreIfPresent } from "./useStoreIfPresent";
 
-export function ShareDialog() {
+export function ShareDialog({ type }: { type?: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const { docId, roomId, $room, $roomConfig, startSharing, stopSharing } =
     useDocCollabStore();
 
-
   const roomConfigMaybe = useStoreIfPresent($roomConfig);
+  const sharingLink = useMemo(() => {
+    if (roomConfigMaybe) {
+      return generateSharingLink(roomConfigMaybe, type);
+    }
+    return undefined;
+  }, [roomConfigMaybe])
   const roomMaybe = useStoreIfPresent($room);
   const peerIds = roomMaybe?.peerIds ?? [];
   const awarenessUsers = useStoreIfPresent(
@@ -97,9 +102,10 @@ export function ShareDialog() {
         ...data,
       });
       handleCopyLink();
-      if (roomParameter !== roomId) {
-        navigate(`?roomId=${roomId}`);
-      }
+      const newRoomConfig = getDocRoomConfig(docId, roomId).get();
+      navigate(
+        generateDocRoomRouterLink(newRoomConfig, type)
+      )
     },
     (errors) => {
       console.log({ errors });
@@ -109,7 +115,7 @@ export function ShareDialog() {
   const handleCopyLink = async () => {
     const roomId = form.getValues("roomId");
     const $roomConfig = getDocRoomConfig(docId, roomId);
-    const sharingLink = $roomConfig?.$sharingLink.get();
+    const sharingLink = generateSharingLink($roomConfig.get(), type);
     if (sharingLink && navigator.clipboard){
       await navigator.clipboard?.writeText(sharingLink);
       setLinkCopied(true);
@@ -534,3 +540,38 @@ const User = forwardRef<HTMLDivElement, UserProps>(
     </div>
   ),
 );
+
+export function generateSharingLink(config: DocRoomConfigFields, type?: string) {
+   
+    console.log('generateSharingLink', config, type);
+    const {  docId, roomId, password, encrypt } = config;
+    return [
+      window.location.protocol,
+      "//",
+      window.location.host,
+      window.location.pathname,
+      "#/edit/",
+      docId,
+      type,
+      "?roomId=",
+      roomId,
+      (encrypt && password) ? `&x=${password}` : "",
+    ]
+      .filter(Boolean)
+      .join("");    
+}
+
+function generateDocRoomRouterLink(config: DocRoomConfigFields, type?: string) {
+  console.log('generateDocRoomRouterLink', config, type);
+  const { docId, roomId, password, encrypt } = config;
+  return [
+    "#/edit/",
+    docId,
+    type,
+    "?roomId=",
+    roomId,
+    encrypt ? `&encrypt=true` : "",
+  ]
+    .filter(Boolean)
+    .join("");
+}
