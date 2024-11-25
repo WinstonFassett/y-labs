@@ -4,7 +4,7 @@ import { AppGlobals } from "../../globals";
 import { generateId } from "./generateId";
 import { getDocRoomConfig } from "./store/doc-room-config";
 
-export function useEditorRoute() {
+export function useDocRoomRoute() {
   const params = useParams();
   let { docId } = params;
 

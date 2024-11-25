@@ -1,8 +1,8 @@
 
-import { useEditorRoute } from "../shared/useEditorRoute";
+import { useDocRoomRoute } from "../shared/useDocRoomRoute";
 import Editor from "./Editor";
 
 export function EditorRoute() {
-  useEditorRoute()
+  useDocRoomRoute()
   return <Editor className="h-full" />;
 }

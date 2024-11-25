@@ -1,9 +1,9 @@
 
 import Editor from "./editor";
-import { useEditorRoute } from "../shared/useEditorRoute";
+import { useDocRoomRoute } from "../shared/useDocRoomRoute";
 
 export function EditorRoute() {
-  useEditorRoute();
+  useDocRoomRoute();
   return <Editor />;
 }
 
