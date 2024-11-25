@@ -251,20 +251,20 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
               disabled={isSharing}
               render={({ field }) => {
                 return (
-                  <FormItem className="flex items-center justify-between">
+                  <FormItem>
 
-                    <Select className="w-[100px]"
+                    <Select className="flex items-center justify-between"
                       {...field}               
                       isDisabled={isSharing}
                       onSelectionChange={field.onChange}
                       selectedKey={field.value}
                     >
-                      <SelectLabel>
+                      <SelectLabel className="block flex-1">
                         Anyone with the link can{" "}
-                        {field.value === "edit" ? "edit" : "view"}
+                        <span className="font-bold">{field.value === "edit" ? "edit" : "view"}</span>
                       </SelectLabel>
                       
-                      <SelectTrigger>
+                      <SelectTrigger className="w-24">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectPopover>
