@@ -54,7 +54,7 @@ export default function AppBar({ className }: { className?: string }) {
         <Suspense>
           <LazyAppBarCollab />
         </Suspense>
-        <ShareDialog type="app" />
+        <ShareDialog />
         <MenuTrigger>
           <AriaButton aria-label="Menu" size="icon" variant="ghost" className="rounded-full">
             <MoreVertical size={20} />

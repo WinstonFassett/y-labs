@@ -52,6 +52,7 @@ import { RoomConfigSchema, getDocRoomConfig, type DocRoomConfigFields } from "./
 import { user } from "./store/local-user";
 import { useDocCollabStore } from "./useDocCollabStore";
 import { useStoreIfPresent } from "./useStoreIfPresent";
+import { buildUrl } from "@/lib/buildUrl";
 
 export function ShareDialog({ type }: { type?: string }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -542,36 +543,31 @@ const User = forwardRef<HTMLDivElement, UserProps>(
 );
 
 export function generateSharingLink(config: DocRoomConfigFields, type?: string) {
-   
-    console.log('generateSharingLink', config, type);
-    const {  docId, roomId, password, encrypt } = config;
-    return [
+    const {  docId, roomId, password, encrypt } = config;    
+    const base = [
       window.location.protocol,
       "//",
       window.location.host,
       window.location.pathname,
-      "#/edit/",
-      docId,
-      type,
-      "?roomId=",
-      roomId,
-      (encrypt && password) ? `&x=${password}` : "",
-    ]
-      .filter(Boolean)
-      .join("");    
+      '#'
+    ].join("");
+    return buildUrl(
+      [base, "edit", docId, type],
+      {
+        roomId,
+        encrypt: encrypt ? "true" : undefined,
+        x: password,
+      }
+    )
 }
 
-function generateDocRoomRouterLink(config: DocRoomConfigFields, type?: string) {
-  console.log('generateDocRoomRouterLink', config, type);
-  const { docId, roomId, password, encrypt } = config;
-  return [
-    "#/edit/",
-    docId,
-    type,
-    "?roomId=",
-    roomId,
-    encrypt ? `&encrypt=true` : "",
-  ]
-    .filter(Boolean)
-    .join("");
+function generateDocRoomRouterLink(config: DocRoomConfigFields, type?: string) {  
+  const { docId, roomId, password, encrypt } = config;  
+  return buildUrl(
+    ["/edit", docId, type],
+    {
+      roomId,
+      encrypt: encrypt ? "true" : undefined,
+    }
+  )
 }
