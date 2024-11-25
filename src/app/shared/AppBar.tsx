@@ -20,6 +20,7 @@ import { LazyAppBarCollab } from "../blocknote/lazy/collab";
 import { LazyDocPersistenceToggle } from "../blocknote/lazy/storage";
 import { DocTitle } from "./DocTitle";
 import { $settingsStore } from "./SettingsDialog";
+import { ShareDialog } from "./ShareDialog";
 
 export default function AppBar({ className }: { className?: string }) {
   const [theme, setTheme] = useTheme();
@@ -53,6 +54,7 @@ export default function AppBar({ className }: { className?: string }) {
         <Suspense>
           <LazyAppBarCollab />
         </Suspense>
+        <ShareDialog type="app" />
         <MenuTrigger>
           <AriaButton aria-label="Menu" size="icon" variant="ghost" className="rounded-full">
             <MoreVertical size={20} />

@@ -21,6 +21,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { DocTitle } from "../shared/DocTitle";
 import { $settingsStore } from "../shared/SettingsDialog";
 import { createDocumentState } from "./CreateDocumentDialog";
+import { ShareDialog } from "../shared/ShareDialog";
 
 export default function AppBar({ className }: { className?: string }) {
   const [theme, setTheme] = useTheme();
@@ -43,6 +44,7 @@ export default function AppBar({ className }: { className?: string }) {
           <Suspense>
             <LazyAppBarCollab />
           </Suspense>
+          <ShareDialog type="workspace" />
         </NavbarContent>
       </>}
       <NavbarContent>

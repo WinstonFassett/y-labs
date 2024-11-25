@@ -34,8 +34,6 @@ export function AppBarCollab() {
           </Avatar>
         );
       })}
-
-      <ShareDialog />
     </>
   );
 }
