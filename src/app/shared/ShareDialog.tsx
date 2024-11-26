@@ -43,7 +43,7 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Copy, Share2, Share2Icon, StopCircle } from "lucide-react";
-import { forwardRef, useMemo, useRef, useState } from "react";
+import { forwardRef, useEffect, useMemo, useRef, useState } from "react";
 import { useForm, useFormContext } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { z } from "zod";
@@ -96,6 +96,12 @@ export function ShareDialog({ type }: { type?: string }) {
       }
     },
   });
+
+  useEffect(() => {
+    // console.log('room config changed', roomConfigMaybe)
+    form.reset(roomConfigMaybe)
+  }, [roomConfigMaybe])
+
   const onSubmit = form.handleSubmit(
     (data) => {
       const { roomId } = data;
