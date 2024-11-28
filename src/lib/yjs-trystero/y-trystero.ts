@@ -11,11 +11,14 @@ import * as promise from "lib0/promise";
 import * as random from "lib0/random";
 
 import * as Y from "yjs";
-import { selfId } from "trystero";
+import type { joinRoom as trysteroJoinRoom } from "trystero";
 
 import * as syncProtocol from "y-protocols/sync";
 import * as awarenessProtocol from "y-protocols/awareness";
 import * as cryptoutils from "./crypto.js";
+
+type TrysteroJoinRoom = typeof trysteroJoinRoom
+type TrysteroConfig = Parameters<TrysteroJoinRoom>[0];
 
 const log = logging.createModuleLogger("y-trystero");
 
@@ -24,7 +27,6 @@ const messageQueryAwareness = 3;
 const messageAwareness = 1;
 const messageBcPeerId = 4;
 
-export { selfId };
 export const rooms = new Map<string, TrysteroDocRoom>();
 
 export const getRoom = (roomId: string): TrysteroDocRoom | undefined => rooms.get(roomId);
@@ -494,7 +496,7 @@ export class TrysteroDocRoom {
   disconnect() {
     this.awareness.setLocalState(null);
     this.provider.trystero?.leave();
-
+    this.provider.trystero = null
     const encoderPeerIdBc = encoding.createEncoder();
     encoding.writeVarUint(encoderPeerIdBc, messageBcPeerId);
     encoding.writeUint8(encoderPeerIdBc, 0);
@@ -559,6 +561,8 @@ export class TrysteroProvider extends ObservableV2<TrysteroProviderEvents> {
   filterBcConns: boolean;
   accessLevel: 'view' | 'edit';
   key: PromiseLike<CryptoKey | null>;
+  trysteroConfig: TrysteroConfig;
+  joinRoom: TrysteroJoinRoom
   room: TrysteroDocRoom | null;
   roomName: string;
   awareness: awarenessProtocol.Awareness;
@@ -570,7 +574,8 @@ export class TrysteroProvider extends ObservableV2<TrysteroProviderEvents> {
   constructor(
     doc: Y.Doc,
     roomName: string,
-    trysteroRoom: any,
+    joinRoom: TrysteroJoinRoom,
+    trysteroConfig: TrysteroConfig,
     {
       accessLevel = "edit",
       password,
@@ -595,12 +600,14 @@ export class TrysteroProvider extends ObservableV2<TrysteroProviderEvents> {
       : Promise.resolve(null);
     this.room = null;
     this.roomName = roomName;
+    this.trysteroConfig = trysteroConfig
+    this.joinRoom = joinRoom
     this.awareness = awareness;
     this.shouldConnect = false;
     this.sendDocData = throwNotConnectedError
     this.listenDocData = throwNotConnectedError
     doc.on("destroy", () => this.destroy());
-    this.connect(trysteroRoom);
+    this.connect();
   }
 
 
@@ -617,10 +624,10 @@ export class TrysteroProvider extends ObservableV2<TrysteroProviderEvents> {
   get connected(): boolean {
     return this.room !== null && this.shouldConnect;
   }
-  async connect(trysteroRoom: any): Promise<TrysteroDocRoom> {
+  async connect(): Promise<TrysteroDocRoom> {
     this.shouldConnect = true;
-    this.trystero = trysteroRoom;
-    const [sendDocData, listenDocData] = trysteroRoom.makeAction("docdata");
+    const trysteroRoom = this.trystero = this.joinRoom(this.trysteroConfig, this.roomName);
+    const [sendDocData, listenDocData] = trysteroRoom.makeAction<Uint8Array>("docdata");
     this.sendDocData = sendDocData;
     this.listenDocData = listenDocData;
     
