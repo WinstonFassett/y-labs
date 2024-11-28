@@ -25,18 +25,11 @@ const messageAwareness = 1;
 const messageBcPeerId = 4;
 
 export { selfId };
+export const rooms = new Map<string, TrysteroDocRoom>();
 
-/**
- * @type {Map<string,TrysteroDocRoom>}
- */
-export const rooms = new Map();
+export const getRoom = (roomId: string): TrysteroDocRoom | undefined => rooms.get(roomId);
 
-export const getRoom = (roomId) => rooms.get(roomId);
-
-/**
- * @param {TrysteroDocRoom} room
- */
-const checkIsSynced = (room) => {
+const checkIsSynced = (room: TrysteroDocRoom): void => {
   let synced = true;
   room.trysteroConns.forEach((peer) => {
     if (!peer.synced) {
@@ -50,40 +43,43 @@ const checkIsSynced = (room) => {
   }
 };
 
-const readSyncMessage = (decoder, encoder, doc, transactionOrigin, access_level) => {syncProtocol;
+const readSyncMessage = (
+  decoder: decoding.Decoder,
+  encoder: encoding.Encoder,
+  doc: Y.Doc,
+  transactionOrigin: any,
+  accessLevel: 'view' | 'edit'
+): number => {
   const messageType = decoding.readVarUint(decoder);
   switch (messageType) {
-  case syncProtocol.messageYjsSyncStep1:
-    syncProtocol.readSyncStep1(decoder, encoder, doc);
-    break;
-  case syncProtocol.messageYjsSyncStep2:
-    if (access_level !== 'edit') {
-      console.warn('edit disabled', doc.name);
-      return;
-    }
-    syncProtocol.readSyncStep2(decoder, doc, transactionOrigin);
-    break;
-  case syncProtocol.messageYjsUpdate:
-    if (access_level !== 'edit') {
-      console.warn('edit disabled', doc.name, access_level);
-      return;
-    }
-    syncProtocol.readUpdate(decoder, doc, transactionOrigin);
-    break;
-  default:
-    throw new Error('Unknown message type');
+    case syncProtocol.messageYjsSyncStep1:
+      syncProtocol.readSyncStep1(decoder, encoder, doc);
+      break;
+    case syncProtocol.messageYjsSyncStep2:
+      if (accessLevel !== 'edit') {
+        console.warn('edit disabled', doc.guid);
+        return messageType;
+      }
+      syncProtocol.readSyncStep2(decoder, doc, transactionOrigin);
+      break;
+    case syncProtocol.messageYjsUpdate:
+      if (accessLevel !== 'edit') {
+        console.warn('edit disabled', doc.guid, accessLevel);
+        return messageType;
+      }
+      syncProtocol.readUpdate(decoder, doc, transactionOrigin);
+      break;
+    default:
+      throw new Error('Unknown message type');
   }
   return messageType;
 };
 
-
-/**
- * @param {TrysteroDocRoom} room
- * @param {Uint8Array} buf
- * @param {function} syncedCallback
- * @return {encoding.Encoder?}
- */
-const readMessage = (room, buf, syncedCallback) => {
+const readMessage = (
+  room: TrysteroDocRoom,
+  buf: Uint8Array,
+  syncedCallback: () => void
+): encoding.Encoder | null => {
   const decoder = decoding.createDecoder(buf);
   const encoder = encoding.createEncoder();
   const messageType = decoding.readVarUint(decoder);
@@ -101,7 +97,7 @@ const readMessage = (room, buf, syncedCallback) => {
         encoder,
         doc,
         room,
-        room.provider.accessLevel,
+        room.provider.accessLevel
       );
       if (
         syncMessageType === syncProtocol.messageYjsSyncStep2 &&
@@ -120,8 +116,8 @@ const readMessage = (room, buf, syncedCallback) => {
         encoder,
         awarenessProtocol.encodeAwarenessUpdate(
           awareness,
-          Array.from(awareness.getStates().keys()),
-        ),
+          Array.from(awareness.getStates().keys())
+        )
       );
       sendReply = true;
       break;
@@ -129,55 +125,52 @@ const readMessage = (room, buf, syncedCallback) => {
       awarenessProtocol.applyAwarenessUpdate(
         awareness,
         decoding.readVarUint8Array(decoder),
-        room,
+        room
       );
       break;
-    // case messageBcPeerId: {
-    //   const add = decoding.readUint8(decoder) === 1;
-    //   const peerName = decoding.readVarString(decoder);
-    //   if (
-    //     peerName !== room.peerId &&
-    //     ((room.bcConns.has(peerName) && !add) ||
-    //       (!room.bcConns.has(peerName) && add))
-    //   ) {
-    //     const removed = [];
-    //     const added = [];
-    //     if (add) {
-    //       room.bcConns.add(peerName);
-    //       added.push(peerName);
-    //     } else {
-    //       room.bcConns.delete(peerName);
-    //       removed.push(peerName);
-    //     }
-    //     room.provider.emit("peers", [
-    //       {
-    //         added,
-    //         removed,
-    //         trysteroPeers: Array.from(room.trysteroConns.keys()),
-    //         bcPeers: Array.from(room.bcConns),
-    //       },
-    //     ]);
-    //     broadcastBcPeerId(room);
-    //   }
-    //   break;
-    // }
+    case messageBcPeerId: {
+      const add = decoding.readUint8(decoder) === 1;
+      const peerName = decoding.readVarString(decoder);
+      if (
+        peerName !== room.peerId &&
+        ((room.bcConns.has(peerName) && !add) ||
+          (!room.bcConns.has(peerName) && add))
+      ) {
+        const removed: string[] = [];
+        const added: string[] = [];
+        if (add) {
+          room.bcConns.add(peerName);
+          added.push(peerName);
+        } else {
+          room.bcConns.delete(peerName);
+          removed.push(peerName);
+        }
+        room.provider.emit("peers", [
+          {
+            added,
+            removed,
+            trysteroPeers: Array.from(room.trysteroConns.keys()),
+            bcPeers: Array.from(room.bcConns),
+          },
+        ]);
+        broadcastBcPeerId(room);
+      }
+      break;
+    }
     default:
       console.error("Unable to compute message");
       return encoder;
   }
   if (!sendReply) {
-    // nothing has been written, no answer created
     return null;
   }
   return encoder;
 };
 
-/**
- * @param {TrysteroConn} peerConn
- * @param {Uint8Array} buf
- * @return {encoding.Encoder?}
- */
-const readPeerMessage = (peerConn, buf) => {
+const readPeerMessage = (
+  peerConn: TrysteroConn,
+  buf: Uint8Array
+): encoding.Encoder | null => {
   const room = peerConn.room;
   log(
     "received message from ",
@@ -188,7 +181,7 @@ const readPeerMessage = (peerConn, buf) => {
     room.name,
     ")",
     logging.UNBOLD,
-    logging.UNCOLOR,
+    logging.UNCOLOR
   );
   return readMessage(room, buf, () => {
     peerConn.synced = true;
@@ -199,17 +192,16 @@ const readPeerMessage = (peerConn, buf) => {
       logging.UNBOLD,
       " with ",
       logging.BOLD,
-      peerConn.remotePeerId,
+      peerConn.remotePeerId
     );
     checkIsSynced(room);
   });
 };
 
-/**
- * @param {TrysteroConn} trysteroConn
- * @param {encoding.Encoder} encoder
- */
-const sendTrysteroConn = (trysteroConn, encoder) => {
+const sendTrysteroConn = (
+  trysteroConn: TrysteroConn,
+  encoder: encoding.Encoder
+): void => {
   log(
     "send message to ",
     logging.BOLD,
@@ -219,23 +211,22 @@ const sendTrysteroConn = (trysteroConn, encoder) => {
     " (",
     trysteroConn.room.name,
     ")",
-    logging.UNCOLOR,
+    logging.UNCOLOR
   );
   try {
     trysteroConn.room.provider.sendDocData(
       encoding.toUint8Array(encoder),
-      trysteroConn.remotePeerId,
+      trysteroConn.remotePeerId
     );
   } catch (e) {
     console.log("error sending", e);
   }
 };
 
-/**
- * @param {TrysteroDocRoom} room
- * @param {Uint8Array} m
- */
-const broadcastTrysteroConn = (room, m) => {
+const broadcastTrysteroConn = (
+  room: TrysteroDocRoom,
+  m: Uint8Array
+): void => {
   log("broadcast message in ", logging.BOLD, room.name, logging.UNBOLD);
   room.trysteroConns.forEach((conn) => {
     try {
@@ -247,13 +238,13 @@ const broadcastTrysteroConn = (room, m) => {
 };
 
 export class TrysteroConn {
-  /**
-   * @param {SignalingConn} signalingConn
-   * @param {boolean} initiator
-   * @param {string} remotePeerId
-   * @param {TrysteroDocRoom} room
-   */
-  constructor(remotePeerId, room) {
+  remotePeerId: string;
+  room: TrysteroDocRoom;
+  closed: boolean;
+  connected: boolean;
+  synced: boolean;
+
+  constructor(remotePeerId: string, room: TrysteroDocRoom) {
     log("connected to ", logging.BOLD, remotePeerId);
     this.room = room;
     this.remotePeerId = remotePeerId;
@@ -284,7 +275,7 @@ export class TrysteroConn {
       );
       sendTrysteroConn(this, encoder);
     }
-    room.provider.listenDocData((data, peerId) => {
+    room.provider.listenDocData((data: Uint8Array, peerId: string) => {
       try {
         const answer = readPeerMessage(this, data);
         if (answer !== null) {
@@ -295,6 +286,7 @@ export class TrysteroConn {
       }
     });
   }
+
   onClose() {
     this.connected = false;
     this.closed = true;
@@ -313,78 +305,68 @@ export class TrysteroConn {
     checkIsSynced(room);
     log("closed connection to ", logging.BOLD, remotePeerId);
   }
+
   destroy() {
-    this.onClose()
+    this.onClose();
   }
 }
 
-/**
- * @param {TrysteroDocRoom} room
- * @param {Uint8Array} m
- */
-const broadcastBcMessage = (room, m) =>
+
+const broadcastBcMessage = (room: TrysteroDocRoom, m: Uint8Array) =>
   cryptoutils
     .encrypt(m, room.key)
     .then((data) => room.mux(() => bc.publish(room.name, data)));
 
-/**
- * @param {TrysteroDocRoom} room
- * @param {Uint8Array} m
- */
-const broadcastRoomMessage = (room, m) => {
-  // if (room.bcconnected) {
-  //   broadcastBcMessage(room, m);
-  // }
+const broadcastRoomMessage = (room: TrysteroDocRoom, m: Uint8Array) => {
+  if (room.bcconnected) {
+    broadcastBcMessage(room, m);
+  }
   broadcastTrysteroConn(room, m);
 };
 
-/**
- * @param {TrysteroDocRoom} room
- */
-// const broadcastBcPeerId = (room) => {
-//   if (room.provider.filterBcConns) {
-//     // broadcast peerId via broadcastchannel
-//     const encoderPeerIdBc = encoding.createEncoder();
-//     encoding.writeVarUint(encoderPeerIdBc, messageBcPeerId);
-//     encoding.writeUint8(encoderPeerIdBc, 1);
-//     encoding.writeVarString(encoderPeerIdBc, room.peerId);
-//     broadcastBcMessage(room, encoding.toUint8Array(encoderPeerIdBc));
-//   }
-// };
+
+const broadcastBcPeerId = (room: TrysteroDocRoom) => {
+  if (room.provider.filterBcConns) {
+    // broadcast peerId via broadcastchannel
+    const encoderPeerIdBc = encoding.createEncoder();
+    encoding.writeVarUint(encoderPeerIdBc, messageBcPeerId);
+    encoding.writeUint8(encoderPeerIdBc, 1);
+    encoding.writeVarString(encoderPeerIdBc, room.peerId);
+    broadcastBcMessage(room, encoding.toUint8Array(encoderPeerIdBc));
+  }
+};
 
 export class TrysteroDocRoom {
-  /**
-   * @param {Y.Doc} doc
-   * @param {TrysteroProvider} provider
-   * @param {string} name
-   * @param {CryptoKey|null} key
-   */
-  constructor(doc, provider, name, key) {
+  peerId: string;
+  doc: Y.Doc;
+  awareness: awarenessProtocol.Awareness;
+  provider: TrysteroProvider;
+  synced: boolean;
+  name: string;
+  key: CryptoKey | null;
+  trysteroConns: Map<string, TrysteroConn>;
+  bcConns: Set<string>;
+  mux: ReturnType<typeof createMutex>;
+  bcconnected: boolean;
+  _bcSubscriber: (data: ArrayBuffer) => void;
+  _docUpdateHandler: (update: Uint8Array, _origin: any) => void;
+  _awarenessUpdateHandler: (changed: { added: any[]; updated: any[]; removed: any[] }, _origin: any) => void;
+  _beforeUnloadHandler: () => void;
+
+  constructor(doc: Y.Doc, provider: TrysteroProvider, name: string, key: CryptoKey | null) {
     this.peerId = selfId;
     this.doc = doc;
-    /**
-     * @type {awarenessProtocol.Awareness}
-     */
     this.awareness = provider.awareness;
     this.provider = provider;
     this.synced = false;
     this.name = name;
-    // @todo make key secret by scoping
     this.key = key;
-    /**
-     * @type {Map<string, TrysteroConn>}
-     */
     this.trysteroConns = new Map();
-    /**
-     * @type {Set<string>}
-     */
     this.bcConns = new Set();
     this.mux = createMutex();
     this.bcconnected = false;
-    /**
-     * @param {ArrayBuffer} data
-     */
-    this._bcSubscriber = (data) =>
+
+    this._bcSubscriber = (data: ArrayBuffer) =>
       cryptoutils.decrypt(new Uint8Array(data), key).then((m) =>
         this.mux(() => {
           const reply = readMessage(this, m, () => {});
@@ -393,25 +375,15 @@ export class TrysteroDocRoom {
           }
         }),
       );
-    /**
-     * Listens to Yjs updates and sends them to remote peers
-     *
-     * @param {Uint8Array} update
-     * @param {any} _origin
-     */
-    this._docUpdateHandler = (update, _origin) => {
+
+    this._docUpdateHandler = (update: Uint8Array, _origin: any) => {
       const encoder = encoding.createEncoder();
       encoding.writeVarUint(encoder, messageSync);
       syncProtocol.writeUpdate(encoder, update);
       broadcastRoomMessage(this, encoding.toUint8Array(encoder));
     };
-    /**
-     * Listens to Awareness updates and sends them to remote peers
-     *
-     * @param {any} changed
-     * @param {any} _origin
-     */
-    this._awarenessUpdateHandler = ({ added, updated, removed }, _origin) => {
+
+    this._awarenessUpdateHandler = ({ added, updated, removed }: { added: any[]; updated: any[]; removed: any[] }, _origin: any) => {
       const changedClients = added.concat(updated).concat(removed);
       const encoderAwareness = encoding.createEncoder();
       encoding.writeVarUint(encoderAwareness, messageAwareness);
@@ -438,9 +410,9 @@ export class TrysteroDocRoom {
     } else if (typeof process !== "undefined") {
       process.on("exit", this._beforeUnloadHandler);
     }
-
   }
-  async connect () {
+
+  async connect() {
     const roomName = this.name;
 
     // Bind to YJS model
@@ -450,29 +422,27 @@ export class TrysteroDocRoom {
     //#region Bind to Trystero Room
     const provider = this.provider;
     const trysteroRoom = provider.trystero;
-    trysteroRoom.onPeerJoin((peerId) => {
+    trysteroRoom.onPeerJoin((peerId: string) => {
       log(`${peerId} joined`);
       if (this.trysteroConns.size < provider.maxConns) {
         map.setIfUndefined(
           this.trysteroConns,
           peerId,
-          () => {
-            return new TrysteroConn(peerId, provider.room)
-          },
+          () => new TrysteroConn(peerId, provider.room!),
         );
       }
     });
-    trysteroRoom.onPeerLeave((peerId) => {
-      log('leaving', { peerId, conns: this.trysteroConns.keys()})
+    trysteroRoom.onPeerLeave((peerId: string) => {
+      log('leaving', { peerId, conns: this.trysteroConns.keys() });
       if (this.trysteroConns.has(peerId)) {
         const conn = this.trysteroConns.get(peerId);
-        conn.onClose();
+        conn?.onClose();
         this.trysteroConns.delete(peerId);
         this.provider.emit("peers", [
           {
             removed: [peerId],
             added: [],
-            trysteroPeers: Array.from(provider.room.trysteroConns.keys()),
+            trysteroPeers: Array.from(provider.room!.trysteroConns.keys()),
             bcPeers: Array.from(this.bcConns),
           },
         ]);
@@ -516,19 +486,18 @@ export class TrysteroDocRoom {
   
     emitStatus(provider)
   }
-  async reconnect () {
-    await this.connect()
-  }
 
+  async reconnect() {
+    await this.connect();
+  }
 
   disconnect() {
     this.awareness.setLocalState(null);
-    this.provider.trystero?.leave()
+    this.provider.trystero?.leave();
 
-    // broadcast peerId removal via broadcastchannel
     const encoderPeerIdBc = encoding.createEncoder();
     encoding.writeVarUint(encoderPeerIdBc, messageBcPeerId);
-    encoding.writeUint8(encoderPeerIdBc, 0); // remove peerId from other bc peers
+    encoding.writeUint8(encoderPeerIdBc, 0);
     encoding.writeVarString(encoderPeerIdBc, this.peerId);
     broadcastBcMessage(this, encoding.toUint8Array(encoderPeerIdBc));
     bc.unsubscribe(this.name, this._bcSubscriber);
@@ -537,14 +506,13 @@ export class TrysteroDocRoom {
 
     this.trysteroConns.forEach((conn) => conn.destroy());
 
-    emitStatus(this.provider)
-
+    emitStatus(this.provider);
   }
 
   destroy() {
     this.doc.off("update", this._docUpdateHandler);
     this.awareness.off("update", this._awarenessUpdateHandler);
-    
+
     this.disconnect();
     awarenessProtocol.removeAwarenessStates(
       this.awareness,
@@ -552,7 +520,7 @@ export class TrysteroDocRoom {
       "disconnect",
     );
     rooms.delete(this.name);
-    
+
     if (typeof window !== "undefined") {
       window.removeEventListener("beforeunload", this._beforeUnloadHandler);
     } else if (typeof process !== "undefined") {
@@ -561,21 +529,7 @@ export class TrysteroDocRoom {
   }
 }
 
-
-/**
- * @typedef {Object} ProviderOptions
- * @property {Array<string>} [signaling]
- * @property {string} [password]
- * @property {awarenessProtocol.Awareness} [awareness]
- * @property {number} [maxConns]
- * @property {boolean} [filterBcConns]
- * @property {any} [peerOpts]
- */
-
-/**
- * @param {TrysteroProvider} provider
- */
-const emitStatus = (provider) => {
+const emitStatus = (provider: TrysteroProvider) => {
   provider.emit("status", [
     {
       connected: provider.connected,
@@ -583,67 +537,73 @@ const emitStatus = (provider) => {
   ]);
 };
 
-/**
- * @typedef {Object} TrysteroProviderEvents
- * @property {function({connected:boolean}):void} TrysteroProviderEvent.status
- * @property {function({synced:boolean}):void} TrysteroProviderEvent.synced
- * @property {function({added:Array<string>,removed:Array<string>,trysteroPeers:Array<string>,bcPeers:Array<string>}):void} TrysteroProviderEvent.peers
- */
 
-export class TrysteroProvider extends ObservableV2 {
-  /**
-   * @class
-   * @classdesc Represents a Y.Trystero instance.
-   * @param {Y.Doc} doc - The Y.Doc instance.
-   * @param {string} roomName - The name of the room.
-   * @param {TrysteroRoom} trysteroRoom - The TrysteroRoom instance.
-   * @param {Object} options - The options for the constructor.
-   * @param {string} [options.password] - The password for encryption.
-   * @param {Awareness} [options.awareness=new awarenessProtocol.Awareness(doc)] - The awareness instance.
-   * @param {number} [options.maxConns=20 + Math.floor(Math.random() * 15)] - The maximum number of connections.
-   * @param {boolean} [options.filterBcConns=true] - Whether to filter broadcast connections.
-   * @param {'view' | 'edit'} [options.accessLevel="edit"] - The access level.
-   */
+function throwNotConnectedError (): any {
+  throw error.create("You are not connected to the room");
+}
+
+interface TrysteroProviderEvents {
+  status: (event: { connected: boolean }) => void;
+  synced: (event: { synced: boolean }) => void;
+  peers: (event: {
+    added: string[];
+    removed: string[];
+    trysteroPeers: string[];
+    bcPeers: string[];
+  }) => void;
+}
+
+export class TrysteroProvider extends ObservableV2<TrysteroProviderEvents> {
+  doc: Y.Doc;
+  maxConns: number;
+  filterBcConns: boolean;
+  accessLevel: 'view' | 'edit';
+  key: PromiseLike<CryptoKey | null>;
+  room: TrysteroDocRoom | null;
+  roomName: string;
+  awareness: awarenessProtocol.Awareness;
+  shouldConnect: boolean;
+  trystero: any;
+  sendDocData: (data: Uint8Array, peerId?: string) => void;
+  listenDocData: (callback: (data: Uint8Array, peerId: string) => void) => void;
+
   constructor(
-    doc,
-    roomName,
-    trysteroRoom,
+    doc: Y.Doc,
+    roomName: string,
+    trysteroRoom: any,
     {
       accessLevel = "edit",
       password,
       awareness = new awarenessProtocol.Awareness(doc),
-      maxConns = 20 + math.floor(random.rand() * 15), // the random factor reduces the chance that n clients form a cluster
+      maxConns = 20 + Math.floor(Math.random() * 15), // the random factor reduces the chance that n clients form a cluster
       filterBcConns = true
+    }: {
+      accessLevel?: 'view' | 'edit',
+      password?: string,
+      awareness?: awarenessProtocol.Awareness,
+      maxConns?: number,
+      filterBcConns?: boolean
     } = {},
   ) {
     super();
     this.doc = doc;
     this.maxConns = maxConns;
     this.filterBcConns = filterBcConns;
-    
     this.accessLevel = accessLevel;
-    /**
-     * @type {PromiseLike<CryptoKey | null>}
-     */
     this.key = password
       ? cryptoutils.deriveKey(password, roomName)
-      : /** @type {PromiseLike<null>} */ (promise.resolve(null));
-    /**
-     * @type {TrysteroDocRoom|null}
-     */
+      : Promise.resolve(null);
     this.room = null;
     this.roomName = roomName;
-    /**
-     * @type {awarenessProtocol.Awareness}
-     */
     this.awareness = awareness;
     this.shouldConnect = false;
-    doc.on("destroy", () => this.destroy);
-    
-    this.connect(trysteroRoom)
-    // return;
-    
+    this.sendDocData = throwNotConnectedError
+    this.listenDocData = throwNotConnectedError
+    doc.on("destroy", () => this.destroy());
+    this.connect(trysteroRoom);
   }
+
+
   /**
    * Indicates whether the provider is looking for other peers.
    *
@@ -653,15 +613,12 @@ export class TrysteroProvider extends ObservableV2 {
    * working on the same resource as you. It does not change unless you call provider.disconnect()
    *
    * `this.on('status', (event) => { console.log(event.connected) })`
-   *
-   * @type {boolean}
    */
-  get connected () {
-    return this.room !== null && this.shouldConnect
-  }  
-  async connect (trysteroRoom) {
-    this.shouldConnect = true
-    // Bind
+  get connected(): boolean {
+    return this.room !== null && this.shouldConnect;
+  }
+  async connect(trysteroRoom: any): Promise<TrysteroDocRoom> {
+    this.shouldConnect = true;
     this.trystero = trysteroRoom;
     const [sendDocData, listenDocData] = trysteroRoom.makeAction("docdata");
     this.sendDocData = sendDocData;
@@ -671,30 +628,31 @@ export class TrysteroProvider extends ObservableV2 {
     const { doc, roomName } = this;
     if (rooms.has(roomName)) {
       const room = rooms.get(roomName);
-      await room.reconnect()
-      return room
+      await room?.reconnect();
+      return room!;
     }
     // Connect
     const provider = this
     const key = await this.key;
     const room = new TrysteroDocRoom(doc, provider, roomName, key);
-    this.room = room
-    rooms.set(roomName, /** @type {TrysteroDocRoom} */ (room));
+    this.room = room;
+    rooms.set(roomName, room);
     await room.connect();
     return room;
   }
 
-  disconnect () {
+  disconnect(): void {
     this.shouldConnect = false;
     if (this.room) {
-      this.room.disconnect()      
+      this.room.disconnect();
     }
   }
-  destroy() {
+
+  destroy(): void {
     this.doc.off("destroy", this.destroy);
     // need to wait for key before deleting room
     this.key.then(() => {
-      /** @type {TrysteroDocRoom} */ (this.room)?.destroy();
+      this.room?.destroy();
       rooms.delete(this.roomName);
     });
     super.destroy();
