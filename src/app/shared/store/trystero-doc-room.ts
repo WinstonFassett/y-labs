@@ -48,6 +48,7 @@ function createTrysteroDocRoom(
   const $enabledSharingLink = computed([$config], (config) => {
     return config.enabled ? $config.$sharingLink.get() : undefined
   })
+  
   const awareness = new Awareness(ydoc)
 
   function setUserInAwareness(user: Readonly<{ username: string; color: string; }>) {
@@ -86,7 +87,7 @@ function createTrysteroDocRoom(
 
 
   onMount(store, () => {
-    console.log('MOUNT', store)
+    // console.log('MOUNT', store)
     const unsubUser = user.subscribe((user) => {
       setUserInAwareness(user);
     });
@@ -94,7 +95,7 @@ function createTrysteroDocRoom(
 
     const unsubConfig = $enabledSharingLink.subscribe(() => {
       const config = $config.get()
-      console.log('config', config)
+      // console.log('config', config)
       const needsPasswordToConnect = config.encrypt && !config.password;
       const canConnect = config.enabled && !needsPasswordToConnect; 
       const prevProvider = store.get().provider
@@ -118,7 +119,7 @@ function createTrysteroDocRoom(
       
     })
     return () => {
-      console.log('unmount doc room', store)
+      // console.log('unmount doc room', store)
       unsubConfig()
       unsubUser()
       // // $syncState.set('unsynced')
@@ -139,6 +140,7 @@ function createTrysteroDocRoom(
       awareness
     });
     provider.on('status', ({ connected }: { connected: boolean }) => {
+      // console.log('status', {connected})
       if (connected) {
         setUserInAwareness(user.get())
         $connectionState.set('connected')
@@ -146,6 +148,7 @@ function createTrysteroDocRoom(
     });  
     provider.on("synced", ({ synced }: { synced: boolean }) => {
       $syncState.set('synced')
+      // console.log('synced', synced)
       if (synced && !$loadState.get()) {
         $loadState.set('loaded')
         if (!ydoc.isLoaded) {
