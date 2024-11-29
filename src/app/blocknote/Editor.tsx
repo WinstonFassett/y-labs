@@ -7,6 +7,7 @@ import { useStore } from "@nanostores/react";
 import { atom } from "nanostores";
 import { getDocLoadState } from "../shared/store/doc-loader";
 import { cn } from "@/lib/utils";
+import { PasswordRequiredDialog } from "../shared/PasswordRequiredDialog";
 
 export function useDocParams() {
   const { docId } = useParams();  
@@ -16,9 +17,11 @@ export function useDocParams() {
 export function Editor({ className }: { className?: string }) {
   const { docId } = useDocParams();
   const [searchParams] = useSearchParams();
-  const roomId = searchParams.get("room")
+  const roomId = searchParams.get("roomId")
   const $loader = getDocLoadState(docId, roomId);
   const loadState = useStore($loader);
+  const { needsPasswordToConnect } = useDocCollabStore(true);
+  const canShow = !needsPasswordToConnect || loadState === "loaded";
   return (
     <div className={cn("w-full flex-1 mx-auto relative", className)}>
       <div className="max-w-3xl mx-auto h-full flex flex-col">
@@ -42,15 +45,15 @@ export function Editor({ className }: { className?: string }) {
               </div>
             </div>
           )}
-          
-          <LazyBlocknote
+          {canShow && <LazyBlocknote
             autofocus
             key={docId}
             className={cn("flex-1", loadState === "loading" && "hidden")}
-          />
+          />}
         
         </Suspense>
       </div>
+      <PasswordRequiredDialog />
     </div>
   );
 }

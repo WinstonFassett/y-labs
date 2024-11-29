@@ -148,8 +148,7 @@ function createTrysteroDocRoom(
     });  
     provider.on("synced", ({ synced }: { synced: boolean }) => {
       $syncState.set('synced')
-      // console.log('synced', synced)
-      if (synced && !$loadState.get()) {
+      if (synced && $loadState.get()!== 'loaded') {
         $loadState.set('loaded')
         if (!ydoc.isLoaded) {
           ydoc.emit("load", []);
