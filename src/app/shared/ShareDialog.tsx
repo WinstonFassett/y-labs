@@ -103,6 +103,7 @@ export function ShareDialog({ type }: { type?: string }) {
       });
       handleCopyLink();
       const newRoomConfig = getDocRoomConfig(docId, roomId).get();
+      console.log('navigating to link', {docId, roomId}, newRoomConfig);
       navigate(
         generateDocRoomRouterLink(newRoomConfig, type)
       )
