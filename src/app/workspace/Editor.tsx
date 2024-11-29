@@ -5,6 +5,9 @@ import { Suspense, lazy } from "react";
 import { useDocCollabStore } from "../shared/useDocCollabStore";
 import { PasswordRequiredDialog } from "../shared/PasswordRequiredDialog";
 import type DriveListing from "@/app/drive/DriveListing";
+import { useStore } from "@nanostores/react";
+import { getDocLoadState } from "../shared/store/doc-loader";
+import { useStoreIfPresent } from "../shared/useStoreIfPresent";
 export const EditorsByType: Record<string, React.ComponentType>
  = {
   novel: lazy(() => import("./NovelEditor")),
@@ -17,12 +20,13 @@ export const EditorsByType: Record<string, React.ComponentType>
 
 export function Editor({ className }: { className?: string }) {
   const { docId, type } = useParams<{ docId: string, type: string }>();
+  const { needsPasswordToConnect, ydoc, roomId } = useDocCollabStore(false)
+  const loadState = useStoreIfPresent(roomId ? getDocLoadState(docId!, roomId) : undefined);
   if (!docId) return <FolderView />;
-  const { needsPasswordToConnect, ydoc } = useDocCollabStore(false)
-  const canShow = !needsPasswordToConnect || (ydoc.isLoaded)
+  const canShow = !needsPasswordToConnect || loadState === "loaded";
   const EditorComponent = (type && EditorsByType[type]) || EditorsByType.UNKNOWN;
   return (<>
-    <Suspense fallback={<div>Loading...</div>}>    
+    <Suspense fallback={<div>Loading...</div>}>
       {canShow && <EditorComponent key={docId} className={className} />}    
     </Suspense>
     <PasswordRequiredDialog />
