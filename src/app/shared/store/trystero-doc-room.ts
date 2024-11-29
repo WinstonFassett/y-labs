@@ -6,6 +6,7 @@ import {
   onMount,
   type MapStore,
   type ReadableAtom,
+  computed,
 } from "nanostores";
 import type { Doc } from "yjs";
 import { createRoom } from "../createRoom";
@@ -44,7 +45,9 @@ function createTrysteroDocRoom(
   const $syncState = atom<SyncStatus>('unsynced')
   const $loadState = atom<LoadStatus>('unloaded')
   const $peerIds = atom<string[]>([])
-
+  const $enabledSharingLink = computed([$config], (config) => {
+    return config.enabled ? $config.$sharingLink.get() : undefined
+  })
   const awareness = new Awareness(ydoc)
 
   function setUserInAwareness(user: Readonly<{ username: string; color: string; }>) {
@@ -87,15 +90,25 @@ function createTrysteroDocRoom(
     const unsubUser = user.subscribe((user) => {
       setUserInAwareness(user);
     });
-    const unsubConfig = $config.subscribe((config, prevConfig) => {
+    
+
+    const unsubConfig = $enabledSharingLink.subscribe(() => {
+      const config = $config.get()
       console.log('config', config)
       const needsPasswordToConnect = config.encrypt && !config.password;
       const canConnect = config.enabled && !needsPasswordToConnect; 
-      const provider = canConnect ? createProvider(config) : undefined
       const prevProvider = store.get().provider
       // const prevRoomId = prevConfig?.roomId
+      
       if (prevProvider) {
         prevProvider.destroy()
+      }
+      const provider = canConnect ? createProvider(config) : undefined
+      if (prevProvider && provider) {
+        console.warn('recreating provider')
+      }
+      if (provider) {
+        setUserInAwareness(user.get());
       }
       store.set({
         needsPasswordToConnect,
@@ -112,7 +125,7 @@ function createTrysteroDocRoom(
       // $connectionState.set('disconnected')
       // $peerIds.set([])
       // store.set({})
-      store.value?.provider?.destroy()
+      // store.value?.provider?.destroy()
     }
     
   })
@@ -148,6 +161,7 @@ function createTrysteroDocRoom(
 
   const model = Object.assign(store, {
     y: ydoc,
+    $config,
     $awarenessStates,
     $connectionState,
     $syncState,
