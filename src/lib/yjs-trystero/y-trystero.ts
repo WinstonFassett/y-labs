@@ -16,6 +16,7 @@ import { selfId, type joinRoom as trysteroJoinRoom } from "trystero";
 import * as syncProtocol from "y-protocols/sync";
 import * as awarenessProtocol from "y-protocols/awareness";
 import * as cryptoutils from "./crypto.js";
+import { extractPartOfKey } from "./crypto.js";
 
 type TrysteroJoinRoom = typeof trysteroJoinRoom
 type TrysteroConfig = Parameters<TrysteroJoinRoom>[0];
@@ -637,7 +638,12 @@ export class TrysteroProvider extends ObservableV2<TrysteroProviderEvents> {
   }
   async connect(): Promise<TrysteroDocRoom> {
     this.shouldConnect = true;
-    const trysteroRoom = this.trystero = this.joinRoom(this.trysteroConfig, this.roomName);
+
+    const key = await this.key;
+    
+    const safeUniquePartOfKey = key ? await extractPartOfKey(key, 4) : ""
+    const safeRoomName = `${this.roomName}-${safeUniquePartOfKey}`
+    const trysteroRoom = this.trystero = this.joinRoom(this.trysteroConfig, safeRoomName);
     const [sendDocData, listenDocData] = trysteroRoom.makeAction<Uint8Array>("docdata");
     this.sendDocData = sendDocData;
     this.listenDocData = listenDocData;
@@ -651,7 +657,6 @@ export class TrysteroProvider extends ObservableV2<TrysteroProviderEvents> {
     }
     // Connect
     const provider = this
-    const key = await this.key;
     const room = new TrysteroDocRoom(doc, provider, roomName, key);
     this.room = room;
     rooms.set(roomName, room);
@@ -677,3 +682,5 @@ export class TrysteroProvider extends ObservableV2<TrysteroProviderEvents> {
     });
   }
 }
+
+
