@@ -32,7 +32,7 @@ const docLoadStateT = mapTemplate(
     const config = $roomConfig?.get();
     const isLoaded = y.isLoaded;
     const enabled = config?.enabled ?? false;
-    const initialState = enabled && !isLoaded ? "loading" : "loaded";
+    const initialState = roomId && !isLoaded ? "loading" : "loaded";
     store.set(initialState);
     const deps = [$docOfflineStore, $room, $ydoc, $roomConfig].filter(
       (x) => !!x,
@@ -41,7 +41,7 @@ const docLoadStateT = mapTemplate(
     const onLoad = () => {
       store.set("loaded");
     };
-    if (enabled && !isLoaded) {
+    if (initialState !== "loaded") {
       y.once("load", onLoad);
     }
     return () => {

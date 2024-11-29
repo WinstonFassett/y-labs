@@ -12,21 +12,20 @@ import { Novel } from "./Novel";
 
 import { PasswordRequiredDialog } from "../shared/PasswordRequiredDialog";
 function Editor() {
-  const { docId, ydoc, $room, roomId } = useDocCollabStore();
+  const { docId, ydoc, $room, roomId, needsPasswordToConnect } = useDocCollabStore();
   const loadState = useStore(getDocLoadState(docId, roomId));
   const fragment = ydoc.getXmlFragment("novel");
   const provider = $room?.get().provider;
   const ready = loadState === "loaded";
-  const providerReady = roomId ? !!provider : true;
   const u = user.get();
-  const waiting = !providerReady && !ready;
+  const canShow = !needsPasswordToConnect || loadState === "loaded";
   return (
     <div className="min-h-full flex-1 flex flex-col max-w-3xl mx-auto w-full">
       <AppBar className="h-16" />
-      {waiting && <div>Loading...</div>}
-      {!waiting && 
+      {!canShow && <div>Loading...</div>}
+      {canShow && 
         <Novel
-          key={providerReady ? roomId : docId}
+          key={roomId ?? docId}
           disableHistory={true}
           extensions={[
             TextStyle as any, 

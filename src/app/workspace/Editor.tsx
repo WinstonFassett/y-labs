@@ -27,7 +27,7 @@ export function Editor({ className }: { className?: string }) {
   const EditorComponent = (type && EditorsByType[type]) || EditorsByType.UNKNOWN;
   return (<>
     <Suspense fallback={<div>Loading...</div>}>
-      {canShow && <EditorComponent key={docId} className={className} />}    
+      {!canShow ? <div>Loading...</div> : <EditorComponent key={docId} className={className} />}    
     </Suspense>
     <PasswordRequiredDialog />
   </>
