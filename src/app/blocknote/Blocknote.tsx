@@ -17,7 +17,7 @@ export function Blocknote(
 ) {
   const { docId, ydoc, $room, roomId } = useDocCollabStore();
   const fragment = ydoc.getXmlFragment("blocknote");
-  const provider=$room?.provider
+  const provider=$room?.get().provider
   
 
   const theme = "dark"; // useStore(store.theme)

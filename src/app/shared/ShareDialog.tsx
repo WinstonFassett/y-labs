@@ -71,7 +71,9 @@ export function ShareDialog({ type }: { type?: string }) {
   const awarenessUsers = useStoreIfPresent(
     $room?.$awarenessStates
   );
-  const awarenessClientID = $room?.provider?.awareness.clientID;
+  const provider = $room?.get().provider
+  const awarenessClientID = provider?.awareness.clientID;
+  console.log('awarenessUsers', awarenessClientID, awarenessUsers)
   const isSharing = roomConfigMaybe?.enabled ?? false;
   // const isSharing = $roomConfig?.get().enabled ?? false;
   const actionLabel = isSharing ? "Sharing" : "Share";

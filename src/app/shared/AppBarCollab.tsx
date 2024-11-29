@@ -10,7 +10,7 @@ export function AppBarCollab() {
   const isSharing = roomConfigMaybe?.enabled ?? false;
   const collabRoom = useStoreIfPresent($room);
   const peers = collabRoom?.peerIds ?? [];
-  const awarenessClientID = $room?.provider?.awareness.clientID;
+  const awarenessClientID = $room?.get().provider?.awareness.clientID;
   const awarenessUsers = useStoreIfPresent($room?.$awarenessStates);
   return (
     <>

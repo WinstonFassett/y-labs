@@ -18,7 +18,7 @@ function Codemirror({ className = "" }: { className?: string }) {
   const [theme] = useTheme();
   const { docId, roomId, $room, ydoc } = useDocCollabStore();
   useStore($room || atom({}));
-  const providerMaybe = $room?.provider;
+  const providerMaybe = $room?.get().provider;
   const { $offline } = getDocLoadState(docId, roomId);
   const loaded = useStore($offline.$loaded);
 

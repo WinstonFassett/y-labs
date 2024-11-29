@@ -27,7 +27,7 @@ export default function TlDrawEditor({ className }: { className?: string; }) {
   useStore($loader);
   useStore($loader.$offline.$enabled);
   const persister = useStore($loader.$offline.$persister);
-  const provider = $room?.provider;
+  const provider = $room?.get().provider;
   const tld = useYjsTlDrawStore({
     yDoc: ydoc,
     store,

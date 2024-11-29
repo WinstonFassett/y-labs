@@ -110,7 +110,11 @@ function createTrysteroDocRoom(
 
   function createProvider(config: Readonly<DocRoomConfigFields>) {
     const { roomId, password, encrypt, accessLevel } = config;
-    const provider = new TrysteroProvider(ydoc, roomId, createRoom, { appId: appId }, { password, accessLevel: config.accessLevel });
+    const provider = new TrysteroProvider(ydoc, roomId, createRoom, { appId: appId }, { 
+      password, 
+      accessLevel: config.accessLevel,
+      awareness
+    });
     provider.on('status', ({ connected }: { connected: boolean }) => {
       if (connected) {
         awareness.setLocalState(awareness.getLocalState());
