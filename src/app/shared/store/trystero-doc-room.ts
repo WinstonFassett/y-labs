@@ -83,28 +83,38 @@ function createTrysteroDocRoom(
 
 
   onMount(store, () => {
+    console.log('MOUNT', store)
+    const unsubUser = user.subscribe((user) => {
+      setUserInAwareness(user);
+    });
     const unsubConfig = $config.subscribe((config, prevConfig) => {
+      console.log('config', config)
       const needsPasswordToConnect = config.encrypt && !config.password;
       const canConnect = config.enabled && !needsPasswordToConnect; 
       const provider = canConnect ? createProvider(config) : undefined
-      const unsubUser = user.subscribe((user) => {
-        setUserInAwareness(user);
-      });
+      const prevProvider = store.get().provider
+      // const prevRoomId = prevConfig?.roomId
+      if (prevProvider) {
+        prevProvider.destroy()
+      }
       store.set({
         needsPasswordToConnect,
         canConnect,
         provider
       })
-      return () => {
-        unsubUser()
-        // $syncState.set('unsynced')
-        $connectionState.set('disconnected')
-        $peerIds.set([])
-        store.set({})
-        provider?.destroy()
-      }
+      
     })
-    return unsubConfig
+    return () => {
+      console.log('unmount doc room', store)
+      unsubConfig()
+      unsubUser()
+      // // $syncState.set('unsynced')
+      // $connectionState.set('disconnected')
+      // $peerIds.set([])
+      // store.set({})
+      store.value?.provider?.destroy()
+    }
+    
   })
   
 
