@@ -15,7 +15,6 @@ export function useDocCollabStore(requireDocId = true) {
     if (requireDocId) {
       throw new Error("No document id specified");
     }
-    return {  };
   }
   const navigate = useNavigate();
 
@@ -46,14 +45,16 @@ export function useDocCollabStore(requireDocId = true) {
       navigate(`?roomId=`);
     }
   }
-
+  const { needsPasswordToConnect, canConnect } = useStoreIfPresent($roomConfig?.$validation) ?? {};
   return {
     ydoc,
     docId,
     roomId,
     $room,
     $roomConfig,
+    canConnect,
+    needsPasswordToConnect,
     startSharing,
     stopSharing,
-  };
+  };  
 }

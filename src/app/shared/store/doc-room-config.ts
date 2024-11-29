@@ -66,7 +66,8 @@ const docRoomConfigsT = mapTemplate(
     return Object.assign(store, {
       docId,
       roomId,
-      $sharingLink
+      $sharingLink,
+      $validation
     });
   },
   (store, id, docId, roomId) => {

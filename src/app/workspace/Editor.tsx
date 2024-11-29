@@ -18,8 +18,8 @@ export const EditorsByType: Record<string, React.ComponentType>
 export function Editor({ className }: { className?: string }) {
   const { docId, type } = useParams<{ docId: string, type: string }>();
   if (!docId) return <FolderView />;
-  const { needsPasswordToConnect } = useDocCollabStore(false)
-  const canShow = !needsPasswordToConnect
+  const { needsPasswordToConnect, ydoc } = useDocCollabStore(false)
+  const canShow = !needsPasswordToConnect || (ydoc.isLoaded)
   const EditorComponent = (type && EditorsByType[type]) || EditorsByType.UNKNOWN;
   return (<>
     <Suspense fallback={<div>Loading...</div>}>    
