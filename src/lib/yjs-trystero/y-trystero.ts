@@ -459,7 +459,7 @@ export class TrysteroDocRoom {
     bc.subscribe(roomName, this._bcSubscriber);
     this.bcconnected = true;
     // // broadcast peerId via broadcastchannel
-    // broadcastBcPeerId(this);
+    broadcastBcPeerId(this);
     // write sync step 1
     const encoderSync = encoding.createEncoder();
     encoding.writeVarUint(encoderSync, messageSync);
