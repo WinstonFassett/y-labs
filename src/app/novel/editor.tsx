@@ -14,7 +14,7 @@ function Editor() {
   const { docId, ydoc, $room, roomId } = useDocCollabStore();
   const loadState = useStore(getDocLoadState(docId, roomId));
   const fragment = ydoc.getXmlFragment("novel");
-  const provider = $room?.provider;
+  const provider = $room?.get().provider;
   const ready = loadState === "loaded";
   const providerReady = roomId ? !!provider : true;
   const u = user.get();
