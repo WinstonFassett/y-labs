@@ -7,6 +7,7 @@ import {
 } from "./store/doc-room-config";
 import { getTrysteroDocRoom } from "./store/trystero-doc-room";
 import { getYdoc } from "./store/yjs-docs";
+import { useStoreIfPresent } from "./useStoreIfPresent";
 
 export function useDocCollabStore(requireDocId = true) {
   const { docId } = useParams();
@@ -30,7 +31,7 @@ export function useDocCollabStore(requireDocId = true) {
     return { $roomConfig, $room}
   }, [docId, roomId])
 
-
+  const room = useStoreIfPresent($room);
   function startSharing(config: DocRoomConfigFields) {
     console.log('start sharing', config)
     const roomId = config.roomId;
