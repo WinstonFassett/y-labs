@@ -495,6 +495,7 @@ export class TrysteroDocRoom {
   }
 
   disconnect() {
+    console.log('**trystero disconnect')
     this.awareness.setLocalState(null);
     this.provider.trystero?.leave();
     this.provider.trystero = null
@@ -660,6 +661,7 @@ export class TrysteroProvider extends ObservableV2<TrysteroProviderEvents> {
     this.doc.off("destroy", this.destroy);
     // need to wait for key before deleting room
     this.key.then(() => {
+      this.disconnect();
       this.room?.destroy();
       rooms.delete(this.roomName);
     });
