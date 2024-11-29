@@ -156,8 +156,9 @@ function createTrysteroDocRoom(
         }
       }
     });  
-    provider.on("peers", ({ added, removed }:{removed: string[], added: string[]}) => {
-      $peerIds.set( $peerIds.get().concat(added).filter((it) => !removed.includes(it)));
+    provider.on("peers", (e:{removed: string[], added: string[], resurrected: string[] }) => {
+      const { added, removed, resurrected } = e;
+      $peerIds.set( $peerIds.get().concat(added).concat(resurrected).filter((it) => !removed.includes(it)));
     })
     return provider
   }

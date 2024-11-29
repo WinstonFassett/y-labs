@@ -53,6 +53,7 @@ import { user } from "./store/local-user";
 import { useDocCollabStore } from "./useDocCollabStore";
 import { useStoreIfPresent } from "./useStoreIfPresent";
 import { buildUrl } from "@/lib/buildUrl";
+import { useStore } from "@nanostores/react";
 
 export function ShareDialog({ type }: { type?: string }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -67,7 +68,7 @@ export function ShareDialog({ type }: { type?: string }) {
     return undefined;
   }, [roomConfigMaybe])
   const roomMaybe = useStoreIfPresent($room);
-  const peerIds = roomMaybe?.peerIds ?? [];
+  const peerIds = useStoreIfPresent($room?.$peerIds);
   const awarenessUsers = useStoreIfPresent(
     $room?.$awarenessStates
   );
@@ -468,7 +469,8 @@ function UserList({
       {isSharing && <div>
         <div>You are sharing as:</div>
         { !!userInfo && <div>
-          <User 
+          <UserForm />
+          <User
             name={userInfo.username ?? "Anonymous"}
             description="YOU"
             avatarProps={{
@@ -550,6 +552,67 @@ const User = forwardRef<HTMLDivElement, UserProps>(
   ),
 );
 
+const UserForm = forwardRef<HTMLFormElement, React.HTMLProps<HTMLFormElement>>(
+  (props, ref) => {
+    useEffect(() => {
+      return user.subscribe(currentUser => {
+        form.reset(currentUser) 
+      })
+    }, [])
+    const form = useForm<z.infer<typeof UserConfigSchema>>({
+      resolver: zodResolver(UserConfigSchema),
+      mode: "onBlur",
+    });
+    const onSubmit = form.handleSubmit(
+      (data) => {
+        user.set(data);
+      },
+      (errors) => {
+        console.log({ errors });
+      },
+    );
+    return (
+      <Form {...form}>
+        <div onBlur={onSubmit}>
+
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Username</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormDescription />
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+          {/* <FormField
+            control={form.control}
+            name="color"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Color</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormDescription />
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          /> */}
+        </div>
+      </Form>
+    );
+  },
+);
+
 export function generateSharingLink(config: DocRoomConfigFields, type?: string) {
     const {  docId, roomId, password, encrypt } = config;    
     const base = [
@@ -579,3 +642,9 @@ function generateDocRoomRouterLink(config: DocRoomConfigFields, type?: string) {
     }
   )
 }
+
+
+export const UserConfigSchema = z.object({
+  username: z.string().min(1, { message: "Required" }),
+  color: z.string().min(1, { message: "Required" }),
+})

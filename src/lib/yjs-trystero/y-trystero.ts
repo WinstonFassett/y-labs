@@ -288,6 +288,15 @@ export class TrysteroConn {
         console.log(err);
       }
     });
+    room.provider.emit("peers", [
+      {
+        added: [remotePeerId],
+        removed: [],
+        resurrected: [],
+        trysteroPeers: Array.from(room.trysteroConns.keys()),
+        bcPeers: Array.from(room.bcConns),
+      },
+    ]);
   }
 
   onClose() {
@@ -664,7 +673,7 @@ export class TrysteroProvider extends ObservableV2<TrysteroProviderEvents> {
       this.disconnect();
       this.room?.destroy();
       rooms.delete(this.roomName);
+      super.destroy();
     });
-    super.destroy();
   }
 }
