@@ -11,7 +11,7 @@ import * as promise from "lib0/promise";
 import * as random from "lib0/random";
 
 import * as Y from "yjs";
-import type { joinRoom as trysteroJoinRoom } from "trystero";
+import { selfId, type joinRoom as trysteroJoinRoom } from "trystero";
 
 import * as syncProtocol from "y-protocols/sync";
 import * as awarenessProtocol from "y-protocols/awareness";
@@ -27,6 +27,7 @@ const messageQueryAwareness = 3;
 const messageAwareness = 1;
 const messageBcPeerId = 4;
 
+export { selfId };
 export const rooms = new Map<string, TrysteroDocRoom>();
 
 export const getRoom = (roomId: string): TrysteroDocRoom | undefined => rooms.get(roomId);

@@ -54,6 +54,15 @@ const docRoomConfigsT = mapTemplate(
       ].join("")  
     })
 
+    const $validation = computed(store, ({ roomId, encrypt, password }) =>{
+      const needsPasswordToConnect = encrypt && !password
+      const canConnect = !needsPasswordToConnect
+      return {
+        needsPasswordToConnect,
+        canConnect
+      }
+    })
+
     return Object.assign(store, {
       docId,
       roomId,
