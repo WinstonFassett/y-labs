@@ -41,7 +41,7 @@ export function useDocCollabStore(requireDocId = true) {
 
   function stopSharing() {
     if ($roomConfig) {
-      $roomConfig.stopSharing
+      $roomConfig.stopSharing()
       navigate(`?roomId=`);
     }
   }
