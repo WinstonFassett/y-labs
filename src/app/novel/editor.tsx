@@ -9,7 +9,7 @@ import { getDocLoadState } from "../shared/store/doc-loader";
 import { user } from "../shared/store/local-user";
 import { useDocCollabStore } from "../shared/useDocCollabStore";
 import { Novel } from "./Novel";
-import "./tiptap-collab.css";
+
 import { PasswordRequiredDialog } from "../shared/PasswordRequiredDialog";
 function Editor() {
   const { docId, ydoc, $room, roomId } = useDocCollabStore();
