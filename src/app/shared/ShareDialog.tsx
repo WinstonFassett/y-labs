@@ -73,7 +73,7 @@ export function ShareDialog({ type }: { type?: string }) {
   );
   const provider = $room?.get().provider
   const awarenessClientID = provider?.awareness.clientID;
-  console.log('awarenessUsers', awarenessClientID, awarenessUsers)
+  // console.log('awarenessUsers', awarenessClientID, awarenessUsers)
   const isSharing = roomConfigMaybe?.enabled ?? false;
   // const isSharing = $roomConfig?.get().enabled ?? false;
   const actionLabel = isSharing ? "Sharing" : "Share";
@@ -105,7 +105,7 @@ export function ShareDialog({ type }: { type?: string }) {
       });
       handleCopyLink();
       const newRoomConfig = getDocRoomConfig(docId, roomId).get();
-      console.log('navigating to link', {docId, roomId}, newRoomConfig);
+      // console.log('navigating to link', {docId, roomId}, newRoomConfig);
       navigate(
         generateDocRoomRouterLink(newRoomConfig, type)
       )
