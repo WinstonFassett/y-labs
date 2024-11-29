@@ -1,0 +1,92 @@
+diff --git a/awareness.js b/awareness.js
+index 8f9ae9448d19ce46a6cd76f8cdb8e2a0944f7bf5..42257dc7a328df028f844f0da80f924f57ad999e 100644
+--- a/awareness.js
++++ b/awareness.js
+@@ -245,6 +245,7 @@ export const applyAwarenessUpdate = (awareness, update, origin) => {
+   const updated = []
+   const filteredUpdated = []
+   const removed = []
++  const resurrected = []
+   const len = decoding.readVarUint(decoder)
+   for (let i = 0; i < len; i++) {
+     const clientID = decoding.readVarUint(decoder)
+@@ -275,21 +276,24 @@ export const applyAwarenessUpdate = (awareness, update, origin) => {
+       } else if (clientMeta !== undefined && state === null) {
+         removed.push(clientID)
+       } else if (state !== null) {
+-        if (!f.equalityDeep(state, prevState)) {
++        if (clientMeta !== undefined && prevState === undefined) {
++          resurrected.push(clientID)
++        }
++        if (!f.equalityDeep(state, prevState)) {        
+           filteredUpdated.push(clientID)
+         }
+         updated.push(clientID)
+       }
+     }
+   }
+-  if (added.length > 0 || filteredUpdated.length > 0 || removed.length > 0) {
++  if (added.length > 0 || filteredUpdated.length > 0 || removed.length > 0 || resurrected.length > 0) {
+     awareness.emit('change', [{
+-      added, updated: filteredUpdated, removed
++      added, updated: filteredUpdated, removed, resurrected
+     }, origin])
+   }
+-  if (added.length > 0 || updated.length > 0 || removed.length > 0) {
++  if (added.length > 0 || updated.length > 0 || removed.length > 0 || resurrected.length > 0) {
+     awareness.emit('update', [{
+-      added, updated, removed
++      added, updated, removed, resurrected
+     }, origin])
+   }
+ }
+diff --git a/dist/awareness.cjs b/dist/awareness.cjs
+index 884c8d9efd8a9085ed98f60a6c2db830dd2becdd..34bb542868800b0eba013128820a621f943fc699 100644
+--- a/dist/awareness.cjs
++++ b/dist/awareness.cjs
+@@ -36,7 +36,7 @@ var f__namespace = /*#__PURE__*/_interopNamespaceDefault(f);
+  */
+ 
+ 
+-const outdatedTimeout = 30000;
++const outdatedTimeout = 70000;
+ 
+ /**
+  * @typedef {Object} MetaClientState
+@@ -271,6 +271,7 @@ const applyAwarenessUpdate = (awareness, update, origin) => {
+   const updated = [];
+   const filteredUpdated = [];
+   const removed = [];
++  const resurrected = [];
+   const len = decoding__namespace.readVarUint(decoder);
+   for (let i = 0; i < len; i++) {
+     const clientID = decoding__namespace.readVarUint(decoder);
+@@ -301,6 +302,9 @@ const applyAwarenessUpdate = (awareness, update, origin) => {
+       } else if (clientMeta !== undefined && state === null) {
+         removed.push(clientID);
+       } else if (state !== null) {
++        if (clientMeta !== undefined && prevState === undefined) {
++          resurrected.push(clientID)
++        }
+         if (!f__namespace.equalityDeep(state, prevState)) {
+           filteredUpdated.push(clientID);
+         }
+@@ -308,14 +312,14 @@ const applyAwarenessUpdate = (awareness, update, origin) => {
+       }
+     }
+   }
+-  if (added.length > 0 || filteredUpdated.length > 0 || removed.length > 0) {
++  if (added.length > 0 || filteredUpdated.length > 0 || removed.length > 0 || resurrected.length > 0) {
+     awareness.emit('change', [{
+-      added, updated: filteredUpdated, removed
++      added, updated: filteredUpdated, removed, resurrected
+     }, origin]);
+   }
+-  if (added.length > 0 || updated.length > 0 || removed.length > 0) {
++  if (added.length > 0 || updated.length > 0 || removed.length > 0 || resurrected.length > 0) {
+     awareness.emit('update', [{
+-      added, updated, removed
++      added, updated, removed, resurrected
+     }, origin]);
+   }
+ };
