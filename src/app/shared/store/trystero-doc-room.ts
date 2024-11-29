@@ -117,7 +117,7 @@ function createTrysteroDocRoom(
     });
     provider.on('status', ({ connected }: { connected: boolean }) => {
       if (connected) {
-        awareness.setLocalState(awareness.getLocalState());
+        setUserInAwareness(user.get())
         $connectionState.set('connected')
       }
     });  
