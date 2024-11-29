@@ -25,6 +25,7 @@ function Editor() {
       {waiting && <div>Loading...</div>}
       {!waiting && 
         <Novel
+          key={providerReady ? roomId : docId}
           disableHistory={true}
           extensions={[
             TextStyle as any, 
