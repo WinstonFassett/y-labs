@@ -125,7 +125,7 @@ function createTrysteroDocRoom(
       // $connectionState.set('disconnected')
       // $peerIds.set([])
       // store.set({})
-      // store.value?.provider?.destroy()
+      store.value?.provider?.destroy()
     }
     
   })
