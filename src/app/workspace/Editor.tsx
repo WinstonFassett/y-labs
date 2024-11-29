@@ -4,7 +4,7 @@ import { CreateDocButtons } from "./CreateDocMenu";
 import { Suspense, lazy } from "react";
 import { useDocCollabStore } from "../shared/useDocCollabStore";
 import { PasswordRequiredDialog } from "../shared/PasswordRequiredDialog";
-
+import type DriveListing from "@/app/drive/DriveListing";
 export const EditorsByType: Record<string, React.ComponentType>
  = {
   novel: lazy(() => import("./NovelEditor")),
@@ -32,15 +32,20 @@ export function Editor({ className }: { className?: string }) {
 
 export default Editor;
 
+
+export function getDocUrl(name: string, type: string) {
+  return `/y-labs/app/workspace/index.html#/edit/${name}/${type}`;
+}
+
 const FolderView = () => {
-  const DriveListing = EditorsByType.drive;
+  const DriveListingComponent = EditorsByType.drive as typeof DriveListing;
   return (
     <div className="flex flex-1 flex-col gap-4 p-4">
       <h3>Recent Saved Files</h3>
       <Suspense fallback="Loading drive...">
 
         {/* <div className="text-center py-4">Folder view not implemented yet.</div> */}
-        <DriveListing />
+        <DriveListingComponent getDocUrl={getDocUrl} />
       </Suspense>
     </div>
   )

@@ -5,9 +5,9 @@ import { useMemo } from "react";
 import { DeleteSavedDialog } from "../shared/DeleteSavedDialog.tsx";
 import { $docMetas } from "../shared/store/doc-metadata.ts";
 import { typeIconMap } from "../shared/typeIconMap.tsx";
-import { EmptyState, getDocUrl } from "./Drive.tsx";
+import { EmptyState, getDocUrl as getAppDocUrl } from "./Drive.tsx";
 
-export default function DriveListing() {
+export default function DriveListing({ getDocUrl = getAppDocUrl}) {
   const allDocMetas = useStore($docMetas);
   const { toast } = useToast();
   const documents = useMemo(() => {
