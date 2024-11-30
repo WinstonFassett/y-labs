@@ -4,6 +4,6 @@ import App from "@/app/tldraw/App";
 const frontmatter = { title: "TLDraw", favicon: "/y-labs/logos/tldraw.svg" };
 ---
 
-<Layout frontmatter={frontmatter} mainClass="container py-10">
+<Layout frontmatter={frontmatter} class="h-dvh overflow-hidden flex flex-col">
   <App client:only="react" frontmatter={frontmatter} />
 </Layout>
