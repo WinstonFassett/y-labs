@@ -41,7 +41,7 @@ const GenerativeMenuSwitch = ({
           editor?.chain().unsetAIHighlight().run();
         },
       }}
-      className="flex w-fit max-w-[90vw] overflow-hidden rounded-md border border-muted bg-background shadow-xl"
+      className="flex w-fit max-w-[90vw] overflow-x-auto rounded-md border border-muted bg-background shadow-xl"
     >
       {open ? (
         <AISelector open={open} onOpenChange={onOpenChange} />
