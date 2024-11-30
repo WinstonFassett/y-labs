@@ -60,19 +60,19 @@ export const Novel = ({
   );
 
   return (
-    <div className={cn("relative w-full", className)}>
-      <EditorRoot>
+    <div className={cn("flex-1 flex flex-col", className)}>
+      <EditorRoot className="heeyo">
         <EditorContent
           // initialContent={initialContent}
           extensions={extensions}
-          className="relative min-h-[500px] w-full max-w-screen-lg sm:mb-[calc(20vh)]"
+          className="[&>:first-child]:flex-1 [&>:first-child]:flex [&>:first-child]:flex-col  flex-1 flex flex-col max-w-screen-lg"
           editorProps={{
             // ...defaultEditorProps,
             handleDOMEvents: {
               keydown: (_view, event) => handleCommandNavigation(event),
             },
             attributes: {
-              class: `prose dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full`,
+              class: `flex-1 flex flex-col prose dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full`,
             },
           }}
           onUpdate={({ editor }) => {

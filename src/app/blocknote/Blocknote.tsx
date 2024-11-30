@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { user } from "../shared/store/local-user";
 import { useStore } from "@nanostores/react";
 import { useDocCollabStore } from "../shared/useDocCollabStore";
+import { cn } from "@/lib/utils";
 
 export interface BlocknoteProps {
   autofocus?: boolean;
@@ -40,7 +41,7 @@ export function Blocknote(
     }
   }, [autofocus]);
   return (
-    <BlockNoteView editor={editor} autoFocus={true} className={className} />
+    <BlockNoteView editor={editor} autoFocus={true} className={cn('flex-1', className)} />
   );
 }
 

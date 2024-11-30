@@ -12,7 +12,7 @@ type Props = {
 export default function App(props: Props) {
   Object.assign(AppGlobals, props);
   return <>
-    <RouterProvider router={router} />;
-    <SettingsDialog />;
+    <RouterProvider router={router} />
+    <SettingsDialog />
   </>
 }
