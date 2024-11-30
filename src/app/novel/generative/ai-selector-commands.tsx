@@ -1,14 +1,14 @@
-import React from "react";
-import { CommandGroup, CommandItem, CommandSeparator } from "../ui/command";
 import {
   ArrowDownWideNarrow,
   CheckCheck,
   RefreshCcwDot,
   StepForward,
-  WrapText,
+  Wand2Icon,
+  WrapText
 } from "lucide-react";
 import { useEditor } from "novel";
 import { getPrevText } from "novel/utils";
+import { CommandGroup, CommandItem, CommandSeparator } from "../ui/command";
 
 const options = [
   {
@@ -44,8 +44,8 @@ const options = [
   },
   {
     value: "recipe",
-    label: "Use as Recipe",
-    icon: WrapText,
+    label: "Run Multistep Prompt (Recipe)",
+    icon: Wand2Icon
   },
 ];
 
