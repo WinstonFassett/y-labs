@@ -81,8 +81,7 @@ const AISelectorCommands = ({ onSelect }: AISelectorCommandsProps) => {
       <CommandGroup heading="Use AI to do more">
         <CommandItem
           onSelect={() => {
-            console.log("continuing");
-            const text = getPrevText(editor, { chars: 5000 });
+            const text = getPrevText(editor, 5000);
             onSelect(text, "continue");
           }}
           value="continue"

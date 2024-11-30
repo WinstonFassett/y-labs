@@ -98,7 +98,6 @@ export function AISelector({ open, onOpenChange }: AISelectorProps) {
     const slice = editor?.state.selection.content();
     const text =
       slice && editor?.storage.markdown.serializer.serialize(slice.content);
-    console.log("handleComplete", { text, inputValue });
 
     handleCompletion([
       {
@@ -112,7 +111,7 @@ export function AISelector({ open, onOpenChange }: AISelectorProps) {
       },
       { role: "user", content: inputValue },
       { role: "assistant", content: "OUTPUT:\n" },
-    ]).then(() => setInputValue(""));
+    ]);
   };
 
   const hasCompletion = completion.length > 0;
@@ -172,28 +171,19 @@ export function AISelector({ open, onOpenChange }: AISelectorProps) {
               onSelect={(value, option) => {
                 switch (option) {
                   case "recipe":
-                    console.log("TODO: execute recipe", value);
                     const recipe = parseRecipe(value);
-                    console.log({ recipe });
+                    console.log('running recipe', recipe);
                     runRecipe(recipe);
                     break;
-                  // case "continue":
-                  //   console.log("todo: continue writing");
-                  //   break;
                   default:
                     console.log("completing", { value, option });
                     handleCompletion([
                       { role: "user", content: `${option}: ${value}` },
                     ]).then(() => setInputValue(""));
-                    // if (value) {
-                    // }
+
                     break;
                 }
 
-                // console.log("completing", { value, option });
-                // handleCompletion(`${option}: ${value}`).then(() =>
-                //   setInputValue(""),
-                // );
               }}
             />
           )}
