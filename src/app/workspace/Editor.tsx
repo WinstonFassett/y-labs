@@ -45,7 +45,9 @@ const FolderView = () => {
   const DriveListingComponent = EditorsByType.drive as typeof DriveListing;
   return (
     <div className="flex flex-1 flex-col gap-4 p-4">
-      <h3>Recent Saved Files</h3>
+      <div className="w-full max-w-3xl mx-auto pl-4 pt-4">
+        <h3 className="text-2xl text-muted-foreground">Recent Saved Files</h3>
+      </div>
       <Suspense fallback="Loading drive...">
 
         {/* <div className="text-center py-4">Folder view not implemented yet.</div> */}
