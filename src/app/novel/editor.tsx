@@ -22,10 +22,11 @@ function Editor() {
   const waiting = !providerReady && !ready ;
   return (
     <div className="min-h-dvh flex-1 flex flex-col max-w-3xl mx-auto w-full">
-      <AppBar className="h-16" />
+      <AppBar />
       {waiting && <div>Loading...</div>}
       {!waiting && 
         <Novel
+          className="p-4"
           key={roomId ?? docId}
           disableHistory={true}
           extensions={[
