@@ -4,6 +4,7 @@ import { getDocRoomConfig } from "./doc-room-config";
 import { getDocIdbStore } from "./local-yjs-idb";
 import { getTrysteroDocRoom } from "./trystero-doc-room";
 import { getYdoc } from "./yjs-docs";
+import { $newDocIds } from "./new-doc-ids";
 
 
 type LoadingState = "unloaded" | "loading" | "loaded" | "error";
@@ -24,8 +25,9 @@ const docLoadStateT = mapTemplate(
     const $ydoc = getYdoc(id);
     const y = $ydoc.get();
     const $roomConfig = roomId ? getDocRoomConfig(id, roomId) : undefined;
-    const initialState = y.isLoaded ? "loaded" : (
-      roomId ? "loading" : "loaded"
+    const isNew = $newDocIds.get().has(id);
+    const initialState = isNew ? "loaded" : y.isLoaded ? "loaded" : (
+      roomId ? "loading" : "unloaded"
     );
     store.set(initialState);
     const deps = [$docOfflineStore, $room, $ydoc, $roomConfig].filter(

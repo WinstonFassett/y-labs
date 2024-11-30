@@ -1,7 +1,12 @@
-import { Navigate, createHashRouter, useParams } from "react-router-dom";
+import { Navigate, createHashRouter, useNavigate, useParams } from "react-router-dom";
 import { EditorRoute } from "./EditorRoute";
 import { generateId } from "../shared/generateId";
 import { Workspace } from "./Workspace";
+import { getDocIdbStore, saveOfflineDoc } from "../shared/store/local-yjs-idb";
+import { allTasks } from 'nanostores'
+import { useStore } from "@nanostores/react";
+import { useEffect, useState, Suspense } from "react";
+import { $newDocIds } from "../shared/store/new-doc-ids";
 
 export const routes = [
   {
@@ -24,5 +29,16 @@ export const router = createHashRouter(routes);
 function NewDocRoute() {
   const id = generateId();
   const { type } = useParams<{ type: string }>();
-  return <Navigate to={`/edit/${id}/${type}`} replace />;
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    async function enablePersistence() {
+      $newDocIds.set(new Set($newDocIds.get().add(id)))
+      await saveOfflineDoc(id)
+      navigate(`/edit/${id}/${type}`, { replace: true })
+    }
+    enablePersistence();
+  }, [])
+  
+  return <div>Creating {id}...</div>;
 }

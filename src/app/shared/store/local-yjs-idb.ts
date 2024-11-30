@@ -69,6 +69,7 @@ const docIdbStoreT = mapTemplate(
   (store, id) => {
     const { $persister, $enabled } = store;
     getHasDocIdb(id).then((exists) => {
+      if ($enabled.get()) return;
       $enabled.update(exists);
     });
     const unsubPersister = $persister?.subscribe((v) => {
@@ -144,6 +145,16 @@ export function getOfflineDoc(name: string, destroy = true) {
       });
     });
   }
+}
+
+export function saveOfflineDoc(name: string, ydoc: Y.Doc = new Y.Doc()) {
+  const persister = new IndexeddbPersistence(name, ydoc);
+  return new Promise<void>((resolve, reject) => {
+    persister.once("synced", () => {
+      persister.destroy();
+      resolve();
+    });
+  });
 }
 
 export async function getOfflineDocMeta(name: string) {
