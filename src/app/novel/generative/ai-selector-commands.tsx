@@ -1,30 +1,32 @@
-import React from "react";
-import { CommandGroup, CommandItem, CommandSeparator } from "../ui/command";
 import {
-  ArrowDownWideNarrow,
+  ArrowDownFromLineIcon,
   CheckCheck,
-  RefreshCcwDot,
+  MessageCircleQuestionIcon,
+  Minimize2Icon,
+  SparkleIcon,
+  SparklesIcon,
   StepForward,
-  WrapText,
+  Wand2Icon
 } from "lucide-react";
 import { useEditor } from "novel";
 import { getPrevText } from "novel/utils";
+import { CommandGroup, CommandItem, CommandSeparator } from "../ui/command";
 
 const options = [
   {
     value: "improve",
     label: "Improve writing",
-    icon: RefreshCcwDot,
+    icon: SparklesIcon,
   },
   {
     value: "explain",
     label: "Explain",
-    icon: RefreshCcwDot,
+    icon: MessageCircleQuestionIcon,
   },
   {
     value: "Summarize",
-    label: "summarize",
-    icon: RefreshCcwDot,
+    label: "Summarize",
+    icon: SparkleIcon,
   },
 
   {
@@ -35,18 +37,14 @@ const options = [
   {
     value: "shorter",
     label: "Make shorter",
-    icon: ArrowDownWideNarrow,
+    icon: Minimize2Icon,
   },
   {
     value: "longer",
     label: "Make longer",
-    icon: WrapText,
+    icon: ArrowDownFromLineIcon,
   },
-  {
-    value: "recipe",
-    label: "Use as Recipe",
-    icon: WrapText,
-  },
+
 ];
 
 interface AISelectorCommandsProps {
@@ -90,6 +88,20 @@ const AISelectorCommands = ({ onSelect }: AISelectorCommandsProps) => {
           <StepForward className="h-4 w-4 text-purple-500" />
           Continue writing
         </CommandItem>
+        <CommandItem 
+          key="recipe"
+          value="recipe"
+          className="gap-2 px-4"
+          onSelect={(value) => {
+            const slice = editor.state.selection.content();
+            const text = editor.storage.markdown.serializer.serialize(
+              slice.content,
+            );
+            onSelect(text, value)
+          }}>
+          <Wand2Icon className="h-4 w-4 text-purple-500" />
+          Multistep Prompt
+          </CommandItem>
       </CommandGroup>
     </>
   );

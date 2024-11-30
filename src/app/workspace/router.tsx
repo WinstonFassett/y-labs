@@ -1,19 +1,17 @@
-import { Navigate, createHashRouter, useNavigate, useParams } from "react-router-dom";
-import { EditorRoute } from "./EditorRoute";
+import { useEffect } from "react";
+import { createHashRouter, useNavigate, useParams } from "react-router-dom";
 import { generateId } from "../shared/generateId";
-import { Workspace } from "./Workspace";
-import { getDocIdbStore, saveOfflineDoc } from "../shared/store/local-yjs-idb";
-import { allTasks } from 'nanostores'
-import { useStore } from "@nanostores/react";
-import { useEffect, useState, Suspense } from "react";
+import { saveOfflineDoc } from "../shared/store/local-yjs-idb";
 import { $newDocIds } from "../shared/store/new-doc-ids";
+import { EditorRoute } from "./EditorRoute";
+import { Workspace } from "./Workspace";
 
 export const routes = [
   {
     path: "/",
     element: <Workspace />,
   },
-  { path: "/new/:type", element: <NewDocRoute /> },
+  { path: "/new/:type", element: <NewWorkspaceDocRoute /> },
   {
     path: "/edit/:docId/:type",
     element: <EditorRoute />,
@@ -26,7 +24,7 @@ export const routes = [
 
 export const router = createHashRouter(routes);
 
-function NewDocRoute() {
+function NewWorkspaceDocRoute() {
   const id = generateId();
   const { type } = useParams<{ type: string }>();
   const navigate = useNavigate()

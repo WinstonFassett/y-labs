@@ -49,6 +49,7 @@ export function useDocCollabStore(requireDocId = true) {
     docId,
     roomId,
     $room,
+    room,
     $roomConfig,
     canConnect,
     needsPasswordToConnect,

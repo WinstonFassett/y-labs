@@ -73,8 +73,6 @@ export function AISelector({ open, onOpenChange }: AISelectorProps) {
     }
   };
 
-
-
   const handleComplete = () => {
     const slice = editor?.state.selection.content();
     const text =
@@ -153,8 +151,8 @@ export function AISelector({ open, onOpenChange }: AISelectorProps) {
                 switch (option) {
                   case "recipe":
                     const recipe = parseRecipe(value);
-                    console.log('running recipe', recipe);
-                    runRecipe(recipe);
+                    console.log("running recipe", recipe);
+                    runRecipe(recipe, handleCompletion);
                     break;
                   default:
                     console.log("completing", { value, option });
@@ -164,7 +162,6 @@ export function AISelector({ open, onOpenChange }: AISelectorProps) {
 
                     break;
                 }
-
               }}
             />
           )}
@@ -174,21 +171,22 @@ export function AISelector({ open, onOpenChange }: AISelectorProps) {
   );
 }
 
-async function runRecipe({
-  prompt,
-  steps,
-  handleCompletion
-}: {
-  prompt: string;
-  steps: string[];
+async function runRecipe(
+  {
+    prompt,
+    steps,
+  }: {
+    prompt: string;
+    steps: string[];
+  },
   handleCompletion: (
     prompts: {
       role: string;
       content: string;
-    }[], 
-    replacer?: (prev: string, next: string) => string
-  ) => Promise<string>;
-}) {
+    }[],
+    replacer?: (prev: string, next: string) => string,
+  ) => Promise<string>,
+) {
   const outputs = [] as string[];
   for (let index = 0; index < steps.length; index++) {
     const stepPrompts = createRecipeStepPrompt({
