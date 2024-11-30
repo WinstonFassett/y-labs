@@ -21,7 +21,7 @@ function Editor() {
   const providerReady = roomId ? !!provider : true;
   const waiting = !providerReady && !ready ;
   return (
-    <div className="min-h-full flex-1 flex flex-col max-w-3xl mx-auto w-full">
+    <div className="min-h-dvh flex-1 flex flex-col max-w-3xl mx-auto w-full">
       <AppBar className="h-16" />
       {waiting && <div>Loading...</div>}
       {!waiting && 
