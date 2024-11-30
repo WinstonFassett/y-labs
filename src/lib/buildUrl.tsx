@@ -1,4 +1,4 @@
-export function buildUrl(pathParts: (string | undefined)[], searchParts: Record<string, string | undefined>) {
+export function buildUrl(pathParts: (string | undefined)[], searchParts: Record<string, any>) {
   const path = pathParts
     .filter(Boolean)
     .join("/");

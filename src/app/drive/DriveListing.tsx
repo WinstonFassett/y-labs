@@ -5,8 +5,9 @@ import { DeleteSavedDialog } from "../shared/DeleteSavedDialog.tsx";
 import { $docMetas } from "../shared/store/doc-metadata.ts";
 import { typeIconMap } from "../shared/typeIconMap.tsx";
 import { EmptyState, getDocUrl as getAppDocUrl } from "./Drive.tsx";
+import { cn } from "@/lib/utils.ts";
 
-export default function DriveListing({ getDocUrl = getAppDocUrl}) {
+export default function DriveListing({ getDocUrl = getAppDocUrl, className }: { getDocUrl?: (name: string, type: string) => string | undefined; className?: string; }) {
   const allDocMetas = useStore($docMetas);
   const documents = useMemo(() => {
     if (!allDocMetas) return undefined;
@@ -27,7 +28,7 @@ export default function DriveListing({ getDocUrl = getAppDocUrl}) {
     return <EmptyState />;
   }
   return (
-    <div className="w-full max-w-3xl mx-auto  flex-1 flex flex-col gap-2 p-2">
+    <div className={cn("w-full max-w-3xl mx-auto  flex-1 flex flex-col gap-2 p-2", className)}>
       {documents.map((doc, index) => {
         const { id, title, type } = doc;
         const url = getDocUrl(id, type);

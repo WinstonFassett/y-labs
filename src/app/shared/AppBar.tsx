@@ -35,7 +35,7 @@ export default function AppBar({ className }: { className?: string }) {
             asChild
             title="Saved Documents"
             variant="ghost"
-            className="block flex items-center"
+            className="flex items-center"
           >
             <a href="/y-labs/app/drive/index.html">
               <HardDriveIcon className="h-5 w-5" />

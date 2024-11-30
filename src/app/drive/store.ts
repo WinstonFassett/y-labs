@@ -16,7 +16,7 @@ export async function loadDocuments() {
     const name = db.name;
     if (!name) continue;
     const metadata = await getOfflineDocMeta(name);
-    documents.push({ name, ...metadata });
+    documents.push({ ...metadata });
   }
   documents.sort((a, b) => (a.title ?? UNTITLED).localeCompare(b.title ?? UNTITLED));
   documentsStore.set(documents);

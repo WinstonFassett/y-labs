@@ -7,7 +7,7 @@ import { getDocLoadState } from "../shared/store/doc-loader";
 import { useDocCollabStore } from "../shared/useDocCollabStore";
 import { useStoreIfPresent } from "../shared/useStoreIfPresent";
 
-export const EditorsByType: Record<string, React.ComponentType>
+export const EditorsByType: Record<string, React.ComponentType<{ className?: string }>>
  = {
   novel: lazy(() => import("./NovelEditor")),
   // tldraw: lazy(() => import("@/app/tldraw/TlDrawEditor")),

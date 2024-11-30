@@ -65,9 +65,9 @@ const docIdbStoreT = mapTemplate(
       persister: $persister.value,
     });
   },
+  // on mount
   (store, id) => {
     const { $persister, $enabled } = store;
-    // move this to mount
     getHasDocIdb(id).then((exists) => {
       $enabled.update(exists);
     });
@@ -135,7 +135,6 @@ export function getOfflineDoc(name: string, destroy = true) {
   } else {
     return new Promise<Y.Doc>((resolve, reject) => {
       const persister = new IndexeddbPersistence(name, ydoc);
-      ydoc.persister = persister;
       persister.once("synced", () => {
         onLoad();
         if (destroy) {
