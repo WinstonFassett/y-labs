@@ -6,6 +6,7 @@ import { getDocIdbStore, saveOfflineDoc } from "../shared/store/local-yjs-idb";
 import { allTasks } from 'nanostores'
 import { useStore } from "@nanostores/react";
 import { useEffect, useState, Suspense } from "react";
+import { $newDocIds } from "../shared/store/new-doc-ids";
 
 export const routes = [
   {
@@ -32,6 +33,7 @@ function NewDocRoute() {
 
   useEffect(() => {
     async function enablePersistence() {
+      $newDocIds.set(new Set($newDocIds.get().add(id)))
       await saveOfflineDoc(id)
       navigate(`/edit/${id}/${type}`, { replace: true })
     }
