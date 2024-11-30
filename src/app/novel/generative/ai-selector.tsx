@@ -92,7 +92,7 @@ export function AISelector({ open, onOpenChange }: AISelectorProps) {
       },
       { role: "user", content: inputValue },
       { role: "assistant", content: "OUTPUT:\n" },
-    ]);
+    ]).then(() => setInputValue(""));
   };
 
   const hasCompletion = completion.length > 0;
