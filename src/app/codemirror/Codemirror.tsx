@@ -11,16 +11,16 @@ import { useTheme } from "../../lib/astro-tailwind-themes/useTheme";
 import { getDocLoadState } from "../shared/store/doc-loader";
 import { useDocCollabStore } from "../shared/useDocCollabStore";
 import "./codemirror.css";
-import { atom } from "nanostores";
 
 function Codemirror({ className = "" }: { className?: string }) {
   const editor = useRef<HTMLDivElement>(null);
   const [theme] = useTheme();
-  const { docId, roomId, $room, ydoc } = useDocCollabStore();
-  useStore($room || atom({}));
-  const providerMaybe = $room?.provider;
-  const { $offline } = getDocLoadState(docId, roomId);
-  const loaded = useStore($offline.$loaded);
+
+  const { docId, ydoc, $room, roomId, needsPasswordToConnect } = useDocCollabStore();
+  const loadState = useStore(getDocLoadState(docId, roomId));
+  const fragment = ydoc.getXmlFragment("novel");
+  const provider = $room?.get().provider;
+  const loaded = loadState === "loaded";
 
   useEffect(
     function setupCodemirror() {
@@ -40,8 +40,8 @@ function Codemirror({ className = "" }: { className?: string }) {
 
       const themeExtensions =
         theme === "dark" ? [oneDark, customBackgroundExtension] : [];
-      const collabExtensions = providerMaybe
-        ? yCollab(ytext, providerMaybe.awareness)
+      const collabExtensions = provider
+        ? yCollab(ytext, provider.awareness)
         : [];
       const startState = EditorState.create({
         doc: ytext.toString(),
@@ -62,7 +62,7 @@ function Codemirror({ className = "" }: { className?: string }) {
         view.destroy();
       };
     },
-    [theme, providerMaybe, loaded],
+    [theme, provider, loaded],
   );
   return <div ref={editor} className={className}></div>;
 }

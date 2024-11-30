@@ -5,17 +5,12 @@ import { getDocIdbStore } from "./local-yjs-idb";
 import { getTrysteroDocRoom } from "./trystero-doc-room";
 import { getYdoc } from "./yjs-docs";
 
-interface DocLoadState {
-  loadingOffline: LoadingState;
-  loadingOnline: LoadingState;
-  loading: LoadingState;
-}
 
-type LoadingState = "disabled" | "loading" | "loaded" | "error";
+type LoadingState = "unloaded" | "loading" | "loaded" | "error";
 
 const docLoadStateT = mapTemplate(
   (id, roomId?: string) => {
-    const store = atom("disabled" as LoadingState);
+    const store = atom("unloaded" as LoadingState);
     const $offline = getDocIdbStore(id);
     const $room = roomId ? getTrysteroDocRoom(id, roomId) : undefined;
     return Object.assign(store, {
@@ -29,10 +24,9 @@ const docLoadStateT = mapTemplate(
     const $ydoc = getYdoc(id);
     const y = $ydoc.get();
     const $roomConfig = roomId ? getDocRoomConfig(id, roomId) : undefined;
-    const config = $roomConfig?.get();
-    const isLoaded = y.isLoaded;
-    const enabled = config?.enabled ?? false;
-    const initialState = enabled && !isLoaded ? "loading" : "loaded";
+    const initialState = y.isLoaded ? "loaded" : (
+      roomId ? "loading" : "loaded"
+    );
     store.set(initialState);
     const deps = [$docOfflineStore, $room, $ydoc, $roomConfig].filter(
       (x) => !!x,
@@ -41,7 +35,7 @@ const docLoadStateT = mapTemplate(
     const onLoad = () => {
       store.set("loaded");
     };
-    if (enabled && !isLoaded) {
+    if (initialState !== "loaded") {
       y.once("load", onLoad);
     }
     return () => {

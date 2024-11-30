@@ -1,8 +1,8 @@
 
-import { useEditorRoute } from "../shared/useEditorRoute";
-import Editor from "./Tldraw";
+import { useDocRoomRoute } from "../shared/useDocRoomRoute";
+import Editor from "./TlDrawEditorApp";
 
 export function EditorRoute() {
-  useEditorRoute()
+  useDocRoomRoute()
   return <Editor className="h-screen" />;
 }

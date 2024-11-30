@@ -3,10 +3,10 @@ import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Layout from "@/layouts/BaseLayout.astro";
 
-const { title, pageTitle, description } = Astro.props;
+const { title, pageTitle, description, class: className } = Astro.props;
 ---
 
-<Layout title={title || pageTitle} description={description}>
+<Layout class={className} title={title || pageTitle} description={description}>
   <div class="min-h-screen flex flex-col">
     <Header />
     <main class="p-4 flex-1">

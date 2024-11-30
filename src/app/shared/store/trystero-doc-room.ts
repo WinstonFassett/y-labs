@@ -2,111 +2,63 @@ import { mapTemplate } from "@/lib/nanostores-utils/mapTemplate";
 import { TrysteroProvider } from "@/lib/yjs-trystero/y-trystero";
 import {
   atom,
+  computed,
   map,
-  onMount,
-  type MapStore,
-  type ReadableAtom,
+  onMount
 } from "nanostores";
-import { selfId, type Room } from "trystero";
+import { Awareness } from "y-protocols/awareness.js";
 import type { Doc } from "yjs";
 import { createRoom } from "../createRoom";
+import { appId } from "./constants";
 import { getDocRoomConfig, type DocRoomConfigFields } from "./doc-room-config";
-import { getYdoc } from "./yjs-docs";
 import { user } from "./local-user";
+import { getYdoc } from "./yjs-docs";
 
-interface TrysteroDocRoomProps {
-  y: Doc;
-  room: Room;
+type ConnectionStatus = "connected" | "disconnected"
+type SyncStatus = "synced" | "unsynced"
+type LoadStatus = "loaded" | "loading" | "waiting" | "receiving" | "unloaded"
+
+interface DocRoomState {
+  needsPasswordToConnect?: boolean
+  canConnect?: boolean
+  provider?: TrysteroProvider
 }
 
-interface TrysteroDocRoom extends TrysteroDocRoomProps {
-  peerId: string;
-  room: Room;
-  provider: TrysteroProvider;
-  disconnect: () => void;
-  $awarenessStates: ReadableAtom<Map<number, any>>;
-}
-export interface OnlineDocRoomFields {
-  peerIds: string[];
-  synced: boolean;
-  loaded: boolean;
+function getDocRoomId(docId: string, roomId: string) {
+  return `${docId}/${roomId}`;
 }
 
-export interface TrysteroDocRoomModel
-  extends TrysteroDocRoom,
-    MapStore<OnlineDocRoomFields> {}
+export function getTrysteroDocRoom(docId: string, roomId: string) {
+  return trysteroDocRoomT(getDocRoomId(docId, roomId), docId, roomId);
+}
+
+
 
 function createTrysteroDocRoom(
-  docRoomId: string,
-  y: Doc,
+  docId: string,
+  ydoc: Doc,
   roomId: string,
-  config: DocRoomConfigFields,
-  store = map({
-    loaded: false,
-    synced: false,
-  } as OnlineDocRoomFields),
 ) {
-  store.setKey("peerIds", [] as string[]);
-
-  const $awarenessStates = atom(new Map());
-  onMount($awarenessStates, () => {
-    const onChange = ({
-      added,
-      updated,
-      removed,
-    }: {
-      added: number[];
-      updated: number[];
-      removed: number[];
-    }) => {
-      let states = provider.awareness.getStates();
-      // force new map for react because state changed
-      if (states === $awarenessStates.get()) {
-        states = new Map(states);
-      }
-      $awarenessStates.set(states);
-    };
-    provider.awareness.on("change", onChange);
-    return () => {
-      provider.awareness.off("change", onChange);
-    };
-  });
-
-  const peerId = selfId;
-
+  const $config = getDocRoomConfig(docId, roomId);
   
-  const trysteroRoom = createTrysteroRoomForStore(roomId, store);
-
-  const password = config.encrypt ? config.password : undefined;
-  
-  const provider = new TrysteroProvider(y, roomId, trysteroRoom, { password, accessLevel: config.accessLevel });
-  
-  const unsubUser = user.subscribe((user) => {
-    setUserInAwareness(user);
-  });
-
-  provider.on('status', ({ connected }: { connected: boolean }) => {
-    if (connected) {
-      provider.awareness.setLocalState(provider.awareness.getLocalState());
-    }
-  });
-
-  provider.on("synced", ({ synced }: { synced: boolean }) => {
-    store.setKey("synced", synced);
-    if (synced && !store.get().loaded) {
-      store.setKey("loaded", true);
-      if (!y.isLoaded) {
-        y.emit("load", []);
-      }
-    }
-  });
-
-  provider.on("peers", ({ added, removed }:{removed: string[], added: string[]}) => {
-    store.setKey("peerIds", store.get().peerIds.concat(added).filter((it) => !removed.includes(it)));
+  const store = map<DocRoomState>({
+    needsPasswordToConnect: false,
+    canConnect: false,
+    provider: undefined
   })
 
+  const $connectionState = atom<ConnectionStatus>('disconnected')
+  const $syncState = atom<SyncStatus>('unsynced')
+  const $loadState = atom<LoadStatus>('unloaded')
+  const $peerIds = atom<string[]>([])
+  const $enabledSharingLink = computed([$config], (config) => {
+    return config.enabled ? $config.$sharingLink.get() : undefined
+  })
+  
+  const awareness = new Awareness(ydoc)
+
   function setUserInAwareness(user: Readonly<{ username: string; color: string; }>) {
-    provider.awareness.setLocalState({
+    awareness.setLocalState({
       user: {
         color: user.color,
         name: user.username, // for y codemirror
@@ -115,88 +67,109 @@ function createTrysteroDocRoom(
     })
   }
 
-  function disconnect() {
-    const { provider } = model;
-    provider.room?.disconnect()
-    ;(trysteroRoom as any).leftAt = new Date();
-    store.setKey("peerIds", []);
+  const $awarenessStates = atom(new Map());
+  onMount($awarenessStates, () => {
+    const onChange = () => {
+      let states = awareness.getStates();
+      // force new map for react because state changed
+      if (states === $awarenessStates.get()) {
+        states = new Map(states);
+      }
+      $awarenessStates.set(states);
+    };
+    awareness.on("change", onChange);
+    return () => {
+      awareness.off("change", onChange);
+    };
+  });
 
-  }
 
-  function destroy () {
-    disconnect();
-    unsubUser();
-  }
+  onMount(store, () => {
+    const unsubUser = user.subscribe((user) => {
+      setUserInAwareness(user);
+    });
+    
 
-  async function reconnect () {
-    const trysteroRoom = createTrysteroRoomForStore(roomId, store)
-    await provider.connect(trysteroRoom)
-    setUserInAwareness(user.get());
-  }
+    const unsubConfig = $enabledSharingLink.subscribe(() => {
+      const config = $config.get()
+
+      const needsPasswordToConnect = config.encrypt && !config.password;
+      const canConnect = config.enabled && !needsPasswordToConnect; 
+
+      const prevProvider = store.get().provider      
+      if (prevProvider) {
+        prevProvider.destroy()
+      }
+
+      const provider = canConnect ? createProvider(config) : undefined
+      if (prevProvider && provider) {
+        console.warn('recreating provider')
+      }
+      if (provider) {
+        setUserInAwareness(user.get());
+      }
+      store.set({
+        needsPasswordToConnect,
+        canConnect,
+        provider
+      })      
+    })
+    return () => {
+      unsubConfig()
+      unsubUser()
+      store.value?.provider?.destroy()
+    }
+    
+  })
   
+
+  function createProvider(config: Readonly<DocRoomConfigFields>) {
+    const { roomId, password, encrypt, accessLevel } = config;
+    const provider = new TrysteroProvider(ydoc, roomId, createRoom, { appId: appId }, { 
+      password, 
+      accessLevel: config.accessLevel,
+      awareness
+    });
+    provider.on('status', ({ connected }: { connected: boolean }) => {
+      if (connected) {
+        setUserInAwareness(user.get())
+        $connectionState.set('connected')
+      }
+    });  
+    provider.on("synced", ({ synced }: { synced: boolean }) => {
+      $syncState.set('synced')
+      if (synced && $loadState.get()!== 'loaded') {
+        $loadState.set('loaded')
+        if (!ydoc.isLoaded) {
+          ydoc.emit("load", []);
+        }
+      }
+    });  
+    provider.on("peers", (e:{removed: string[], added: string[], resurrected: string[] }) => {
+      const { added, removed, resurrected } = e;
+      $peerIds.set( $peerIds.get().concat(added).concat(resurrected).filter((it) => !removed.includes(it)));
+    })
+    return provider
+  }
+
   const model = Object.assign(store, {
-    y,
-    peerId,
-    disconnect,
-    reconnect,
-    destroy,
-    room: trysteroRoom,
-    provider,
+    y: ydoc,
+    awareness,
+    $config,
     $awarenessStates,
+    $connectionState,
+    $syncState,
+    $loadState,
+    $peerIds
   });
   return model;
 }
 
 const trysteroDocRoomT = mapTemplate(
   (id, docId: string, roomId: string) =>
-    Object.assign(map({} as OnlineDocRoomFields), {
-      id,
+    createTrysteroDocRoom(
       docId,
+      getYdoc(docId).get(),
       roomId,
-    }),
-  (store, docRoomKey, docId, roomId) => {
-    const $config = getDocRoomConfig(docId, roomId);
-    let config = $config.get();
-    const unsubConfig = $config.listen(() => {});
-    const $ydoc = getYdoc(docId);
-    let y: Doc = $ydoc.get();
-    const unsubDoc = $ydoc.listen(() => {});
-    const $docRoom = createTrysteroDocRoom(
-      docRoomKey,
-      y,
-      roomId,
-      config,
-      store as any,
-    );
-    return () => {
-      const y = store.value;
-      $docRoom?.disconnect();
-      unsubDoc();
-      unsubConfig();
-    };
-  },
+    )
 );
-
-function createTrysteroRoomForStore(roomId: string, store: MapStore<OnlineDocRoomFields>) {
-  const trysteroRoom = createRoom(roomId);
-  trysteroRoom.onPeerJoin((peerId) => {
-    store.setKey("peerIds", store.get().peerIds.concat(peerId));
-  });
-  trysteroRoom.onPeerLeave((peerId) => {
-    store.setKey(
-      "peerIds",
-      store.get().peerIds.filter((it) => it !== peerId)
-    );
-  });
-  return trysteroRoom;
-}
-
-export function getTrysteroDocRoom(docId: string, roomId: string) {
-  const key = getDocRoomId(docId, roomId);
-  const model = trysteroDocRoomT(key, docId, roomId);
-  return model as typeof model & TrysteroDocRoomModel;
-}
-
-function getDocRoomId(docId: string, roomId: string) {
-  return `${docId}/${roomId}`;
-}

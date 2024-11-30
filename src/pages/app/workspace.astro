@@ -1,0 +1,13 @@
+---
+import Layout from "@/layouts/BaseLayout.astro";
+import App from "@/app/workspace/App";
+const frontmatter = {
+  title: "Workspace",
+  favicon: "/y-labs/logos/lucide-drive.svg",
+  description: "My file workspace",
+};
+---
+
+<Layout {...frontmatter}>
+  <App client:only="react" frontmatter={frontmatter} />
+</Layout>

@@ -1,27 +1,26 @@
-import { Suspense } from "react";
-import { useParams } from "react-router-dom";
-import AppBar from "../shared/AppBar";
-import { LazyBlocknote } from "./lazy/editor";
-import { useDocCollabStore } from "../shared/useDocCollabStore";
-import { useStore } from "@nanostores/react";
-import { atom } from "nanostores";
-import { getDocLoadState } from "../shared/store/doc-loader";
 import { cn } from "@/lib/utils";
+import { useStore } from "@nanostores/react";
+import { Suspense } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
+import AppBar from "../shared/AppBar";
+import { PasswordRequiredDialog } from "../shared/PasswordRequiredDialog";
+import { getDocLoadState } from "../shared/store/doc-loader";
+import { useDocCollabStore } from "../shared/useDocCollabStore";
+import { LazyBlocknote } from "./lazy/editor";
 
 export function useDocParams() {
-  const { docId } = useParams();
-  if (!docId) {
-    alert("No document id specified");
-  }
-
+  const { docId } = useParams();  
   return { docId };
 }
 
 export function Editor({ className }: { className?: string }) {
-  const { docId, ydoc, $room, roomId } = useDocCollabStore();
+  const { docId } = useDocParams();
+  const [searchParams] = useSearchParams();
+  const roomId = searchParams.get("roomId")
   const $loader = getDocLoadState(docId, roomId);
   const loadState = useStore($loader);
-  const fragment = ydoc.getXmlFragment("blocknote");
+  const { needsPasswordToConnect } = useDocCollabStore(true);
+  const canShow = !needsPasswordToConnect || loadState === "loaded";
   return (
     <div className={cn("w-full flex-1 mx-auto relative", className)}>
       <div className="max-w-3xl mx-auto h-full flex flex-col">
@@ -45,17 +44,15 @@ export function Editor({ className }: { className?: string }) {
               </div>
             </div>
           )}
-          {!!ydoc && (
-            <LazyBlocknote
-              autofocus
-              key={docId}
-              provider={$room?.provider}
-              fragment={fragment}
-              className={cn("flex-1", loadState === "loading" && "hidden")}
-            />
-          )}
+          {canShow && <LazyBlocknote
+            autofocus
+            key={docId}
+            className={cn("flex-1", loadState === "loading" && "hidden")}
+          />}
+        
         </Suspense>
       </div>
+      <PasswordRequiredDialog />
     </div>
   );
 }

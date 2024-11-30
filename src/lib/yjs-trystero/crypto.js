@@ -36,6 +36,18 @@ export const deriveKey = (secret, roomName) => {
 };
 
 /**
+ * @param {CryptoKey} key
+ * @param {number} length
+ * @return {PromiseLike<string>}
+ **/
+export async function extractPartOfKey(key, length = 16) {
+  const keyBuffer = await crypto.subtle.exportKey("raw", key);
+  const keyBase64 = btoa(String.fromCharCode(...new Uint8Array(keyBuffer)));
+  return keyBase64.slice(0, length);
+}
+
+
+/**
  * @param {Uint8Array} data data to be encrypted
  * @param {CryptoKey?} key
  * @return {PromiseLike<Uint8Array>} encrypted, base64 encoded message

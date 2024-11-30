@@ -10,12 +10,14 @@ interface PasswordInputProps extends React.InputHTMLAttributes<HTMLInputElement>
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
   readOnly?: boolean;
+  showCopyButton?: boolean;
 }
 export const PasswordInput = ({
   value,
   onChange,
   disabled,
   readOnly,
+  showCopyButton,
   ...props
 }: PasswordInputProps) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -70,7 +72,7 @@ export const PasswordInput = ({
           </AnimatePresence>
         </Button>
       </div>
-      <CopyButton value={value} label="password" />
+      {!!showCopyButton && <CopyButton value={value} label="password" />}
     </div>
   );
 };

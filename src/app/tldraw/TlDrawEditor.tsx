@@ -5,17 +5,17 @@ import {
   createTLStore,
   defaultShapeUtils,
   getUserPreferences,
-  setUserPreferences,
+  setUserPreferences
 } from "@tldraw/tldraw";
-import "@tldraw/tldraw/tldraw.css";
 import { useEffect, useState } from "react";
 import { useTheme } from "../../lib/astro-tailwind-themes/useTheme";
-import AppBar from "@/app/shared/AppBar";
 import { getDocLoadState } from "@/app/shared/store/doc-loader";
 import { useDocCollabStore } from "@/app/shared/useDocCollabStore";
 import { useYjsTlDrawStore } from "./use-yjs-tldraw";
+import "@tldraw/tldraw/tldraw.css";
+import "./style.css"
 
-export function TlDrawHost({ className }: { className?: string }) {
+export default function TlDrawEditor({ className }: { className?: string; }) {
   const [store] = useState(() => {
     const store = createTLStore({
       shapeUtils: [...defaultShapeUtils],
@@ -28,7 +28,7 @@ export function TlDrawHost({ className }: { className?: string }) {
   useStore($loader);
   useStore($loader.$offline.$enabled);
   const persister = useStore($loader.$offline.$persister);
-  const provider = $room?.provider;
+  const provider = $room?.get().provider;
   const tld = useYjsTlDrawStore({
     yDoc: ydoc,
     store,
@@ -47,8 +47,7 @@ export function TlDrawHost({ className }: { className?: string }) {
   }, [isDark]);
 
   return (
-    <div className={cn(className, "min-h-screen flex flex-col")}>
-      <AppBar />
+    <div className={cn(className, "flex-1 flex flex-col")}>
 
       {tld.status === "loading" && (
         <div className="flex-1 flex items-center justify-center">
@@ -64,5 +63,3 @@ export function TlDrawHost({ className }: { className?: string }) {
     </div>
   );
 }
-
-export default TlDrawHost;

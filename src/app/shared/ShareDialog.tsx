@@ -11,6 +11,7 @@ import {
 import {
   Select,
   SelectItem,
+  SelectLabel,
   SelectListBox,
   SelectPopover,
   SelectTrigger,
@@ -38,48 +39,46 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { buildUrl } from "@/lib/buildUrl";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Copy, Share2, Share2Icon, StopCircle } from "lucide-react";
-import { forwardRef, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import { useForm, useFormContext } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { z } from "zod";
 import { generateId } from "./generateId";
-import { RoomConfigSchema, getDocRoomConfig } from "./store/doc-room-config";
+import { RoomConfigSchema, getDocRoomConfig, type DocRoomConfigFields } from "./store/doc-room-config";
 import { user } from "./store/local-user";
 import { useDocCollabStore } from "./useDocCollabStore";
 import { useStoreIfPresent } from "./useStoreIfPresent";
 
-export function ShareDialog() {
-  const [isOpen, setIsOpen] = useState(false);
-  const { docId, roomId, $room, $roomConfig, startSharing, stopSharing } =
+export function ShareDialog({ type }: { type?: string }) {
+  const { docId, $room, $roomConfig, startSharing, stopSharing } =
     useDocCollabStore();
 
-
   const roomConfigMaybe = useStoreIfPresent($roomConfig);
-  const roomMaybe = useStoreIfPresent($room);
-  const peerIds = roomMaybe?.peerIds ?? [];
+
+  const peerIds = useStoreIfPresent($room?.$peerIds) as string[];
   const awarenessUsers = useStoreIfPresent(
     $room?.$awarenessStates
   );
-  const awarenessClientID = $room?.provider?.awareness.clientID;
+  const provider = $room?.get().provider
+  const awarenessClientID = provider?.awareness.clientID;
   const isSharing = roomConfigMaybe?.enabled ?? false;
-  // const isSharing = $roomConfig?.get().enabled ?? false;
   const actionLabel = isSharing ? "Sharing" : "Share";
   const [searchParams] = useSearchParams();
   const roomParameter = searchParams.get("roomId");
   const navigate = useNavigate();
+
   const form = useForm<z.infer<typeof RoomConfigSchema>>({
-    
     resolver: zodResolver(RoomConfigSchema),
     defaultValues: async () => {
       const enabled = roomConfigMaybe?.enabled ?? false;
       const inRoom = roomParameter
       const encrypt = inRoom ? (roomConfigMaybe?.encrypt || !!roomConfigMaybe?.password) : true;
       return {
-        docId,
         roomId: roomParameter || generateId(),
         enabled,
         encrypt,
@@ -88,17 +87,23 @@ export function ShareDialog() {
       }
     },
   });
+
+  useEffect(() => {
+    form.reset(roomConfigMaybe)
+  }, [roomConfigMaybe])
+
   const onSubmit = form.handleSubmit(
     (data) => {
-      const { roomId, docId } = data;
+      const { roomId } = data;
       startSharing({
-        ...$roomConfig?.get(),
         ...data,
+        docId
       });
       handleCopyLink();
-      if (roomParameter !== roomId) {
-        navigate(`?roomId=${roomId}`);
-      }
+      const newRoomConfig = getDocRoomConfig(docId, roomId).get();
+      navigate(
+        generateDocRoomRouterLink(newRoomConfig, type)
+      )
     },
     (errors) => {
       console.log({ errors });
@@ -108,7 +113,7 @@ export function ShareDialog() {
   const handleCopyLink = async () => {
     const roomId = form.getValues("roomId");
     const $roomConfig = getDocRoomConfig(docId, roomId);
-    const sharingLink = $roomConfig?.$sharingLink.get();
+    const sharingLink = generateSharingLink($roomConfig.get(), type);
     if (sharingLink && navigator.clipboard){
       await navigator.clipboard?.writeText(sharingLink);
       setLinkCopied(true);
@@ -125,7 +130,8 @@ export function ShareDialog() {
   return (
       <DialogTrigger>
         <AriaButton
-          variant={isSharing ? "sharing" : "share"}          
+          size="sm"
+          variant={isSharing ? "sharing" : "ghost"}
         >
           <div className="sr-only sm:not-sr-only !pr-1">{actionLabel}</div>
           <Share2Icon className="h-5 w-5" />
@@ -242,20 +248,20 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
               disabled={isSharing}
               render={({ field }) => {
                 return (
-                  <FormItem className="flex items-center justify-between">
-                    <FormLabel>
-                      Anyone with the link can{" "}
-                      {field.value === "edit" ? "edit" : "view"}
-                    </FormLabel>
-                    <Select className="w-[100px]"
+                  <FormItem>
+
+                    <Select className="flex items-center justify-between"
                       {...field}               
                       isDisabled={isSharing}
                       onSelectionChange={field.onChange}
                       selectedKey={field.value}
                     >
-
+                      <SelectLabel className="block flex-1">
+                        Anyone with the link can{" "}
+                        <span className="font-bold">{field.value === "edit" ? "edit" : "view"}</span>
+                      </SelectLabel>
                       
-                      <SelectTrigger>
+                      <SelectTrigger className="w-24">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectPopover>
@@ -310,7 +316,7 @@ function SharingConfiguration({ isSharing }: { isSharing: boolean }) {
                           <FormLabel>Password{isEncrypted && "*"}</FormLabel>
                           <FormControl>
                             <div>
-                              <PasswordInput {...field} value={field.value ?? ""} readOnly={isSharing} type="text" />
+                              <PasswordInput showCopyButton {...field} value={field.value ?? ""} readOnly={isSharing} type="text" />
                             </div>
                           </FormControl>
                           <FormDescription />
@@ -451,7 +457,8 @@ function UserList({
       {isSharing && <div>
         <div>You are sharing as:</div>
         { !!userInfo && <div>
-          <User 
+          <UserForm />
+          <User
             name={userInfo.username ?? "Anonymous"}
             description="YOU"
             avatarProps={{
@@ -532,3 +539,100 @@ const User = forwardRef<HTMLDivElement, UserProps>(
     </div>
   ),
 );
+
+const UserForm = forwardRef<HTMLFormElement, React.HTMLProps<HTMLFormElement>>(
+  (props, ref) => {
+    useEffect(() => {
+      return user.subscribe(currentUser => {
+        form.reset(currentUser) 
+      })
+    }, [])
+    const form = useForm<z.infer<typeof UserConfigSchema>>({
+      resolver: zodResolver(UserConfigSchema),
+      mode: "onBlur",
+    });
+    const onSubmit = form.handleSubmit(
+      (data) => {
+        user.set(data);
+      },
+      (errors) => {
+        console.log({ errors });
+      },
+    );
+    return (
+      <Form {...form}>
+        <div onBlur={onSubmit}>
+
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Username</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormDescription />
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+          {/* <FormField
+            control={form.control}
+            name="color"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Color</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormDescription />
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          /> */}
+        </div>
+      </Form>
+    );
+  },
+);
+
+export function generateSharingLink(config: DocRoomConfigFields, type?: string) {
+    const {  docId, roomId, password, encrypt } = config;    
+    const base = [
+      window.location.protocol,
+      "//",
+      window.location.host,
+      window.location.pathname,
+      '#'
+    ].join("");
+    return buildUrl(
+      [base, "edit", docId, type],
+      {
+        roomId,
+        encrypt: encrypt ? "true" : undefined,
+        x: password,
+      }
+    )
+}
+
+function generateDocRoomRouterLink(config: DocRoomConfigFields, type?: string) {  
+  const { docId, roomId, password, encrypt } = config;  
+  return buildUrl(
+    ["/edit", docId, type],
+    {
+      roomId,
+      encrypt: encrypt ? "true" : undefined,
+    }
+  )
+}
+
+
+export const UserConfigSchema = z.object({
+  username: z.string().min(1, { message: "Required" }),
+  color: z.string().min(1, { message: "Required" }),
+})

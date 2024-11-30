@@ -1,36 +1,11 @@
 import { Card, CardFooter, CardHeader } from "@/components/ui/card";
+import { Toaster } from "@/components/ui/toaster.tsx";
 import { cn } from "@/lib/utils.js";
-import { useStore } from "@nanostores/react";
-import { FileQuestionIcon } from "lucide-react";
+import { typeIconMap } from "../shared/typeIconMap.tsx";
 import { CreateDocumentDialog } from "./CreateDocumentDialogButton.tsx";
+import DriveListing from "./DriveListing.tsx";
 import { ImportDriveModal } from "./ImportDrive.tsx";
-import { documentsStore } from "./store.ts";
 
-const typeIconMap = {
-  codemirror: (
-    <img
-      src="/y-labs/logos/codemirror.svg"
-      alt="CodeMirror"
-      className="h-8 w-8"
-    />
-  ),
-  blocknote: (
-    <img
-      src="/y-labs/logos/blocknote.svg"
-      alt="Blocknote"
-      className="h-8 w-8"
-    />
-  ),
-  novel: <img src="/y-labs/logos/novel.svg" alt="Novel" className="h-8 w-8" />,
-  tldraw: (
-    <img
-      src="/y-labs/logos/tldraw.svg"
-      alt="TL Tldraw Meta"
-      className="h-8 w-8"
-    />
-  ),
-  unknown: <FileQuestionIcon className="h-8 w-8" />,
-};
 
 const docTypes = [
   {
@@ -55,7 +30,7 @@ const docTypes = [
   },
 ];
 
-function getDocUrl(name: string, type: string) {
+export function getDocUrl(name: string, type: string) {
   switch (type) {
     case "novel":
       return `/y-labs/app/novel/index.html#/edit/${name}`;
@@ -69,7 +44,7 @@ function getDocUrl(name: string, type: string) {
       return undefined;
   }
 }
-const EmptyState = () => (
+export const EmptyState = () => (
   <div className="flex-1 flex flex-col items-center justify-center p-20 text-center">
     <h2 className="text-default-400 mb-32">No Documents Found</h2>
     <CreateDocButtons />
@@ -105,50 +80,6 @@ export function CreateDocButtons() {
   );
 }
 
-function DriveListing() {
-  const documents = useStore(documentsStore);
-  if (!documents) {
-    return <div>Loading...</div>;
-  }
-  if (documents.length === 0) {
-    return <EmptyState />;
-  }
-  return (
-    <div className="w-full max-w-3xl mx-auto  flex-1 flex flex-col gap-2 p-2">
-      {documents.map((doc, index) => {
-        const url = getDocUrl(doc.name, doc.type);
-        if (!url) return null;
-        return (
-          <a key={doc.name} href={getDocUrl(doc.name, doc.type)}>
-            <Card className="transition-all text-foreground box-border shadow-medium rounded-small hover:bg-secondary cursor-pointer  active:scale-[0.97]">
-              <div className="w-full flex items-center p-4 gap-4">
-                <div className="flex-1 flex items-center gap-2">
-                  {typeIconMap[doc.type as keyof typeof typeIconMap] ?? typeIconMap["unknown"]}
-                  <div className="text-sm font-semibold flex-1">
-                    {doc.title || "[Untitled]"}
-                  </div>
-                  <div className="text-sm text-default-500">{doc.type}</div>
-                </div>
-                {/* <Tooltip content="Delete document" color="danger">
-                <Button
-                  color="danger"
-                  size="sm"
-                  variant="light"
-                  isIconOnly
-                  className="rounded-full"
-                >
-                  <TrashIcon size={"16"} />
-                </Button>
-              </Tooltip> */}
-              </div>
-            </Card>
-          </a>
-        );
-      })}
-    </div>
-  );
-}
-
 function Drive({ className }: { className?: string }) {
   return (
     <div className="flex flex-col min-h-screen">
@@ -159,6 +90,7 @@ function Drive({ className }: { className?: string }) {
       </div>
       <CreateDocumentDialog />
       <ImportDriveModal />
+      <Toaster />
     </div>
   );
 }

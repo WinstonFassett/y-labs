@@ -12,7 +12,6 @@ export interface DocRoomConfigFields {
 }
 
 export const RoomConfigSchema = z.object({
-  docId: z.string(),
   roomId: z.string().min(1, { message: "Required" }),
   enabled: z.boolean(),
   encrypt: z.boolean(),
@@ -39,7 +38,7 @@ const docRoomConfigsT = mapTemplate(
     docId: string,
     roomId: string,    
   ) => {
-    const store = map();
+    const store = map<DocRoomConfigFields>();
     
     const $sharingLink = computed(store, ({  roomId, password, encrypt }) => {
       return [
@@ -55,10 +54,20 @@ const docRoomConfigsT = mapTemplate(
       ].join("")  
     })
 
+    const $validation = computed(store, ({ roomId, encrypt, password }) =>{
+      const needsPasswordToConnect = encrypt && !password
+      const canConnect = !needsPasswordToConnect
+      return {
+        needsPasswordToConnect,
+        canConnect
+      }
+    })
+
     return Object.assign(store, {
       docId,
       roomId,
-      $sharingLink
+      $sharingLink,
+      $validation
     });
   },
   (store, id, docId, roomId) => {

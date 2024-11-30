@@ -26,6 +26,8 @@ import { suggestionItems } from "./slash-command";
 
 import type { Extension } from "@tiptap/core";
 import GenerativeMenuSwitch from "./generative/generative-menu-switch";
+import "./styles/prosemirror.css";
+import "./tiptap-collab.css";
 
 export const Novel = ({
   className,

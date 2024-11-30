@@ -20,6 +20,7 @@ import { LazyAppBarCollab } from "../blocknote/lazy/collab";
 import { LazyDocPersistenceToggle } from "../blocknote/lazy/storage";
 import { DocTitle } from "./DocTitle";
 import { $settingsStore } from "./SettingsDialog";
+import { ShareDialog } from "./ShareDialog";
 
 export default function AppBar({ className }: { className?: string }) {
   const [theme, setTheme] = useTheme();
@@ -34,7 +35,7 @@ export default function AppBar({ className }: { className?: string }) {
             asChild
             title="Saved Documents"
             variant="ghost"
-            className="block flex items-center"
+            className="flex items-center"
           >
             <a href="/y-labs/app/drive/index.html">
               <HardDriveIcon className="h-5 w-5" />
@@ -53,6 +54,7 @@ export default function AppBar({ className }: { className?: string }) {
         <Suspense>
           <LazyAppBarCollab />
         </Suspense>
+        <ShareDialog />
         <MenuTrigger>
           <AriaButton aria-label="Menu" size="icon" variant="ghost" className="rounded-full">
             <MoreVertical size={20} />

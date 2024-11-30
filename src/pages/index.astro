@@ -21,27 +21,33 @@ function compareDates(get = (x?: any) => x) {
   };
 }
 ---
-
-<MainLayout pageTitle={SITE_TITLE}>
+<MainLayout pageTitle={SITE_TITLE} class="light:bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] dark:bg-[radial-gradient(circle_500px_at_50%_200px,#3e3e3e,transparent)]">  
   <div class="w-full flex-1 mx-auto relative">
     <div class="max-w-3xl mx-auto h-full flex flex-col">
-      <h1 class="text-6xl font-bold text-center">Welcome to {SITE_TITLE}!</h1>
+      <header class="pt-12">
 
-      <p class="pt-10 text-center">
-        Experiments in local-first software with <a
-          class="text-primary underline"
-          href="https://github.com/yjs/yjs"
-        >
-          Yjs
-        </a>
-      </p>
+        <h1 class="text-6xl font-bold text-center">Welcome to {SITE_TITLE}!</h1>
+            
+        <p class="pt-10 text-center">
+          Experiments in local-first software with <a
+            class="text-primary underline"
+            href="https://github.com/yjs/yjs"
+          >
+            Yjs
+          </a>
+        </p>
+          
+        <p class="text-center">Featuring offline editing, P2P sharing and realtime collaboration</p>
+
+      </header>
 
       <hr class="m-10" />
 
-      <h3 class="text-4xl font-bold pb-6 text-center">Local Apps</h3>
+      <h3 class="text-4xl font-bold pb-6 text-center">Apps</h3>
+
 
       <CardList>
-        {sortedLabs.slice(0, 5).map((lab) => <LabPreview {...lab.data} />)}
+        {sortedLabs.map((lab) => <LabPreview {...lab.data} />)}
       </CardList>
     </div>
   </div>
