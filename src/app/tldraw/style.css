@@ -1,3 +1,6 @@
+body {
+  @apply overflow-hidden;
+}
 .z-50 {
-  z-index: 100000;
+  @apply z-[100000];
 }

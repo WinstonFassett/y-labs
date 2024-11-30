@@ -47,7 +47,7 @@ export default function TlDrawEditor({ className }: { className?: string; }) {
   }, [isDark]);
 
   return (
-    <div className={cn(className, "flex-1 flex flex-col")}>
+    <div className={cn(className, "flex-1 flex flex-col max-h-screen overflow-hidden")}>
 
       {tld.status === "loading" && (
         <div className="flex-1 flex items-center justify-center">
