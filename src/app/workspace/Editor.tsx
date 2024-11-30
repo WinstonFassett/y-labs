@@ -10,7 +10,7 @@ import { useStoreIfPresent } from "../shared/useStoreIfPresent";
 export const EditorsByType: Record<string, React.ComponentType<{ className?: string }>>
  = {
   novel: lazy(() => import("./NovelEditor")),
-  // tldraw: lazy(() => import("@/app/tldraw/TlDrawEditor")),
+  tldraw: lazy(() => import("@/app/tldraw/TlDrawEditor")),
   // codemirror: lazy(() => import("@/app/codemirror/Codemirror")),
   blocknote: lazy(() => import("@/app/blocknote/Blocknote")),
   drive: lazy(() => import("@/app/drive/DriveListing")),
