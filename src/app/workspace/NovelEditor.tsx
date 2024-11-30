@@ -21,13 +21,16 @@ export default function NovelEditor() {
   const providerReady = roomId ? !!provider : true;
   const u = user.get();
   const waiting = !providerReady && !ready ;
+  const meta = ydoc.getMap<any>("meta");
+  const title = (meta.get("title") as string) || "";
+  const autofocus = ready && !!title  
   return (
     <div className="min-h-full flex-1 flex flex-col max-w-3xl mx-auto w-full p-4">
-      {waiting && <div>Loading...</div>}
-      {!waiting && 
+      {!ready && <div>Loading...</div>}
+      {ready && 
         <Novel
           key={docRoomId}
-          autofocus={true}
+          autofocus={autofocus}
           disableHistory={true}
           extensions={[
             TextStyle as any, 
