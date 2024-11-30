@@ -17,6 +17,7 @@ import { addAIHighlight } from "../extensions/ai-highlight";
 import OpenAI from "openai";
 import { useStore } from "@nanostores/react";
 import { $openaiApiKey } from "@/app/shared/store/secure-settings";
+import { createRecipeStepPrompt, parseRecipe } from "./createRecipeStepPrompt";
 //TODO: I think it makes more sense to create a custom Tiptap extension for this functionality https://tiptap.dev/docs/editor/ai/introduction
 
 interface AISelectorProps {
@@ -41,16 +42,26 @@ export function AISelector({ open, onOpenChange }: AISelectorProps) {
 
   const openai = openaiRef.current;
 
-  const handleCompletion = async (prompt: string) => {
+  const handleCompletion = async (
+    // prompt: string,
+    messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[],
+    replacer: (prevCompletion: string, newCompletion: string) => string = (
+      prev,
+      next,
+    ) => next,
+  ) => {
     setIsLoading(true);
 
     try {
       const response = await openai!.chat.completions.create({
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: prompt }],
+        model: "gpt-4o",
+        messages,
       });
 
-      setCompletion(response.choices[0].message.content!);
+      const newCompletion = response.choices[0].message.content!;
+      setCompletion((prevCompletion) =>
+        replacer(prevCompletion, newCompletion),
+      );
     } catch (error: any) {
       if (error.response && error.response.status === 429) {
         toast.error("You have reached your request limit for the day.");
@@ -62,12 +73,26 @@ export function AISelector({ open, onOpenChange }: AISelectorProps) {
     }
   };
 
+
+
   const handleComplete = () => {
     const slice = editor?.state.selection.content();
     const text =
       slice && editor?.storage.markdown.serializer.serialize(slice.content);
 
-    handleCompletion(inputValue || text).then(() => setInputValue(""));
+    handleCompletion([
+      {
+        role: "system",
+        content: `
+        You are an automation that cannot talk back. Only complete the current step. Do not work ahead.
+
+        Input: 
+        ${text}
+        `,
+      },
+      { role: "user", content: inputValue },
+      { role: "assistant", content: "OUTPUT:\n" },
+    ]).then(() => setInputValue(""));
   };
 
   const hasCompletion = completion.length > 0;
@@ -124,13 +149,57 @@ export function AISelector({ open, onOpenChange }: AISelectorProps) {
             />
           ) : (
             <AISelectorCommands
-              onSelect={(value, option) =>
-                handleCompletion(value).then(() => setInputValue(""))
-              }
+              onSelect={(value, option) => {
+                switch (option) {
+                  case "recipe":
+                    const recipe = parseRecipe(value);
+                    console.log('running recipe', recipe);
+                    runRecipe(recipe);
+                    break;
+                  default:
+                    console.log("completing", { value, option });
+                    handleCompletion([
+                      { role: "user", content: `${option}: ${value}` },
+                    ]).then(() => setInputValue(""));
+
+                    break;
+                }
+
+              }}
             />
           )}
         </>
       )}
     </Command>
   );
+}
+
+async function runRecipe({
+  prompt,
+  steps,
+  handleCompletion
+}: {
+  prompt: string;
+  steps: string[];
+  handleCompletion: (
+    prompts: {
+      role: string;
+      content: string;
+    }[], 
+    replacer?: (prev: string, next: string) => string
+  ) => Promise<string>;
+}) {
+  const outputs = [] as string[];
+  for (let index = 0; index < steps.length; index++) {
+    const stepPrompts = createRecipeStepPrompt({
+      prompt,
+      steps,
+      index,
+      outputs,
+    });
+    await handleCompletion(stepPrompts, (prev = "", value) => {
+      outputs.push(value);
+      return [prev, value].join("\n\n");
+    });
+  }
 }

@@ -16,6 +16,16 @@ const options = [
     label: "Improve writing",
     icon: RefreshCcwDot,
   },
+  {
+    value: "explain",
+    label: "Explain",
+    icon: RefreshCcwDot,
+  },
+  {
+    value: "Summarize",
+    label: "summarize",
+    icon: RefreshCcwDot,
+  },
 
   {
     value: "fix",
@@ -32,6 +42,11 @@ const options = [
     label: "Make longer",
     icon: WrapText,
   },
+  {
+    value: "recipe",
+    label: "Use as Recipe",
+    icon: WrapText,
+  },
 ];
 
 interface AISelectorCommandsProps {
@@ -40,7 +55,7 @@ interface AISelectorCommandsProps {
 
 const AISelectorCommands = ({ onSelect }: AISelectorCommandsProps) => {
   const { editor } = useEditor();
-
+  if (!editor) return null;
   return (
     <>
       <CommandGroup heading="Edit or review selection">
@@ -66,7 +81,7 @@ const AISelectorCommands = ({ onSelect }: AISelectorCommandsProps) => {
       <CommandGroup heading="Use AI to do more">
         <CommandItem
           onSelect={() => {
-            const text = getPrevText(editor, { chars: 5000 });
+            const text = getPrevText(editor, 5000);
             onSelect(text, "continue");
           }}
           value="continue"
