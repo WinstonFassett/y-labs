@@ -77,6 +77,17 @@ const AISelectorCommands = ({ onSelect }: AISelectorCommandsProps) => {
       </CommandGroup>
       <CommandSeparator />
       <CommandGroup heading="Use AI to do more">
+        <CommandItem
+          onSelect={() => {
+            const text = getPrevText(editor, 5000);
+            onSelect(text, "continue");
+          }}
+          value="continue"
+          className="gap-2 px-4"
+        >
+          <StepForward className="h-4 w-4 text-purple-500" />
+          Continue writing
+        </CommandItem>
         <CommandItem 
           key="recipe"
           value="recipe"
@@ -91,18 +102,6 @@ const AISelectorCommands = ({ onSelect }: AISelectorCommandsProps) => {
           <Wand2Icon className="h-4 w-4 text-purple-500" />
           Multistep Prompt
           </CommandItem>
-        
-        <CommandItem
-          onSelect={() => {
-            const text = getPrevText(editor, 5000);
-            onSelect(text, "continue");
-          }}
-          value="continue"
-          className="gap-2 px-4"
-        >
-          <StepForward className="h-4 w-4 text-purple-500" />
-          Continue writing
-        </CommandItem>
       </CommandGroup>
     </>
   );
