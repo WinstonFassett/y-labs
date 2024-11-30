@@ -20,7 +20,7 @@ export function Editor({ className }: { className?: string }) {
     <div className={cn("flex flex-col", className)}>
       <AppBar />
       {!canShow && <div>Loading...</div>}
-      {canShow && <Codemirror className="flex-1" />}
+      {canShow && <Codemirror className="flex-1 flex flex-col" />}
       <PasswordRequiredDialog />
     </div>
   );
