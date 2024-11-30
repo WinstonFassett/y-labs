@@ -42,9 +42,11 @@ export function DocTitle() {
     setWindowTitle(e.target.value);
   };
   const onChangeDebounced = useDebouncedCallback(updateTitle, 1000);
+  const hasTitle = title.length > 0;
   return (
     <>
       <Input
+        autoFocus={!hasTitle}
         placeholder={"Add a Title"}
         value={pendingTitle}
         // size="sm"
