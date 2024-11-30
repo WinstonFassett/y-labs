@@ -60,7 +60,7 @@ export const Novel = ({
 
   return (
     <div className={cn("flex-1 flex flex-col", className)}>
-      <EditorRoot className="heeyo">
+      <EditorRoot>
         <EditorContent
           // initialContent={initialContent}
           extensions={extensions}
