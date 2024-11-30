@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import * as Y from "yjs";
 import { getOfflineDoc } from "../shared/store/local-yjs-idb";
 import { resolveShare } from "../shared/store/resolveShare";
+import { getAllDocMetadata } from "../shared/store/doc-metadata";
 
 export function ExportDriveButton() {
   return <Button onClick={doExport}>Export Drive</Button>;
@@ -32,16 +33,17 @@ async function doDownload(file: string, content: string) {
 
 async function exportAllYDocsToString(asJson = false) {
   const docsData = {} as Record<string, any>; // Object to hold all document names and their serialized states
-  const databases = await indexedDB.databases(); // Assuming this gives the Y-Doc names
+  
+  const allDocs = await getAllDocMetadata()
 
-  for (const db of databases) {
+  for (const docInfo of allDocs) {
     try {
-      const { name } = db;
-      if (!name) continue;
-      const ydoc = await getOfflineDoc(name);
+      const { id } = docInfo;
+      if (!id) continue;
+      const ydoc = await getOfflineDoc(id);
       if (asJson) {
-        docsData[name] = Object.fromEntries(
-          ydoc.share.entries().map(([key, value]) => {
+        docsData[id] = Object.fromEntries(
+          Array.from(ydoc.share.entries()).map(([key, value]) => {
             const resolved = resolveShare(ydoc, key);
             return [key, resolved.toJSON()];
           }),
@@ -50,11 +52,11 @@ async function exportAllYDocsToString(asJson = false) {
       }
       const encodedState = Y.encodeStateAsUpdate(ydoc);
       const base64String = btoa(
-        String.fromCharCode.apply(null, new Uint8Array(encodedState)),
+        String.fromCharCode.apply(null, encodedState as any),
       );
-      docsData[name] = base64String;
+      docsData[id] = base64String;
     } catch (error) {
-      console.error(`Failed to export document ${db.name}:`, error);
+      console.error(`Failed to export document ${docInfo.id}:`, error);
     }
   }
 
