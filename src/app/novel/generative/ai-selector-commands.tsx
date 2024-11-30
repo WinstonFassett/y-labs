@@ -55,7 +55,7 @@ interface AISelectorCommandsProps {
 
 const AISelectorCommands = ({ onSelect }: AISelectorCommandsProps) => {
   const { editor } = useEditor();
-
+  if (!editor) return null;
   return (
     <>
       <CommandGroup heading="Edit or review selection">
