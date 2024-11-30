@@ -1,13 +1,13 @@
-import { Navigate, createHashRouter } from "react-router-dom";
+import { createHashRouter } from "react-router-dom";
+import { NewAppDocRoute } from "../shared/NewAppDocRoute";
 import { EditorRoute } from "./EditorRoute";
-import { generateId } from "../shared/generateId";
 
 export const routes = [
   {
     path: "/",
-    element: <NewDocRoute />,
+    element: <NewAppDocRoute />,
   },
-  { path: "/new", element: <NewDocRoute /> },
+  { path: "/new", element: <NewAppDocRoute /> },
   {
     path: "/edit/:docId",
     element: <EditorRoute />,
@@ -15,8 +15,3 @@ export const routes = [
 ];
 
 export const router = createHashRouter(routes);
-
-function NewDocRoute() {
-  const id = generateId();
-  return <Navigate to={`/edit/${id}`} replace />;
-}
