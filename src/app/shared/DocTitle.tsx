@@ -46,7 +46,7 @@ export function DocTitle() {
   return (
     <>
       <Input
-        autoFocus={!hasTitle}
+        autoFocus={!hasTitle && ydoc.isLoaded}
         placeholder={"Add a Title"}
         value={pendingTitle}
         // size="sm"
