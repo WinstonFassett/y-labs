@@ -6,6 +6,7 @@ import {
   FileText,
   Moon,
   MoreVertical,
+  Settings,
   Sun,
   UploadIcon,
 } from "lucide-react";
@@ -14,6 +15,7 @@ import {
 } from "./CreateDocumentDialogButton";
 import { doExport, doExportJson } from "./ExportDriveButton";
 import { startImport } from "./ImportDrive";
+import { $settingsStore } from "../shared/SettingsDialog";
 
 export function DriveActions() {
   const [theme, setTheme] = useTheme();
@@ -43,7 +45,18 @@ export function DriveActions() {
             <DownloadIcon size={16} />
             Export Drive to JSON
           </MenuItem>
+          
           <MenuSeparator />
+          
+          <MenuItem
+            onAction={() => {
+              $settingsStore.setKey("show", true);
+            }}
+          >
+            <Settings size={16} />
+            Settings
+          </MenuItem>
+          
           <MenuItem
             onAction={() => {
               setTheme(theme === "dark" ? "light" : "dark");
@@ -52,6 +65,7 @@ export function DriveActions() {
             {theme === "light" ? <Sun size={16} /> : <Moon size={16} />}
             Change Theme
           </MenuItem>
+
         </Menu>
       </MenuPopover>
     </MenuTrigger>

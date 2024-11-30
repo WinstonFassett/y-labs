@@ -5,6 +5,7 @@ import { typeIconMap } from "../shared/typeIconMap.tsx";
 import { CreateDocumentDialog } from "./CreateDocumentDialogButton.tsx";
 import DriveListing from "./DriveListing.tsx";
 import { ImportDriveModal } from "./ImportDrive.tsx";
+import { SettingsDialog } from "../shared/SettingsDialog.tsx";
 
 
 const docTypes = [
@@ -88,8 +89,9 @@ function Drive({ className }: { className?: string }) {
           <DriveListing />
         </div>
       </div>
+      <SettingsDialog />
       <CreateDocumentDialog />
-      <ImportDriveModal />
+      <ImportDriveModal />      
       <Toaster />
     </div>
   );
