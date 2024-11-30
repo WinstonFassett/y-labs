@@ -92,7 +92,7 @@ const DialogContent = ({
   >
     <AriaDialog
       role={role}
-      className={cn(!side && "grid h-full gap-4", "h-full outline-none")}
+      className={cn(!side && "grid h-full gap-4", "h-full outline-none overflow-hidden")}
     >
       {composeRenderProps(children, (children, renderProps) => (
         <>

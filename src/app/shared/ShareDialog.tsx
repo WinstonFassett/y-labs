@@ -137,11 +137,11 @@ export function ShareDialog({ type }: { type?: string }) {
           <Share2Icon className="h-5 w-5" />
         </AriaButton>        
         <DialogOverlay>
-          <DialogContent className="">
+          <DialogContent className="max-h-screen flex flex-col overflow-hidden">
             {({ close }) => (
               <>
                 <Form {...form}>
-                  <form ref={formRef} onSubmit={onSubmit} autoComplete="off">
+                  <form ref={formRef} onSubmit={onSubmit} autoComplete="off" className="flex flex-col flex-1 w-full overflow-hidden">
                     <DialogHeader>
                       <DialogTitle>Share</DialogTitle>
                       <DialogDescription>
@@ -149,46 +149,47 @@ export function ShareDialog({ type }: { type?: string }) {
                       </DialogDescription>
                     </DialogHeader>
 
-                    <div className="py-4 gap-6 space-y-4">
-                      <div className="flex items-center justify-between">
-                        <Label htmlFor="sharing-toggle">
-                          Sharing is {isSharing ? "on" : "off"}
-                        </Label>
-                        <Switch
-                          id="sharing-toggle"
-                          ref={switchRef}
-                          checked={isSharing}
-                          onCheckedChange={(checked) => {
-                            if (checked) {
-                              formRef.current?.requestSubmit();
-                            } else {
-                              stopSharing();
-                            }
-                          }}
-                        />
+                    <div className="flex-1 overflow-y-scroll">
+                      <div className="py-4 gap-6 space-y-4">
+                        <div className="flex items-center justify-between">
+                          <Label htmlFor="sharing-toggle">
+                            Sharing is {isSharing ? "on" : "off"}
+                          </Label>
+                          <Switch
+                            id="sharing-toggle"
+                            ref={switchRef}
+                            checked={isSharing}
+                            onCheckedChange={(checked) => {
+                              if (checked) {
+                                formRef.current?.requestSubmit();
+                              } else {
+                                stopSharing();
+                              }
+                            }}
+                          />
+                        </div>
+
+                        <SharingConfiguration isSharing={isSharing} />
+
+                        <AnimatePresence>
+                          {isSharing && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: "auto" }}
+                              exit={{ opacity: 0, height: 0 }}
+                              transition={{ duration: 0.3 }}
+                            >
+                              <UserList
+                                isSharing={isSharing}
+                                peerIds={peerIds}
+                                awarenessUsers={awarenessUsers}
+                                awarenessClientID={awarenessClientID}
+                              />
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
                     </div>
-
-                    <SharingConfiguration isSharing={isSharing} />
-
-                    <AnimatePresence>
-                      {isSharing && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{ duration: 0.3 }}
-                          className=""
-                        >
-                          <UserList
-                            isSharing={isSharing}
-                            peerIds={peerIds}
-                            awarenessUsers={awarenessUsers}
-                            awarenessClientID={awarenessClientID}
-                          />                  
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
 
                     <DialogFooter className="pt-4">
                       <SharingActions
