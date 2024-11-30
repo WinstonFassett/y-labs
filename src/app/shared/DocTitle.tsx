@@ -47,7 +47,7 @@ export function DocTitle() {
     meta.set("title", e.target.value);
     setWindowTitle(e.target.value);
   };
-  const onChangeDebounced = useDebouncedCallback(updateTitle, 1000);
+  const onChangeDebounced = useDebouncedCallback(updateTitle, 600);
   const hasTitle = title.length > 0;
   const loadState = useStore(getDocLoadState(docId!, roomId!));
   const isLoaded = loadState === "loaded";
