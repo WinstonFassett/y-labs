@@ -14,7 +14,7 @@ import {
 import { ImageResizer, handleCommandNavigation } from "novel/extensions";
 import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
-import { useExtensions } from "./extensions";
+import {defaultExtensions} from "./extensions";
 import { ColorSelector } from "./selectors/color-selector";
 import { LinkSelector } from "./selectors/link-selector";
 import { NodeSelector } from "./selectors/node-selector";
@@ -32,13 +32,12 @@ import "./tiptap-collab.css";
 export const Novel = ({
   className,
   extensions,
-  disableHistory,
 }: {
   className?: string;
   extensions?: Extension<any, any>[];
   disableHistory?: boolean;
 }) => {
-  const baseExtensions = useExtensions({ disableHistory });
+  const baseExtensions = defaultExtensions;
   extensions = extensions
     ? ([...baseExtensions, ...extensions] as any)
     : baseExtensions;
