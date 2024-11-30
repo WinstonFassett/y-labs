@@ -39,11 +39,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { buildUrl } from "@/lib/buildUrl";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Copy, Share2, Share2Icon, StopCircle } from "lucide-react";
-import { forwardRef, useEffect, useMemo, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import { useForm, useFormContext } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { z } from "zod";
@@ -52,37 +53,26 @@ import { RoomConfigSchema, getDocRoomConfig, type DocRoomConfigFields } from "./
 import { user } from "./store/local-user";
 import { useDocCollabStore } from "./useDocCollabStore";
 import { useStoreIfPresent } from "./useStoreIfPresent";
-import { buildUrl } from "@/lib/buildUrl";
-import { useStore } from "@nanostores/react";
 
 export function ShareDialog({ type }: { type?: string }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const { docId, roomId, $room, $roomConfig, startSharing, stopSharing } =
+  const { docId, $room, $roomConfig, startSharing, stopSharing } =
     useDocCollabStore();
 
   const roomConfigMaybe = useStoreIfPresent($roomConfig);
-  const sharingLink = useMemo(() => {
-    if (roomConfigMaybe) {
-      return generateSharingLink(roomConfigMaybe, type);
-    }
-    return undefined;
-  }, [roomConfigMaybe])
-  const roomMaybe = useStoreIfPresent($room);
-  const peerIds = useStoreIfPresent($room?.$peerIds);
+
+  const peerIds = useStoreIfPresent($room?.$peerIds) as string[];
   const awarenessUsers = useStoreIfPresent(
     $room?.$awarenessStates
   );
   const provider = $room?.get().provider
   const awarenessClientID = provider?.awareness.clientID;
-  // console.log('awarenessUsers', awarenessClientID, awarenessUsers)
   const isSharing = roomConfigMaybe?.enabled ?? false;
-  // const isSharing = $roomConfig?.get().enabled ?? false;
   const actionLabel = isSharing ? "Sharing" : "Share";
   const [searchParams] = useSearchParams();
   const roomParameter = searchParams.get("roomId");
   const navigate = useNavigate();
+
   const form = useForm<z.infer<typeof RoomConfigSchema>>({
-    
     resolver: zodResolver(RoomConfigSchema),
     defaultValues: async () => {
       const enabled = roomConfigMaybe?.enabled ?? false;
@@ -99,7 +89,6 @@ export function ShareDialog({ type }: { type?: string }) {
   });
 
   useEffect(() => {
-    // console.log('room config changed', roomConfigMaybe)
     form.reset(roomConfigMaybe)
   }, [roomConfigMaybe])
 
@@ -112,7 +101,6 @@ export function ShareDialog({ type }: { type?: string }) {
       });
       handleCopyLink();
       const newRoomConfig = getDocRoomConfig(docId, roomId).get();
-      // console.log('navigating to link', {docId, roomId}, newRoomConfig);
       navigate(
         generateDocRoomRouterLink(newRoomConfig, type)
       )

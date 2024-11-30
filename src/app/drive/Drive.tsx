@@ -1,13 +1,10 @@
 import { Card, CardFooter, CardHeader } from "@/components/ui/card";
-import { cn } from "@/lib/utils.js";
-import { CreateDocumentDialog } from "./CreateDocumentDialogButton.tsx";
-import { ImportDriveModal } from "./ImportDrive.tsx";
-import { documentsStore } from "./store.ts";
-import { typeIconMap } from "../shared/typeIconMap.tsx";
-import { Button } from "@/components/ui/button.tsx";
-import { TrashIcon } from "lucide-react";
-import DriveListing from "./DriveListing.tsx";
 import { Toaster } from "@/components/ui/toaster.tsx";
+import { cn } from "@/lib/utils.js";
+import { typeIconMap } from "../shared/typeIconMap.tsx";
+import { CreateDocumentDialog } from "./CreateDocumentDialogButton.tsx";
+import DriveListing from "./DriveListing.tsx";
+import { ImportDriveModal } from "./ImportDrive.tsx";
 
 
 const docTypes = [

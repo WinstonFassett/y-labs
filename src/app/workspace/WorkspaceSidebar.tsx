@@ -1,12 +1,12 @@
 import { ChevronRight, File, FilePlusIcon, Folder, MoreHorizontal, TrashIcon } from "lucide-react"
 import * as React from "react"
 
-import { documentsStore } from "@/app/drive/store"
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import {
   Sidebar,
   SidebarContent,
@@ -21,15 +21,14 @@ import {
   SidebarRail
 } from "@/components/ui/sidebar"
 import { useStore } from "@nanostores/react"
+import { AlertDialog } from "@radix-ui/react-alert-dialog"
 import { Button } from "../../components/ui/button"
 import logoRaw from "../../images/lab-icon.svg?raw"
+import { DeleteSavedDialogAlertContent } from "../shared/DeleteSavedDialog"
+import { $docMetas, type DocMetadata } from "../shared/store/doc-metadata"
 import { FileTypeIcons, typeIconMap } from "../shared/typeIconMap"
 import { createDocumentState } from "./CreateDocumentDialog"
 import { EditorsByType } from "./Editor"
-import { $docMetas, type DocMetadata } from "../shared/store/doc-metadata"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { DeleteSavedDialog, DeleteSavedDialogAlertContent } from "../shared/DeleteSavedDialog"
-import { AlertDialog } from "@radix-ui/react-alert-dialog"
 
 
 const ValidTypes = Object.keys(EditorsByType).filter(t => t !== 'UNKNOWN');
@@ -57,7 +56,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar {...props}>
       <SidebarHeader>
-
         <SidebarGroup className="flex flex-row">
         <Button
           asChild
@@ -86,10 +84,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 const FileIcon = FileTypeIcons[doc.type as keyof typeof typeIconMap] ?? FileTypeIcons["unknown"]
                 return (
                   <DropdownMenu key={doc.id}>
-
                     <SidebarMenuItem key={index}>
                       <SidebarMenuButton asChild>
                         <a key={doc.id} className="flex-1 flex flex-row gap-2 items-center overflow-hidden" title={filename} href={getDocUrl(doc.id, doc.type)}>
+                          
                           <FileIcon className="h-5 w-5" />
                           <div className="flex-1 text-nowrap overflow-hidden">
                             {filename}
@@ -139,42 +137,42 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   )
 }
 
-function Tree({ item }: { item: string | any[] }) {
-  const [name, ...items] = Array.isArray(item) ? item : [item]
+// function Tree({ item }: { item: string | any[] }) {
+//   const [name, ...items] = Array.isArray(item) ? item : [item]
 
-  if (!items.length) {
-    return (
-      <SidebarMenuButton
-        isActive={name === "button.tsx"}
-        className="data-[active=true]:bg-transparent"
-      >
-        <File />
-        {name}
-      </SidebarMenuButton>
-    )
-  }
+//   if (!items.length) {
+//     return (
+//       <SidebarMenuButton
+//         isActive={name === "button.tsx"}
+//         className="data-[active=true]:bg-transparent"
+//       >
+//         <File />
+//         {name}
+//       </SidebarMenuButton>
+//     )
+//   }
 
-  return (
-    <SidebarMenuItem>
-      <Collapsible
-        className="group/collapsible [&[data-state=open]>button>svg:first-child]:rotate-90"
-        defaultOpen={name === "components" || name === "ui"}
-      >
-        <CollapsibleTrigger asChild>
-          <SidebarMenuButton>
-            <ChevronRight className="transition-transform" />
-            <Folder />
-            {name}
-          </SidebarMenuButton>
-        </CollapsibleTrigger>
-        <CollapsibleContent>
-          <SidebarMenuSub>
-            {items.map((subItem, index) => (
-              <Tree key={index} item={subItem} />
-            ))}
-          </SidebarMenuSub>
-        </CollapsibleContent>
-      </Collapsible>
-    </SidebarMenuItem>
-  )
-}
+//   return (
+//     <SidebarMenuItem>
+//       <Collapsible
+//         className="group/collapsible [&[data-state=open]>button>svg:first-child]:rotate-90"
+//         defaultOpen={name === "components" || name === "ui"}
+//       >
+//         <CollapsibleTrigger asChild>
+//           <SidebarMenuButton>
+//             <ChevronRight className="transition-transform" />
+//             <Folder />
+//             {name}
+//           </SidebarMenuButton>
+//         </CollapsibleTrigger>
+//         <CollapsibleContent>
+//           <SidebarMenuSub>
+//             {items.map((subItem, index) => (
+//               <Tree key={index} item={subItem} />
+//             ))}
+//           </SidebarMenuSub>
+//         </CollapsibleContent>
+//       </Collapsible>
+//     </SidebarMenuItem>
+//   )
+// }

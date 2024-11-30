@@ -25,7 +25,7 @@ export function DocPersistenceToggle() {
   if (!docId) throw new Error("No document id specified");
 
   const $docOfflineStore = getDocIdbStore(docId);
-  const { enabled, persister } = useStore($docOfflineStore);
+  const { enabled } = useStore($docOfflineStore);
 
   const label = enabled ? "Saved" : "Unsaved"
 
@@ -36,7 +36,6 @@ export function DocPersistenceToggle() {
       variant="outline"
       className={buttonStyles({ isSelected: enabled, isFocusVisible: false })}
       onClick={() => {
-        console.log("onClick", enabled);
         $docOfflineStore.setKey("enabled", !enabled);
       }}
     >

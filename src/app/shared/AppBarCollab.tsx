@@ -1,6 +1,5 @@
 import { Avatar } from "@/components/ui/avatar";
 import { AvatarImage } from "@radix-ui/react-avatar";
-import { ShareDialog } from "./ShareDialog";
 import { useDocCollabStore } from "./useDocCollabStore";
 import { useStoreIfPresent } from "./useStoreIfPresent";
 
@@ -8,9 +7,7 @@ export function AppBarCollab() {
   const { $room, $roomConfig } = useDocCollabStore();
   const roomConfigMaybe = useStoreIfPresent($roomConfig);
   const isSharing = roomConfigMaybe?.enabled ?? false;
-  const collabRoom = useStoreIfPresent($room);
-  const peers = collabRoom?.peerIds ?? [];
-  const awarenessClientID = $room?.get().provider?.awareness.clientID;
+  const awarenessClientID = $room?.awareness.clientID;
   const awarenessUsers = useStoreIfPresent($room?.$awarenessStates);
   return (
     <>

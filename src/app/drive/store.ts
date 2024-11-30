@@ -1,4 +1,4 @@
-import { atom, map, onMount } from "nanostores";
+import { atom, onMount } from "nanostores";
 import { getOfflineDocMeta } from "../shared/store/local-yjs-idb";
 
 const UNTITLED = "[Untitled]";

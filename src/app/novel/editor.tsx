@@ -2,7 +2,7 @@ import { useStore } from "@nanostores/react";
 import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 import { Color } from '@tiptap/extension-color';
-import Highlight from '@tiptap/extension-highlight'
+import Highlight from '@tiptap/extension-highlight';
 import TextStyle from '@tiptap/extension-text-style';
 import AppBar from "../shared/AppBar";
 import { getDocLoadState } from "../shared/store/doc-loader";
@@ -16,7 +16,6 @@ function Editor() {
   const loadState = useStore(getDocLoadState(docId, roomId));
   const fragment = ydoc.getXmlFragment("novel");
   const provider = $room?.get().provider;
-  const ready = loadState === "loaded";
   const u = user.get();
   const canShow = !needsPasswordToConnect || loadState === "loaded";
   return (

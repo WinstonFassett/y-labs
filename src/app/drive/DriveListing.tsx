@@ -1,5 +1,4 @@
 import { Card } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast.ts";
 import { useStore } from "@nanostores/react";
 import { useMemo } from "react";
 import { DeleteSavedDialog } from "../shared/DeleteSavedDialog.tsx";
@@ -9,7 +8,6 @@ import { EmptyState, getDocUrl as getAppDocUrl } from "./Drive.tsx";
 
 export default function DriveListing({ getDocUrl = getAppDocUrl}) {
   const allDocMetas = useStore($docMetas);
-  const { toast } = useToast();
   const documents = useMemo(() => {
     if (!allDocMetas) return undefined;
     const sorted = [...allDocMetas];

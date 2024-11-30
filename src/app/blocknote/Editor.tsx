@@ -1,13 +1,12 @@
+import { cn } from "@/lib/utils";
+import { useStore } from "@nanostores/react";
 import { Suspense } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import AppBar from "../shared/AppBar";
-import { LazyBlocknote } from "./lazy/editor";
-import { useDocCollabStore } from "../shared/useDocCollabStore";
-import { useStore } from "@nanostores/react";
-import { atom } from "nanostores";
-import { getDocLoadState } from "../shared/store/doc-loader";
-import { cn } from "@/lib/utils";
 import { PasswordRequiredDialog } from "../shared/PasswordRequiredDialog";
+import { getDocLoadState } from "../shared/store/doc-loader";
+import { useDocCollabStore } from "../shared/useDocCollabStore";
+import { LazyBlocknote } from "./lazy/editor";
 
 export function useDocParams() {
   const { docId } = useParams();  

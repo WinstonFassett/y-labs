@@ -11,7 +11,6 @@ import { useTheme } from "../../lib/astro-tailwind-themes/useTheme";
 import { getDocLoadState } from "../shared/store/doc-loader";
 import { useDocCollabStore } from "../shared/useDocCollabStore";
 import "./codemirror.css";
-import { atom } from "nanostores";
 
 function Codemirror({ className = "" }: { className?: string }) {
   const editor = useRef<HTMLDivElement>(null);

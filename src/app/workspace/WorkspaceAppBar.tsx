@@ -10,9 +10,8 @@ import {
   Sun
 } from "lucide-react";
 import { Suspense } from "react";
-import { useParams, useResolvedPath } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Navbar, NavbarContent } from "../../components/ui/navbar";
-import { AppGlobals } from "../../globals";
 import { useTheme } from "../../lib/astro-tailwind-themes/useTheme";
 import { LazyAppBarCollab } from "../blocknote/lazy/collab";
 import { LazyDocPersistenceToggle } from "../blocknote/lazy/storage";
@@ -20,13 +19,11 @@ import { LazyDocPersistenceToggle } from "../blocknote/lazy/storage";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { DocTitle } from "../shared/DocTitle";
 import { $settingsStore } from "../shared/SettingsDialog";
-import { createDocumentState } from "./CreateDocumentDialog";
 import { ShareDialog } from "../shared/ShareDialog";
+import { createDocumentState } from "./CreateDocumentDialog";
 
 export default function AppBar({ className }: { className?: string }) {
   const [theme, setTheme] = useTheme();
-  const newPath = useResolvedPath("/new");
-  const { frontmatter } = AppGlobals;
   const { docId, type } = useParams<{ docId: string, type?: string }>();
   return (
     <Navbar className={cn("sticky top-0 z-50", className)}>

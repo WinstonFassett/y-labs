@@ -153,6 +153,7 @@ const readMessage = (
           {
             added,
             removed,
+            resurrected: [],
             trysteroPeers: Array.from(room.trysteroConns.keys()),
             bcPeers: Array.from(room.bcConns),
           },
@@ -310,6 +311,7 @@ export class TrysteroConn {
         {
           removed: [remotePeerId],
           added: [],
+          resurrected: [],
           trysteroPeers: Array.from(room.trysteroConns.keys()),
           bcPeers: Array.from(room.bcConns),
         },
@@ -455,6 +457,7 @@ export class TrysteroDocRoom {
           {
             removed: [peerId],
             added: [],
+            resurrected: [],
             trysteroPeers: Array.from(provider.room!.trysteroConns.keys()),
             bcPeers: Array.from(this.bcConns),
           },
@@ -562,6 +565,7 @@ interface TrysteroProviderEvents {
   peers: (event: {
     added: string[];
     removed: string[];
+    resurrected: string[];
     trysteroPeers: string[];
     bcPeers: string[];
   }) => void;

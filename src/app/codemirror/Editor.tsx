@@ -1,17 +1,16 @@
 import { cn } from "@/lib/utils";
-import AppBar from "../shared/AppBar";
-import Codemirror from "./Codemirror";
-import { PasswordRequiredDialog } from "../shared/PasswordRequiredDialog";
-import { useDocCollabStore } from "../shared/useDocCollabStore";
-import { getDocLoadState } from "../shared/store/doc-loader";
 import { useStore } from "@nanostores/react";
+import AppBar from "../shared/AppBar";
+import { PasswordRequiredDialog } from "../shared/PasswordRequiredDialog";
+import { getDocLoadState } from "../shared/store/doc-loader";
+import { useDocCollabStore } from "../shared/useDocCollabStore";
 import { useStoreIfPresent } from "../shared/useStoreIfPresent";
+import Codemirror from "./Codemirror";
 
 export function Editor({ className }: { className?: string }) {
   const { docId, roomId, needsPasswordToConnect, $roomConfig } = useDocCollabStore()
   const $loader = getDocLoadState(docId!, roomId!);
   const loadState = useStore($loader);
-  console.log("loadState", loadState);
   const config = useStoreIfPresent($roomConfig);
   
   const loadingEncrypted = config && config.enabled && config.encrypt && loadState === "loading";

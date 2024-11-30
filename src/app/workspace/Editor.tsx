@@ -1,13 +1,12 @@
 
-import { useParams } from "react-router-dom";
-import { CreateDocButtons } from "./CreateDocMenu";
-import { Suspense, lazy } from "react";
-import { useDocCollabStore } from "../shared/useDocCollabStore";
-import { PasswordRequiredDialog } from "../shared/PasswordRequiredDialog";
 import type DriveListing from "@/app/drive/DriveListing";
-import { useStore } from "@nanostores/react";
+import { Suspense, lazy } from "react";
+import { useParams } from "react-router-dom";
+import { PasswordRequiredDialog } from "../shared/PasswordRequiredDialog";
 import { getDocLoadState } from "../shared/store/doc-loader";
+import { useDocCollabStore } from "../shared/useDocCollabStore";
 import { useStoreIfPresent } from "../shared/useStoreIfPresent";
+
 export const EditorsByType: Record<string, React.ComponentType>
  = {
   novel: lazy(() => import("./NovelEditor")),
@@ -48,20 +47,9 @@ const FolderView = () => {
       <div className="w-full max-w-3xl mx-auto pl-4 pt-4">
         <h3 className="text-2xl text-muted-foreground">Recent Saved Files</h3>
       </div>
-      <Suspense fallback="Loading drive...">
-
-        {/* <div className="text-center py-4">Folder view not implemented yet.</div> */}
+      <Suspense fallback="Loading...">
         <DriveListingComponent getDocUrl={getDocUrl} />
       </Suspense>
-    </div>
-  )
-}
-
-const Empty = () => {
-  return (
-    <div className="flex flex-1 flex-col gap-4 p-4">
-      <div className="text-center py-4">No documents saved.</div>
-      <CreateDocButtons />
     </div>
   )
 }

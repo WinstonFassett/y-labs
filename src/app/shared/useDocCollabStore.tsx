@@ -32,11 +32,9 @@ export function useDocCollabStore(requireDocId = true) {
 
   const room = useStoreIfPresent($room);
   function startSharing(config: DocRoomConfigFields) {
-    console.log('start sharing', config)
     const roomId = config.roomId;
     const $roomConfig = getDocRoomConfig(docId!, roomId);
     $roomConfig?.set({ ...$roomConfig.get(), ...config, enabled: true });
-    console.log('started sharing!')
   }
 
   function stopSharing() {

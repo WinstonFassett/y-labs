@@ -2,31 +2,37 @@ import { mapTemplate } from "@/lib/nanostores-utils/mapTemplate";
 import { TrysteroProvider } from "@/lib/yjs-trystero/y-trystero";
 import {
   atom,
-  map,
-  onMount,
-  type MapStore,
-  type ReadableAtom,
   computed,
+  map,
+  onMount
 } from "nanostores";
+import { Awareness } from "y-protocols/awareness.js";
 import type { Doc } from "yjs";
 import { createRoom } from "../createRoom";
-import { getDocRoomConfig, type DocRoomConfigFields } from "./doc-room-config";
-import { getYdoc } from "./yjs-docs";
-import { user } from "./local-user";
-import { Awareness } from "y-protocols/awareness.js";
 import { appId } from "./constants";
+import { getDocRoomConfig, type DocRoomConfigFields } from "./doc-room-config";
+import { user } from "./local-user";
+import { getYdoc } from "./yjs-docs";
 
 type ConnectionStatus = "connected" | "disconnected"
 type SyncStatus = "synced" | "unsynced"
 type LoadStatus = "loaded" | "loading" | "waiting" | "receiving" | "unloaded"
-type PersistenceStatus = "persisted" | "unpersisted"
-
 
 interface DocRoomState {
   needsPasswordToConnect?: boolean
   canConnect?: boolean
   provider?: TrysteroProvider
 }
+
+function getDocRoomId(docId: string, roomId: string) {
+  return `${docId}/${roomId}`;
+}
+
+export function getTrysteroDocRoom(docId: string, roomId: string) {
+  return trysteroDocRoomT(getDocRoomId(docId, roomId), docId, roomId);
+}
+
+
 
 function createTrysteroDocRoom(
   docId: string,
@@ -63,15 +69,7 @@ function createTrysteroDocRoom(
 
   const $awarenessStates = atom(new Map());
   onMount($awarenessStates, () => {
-    const onChange = ({
-      added,
-      updated,
-      removed,
-    }: {
-      added: number[];
-      updated: number[];
-      removed: number[];
-    }) => {
+    const onChange = () => {
       let states = awareness.getStates();
       // force new map for react because state changed
       if (states === $awarenessStates.get()) {
@@ -87,7 +85,6 @@ function createTrysteroDocRoom(
 
 
   onMount(store, () => {
-    // console.log('MOUNT', store)
     const unsubUser = user.subscribe((user) => {
       setUserInAwareness(user);
     });
@@ -95,15 +92,15 @@ function createTrysteroDocRoom(
 
     const unsubConfig = $enabledSharingLink.subscribe(() => {
       const config = $config.get()
-      // console.log('config', config)
+
       const needsPasswordToConnect = config.encrypt && !config.password;
       const canConnect = config.enabled && !needsPasswordToConnect; 
-      const prevProvider = store.get().provider
-      // const prevRoomId = prevConfig?.roomId
-      
+
+      const prevProvider = store.get().provider      
       if (prevProvider) {
         prevProvider.destroy()
       }
+
       const provider = canConnect ? createProvider(config) : undefined
       if (prevProvider && provider) {
         console.warn('recreating provider')
@@ -115,17 +112,11 @@ function createTrysteroDocRoom(
         needsPasswordToConnect,
         canConnect,
         provider
-      })
-      
+      })      
     })
     return () => {
-      // console.log('unmount doc room', store)
       unsubConfig()
       unsubUser()
-      // // $syncState.set('unsynced')
-      // $connectionState.set('disconnected')
-      // $peerIds.set([])
-      // store.set({})
       store.value?.provider?.destroy()
     }
     
@@ -140,7 +131,6 @@ function createTrysteroDocRoom(
       awareness
     });
     provider.on('status', ({ connected }: { connected: boolean }) => {
-      // console.log('status', {connected})
       if (connected) {
         setUserInAwareness(user.get())
         $connectionState.set('connected')
@@ -164,6 +154,7 @@ function createTrysteroDocRoom(
 
   const model = Object.assign(store, {
     y: ydoc,
+    awareness,
     $config,
     $awarenessStates,
     $connectionState,
@@ -182,11 +173,3 @@ const trysteroDocRoomT = mapTemplate(
       roomId,
     )
 );
-
-export function getTrysteroDocRoom(docId: string, roomId: string) {
-  return trysteroDocRoomT(getDocRoomId(docId, roomId), docId, roomId);
-}
-
-function getDocRoomId(docId: string, roomId: string) {
-  return `${docId}/${roomId}`;
-}

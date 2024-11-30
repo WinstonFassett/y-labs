@@ -1,17 +1,17 @@
+import { getDocLoadState } from "@/app/shared/store/doc-loader";
+import { user } from "@/app/shared/store/local-user";
+import { useDocCollabStore } from "@/app/shared/useDocCollabStore";
 import { useStore } from "@nanostores/react";
 import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 import { Color } from '@tiptap/extension-color';
-import Highlight from '@tiptap/extension-highlight'
+import Highlight from '@tiptap/extension-highlight';
 import TextStyle from '@tiptap/extension-text-style';
-import AppBar from "@/app/shared/AppBar";
-import { getDocLoadState } from "@/app/shared/store/doc-loader";
-import { user } from "@/app/shared/store/local-user";
-import { useDocCollabStore } from "@/app/shared/useDocCollabStore";
 
 import Novel from "@/app/novel/Novel";
 import { getDocRoomId } from "../shared/store/doc-room-config";
-function NovelEditor() {
+
+export default function NovelEditor() {
   const { docId, ydoc, $room, roomId } = useDocCollabStore();
   const docRoomId = getDocRoomId(docId, roomId);
   const loadState = useStore(getDocLoadState(docId, roomId));
@@ -52,4 +52,3 @@ function NovelEditor() {
     </div>
   );
 }
-export default NovelEditor;
