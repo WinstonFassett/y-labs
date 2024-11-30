@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import "@tldraw/tldraw/tldraw.css";
 import AppBar from "../shared/AppBar";
 import Codemirror from "./Codemirror";
 import { PasswordRequiredDialog } from "../shared/PasswordRequiredDialog";

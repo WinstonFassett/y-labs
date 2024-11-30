@@ -13,6 +13,7 @@ import { getDocLoadState } from "@/app/shared/store/doc-loader";
 import { useDocCollabStore } from "@/app/shared/useDocCollabStore";
 import { useYjsTlDrawStore } from "./use-yjs-tldraw";
 import "@tldraw/tldraw/tldraw.css";
+import "./style.css"
 
 export default function TlDrawEditor({ className }: { className?: string; }) {
   const [store] = useState(() => {
