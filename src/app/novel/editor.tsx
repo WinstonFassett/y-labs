@@ -26,8 +26,9 @@ function Editor() {
       {waiting && <div>Loading...</div>}
       {!waiting && 
         <Novel
-          className="p-4"
           key={roomId ?? docId}
+          autofocus
+          className="p-4"
           disableHistory={true}
           extensions={[
             TextStyle as any, 

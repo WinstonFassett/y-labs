@@ -27,6 +27,7 @@ export default function NovelEditor() {
       {!waiting && 
         <Novel
           key={docRoomId}
+          autofocus={true}
           disableHistory={true}
           extensions={[
             TextStyle as any, 

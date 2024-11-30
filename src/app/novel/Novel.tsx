@@ -30,9 +30,11 @@ import "./styles/prosemirror.css";
 import "./tiptap-collab.css";
 
 export const Novel = ({
+  autofocus = false,
   className,
   extensions,
 }: {
+  autofocus?: boolean;
   className?: string;
   extensions?: Extension<any, any>[];
   disableHistory?: boolean;
@@ -62,6 +64,7 @@ export const Novel = ({
     <div className={cn("flex-1 flex flex-col", className)}>
       <EditorRoot>
         <EditorContent
+          autofocus={autofocus}
           // initialContent={initialContent}
           extensions={extensions}
           className="[&>:first-child]:flex-1 [&>:first-child]:flex [&>:first-child]:flex-col  flex-1 flex flex-col max-w-screen-lg"
