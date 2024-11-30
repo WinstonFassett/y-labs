@@ -16,6 +16,12 @@ import "@tldraw/tldraw/tldraw.css";
 import "./style.css"
 
 export default function TlDrawEditor({ className }: { className?: string; }) {
+  useEffect(() => {
+    document.body.classList.add("tldraw");
+    return () => {
+      document.body.classList.remove("tldraw");
+    }
+  }, [])
   const [store] = useState(() => {
     const store = createTLStore({
       shapeUtils: [...defaultShapeUtils],

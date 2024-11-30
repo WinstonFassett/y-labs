@@ -1,6 +1,6 @@
-body {
+body.tldraw {
   @apply overflow-hidden;
 }
-.z-50 {
+body.tldraw .z-50 {
   @apply z-[100000];
 }
