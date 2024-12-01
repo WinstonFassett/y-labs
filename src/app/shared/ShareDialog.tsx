@@ -149,7 +149,7 @@ export function ShareDialog({ type }: { type?: string }) {
                       </DialogDescription>
                     </DialogHeader>
 
-                    <div className="flex-1 overflow-y-scroll">
+                    <div className="flex-1 overflow-y-auto">
                       <div className="py-4 gap-6 space-y-4">
                         <div className="flex items-center justify-between">
                           <Label htmlFor="sharing-toggle">
