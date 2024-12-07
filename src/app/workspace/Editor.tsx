@@ -8,6 +8,7 @@ import { useDocCollabStore } from "../shared/useDocCollabStore";
 import { useStoreIfPresent } from "../shared/useStoreIfPresent";
 import { Sidebar, SidebarContent, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Navbar } from "@/components/ui/navbar";
+import { VersionHistory } from "../shared/Versionhistory";
 
 export const EditorsByType: Record<string, React.ComponentType<{ className?: string }>>
  = {
@@ -27,7 +28,7 @@ export function Editor({ className }: { className?: string }) {
   const canShow = !needsPasswordToConnect || loadState === "loaded";
   const EditorComponent = (type && EditorsByType[type]) || EditorsByType.UNKNOWN;
   const location = useLocation();
-  const showVersionHistory = useDocEditorMode() === 'versions';  
+  const showVersionHistory = !!docId && useDocEditorMode() === 'versions';  
   // const [showVersionHistory, setShowVersionHistory] = useState(true);
   const navigate = useNavigate();
   return (<>
@@ -54,8 +55,10 @@ export function Editor({ className }: { className?: string }) {
               <SidebarContent className="p-4">
                 <SidebarTrigger />
                 <div>
-                  Version History will go here
+                  Version History will go here 
+                  [{docId}]
                 </div>
+                <VersionHistory />
               </SidebarContent>
             </Sidebar>
               
