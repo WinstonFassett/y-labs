@@ -17,6 +17,10 @@ export const routes = [
     element: <EditorRoute />,
   },
   {
+    path: "/versions/:docId/:type",
+    element: <EditorRoute />,
+  },
+  {
     path: "/edit/:docId",
     element: <EditorRoute />,
   },

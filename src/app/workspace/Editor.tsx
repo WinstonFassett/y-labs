@@ -1,11 +1,13 @@
 
 import type DriveListing from "@/app/drive/DriveListing";
-import { Suspense, lazy } from "react";
-import { useParams } from "react-router-dom";
+import { Suspense, lazy, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { PasswordRequiredDialog } from "../shared/PasswordRequiredDialog";
 import { getDocLoadState } from "../shared/store/doc-loader";
 import { useDocCollabStore } from "../shared/useDocCollabStore";
 import { useStoreIfPresent } from "../shared/useStoreIfPresent";
+import { Sidebar, SidebarContent, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { Navbar } from "@/components/ui/navbar";
 
 export const EditorsByType: Record<string, React.ComponentType<{ className?: string }>>
  = {
@@ -24,9 +26,42 @@ export function Editor({ className }: { className?: string }) {
   if (!docId) return <FolderView />;
   const canShow = !needsPasswordToConnect || loadState === "loaded";
   const EditorComponent = (type && EditorsByType[type]) || EditorsByType.UNKNOWN;
+  const location = useLocation();
+  const showVersionHistory = useDocEditorMode() === 'versions';  
+  // const [showVersionHistory, setShowVersionHistory] = useState(true);
+  const navigate = useNavigate();
   return (<>
     <Suspense fallback={<div>Loading...</div>}>
-      {!canShow ? <div>Loading...</div> : <EditorComponent key={docId} className={className} />}    
+      {!canShow ? <div>Loading...</div> : 
+      
+      // <div className="flex flex-row">
+      //   <EditorComponent key={docId} className={className} />
+      //   <div>sidebar</div>
+        
+      // </div>
+        <main className="">
+          <SidebarProvider open={showVersionHistory} onOpenChange={() => {
+            navigate({
+              pathname: showVersionHistory
+                ? `/edit/${docId}/${type}`
+                : `/versions/${docId}/${type}`,
+              search: location.search,
+            });
+          }}>
+          <SidebarTrigger />
+          <EditorComponent key={docId} className={className} />
+            <Sidebar side="right" className="pt-14 border-l-transparent">
+              <SidebarContent className="p-4">
+                <SidebarTrigger />
+                <div>
+                  Version History will go here
+                </div>
+              </SidebarContent>
+            </Sidebar>
+              
+          </SidebarProvider>
+        </main>
+      }    
     </Suspense>
     <PasswordRequiredDialog />
   </>
@@ -60,4 +95,10 @@ function UnknownEditorType() {
       <div className="text-center py-4">Unknown editor type.</div>
     </div>
   );
+}
+
+function useDocEditorMode () {
+  const location = useLocation()
+  const isVersions = location.pathname.includes('versions');
+  return isVersions ? 'versions' : 'edit';
 }
