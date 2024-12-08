@@ -25,7 +25,6 @@ export function Editor({ className }: { className?: string }) {
   const { docId, type } = useParams<{ docId: string, type: string }>();
   const { needsPasswordToConnect, roomId } = useDocCollabStore(false)
   const loadState = useStoreIfPresent(roomId ? getDocLoadState(docId!, roomId) : undefined);
-  if (!docId) return <FolderView />;
   const canShow = !needsPasswordToConnect || loadState === "loaded";
   const EditorComponent = (type && EditorsByType[type]) || EditorsByType.UNKNOWN;
   const location = useLocation();
@@ -33,6 +32,8 @@ export function Editor({ className }: { className?: string }) {
   const showVersionHistory = !!docId && mode === 'versions';  
   // const [showVersionHistory, setShowVersionHistory] = useState(true);
   const navigate = useNavigate();
+  
+  if (!docId) return <FolderView />;
   return (<>
     <Suspense fallback={<div>Loading...</div>}>
       {!canShow ? <div>Loading...</div> : 
@@ -43,23 +44,13 @@ export function Editor({ className }: { className?: string }) {
         
       // </div>
         <main className="">
-          <SidebarProvider shortcut="r" open={showVersionHistory} onOpenChange={() => {
-            navigate({
-              pathname: showVersionHistory
-                ? `/edit/${docId}/${type}`
-                : `/versions/${docId}/${type}`,
-              search: location.search,
-            });
-          }}>
-          <EditorComponent key={docId} className={className} />
-            <Sidebar side="right" className="pt-14 border-l-transparent">
-              <SidebarContent className="p-2">
-                <SidebarTrigger className="absolute -left-7"/>
-                {!!showVersionHistory && <VersionHistory />}
-              </SidebarContent>
-            </Sidebar>
+          
+
+            <EditorComponent key={docId} className={className} />
+            
+            
               
-          </SidebarProvider>
+          {/* </SidebarProvider> */}
         </main>
       }    
     </Suspense>

@@ -37,10 +37,7 @@ export function VersionHistory() {
   }
   return (
     <div className=" rounded-lg shadow-lg overflow-hidden flex flex-col h-full">
-      <div className="shrink-0 flex items-center gap-2 border-b">
-        <Clock className="w-5 h-5 text-indigo-600" />
-        <h2 className="text-lg font-semibold py-2">Version History</h2>
-      </div>
+
 
       <div className="overflow-y-auto flex-1 space-y-2">
         {versionArray.length === 0 ? (

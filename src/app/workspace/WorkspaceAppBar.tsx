@@ -30,10 +30,15 @@ import { DocTitle } from "../shared/DocTitle";
 import { $settingsStore } from "../shared/SettingsDialog";
 import { ShareDialog } from "../shared/ShareDialog";
 import { createDocumentState } from "./CreateDocumentDialog";
+import { Button } from "@/components/ui/button";
+import { useVersionHistory } from "../shared/useVersionHistory";
 
 export default function AppBar({ className }: { className?: string }) {
   const [theme, setTheme] = useTheme();
   const { docId, type } = useParams<{ docId: string; type?: string }>();
+  const { showVersionHistory, toggleVersionHistory } = useVersionHistory()
+  const hasDoc = !!docId;
+
   return (
     <Navbar key={docId} className={cn("sticky top-0 z-50", className)}>
       <NavbarContent>
@@ -77,6 +82,14 @@ export default function AppBar({ className }: { className?: string }) {
               </MenuItem>
 
               <MenuSeparator />
+
+              {hasDoc && (<>
+                <MenuItem onAction={toggleVersionHistory}>
+                  <FileText size={16} />
+                  Version History
+                </MenuItem> 
+                <MenuSeparator />
+              </>)}
 
               <MenuItem onAction={startImport}>
                 <UploadIcon size={16} />
