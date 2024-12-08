@@ -51,6 +51,7 @@ const SidebarProvider = React.forwardRef<
     defaultOpen?: boolean
     open?: boolean
     onOpenChange?: (open: boolean) => void
+    shortcut: string
   }
 >(
   (
@@ -58,6 +59,7 @@ const SidebarProvider = React.forwardRef<
       defaultOpen = true,
       open: openProp,
       onOpenChange: setOpenProp,
+      shortcut = SIDEBAR_KEYBOARD_SHORTCUT,
       className,
       style,
       children,
@@ -98,8 +100,8 @@ const SidebarProvider = React.forwardRef<
     React.useEffect(() => {
       const handleKeyDown = (event: KeyboardEvent) => {
         if (
-          event.key === SIDEBAR_KEYBOARD_SHORTCUT &&
-          (event.metaKey || event.ctrlKey)
+          (event.metaKey || event.ctrlKey) && event.shiftKey &&
+          event.key === shortcut
         ) {
           event.preventDefault()
           toggleSidebar()

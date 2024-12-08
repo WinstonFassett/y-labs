@@ -43,7 +43,7 @@ export function Editor({ className }: { className?: string }) {
         
       // </div>
         <main className="">
-          <SidebarProvider open={showVersionHistory} onOpenChange={() => {
+          <SidebarProvider shortcut="r" open={showVersionHistory} onOpenChange={() => {
             navigate({
               pathname: showVersionHistory
                 ? `/edit/${docId}/${type}`

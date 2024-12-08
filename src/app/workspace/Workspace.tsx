@@ -11,7 +11,7 @@ import { Toaster } from "@/components/ui/toaster"
 
 export function Workspace() {
   return (
-    <SidebarProvider>
+    <SidebarProvider shortcut="l">
       <AppSidebar />
       <SidebarInset>
         <AppBar />        
