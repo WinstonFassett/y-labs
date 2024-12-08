@@ -7,6 +7,7 @@ import { user } from "../shared/store/local-user";
 import { useStore } from "@nanostores/react";
 import { useDocCollabStore } from "../shared/useDocCollabStore";
 import { cn } from "@/lib/utils";
+import { getBlocknoteShares } from "./blocknote-shares";
 
 export interface BlocknoteProps {
   autofocus?: boolean;
@@ -17,7 +18,7 @@ export function Blocknote(
   { autofocus, className } = {} as BlocknoteProps,
 ) {
   const { docId, ydoc, $room, roomId } = useDocCollabStore();
-  const fragment = ydoc.getXmlFragment("blocknote");
+  const fragment = getBlocknoteShares(ydoc).blocknote;
   const provider=$room?.get().provider
   
 
