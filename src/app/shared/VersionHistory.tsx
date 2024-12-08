@@ -10,8 +10,7 @@ import { useVersionHistory } from "./useVersionHistory";
 
 export function VersionHistory() {
   const { docId, type } = useParams();
-  const { versionHistory, $versionHistory } = useVersionHistory()  
-  const { displayVersionId } = versionHistory
+  const { displayVersionId, $versionHistory } = useVersionHistory()    
   const versions = useStore($versionHistory.$versions);
 
   const versionArray = Array.from(versions).reverse();

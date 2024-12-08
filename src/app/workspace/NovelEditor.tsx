@@ -1,7 +1,5 @@
 import { Collaboration } from "@/app/shared/TiptapCollaborationExtension";
-import { getDocLoadState } from "@/app/shared/store/doc-loader";
 import { user } from "@/app/shared/store/local-user";
-import { useDocCollabStore } from "@/app/shared/useDocCollabStore";
 import { useStore } from "@nanostores/react";
 import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 import { Color } from '@tiptap/extension-color';
@@ -10,89 +8,57 @@ import TextStyle from '@tiptap/extension-text-style';
 
 import Novel from "@/app/novel/Novel";
 import { cn } from "@/lib/utils";
-import { useParams } from "react-router-dom";
-import { getDocRoomId } from "../shared/store/doc-room-config";
-import { getDocVersionsStoreByDocEditor } from "../shared/store/doc-versions";
-import { useDocEditorMode } from "../shared/useDocEditorMode";
-import { useStoreIfPresent } from "../shared/useStoreIfPresent";
+import { useMemo } from "react";
+import { getNovelShares } from "../novel/novel-shares";
+import { useDocEditor } from "../shared/useDocEditor";
 
-export default function NovelEditor() {
-  const { type } = useParams<{ type: string }>();
-  const { docId, ydoc, $room, roomId } = useDocCollabStore();
-  const mode = useDocEditorMode()
+export default function NovelEditor() {  
+  const {
+    provider,
+    currentDoc,
+    autofocusDoc,
+    loaded,
+    docEditorKey,
+    readOnly
+  } = useDocEditor();
 
-  const versionsStore = getDocVersionsStoreByDocEditor(docId, type);
+  const { novel: fragment } = useMemo(() => getNovelShares(currentDoc), [currentDoc])
 
-  const versionInfoMaybe = useStoreIfPresent(versionsStore);
-  const versionId = versionInfoMaybe?.displayVersionId
+  const u = useStore(user);
   
-  const isLatestVersion = useStoreIfPresent(
-    versionsStore?.$isLatestVersion
-  ) ?? false;
-
-  const isVersionReplay = mode === 'versions' && !!versionId && !isLatestVersion;
-
-  const replayDoc = useStoreIfPresent(
-    isVersionReplay && 
-    versionsStore?.$replayDoc
-  )
-  
-  const isLive = !isVersionReplay;
-
-  const docRoomId = getDocRoomId(docId, roomId);
-  const loadState = useStore(getDocLoadState(docId, roomId));
-  
-  const isReplay = !isLive && !!versionId;
-  const docToUse = isReplay ? replayDoc : ydoc;
-
-  const fragment = docToUse.getXmlFragment("novel");
-  const provider = $room?.get().provider;
-
-  const ready = loadState === "loaded";
-  const providerReady = roomId ? !!provider : true;
-
-  const u = user.get();
-  const waiting = !providerReady && !ready ;
-
-  const meta = docToUse.getMap<any>("meta");
-  const title = (meta.get("title") as string) || "";
-  const autofocus = ready && !!title 
-
-  const key = docRoomId + (isReplay ? `-${versionId}` : "");
-  
-  const readOnly = isReplay || !providerReady;
+  const extensions = useMemo(() => [
+    TextStyle as any, 
+    Color,
+    Highlight.configure({ multicolor: true }),
+    Collaboration.configure({
+      fragment
+    }),
+    ...(provider
+      ? 
+      [
+          CollaborationCursor.configure({
+            provider,
+            user: provider && {
+              name: u.username,
+              color: u.color,
+            },
+          }),
+        ]
+      : []),
+  ].filter((x) => !!x), [fragment, provider, u]);
 
   return (
     <div className={cn("min-h-full flex-1 flex flex-col max-w-3xl mx-auto w-full p-4", 
       readOnly && 'bg-muted transition-colors')}>
-      {!ready && <div>Loading...</div>}
+      {!loaded && <div>Loading Novel...</div>}
       
-      {ready && 
+      {loaded && 
         <Novel
-          key={key}
+          key={docEditorKey}
           className={cn(readOnly && 'bg-muted')}
           readOnly={readOnly}
-          autofocus={autofocus}
-          extensions={[
-            TextStyle as any, 
-            Color,
-            Highlight.configure({ multicolor: true }),
-            Collaboration.configure({
-              fragment,
-            }),
-            ...(provider
-              ? 
-              [
-                  CollaborationCursor.configure({
-                    provider,
-                    user: provider && {
-                      name: u.username,
-                      color: u.color,
-                    },
-                  }),
-                ]
-              : []),
-          ].filter((x) => !!x)}
+          autofocus={autofocusDoc}
+          extensions={extensions}
         />
       }
     </div>

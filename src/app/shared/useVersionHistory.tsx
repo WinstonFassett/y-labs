@@ -12,7 +12,9 @@ export function useVersionHistory() {
   const canShowVersionHistory = !!docId
 
   const $versionHistory = docId ? getDocVersionsStoreByDocEditor(docId, type) : undefined;
-  const versionHistory = useStoreIfPresent($versionHistory);
+  const { displayVersionId } = useStoreIfPresent($versionHistory);
+  const versions = useStoreIfPresent($versionHistory?.$versions) ?? [];
+  const currentVersionId =   displayVersionId ?? versions[versions.length-1]?.id 
 
   const setShowVersionHistory = (shouldShowVersionHistory: boolean) => {
     if (!canShowVersionHistory) {
@@ -31,5 +33,5 @@ export function useVersionHistory() {
     setShowVersionHistory(!showVersionHistory);
   }, [showVersionHistory, setShowVersionHistory]);
 
-  return { docId, type, $versionHistory, versionHistory, toggleVersionHistory, showVersionHistory, canShowVersionHistory, setShowVersionHistory };
+  return { docId, type, $versionHistory, displayVersionId, currentVersionId, toggleVersionHistory, showVersionHistory, canShowVersionHistory, setShowVersionHistory };
 }
