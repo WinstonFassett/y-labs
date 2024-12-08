@@ -1,6 +1,6 @@
 
 import type DriveListing from "@/app/drive/DriveListing";
-import { Suspense, lazy, useState } from "react";
+import { Suspense, lazy, useMemo } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { PasswordRequiredDialog } from "../shared/PasswordRequiredDialog";
 import { getDocLoadState } from "../shared/store/doc-loader";
@@ -10,6 +10,8 @@ import { Sidebar, SidebarContent, SidebarProvider, SidebarTrigger } from "@/comp
 import { Navbar } from "@/components/ui/navbar";
 import { VersionHistory } from "../shared/VersionHistory";
 import { useDocEditorMode } from "../shared/useDocEditorMode";
+import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 
 export const EditorsByType: Record<string, React.ComponentType<{ className?: string }>>
  = {
@@ -21,7 +23,7 @@ export const EditorsByType: Record<string, React.ComponentType<{ className?: str
   UNKNOWN: UnknownEditorType,
 }
 
-export function Editor({ className }: { className?: string }) {
+export default function Editor({ className }: { className?: string }) {
   const { docId, type } = useParams<{ docId: string, type: string }>();
   const { needsPasswordToConnect, roomId } = useDocCollabStore(false)
   const loadState = useStoreIfPresent(roomId ? getDocLoadState(docId!, roomId) : undefined);
@@ -35,22 +37,10 @@ export function Editor({ className }: { className?: string }) {
   
   if (!docId) return <FolderView />;
   return (<>
-    <Suspense fallback={<div>Loading...</div>}>
-      {!canShow ? <div>Loading...</div> : 
-      
-      // <div className="flex flex-row">
-      //   <EditorComponent key={docId} className={className} />
-      //   <div>sidebar</div>
-        
-      // </div>
+    <Suspense fallback={<EditorSkeleton />}>
+      {!canShow ? <EditorSkeleton /> : 
         <main className="">
-          
-
-            <EditorComponent key={docId} className={className} />
-            
-            
-              
-          {/* </SidebarProvider> */}
+          <EditorComponent key={docId} className={className} />
         </main>
       }    
     </Suspense>
@@ -59,8 +49,25 @@ export function Editor({ className }: { className?: string }) {
   );
 }
 
-export default Editor;
+function EditorSkeleton () {
+  return <div className="w-full h-full flex flex-col gap-2 p-4">
+    <LineSkeleton className="h-12 mb-8" />
+    <LineSkeleton className="h-10" />
+    <LineSkeleton className="" />
+    <LineSkeleton className="h-16" />
+    <LineSkeleton className="" />
+    <LineSkeleton className="h-32" />
+  </div>
+}
 
+function LineSkeleton ({ className, ...props }) {
+  // Random width between 50 to 90%.
+  const style = useMemo(() => {
+    if (className.split([' ']).find(it => it.indexOf('w-') === 0)) return {};
+    return { width: `${  Math.floor(Math.random() * 40) + 50}%`}
+  }, [className])
+  return <Skeleton {...props} className={cn(`h-6 mt-4 mb-6`, className)} style={style} />
+}
 
 export function getDocUrl(name: string, type: string) {
   return `/y-labs/app/workspace/index.html#/edit/${name}/${type}`;

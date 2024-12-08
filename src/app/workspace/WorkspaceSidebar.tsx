@@ -1,4 +1,4 @@
-import { ChevronRight, File, FilePlusIcon, Folder, MoreHorizontal, TrashIcon } from "lucide-react"
+import { ChevronRight, File, FilePlusIcon, Files, Folder, MoreHorizontal, TrashIcon } from "lucide-react"
 import * as React from "react"
 
 import {
@@ -17,8 +17,10 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSkeleton,
   SidebarMenuSub,
-  SidebarRail
+  SidebarRail,
+  useSidebar
 } from "@/components/ui/sidebar"
 import { useStore } from "@nanostores/react"
 import { AlertDialog } from "@radix-ui/react-alert-dialog"
@@ -29,6 +31,7 @@ import { $docMetas, type DocMetadata } from "../shared/store/doc-metadata"
 import { FileTypeIcons, typeIconMap } from "../shared/typeIconMap"
 import { createDocumentState } from "./CreateDocumentDialog"
 import { EditorsByType } from "./Editor"
+import { Skeleton } from "@/components/ui/skeleton"
 
 
 const ValidTypes = Object.keys(EditorsByType).filter(t => t !== 'UNKNOWN');
@@ -52,7 +55,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     })
     return sorted
   }, [allDocMetas]);
-
+  const sidebarState = useSidebar()
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -76,9 +79,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Files</SidebarGroupLabel>
+
           <SidebarGroupContent>
+            
             <SidebarMenu>
-              { !docMetasSorted ? <div>Loading...</div> :
+              { !sidebarState.open || !docMetasSorted ? <FilesSkeleton /> :              
                docMetasSorted.map((doc, index) => {
                 const filename = `${doc.title || "[Untitled]"}` //.${doc.type}`
                 const FileIcon = FileTypeIcons[doc.type as keyof typeof typeIconMap] ?? FileTypeIcons["unknown"]
@@ -121,7 +126,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               {/* {data.tree.map((item, index) => (
                 <Tree key={index} item={item} />
               ))} */}
-            </SidebarMenu>
+            </SidebarMenu>            
+
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
@@ -134,6 +140,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <DeleteSavedDialogAlertContent {...(pendingDeleteItem!)} />
       </AlertDialog>
     </Sidebar>
+  )
+}
+
+function FilesSkeleton () {
+  return (
+    <div className="overflow-hidden">
+      <SidebarMenuSkeleton />
+      <SidebarMenuSkeleton />
+      <SidebarMenuSkeleton />
+      <SidebarMenuSkeleton />
+      <SidebarMenuSkeleton />
+    </div>
   )
 }
 

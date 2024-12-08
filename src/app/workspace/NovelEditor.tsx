@@ -1,21 +1,20 @@
+import { Collaboration } from "@/app/shared/TiptapCollaborationExtension";
 import { getDocLoadState } from "@/app/shared/store/doc-loader";
 import { user } from "@/app/shared/store/local-user";
 import { useDocCollabStore } from "@/app/shared/useDocCollabStore";
 import { useStore } from "@nanostores/react";
-import {Collaboration} from "@/app/shared/TiptapCollaborationExtension";
 import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 import { Color } from '@tiptap/extension-color';
 import Highlight from '@tiptap/extension-highlight';
 import TextStyle from '@tiptap/extension-text-style';
 
 import Novel from "@/app/novel/Novel";
+import { cn } from "@/lib/utils";
+import { useParams } from "react-router-dom";
 import { getDocRoomId } from "../shared/store/doc-room-config";
 import { getDocVersionsStoreByDocEditor } from "../shared/store/doc-versions";
-import { useStoreIfPresent } from "../shared/useStoreIfPresent";
-import { useParams } from "react-router-dom";
-import { Alert } from "@/components/ui/alert";
 import { useDocEditorMode } from "../shared/useDocEditorMode";
-import { cn } from "@/lib/utils";
+import { useStoreIfPresent } from "../shared/useStoreIfPresent";
 
 export default function NovelEditor() {
   const { type } = useParams<{ type: string }>();
@@ -23,7 +22,7 @@ export default function NovelEditor() {
   const mode = useDocEditorMode()
 
   const versionsStore = getDocVersionsStoreByDocEditor(docId, type);
-  console.log({versionsStore})
+
   const versionInfoMaybe = useStoreIfPresent(versionsStore);
   const versionId = versionInfoMaybe?.displayVersionId
   
@@ -40,8 +39,6 @@ export default function NovelEditor() {
   
   const isLive = !isVersionReplay;
 
-  console.log({ isLive, isLatestVersion})
-  
   const docRoomId = getDocRoomId(docId, roomId);
   const loadState = useStore(getDocLoadState(docId, roomId));
   
