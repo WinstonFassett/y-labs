@@ -69,14 +69,7 @@ export default function NovelEditor() {
     <div className={cn("min-h-full flex-1 flex flex-col max-w-3xl mx-auto w-full p-4", 
       readOnly && 'bg-muted transition-colors')}>
       {!ready && <div>Loading...</div>}
-      {/* {!!readOnly && 
-      <div className="pr-6 pb-6">
-        <Alert variant="default" className="bg-warning text-warning-foreground">
-          Viewing version {versionId}
-        </Alert>
-      </div>
-      } */}
-      {/* (key: {key}, isLatestVersion: { isLatestVersion ? 'true' : 'false' }, version: {versionId}) */}
+      
       {ready && 
         <Novel
           key={key}
