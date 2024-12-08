@@ -8,7 +8,7 @@ import { useDocCollabStore } from "../shared/useDocCollabStore";
 import { useStoreIfPresent } from "../shared/useStoreIfPresent";
 import { Sidebar, SidebarContent, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Navbar } from "@/components/ui/navbar";
-import { VersionHistory } from "../shared/Versionhistory";
+import { VersionHistory } from "../shared/VersionHistory";
 import { useDocEditorMode } from "../shared/useDocEditorMode";
 
 export const EditorsByType: Record<string, React.ComponentType<{ className?: string }>>

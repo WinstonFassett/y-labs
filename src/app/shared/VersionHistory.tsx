@@ -68,7 +68,7 @@ export function VersionHistory() {
                     {new Date(version.date).toLocaleTimeString()}
                   </span>
                 </div>
-                <div>{versionKey}</div>
+                {/* <div>{versionKey}</div> */}
               </Button>
             );
           })
