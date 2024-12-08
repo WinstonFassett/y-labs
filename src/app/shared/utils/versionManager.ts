@@ -19,6 +19,7 @@ export function createRootVersion(): Version {
 }
 
 export function addVersion(doc: Y.Doc, parentId: string = getLatestVersionId(doc)): void {
+  console.log('add version!, parentId:', parentId)
   const versionsArray = doc.getArray<Version>('versions');
   const snapshot = Y.encodeSnapshot(Y.snapshot(doc));
   

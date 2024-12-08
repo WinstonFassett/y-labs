@@ -22,13 +22,14 @@ export const EditorsByType: Record<string, React.ComponentType<{ className?: str
 
 export function Editor({ className }: { className?: string }) {
   const { docId, type } = useParams<{ docId: string, type: string }>();
-  const { needsPasswordToConnect, ydoc, roomId } = useDocCollabStore(false)
+  const { needsPasswordToConnect, roomId } = useDocCollabStore(false)
   const loadState = useStoreIfPresent(roomId ? getDocLoadState(docId!, roomId) : undefined);
   if (!docId) return <FolderView />;
   const canShow = !needsPasswordToConnect || loadState === "loaded";
   const EditorComponent = (type && EditorsByType[type]) || EditorsByType.UNKNOWN;
   const location = useLocation();
-  const showVersionHistory = !!docId && useDocEditorMode() === 'versions';  
+  const mode = useDocEditorMode() 
+  const showVersionHistory = !!docId && mode === 'versions';  
   // const [showVersionHistory, setShowVersionHistory] = useState(true);
   const navigate = useNavigate();
   return (<>
@@ -58,7 +59,7 @@ export function Editor({ className }: { className?: string }) {
                   Version History will go here 
                   [{docId}]
                 </div>
-                <VersionHistory />
+                {!!showVersionHistory && <VersionHistory />}
               </SidebarContent>
             </Sidebar>
               

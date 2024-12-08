@@ -33,11 +33,12 @@ export const Novel = ({
   autofocus = false,
   className,
   extensions,
+  readOnly = false,
 }: {
   autofocus?: boolean;
   className?: string;
   extensions?: Extension<any, any>[];
-  disableHistory?: boolean;
+  readOnly?: boolean;
 }) => {
   const baseExtensions = defaultExtensions;
   extensions = extensions
@@ -65,6 +66,7 @@ export const Novel = ({
       <EditorRoot>
         <EditorContent
           autofocus={autofocus}
+          editable={!readOnly}
           // initialContent={initialContent}
           extensions={extensions}
           className="[&>:first-child]:flex-1 [&>:first-child]:flex [&>:first-child]:flex-col  flex-1 flex flex-col max-w-screen-lg"
