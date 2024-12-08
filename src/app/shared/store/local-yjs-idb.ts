@@ -166,9 +166,11 @@ export async function getOfflineDocMeta(name: string) {
 function getDocMeta(doc: Y.Doc, name: string) {
   const meta = doc.getMap("meta").toJSON() as { [key: string]: any; title?: string; };
   const shares = Array.from(doc.share.keys()) as string[];
-  const type = shares.find((s) => s !== "meta" && s !== "tldraw_meta") || "unknown";
+  const type = shares.find((s) => !Ignores.includes(s)) || "unknown";
   return Object.assign(meta, { name, type });
 }
+
+const Ignores = ["meta", "versions", "tldraw_meta"];
 
 export async function deleteOfflineDoc(name: string) {
   await deleteDocMetadata(name);
