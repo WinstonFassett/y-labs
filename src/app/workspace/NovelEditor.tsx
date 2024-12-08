@@ -14,20 +14,38 @@ import { getDocVersionsStoreByDocEditor } from "../shared/store/doc-versions";
 import { useStoreIfPresent } from "../shared/useStoreIfPresent";
 import { useParams } from "react-router-dom";
 import { Alert } from "@/components/ui/alert";
+import { useDocEditorMode } from "../shared/useDocEditorMode";
+import { cn } from "@/lib/utils";
 
 export default function NovelEditor() {
   const { type } = useParams<{ type: string }>();
   const { docId, ydoc, $room, roomId } = useDocCollabStore();
+  const mode = useDocEditorMode()
+
   const versionsStore = getDocVersionsStoreByDocEditor(docId, type);
   console.log({versionsStore})
   const versionInfoMaybe = useStoreIfPresent(versionsStore);
   const versionId = versionInfoMaybe?.displayVersionId
-  const replayDoc = useStoreIfPresent(versionId && versionsStore?.$replayDoc)
-  const isLatestVersion = useStore(versionsStore.$isLatestVersion);
-  console.log({isLatestVersion})
+  
+  const isLatestVersion = useStoreIfPresent(
+    versionsStore?.$isLatestVersion
+  ) ?? false;
+
+  const isVersionReplay = mode === 'versions' && !!versionId && !isLatestVersion;
+
+  const replayDoc = useStoreIfPresent(
+    isVersionReplay && 
+    versionsStore?.$replayDoc
+  )
+  
+  const isLive = !isVersionReplay;
+
+  console.log({ isLive, isLatestVersion})
+  
   const docRoomId = getDocRoomId(docId, roomId);
   const loadState = useStore(getDocLoadState(docId, roomId));
-  const isReplay = !!versionId && !isLatestVersion;
+  
+  const isReplay = !isLive && !!versionId;
   const docToUse = isReplay ? replayDoc : ydoc;
 
   const fragment = docToUse.getXmlFragment("novel");
@@ -48,18 +66,21 @@ export default function NovelEditor() {
   const readOnly = isReplay || !providerReady;
 
   return (
-    <div className="min-h-full flex-1 flex flex-col max-w-3xl mx-auto w-full p-4">
+    <div className={cn("min-h-full flex-1 flex flex-col max-w-3xl mx-auto w-full p-4", 
+      readOnly && 'bg-muted transition-colors')}>
       {!ready && <div>Loading...</div>}
-      {!!readOnly && 
+      {/* {!!readOnly && 
       <div className="pr-6 pb-6">
         <Alert variant="default" className="bg-warning text-warning-foreground">
           Viewing version {versionId}
         </Alert>
       </div>
-      }
+      } */}
+      {/* (key: {key}, isLatestVersion: { isLatestVersion ? 'true' : 'false' }, version: {versionId}) */}
       {ready && 
         <Novel
           key={key}
+          className={cn(readOnly && 'bg-muted')}
           readOnly={readOnly}
           autofocus={autofocus}
           extensions={[

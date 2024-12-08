@@ -28,11 +28,14 @@ export function VersionHistory() {
   const versionArray = Array.from(versions).reverse();
   const len = versionArray.length;
   const selectedRef = useRef<HTMLButtonElement>(null);
+  // const isLatest = useStore(versionHistoryStore.$isLatestVersion);
+  const currentVersionId = displayVersionId ?? versionArray[0]?.id;
+  console.log({currentVersionId})
   useEffect(() => {
     if (selectedRef.current) {
       selectedRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
-  }, [displayVersionId]);
+  }, [currentVersionId]);
   if (!docId) return (
     <Alert variant="destructive">
       <p>No document selected</p>
@@ -56,11 +59,11 @@ export function VersionHistory() {
             return (
               <Button
                 key={versionKey}
-                ref={versionKey === displayVersionId ? selectedRef : null}
+                ref={versionKey === currentVersionId ? selectedRef : null}
                 variant='outline'
                 onClick={() => onVersionSelect(versionKey)}
                 className={`w-full text-left p-3 rounded-lg transition-colors ${
-                  versionKey === displayVersionId
+                  versionKey === currentVersionId
                     ? 'bg-indigo-50 dark:bg-indigo-950 border border-indigo-200 dark:border-indigo-800'
                     : 'hover:bg-gray-50 dark:hover:bg-gray-950 border border-transparent'
                 }`}
@@ -73,6 +76,7 @@ export function VersionHistory() {
                     {new Date(version.date).toLocaleTimeString()}
                   </span>
                 </div>
+                <div>{versionKey}</div>
               </Button>
             );
           })

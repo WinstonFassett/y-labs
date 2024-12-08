@@ -54,12 +54,9 @@ export function createVersionControlStore(sourceDoc: Y.Doc, {type}:{type: string
     return buildVersionGraph(versions);
   })
 
-  const $isLatestVersion = computed([store, $versions], ({displayVersionId}, versions) => {
-    return displayVersionId === null || (
-      versions?.length > 0 &&
-      displayVersionId === versions[versions.length - 1].id
-    )
-  })
+  const $isLatestVersion = computed([store, $versions], ({ displayVersionId }, versions) => 
+    checkIfLatestVersion(displayVersionId, versions)
+  )
 
   const $stackSizes = map<{undo: number; redo: number}>({ undo: 0, redo: 0 });
   
@@ -134,12 +131,31 @@ export function createVersionControlStore(sourceDoc: Y.Doc, {type}:{type: string
   //   return () => versionsArray.unobserve(handleUpdate);
   // }, [sourceDoc, displayVersionId]);
 
+  function checkIfLatestVersion(displayVersionId: string, versions: Version[]) {
+    if (displayVersionId === null) return true;
+    const latestVersionId = versions.length > 0 ? versions[versions.length - 1].id : null;
+    return displayVersionId === latestVersionId;
+  }
+
   function switchToVersion(versionId: string | null) {
     // if (versionId === null) {
     //   setDisplayVersionId(null);
     //   return;
     // }
     console.log('switch to version', versionId)
+
+    // TODO: only do this if the inbound version is not already the current version
+    const versions = $versions.get();
+    const isLatestVersion = checkIfLatestVersion(versionId, versions);
+
+    if (isLatestVersion) {
+      console.log('switching to live editing mode')
+      // If we're viewing the latest version, switch to live editing mode
+      store.setKey('displayVersionId', null)
+      $replayDoc.set(new Y.Doc());
+      return;
+    }
+
     store.setKey('displayVersionId', versionId)
     const versionGraph = $versionGraph.get();
     if (!versionGraph?.nodes.has(versionId)) return;
@@ -152,6 +168,7 @@ export function createVersionControlStore(sourceDoc: Y.Doc, {type}:{type: string
     // setReplayDoc(newDoc);
     console.log('setting replayDoc', newDoc)
     $replayDoc.set(newDoc);
+
   }
 
 

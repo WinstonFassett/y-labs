@@ -9,6 +9,7 @@ import { useStoreIfPresent } from "../shared/useStoreIfPresent";
 import { Sidebar, SidebarContent, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Navbar } from "@/components/ui/navbar";
 import { VersionHistory } from "../shared/Versionhistory";
+import { useDocEditorMode } from "../shared/useDocEditorMode";
 
 export const EditorsByType: Record<string, React.ComponentType<{ className?: string }>>
  = {
@@ -96,8 +97,3 @@ function UnknownEditorType() {
   );
 }
 
-function useDocEditorMode () {
-  const location = useLocation()
-  const isVersions = location.pathname.includes('versions');
-  return isVersions ? 'versions' : 'edit';
-}
