@@ -50,15 +50,10 @@ export function Editor({ className }: { className?: string }) {
               search: location.search,
             });
           }}>
-          <SidebarTrigger />
           <EditorComponent key={docId} className={className} />
             <Sidebar side="right" className="pt-14 border-l-transparent">
-              <SidebarContent className="p-4">
-                <SidebarTrigger />
-                <div>
-                  Version History will go here 
-                  [{docId}]
-                </div>
+              <SidebarContent className="p-2">
+                <SidebarTrigger className="absolute -left-7"/>
                 {!!showVersionHistory && <VersionHistory />}
               </SidebarContent>
             </Sidebar>

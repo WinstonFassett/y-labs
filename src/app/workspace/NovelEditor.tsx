@@ -13,6 +13,7 @@ import { getDocRoomId } from "../shared/store/doc-room-config";
 import { getDocVersionsStoreByDocEditor } from "../shared/store/doc-versions";
 import { useStoreIfPresent } from "../shared/useStoreIfPresent";
 import { useParams } from "react-router-dom";
+import { Alert } from "@/components/ui/alert";
 
 export default function NovelEditor() {
   const { type } = useParams<{ type: string }>();
@@ -49,7 +50,13 @@ export default function NovelEditor() {
   return (
     <div className="min-h-full flex-1 flex flex-col max-w-3xl mx-auto w-full p-4">
       {!ready && <div>Loading...</div>}
-      {!!readOnly && <div>Read only</div>}
+      {!!readOnly && 
+      <div className="pr-6 pb-6">
+        <Alert variant="default" className="bg-warning text-warning-foreground">
+          Viewing version {versionId}
+        </Alert>
+      </div>
+      }
       {ready && 
         <Novel
           key={key}

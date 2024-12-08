@@ -40,10 +40,9 @@ export function VersionHistory() {
   )
   return (
     <div className=" rounded-lg shadow-lg overflow-hidden flex flex-col h-full">
-      <div className="shrink-0 flex items-center gap-2 p-4 border-b">
+      <div className="shrink-0 flex items-center gap-2 border-b">
         <Clock className="w-5 h-5 text-indigo-600" />
-        <h2 className="text-lg font-semibold">Version History</h2>
-        <p>docId: {docId}</p>
+        <h2 className="text-lg font-semibold py-2">Version History</h2>
       </div>
       
       <div className="overflow-y-auto flex-1 space-y-2">
@@ -58,18 +57,19 @@ export function VersionHistory() {
               <Button
                 key={versionKey}
                 ref={versionKey === displayVersionId ? selectedRef : null}
+                variant='outline'
                 onClick={() => onVersionSelect(versionKey)}
                 className={`w-full text-left p-3 rounded-lg transition-colors ${
                   versionKey === displayVersionId
-                    ? 'bg-indigo-50 border border-indigo-200'
-                    : 'hover:bg-gray-50 border border-transparent'
+                    ? 'bg-indigo-50 dark:bg-indigo-950 border border-indigo-200 dark:border-indigo-800'
+                    : 'hover:bg-gray-50 dark:hover:bg-gray-950 border border-transparent'
                 }`}
               >
                 <div className="flex flex-col justify-between items-center">
-                  <span className="text-sm font-medium text-gray-900">
+                  <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
                     Version {len-idx}
                   </span>
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs text-gray-500 dark:text-gray-400">
                     {new Date(version.date).toLocaleTimeString()}
                   </span>
                 </div>
