@@ -131,12 +131,6 @@ export function createVersionControlStore(sourceDoc: Y.Doc, {type}:{type: string
   //   return () => versionsArray.unobserve(handleUpdate);
   // }, [sourceDoc, displayVersionId]);
 
-  function checkIfLatestVersion(displayVersionId: string, versions: Version[]) {
-    if (displayVersionId === null) return true;
-    const latestVersionId = versions.length > 0 ? versions[versions.length - 1].id : null;
-    return displayVersionId === latestVersionId;
-  }
-
   function switchToVersion(versionId: string | null) {
     // if (versionId === null) {
     //   setDisplayVersionId(null);
@@ -192,4 +186,11 @@ export function createVersionControlStore(sourceDoc: Y.Doc, {type}:{type: string
     redo,
     switchToVersion
   });
+}
+
+
+export function checkIfLatestVersion(displayVersionId: string, versions: Version[]) {
+  if (displayVersionId === null) return true;
+  const latestVersionId = versions.length > 0 ? versions[versions.length - 1].id : null;
+  return displayVersionId === latestVersionId;
 }
