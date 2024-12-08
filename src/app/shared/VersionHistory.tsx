@@ -4,7 +4,7 @@ import { useStore } from "@nanostores/react";
 import { Clock } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-import { getDocVersionsStoreByDocEditor } from "./store/doc-versions";
+import { checkIfLatestVersion, getDocVersionsStoreByDocEditor } from "./store/doc-versions";
 
 export function VersionHistory() {
   const { docId, type } = useParams();
@@ -48,6 +48,8 @@ export function VersionHistory() {
         ) : (
           versionArray.map((version, idx) => {
             const versionKey = version.id;
+            // const isCurrent = versionKey === currentVersionId;
+            const isLatest = checkIfLatestVersion(versionKey, versions);
             return (
               <Button
                 key={versionKey}
@@ -62,7 +64,7 @@ export function VersionHistory() {
               >
                 <div className="flex flex-col justify-between items-center">
                   <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                    Version {len - idx}
+                    Version {len - idx}{isLatest && " (Latest)"}
                   </span>
                   <span className="text-xs text-gray-500 dark:text-gray-400">
                     {new Date(version.date).toLocaleTimeString()}
