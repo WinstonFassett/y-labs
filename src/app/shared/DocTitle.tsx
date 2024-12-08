@@ -1,4 +1,5 @@
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   useEffect,
   useState,
@@ -8,10 +9,7 @@ import {
 import { useDebouncedCallback } from "use-debounce";
 import type { YMapEvent } from "yjs";
 import { useDocCollabStore } from "./useDocCollabStore";
-import { getDocLoadState } from "./store/doc-loader";
-import { useStore } from "@nanostores/react";
 import { useDocLoadState } from "./useDocLoadState";
-import { Skeleton } from "@/components/ui/skeleton";
 
 const initialTitle = document.title;
 const setWindowTitle = (title: string) =>
@@ -52,7 +50,6 @@ export function DocTitle() {
   };
   const onChangeDebounced = useDebouncedCallback(updateTitle, 600);
   const hasTitle = title.length > 0;
-  // const loadState = useStore(getDocLoadState(docId!, roomId!));
   const isLoaded = loadState === "loaded";
   return (
     <>{

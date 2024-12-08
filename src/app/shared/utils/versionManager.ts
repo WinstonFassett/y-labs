@@ -1,6 +1,26 @@
-import * as Y from 'yjs';
 import { v4 as uuidv4 } from 'uuid';
-import type { Version, VersionNode, VersionGraph } from '../types/version';
+import * as Y from 'yjs';
+
+export interface Version {
+  id: string;
+  parentId: string | null;
+  date: number;
+  snapshot: Uint8Array;
+  clientId: number;
+  metadata?: {
+    description?: string;
+    tags?: string[];
+  };
+}
+
+export interface VersionNode extends Version {
+  children: VersionNode[];
+}
+
+export interface VersionGraph {
+  nodes: Map<string, VersionNode>;
+  root: VersionNode;
+}
 
 const ROOT_VERSION_ID = '00000000-0000-0000-0000-000000000000';
 
@@ -141,5 +161,3 @@ export function findBranches(graph: VersionGraph): VersionNode[][] {
   traverseBranch(graph.root, []);
   return branches;
 }
-
-export { Version, VersionGraph };

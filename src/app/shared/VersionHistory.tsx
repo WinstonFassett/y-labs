@@ -1,12 +1,11 @@
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useStore } from "@nanostores/react";
-import { Clock } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-import { checkIfLatestVersion, getDocVersionsStoreByDocEditor } from "./store/doc-versions";
+import { checkIfLatestVersion } from "./store/doc-versions";
 import { useDocLoadState } from "./useDocLoadState";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useVersionHistory } from "./useVersionHistory";
 
 export function VersionHistory() {

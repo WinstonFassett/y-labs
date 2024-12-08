@@ -1,7 +1,7 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { useDocEditorMode } from "./useDocEditorMode";
 import { useCallback } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { getDocVersionsStoreByDocEditor } from "./store/doc-versions";
+import { useDocEditorMode } from "./useDocEditorMode";
 import { useStoreIfPresent } from "./useStoreIfPresent";
 
 export function useVersionHistory() {
@@ -22,11 +22,8 @@ export function useVersionHistory() {
     console.log('setShowVersionHistory', shouldShowVersionHistory)
     navigate({
       pathname: shouldShowVersionHistory
-        ? 
-        `/versions/${docId}/${type}`
-        : 
-        `/edit/${docId}/${type}`
-        ,
+        ? `/versions/${docId}/${type}`
+        : `/edit/${docId}/${type}`,
       search: location.search,
     });
   };

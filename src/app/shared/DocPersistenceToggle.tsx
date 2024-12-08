@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useStore } from "@nanostores/react";
 import { cva } from "class-variance-authority";
 import { AlertTriangleIcon, CheckIcon } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { getDocIdbStore } from "./store/local-yjs-idb";
 import { useDocLoadState } from "./useDocLoadState";
-import { Skeleton } from "@/components/ui/skeleton";
 
 const buttonStyles = cva(
   "rounded-full transition-all w-9 sm:w-auto",

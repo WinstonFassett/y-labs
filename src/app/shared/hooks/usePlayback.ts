@@ -1,6 +1,5 @@
 import { useState, useCallback, useRef } from 'react';
-import { VersionGraph } from '../types/version';
-import { findMainBranch } from '../utils/versionManager';
+import { findMainBranch, type VersionGraph } from '../utils/versionManager';
 
 export function usePlayback(
   versionGraph: VersionGraph | null,
