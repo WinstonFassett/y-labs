@@ -13,7 +13,8 @@ export function useVersionHistory(options: {type?: string}={}) {
   const canShowVersionHistory = !!docId
 
   const $versionHistory = docId ? getDocVersionsStoreByDocEditor(docId, type) : undefined;
-  const { displayVersionId } = useStoreIfPresent($versionHistory);
+  const versionHistoryState = useStoreIfPresent($versionHistory);
+  const displayVersionId = versionHistoryState?.displayVersionId;
   const versions = useStoreIfPresent($versionHistory?.$versions) ?? [];
   const currentVersionId =   displayVersionId ?? versions[versions.length-1]?.id 
 

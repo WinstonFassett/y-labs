@@ -28,9 +28,9 @@ export function Workspace() {
         <AppBar />
         <div className="flex-1 overflow-auto flex flex-col">
           <Editor />
-          <footer className="bg-white dark:bg-black border-t py-2 sm:py-4 shrink-0 sticky bottom-0">
+          {showVersionHistory && <footer className="bg-white dark:bg-black border-t py-2 sm:py-4 shrink-0 sticky bottom-0">
             <VersionTimelineControls />
-          </footer>
+          </footer>}
         </div>
         <CreateDocumentDialog />
         <Toaster /> 
