@@ -10,6 +10,7 @@ const ydocsT = mapTemplate(
   (store, id) => {
     // console.log("new ydoc", id);
     const ydoc = new Doc();
+    ydoc.gc = false;
     const onLoad = () => {
       store.$loaded.set(true);
     };

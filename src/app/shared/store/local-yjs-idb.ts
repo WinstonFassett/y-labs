@@ -130,6 +130,7 @@ export function getOfflineDoc(name: string, destroy = true) {
     // console.log("loaded", name);
   };
   const ydoc = new Y.Doc();
+  ydoc.gc = false
   if (ydoc.isLoaded) {
     onLoad();
     return Promise.resolve(ydoc);
