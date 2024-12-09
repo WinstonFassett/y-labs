@@ -6,11 +6,13 @@ import { useCurrentVersion } from "./useCurrentVersion";
 import { getSharesForType } from "./shares-lookup";
 import { useMemo } from "react";
 import { useDocTitle } from "./useDocTitle";
+import { useDocParams } from "./useDocParams";
 
-export function useDocEditor() {
+export function useDocEditor(options: {type?: string}={}) {
+  const { docId, type } = useDocParams({ type: options.type });
   const collabStuff = useDocCollabStore();
-  const currentVersionStuff = useCurrentVersion();
-  const { docId, ydoc, type, versionKey, isReplay } = currentVersionStuff;
+  const currentVersionStuff = useCurrentVersion({ type });
+  const { ydoc, versionKey, isReplay } = currentVersionStuff;
   const { roomId, docRoomId } = collabStuff;
   const mode = useDocEditorMode();
   const loadState = useStore(getDocLoadState(docId, roomId));

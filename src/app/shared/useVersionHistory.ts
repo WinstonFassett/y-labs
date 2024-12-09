@@ -3,10 +3,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getDocVersionsStoreByDocEditor } from "./store/doc-versions";
 import { useDocEditorMode } from "./useDocEditorMode";
 import { useStoreIfPresent } from "./useStoreIfPresent";
+import { useDocParams } from "./useDocParams";
 
-export function useVersionHistory() {
+export function useVersionHistory(options: {type?: string}={}) {
   const navigate = useNavigate();
-  const { docId, type } = useParams<{ docId: string; type: string; }>();  
+  const { docId, type } = useDocParams({ type: options.type });
   const mode = useDocEditorMode();
   const showVersionHistory = !!docId && mode === 'versions';
   const canShowVersionHistory = !!docId

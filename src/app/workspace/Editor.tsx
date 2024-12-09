@@ -39,9 +39,7 @@ export default function Editor({ className }: { className?: string }) {
   return (<>
     <Suspense fallback={<EditorSkeleton />}>
       {!canShow ? <EditorSkeleton /> : 
-        <main className="">
-          <EditorComponent key={docId} className={className} />
-        </main>
+        <EditorComponent key={docId} className={className} />
       }    
     </Suspense>
     <PasswordRequiredDialog />
@@ -50,13 +48,13 @@ export default function Editor({ className }: { className?: string }) {
 }
 
 function EditorSkeleton () {
-  return <div className="w-full h-full flex flex-col gap-2 p-4">
-    <LineSkeleton className="h-12 mb-8" />
+  return <div className="w-full h-full flex flex-col gap-2 p-4 bg-muted">
+    {/* <LineSkeleton className="h-12 mb-8" />
     <LineSkeleton className="h-10" />
     <LineSkeleton className="" />
     <LineSkeleton className="h-16" />
     <LineSkeleton className="" />
-    <LineSkeleton className="h-32" />
+    <LineSkeleton className="h-32" /> */}
   </div>
 }
 

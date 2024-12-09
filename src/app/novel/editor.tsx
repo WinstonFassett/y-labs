@@ -23,7 +23,7 @@ function Editor() {
   return (
     <div className="min-h-dvh flex-1 flex flex-col max-w-3xl mx-auto w-full">
       <AppBar />
-      {waiting && <div>Loading...</div>}
+      {waiting && <div>Loading Novel...</div>}
       {!waiting && 
         <Novel
           key={roomId ?? docId}

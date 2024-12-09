@@ -3,7 +3,7 @@ import { atom, computed, map, onMount } from 'nanostores';
 import { ySyncPluginKey, yUndoPluginKey } from 'y-prosemirror';
 import * as Y from 'yjs';
 import { getSharesForType } from '../shares-lookup';
-import { addVersion, buildVersionGraph, type Version } from '../utils/versionManager';
+import { addVersion, buildVersionGraph, restoreVersion, type Version } from '../utils/versionManager';
 import { getYdoc } from './yjs-docs';
 
 const VersionsByDocEditor = mapTemplate((id, { docId, type }:{docId:string, type:string}) => {
@@ -96,9 +96,8 @@ export function createVersionControlStore(sourceDoc: Y.Doc, {type}:{type: string
 
     const version = versionGraph.nodes.get(versionId);
     if (!version) return;
-
-    const snapshot = Y.decodeSnapshot(version.snapshot);
-    const newDoc = Y.createDocFromSnapshot(sourceDoc, snapshot);
+    
+    const newDoc = restoreVersion(sourceDoc, version);
     $replayDoc.set(newDoc);
   }
 

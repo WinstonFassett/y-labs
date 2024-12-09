@@ -22,9 +22,9 @@ export function Workspace() {
       <AppSidebar />
       <SidebarInset className="flex flex-col">
         <AppBar />
-        <main className="flex-1 overflow-auto">
+        <div className="flex-1 overflow-auto flex flex-col">
           <Editor />
-        </main>
+        </div>
         <CreateDocumentDialog />
         <Toaster /> 
       </SidebarInset>

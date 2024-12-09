@@ -17,7 +17,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { TrashIcon } from "lucide-react";
 import { useState } from "react";
 import { useNavigateMaybe } from "../../lib/useNavigateMaybe";
-import { useDocParams } from "../blocknote/Editor";
+import { useDocParams } from "./useDocParams";
 import type { DocMetadata } from "./store/doc-metadata";
 import { deleteOfflineDoc, getDocIdbStore, getHasDocIdb } from "./store/local-yjs-idb";
 

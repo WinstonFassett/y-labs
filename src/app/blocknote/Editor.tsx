@@ -1,20 +1,16 @@
 import { cn } from "@/lib/utils";
 import { useStore } from "@nanostores/react";
 import { Suspense } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import AppBar from "../shared/AppBar";
 import { PasswordRequiredDialog } from "../shared/PasswordRequiredDialog";
 import { getDocLoadState } from "../shared/store/doc-loader";
 import { useDocCollabStore } from "../shared/useDocCollabStore";
 import { LazyBlocknote } from "./lazy/editor";
-
-export function useDocParams() {
-  const { docId } = useParams();  
-  return { docId };
-}
+import { useDocParams } from "../shared/useDocParams";
 
 export function Editor({ className }: { className?: string }) {
-  const { docId } = useDocParams();
+  const { docId, type } = useDocParams({ type: 'blocknote' });
   const [searchParams] = useSearchParams();
   const roomId = searchParams.get("roomId")
   const $loader = getDocLoadState(docId, roomId);

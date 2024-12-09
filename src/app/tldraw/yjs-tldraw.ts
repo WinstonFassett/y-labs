@@ -49,21 +49,26 @@ export function bindToYDoc(
   const yArr = yDoc.getArray<{ key: string; val: TLRecord }>(`${name}`);
   const yStore = new YKeyValue(yArr);
   const meta = yDoc.getMap<SerializedSchema>(`${name}_meta`);
+  const loaded = yDoc.isLoaded;
+  const onLoaded = () => {
+    const isNew = yArr.length === 0;
+    if (isNew) {
+      initializeNewTldrawStore();
+    } else {
+      applySchemaMigration();
+    }
+    Promise.resolve().then(() => {
+      yDoc.emit("tldraw-ready", [name]);
+    });
+  }
+  if (loaded) {
+    onLoaded();
+  }
   const dispose = createDisposer(
     effectSyncTlDrawToYDoc(),
     effectSyncYDocToTlDraw(),
     provider?.awareness && effectSyncAwareness(provider.awareness),
-    listenOnce(yDoc, "load", () => {
-      const isNew = yArr.length === 0;
-      if (isNew) {
-        initializeNewTldrawStore();
-      } else {
-        applySchemaMigration();
-      }
-      Promise.resolve().then(() => {
-        yDoc.emit("tldraw-ready", [name]);
-      });
-    }),
+    !loaded ? listenOnce(yDoc, "load", onLoaded) : undefined,
     provider &&
       listen(provider, "synced", (synced) => {
         if (synced && !yDoc.isLoaded) {
@@ -74,11 +79,6 @@ export function bindToYDoc(
       }),
   );
 
-  if (!provider && !persister) {
-    Promise.resolve().then(() => {
-      yDoc.emit("load", []); // change to synced
-    });
-  }
 
   function effectSyncTlDrawToYDoc() {
     return createDisposer(

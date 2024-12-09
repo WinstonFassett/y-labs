@@ -4,12 +4,13 @@ import { useDocEditorMode } from "./useDocEditorMode";
 import { useStoreIfPresent } from "./useStoreIfPresent";
 import { useVersionHistory } from "./useVersionHistory";
 import { useMemo } from "react";
+import { useDocParams } from "./useDocParams";
 
-export function useCurrentVersion() {
-  const { docId, ydoc } = useDocCollabStore();
-  const { type } = useParams<{ docId: string; type: string; }>();
+export function useCurrentVersion(options: {type?: string}={}) {
+  const { type, docId } = useDocParams({ type: options.type });
+  const {  ydoc } = useDocCollabStore();
 
-  const { $versionHistory, displayVersionId } = useVersionHistory();
+  const { $versionHistory, displayVersionId } = useVersionHistory({ type });
 
   const isLatestVersion = useStoreIfPresent(
     $versionHistory?.$isLatestVersion
