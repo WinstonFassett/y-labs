@@ -51,7 +51,7 @@ export function Blocknote(
       editor.focus();
     }
   }, [autofocusDoc]);
-  return (<div className={cn(readOnly && 'bg-muted transition-colors')}>
+  return (<div className={cn('flex-1', readOnly && 'bg-muted transition-colors')}>
     <BlockNoteView key={docEditorKey} editor={editor} autoFocus={autofocusDoc} className={cn('flex-1', className)} />
   </div>
   );

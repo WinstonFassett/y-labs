@@ -14,6 +14,10 @@ import { useVersionHistory } from "../shared/useVersionHistory"
 import { CreateDocumentDialog } from "./CreateDocumentDialog"
 import Editor from "./Editor"
 import AppBar from "./WorkspaceAppBar"
+import { TimelineControls } from "../shared/PlaybackControls"
+import { useStore } from "@nanostores/react"
+import { usePlayback } from "../shared/usePlayback"
+import { useCallback, useMemo } from "react"
 
 export function Workspace() {
   const { showVersionHistory, setShowVersionHistory } = useVersionHistory()
@@ -24,6 +28,9 @@ export function Workspace() {
         <AppBar />
         <div className="flex-1 overflow-auto flex flex-col">
           <Editor />
+          <footer className="bg-white dark:bg-black border-t py-2 sm:py-4 shrink-0 sticky bottom-0">
+            <VersionTimelineControls />
+          </footer>
         </div>
         <CreateDocumentDialog />
         <Toaster /> 
@@ -53,3 +60,54 @@ export function Workspace() {
     </SidebarProvider>
   )
 }
+
+
+function VersionTimelineControls () {
+  const { $versionHistory, displayVersionId, currentVersionId } = useVersionHistory()
+  const versionGraph = useStore($versionHistory.$versionGraph)
+  const versions = useStore($versionHistory.$versions)
+
+  const handleJumpToVersion = useCallback(
+    (versionId: string | null) => {
+      if (!versionGraph?.nodes.has(versionId)) return;
+      const version = versionGraph.nodes.get(versionId);
+      if (!version) {
+        console.warn("Version not found", versionId);
+        return;
+      } 
+      $versionHistory.switchToVersion(versionId)
+    },
+    [versionGraph]
+  );
+
+  const {
+    isPlaying,
+    togglePlayback,
+    stopPlayback
+  } = usePlayback(
+    versionGraph,
+    currentVersionId,
+    newVersion => $versionHistory.switchToVersion(newVersion)
+  );
+
+  const currentIndex = useMemo(() => {
+    if (!versions) return 0;
+    return versions.findIndex(v => v.id === currentVersionId);
+  }, [currentVersionId, versionGraph])
+
+  return (
+      <TimelineControls
+      onJumpToSnapshot={(index) => {
+        const versions = Array.from(versionGraph?.nodes.values() || []);
+        const version = versions[index]
+        if (!version) return;        
+        handleJumpToVersion(version.id);
+      }}
+      isPlaying={isPlaying}
+      onPlayPause={togglePlayback}
+      currentIndex={currentIndex}
+      totalVersions={versionGraph?.nodes.size || 0}
+    />
+  )
+}
+
