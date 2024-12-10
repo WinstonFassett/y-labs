@@ -283,7 +283,6 @@ export function bindToYDoc(
         yStore.set(record.id, record);
       }
       meta.set("schema", store.schema.serialize());
-      console.log("set schema", meta.get("schema"));
     });
   }
 

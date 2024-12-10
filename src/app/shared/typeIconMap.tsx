@@ -14,6 +14,12 @@ export const typeIconMap = {
       alt="Blocknote"
       className="h-8 w-8" />
   ),
+  blocksuite: (
+    <img
+      src="/y-labs/logos/blocksuite2.svg"
+      alt="Blocksuite"
+      className="h-8 w-8" />
+  ),
   novel: <img src="/y-labs/logos/novel.svg" alt="Novel" className="h-8 w-8" />,
   tldraw: (
     <img

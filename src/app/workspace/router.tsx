@@ -33,14 +33,16 @@ function NewWorkspaceDocRoute() {
   const { type } = useParams<{ type: string }>();
   const navigate = useNavigate()
 
+  let typedId = type === 'blocksuite' ? `blocksuite-${id}` : id;
+
   useEffect(() => {
     async function enablePersistence() {
-      $newDocIds.set(new Set($newDocIds.get().add(id)))
-      await saveOfflineDoc(id)
-      navigate(`/edit/${id}/${type}`, { replace: true })
+      $newDocIds.set(new Set($newDocIds.get().add(typedId)))
+      await saveOfflineDoc(typedId)
+      navigate(`/edit/${typedId}/${type}`, { replace: true })
     }
     enablePersistence();
   }, [])
-  
-  return <div>Creating {id}...</div>;
+  console.log('Creating', typedId)
+  return <div>Creating {typedId}...</div>;
 }
