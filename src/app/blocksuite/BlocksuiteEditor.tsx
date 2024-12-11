@@ -7,13 +7,13 @@ function App() {
   initialize()
   return (
     <EditorProvider>
-      <div className="app">
+      {/* <div className="app"> */}
         {/* <Sidebar /> */}
-        <div className="main-content">
+        {/* <div className="main-content"> */}
           {/* <TopBar /> */}
           <EditorContainer />
-        </div>
-      </div>
+        {/* </div> */}
+      {/* </div> */}
     </EditorProvider>
   );
 }

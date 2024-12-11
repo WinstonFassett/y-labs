@@ -7,7 +7,10 @@ import type { Doc } from "yjs";
 
 export const schema = new Schema().register(AffineSchemas);
 export const collection = new DocCollection({ schema });
-
+console.log('collection', collection)
+Object.assign(window, {
+  collection
+})
 collection.meta.initialize();
 
 const blocksuiteDocsT = mapTemplate(
