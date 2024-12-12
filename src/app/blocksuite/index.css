@@ -54,6 +54,7 @@
   height: 100%;
 }
 
-edgeless-editor {
+edgeless-editor,
+affine-editor-container {
   flex: 1;
 }

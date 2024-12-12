@@ -17,18 +17,24 @@ export interface EditorContextType {
   updateCollection: (newCollection: DocCollection) => void;
 }
 
-export function initEditor(doc: Doc) {
-  console.log('initEditor')
+export function createEditor(doc: Doc) {
+  console.log('createEditor', doc)
 
   doc.load(() => {
-    // const pageBlockId = doc.addBlock('affine:page', {});
-    // doc.addBlock('affine:surface', {}, pageBlockId);
-    // const noteId = doc.addBlock('affine:note', {}, pageBlockId);
-    // doc.addBlock('affine:paragraph', {}, noteId);
+    console.log('setting up NEW blocksuite doc', doc)
+    if (doc.isEmpty) {
+      const pageBlockId = doc.addBlock('affine:page', {});
+      doc.addBlock('affine:surface', {}, pageBlockId);
+      // const noteId = doc.addBlock('affine:note', {}, pageBlockId);
+      // doc.addBlock('affine:paragraph', {}, noteId);
+    }
+      
   });
 
-  const editor = new EdgelessEditor();
-  // const editor = new AffineEditorContainer();
+  // const editor = new EdgelessEditor();
+  const editor = new AffineEditorContainer();
+  editor.switchEditor('edgeless')
+  
   // const doc2 = createEmptyDoc().init();
   editor.doc = doc;
   // editor.slots.docLinkClicked.on(({ docId }) => {

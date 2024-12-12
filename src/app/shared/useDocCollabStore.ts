@@ -19,8 +19,8 @@ export function useDocCollabStore(requireDocId = true) {
   }
   const navigate = useNavigate();
 
-  const $ydoc = getYdoc(docId!);
-  const ydoc = useStore($ydoc);
+  const $ydoc = docId ? getYdoc(docId!) : undefined;
+  const ydoc = useStoreIfPresent($ydoc);
   
   const [searchParams] = useSearchParams();
   const roomId = searchParams.get("roomId");
