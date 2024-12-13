@@ -4,6 +4,6 @@ import { getBaseShares } from "../shared/shares-base";
 export function getBlocksuiteShares(ydoc: Y.Doc) {
   return {
     ...getBaseShares(ydoc),    
-    blocksuite: ydoc.getXmlFragment('blocksuite'),
+    blocks: ydoc.getMap('blocks')
   }
 }

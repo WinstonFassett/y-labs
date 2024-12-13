@@ -2,14 +2,16 @@ import { AffineEditorContainer, EdgelessEditor, createEmptyDoc, } from '@blocksu
 import { Doc } from '@blocksuite/store';
 import { DocCollection } from '@blocksuite/store';
 // import '@blocksuite/presets/themes/affine.css';
-import { effects as blocksEffects } from '@blocksuite/blocks/effects';
-import { effects as presetsEffects } from '@blocksuite/presets/effects';
+// import { effects as blocksEffects } from '@blocksuite/blocks/effects';
+// import { effects as presetsEffects } from '@blocksuite/presets/effects';
 import { collection } from '@/app/shared/store/blocksuite-docs';
 
-import '@toeverything/theme/style.css'
+// import '@toeverything/theme/style.css'
+import '@blocksuite/presets/themes/affine.css';
 
-blocksEffects();
-presetsEffects();
+
+// blocksEffects();
+// presetsEffects();
 
 export interface EditorContextType {
   editor: AffineEditorContainer | null;

@@ -170,11 +170,11 @@ function getDocMeta(doc: Y.Doc, name: string) {
   console.log('shares', shares)
   console.log('meta', meta, )
   const type = shares.find((s) => !Ignores.includes(s)) || "unknown";
-
+  if (type === 'blocks') return 'blocksuite'
   return Object.assign(meta, { name, type });
 }
 
-const Ignores = ["meta", "versions", "tldraw_meta", "blocks"];
+const Ignores = ["meta", "versions", "tldraw_meta"];
 
 export async function deleteOfflineDoc(name: string) {
   await deleteDocMetadata(name);

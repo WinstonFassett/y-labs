@@ -1,0 +1,12 @@
+---
+import Layout from "@/layouts/LabLayout.astro";
+import App from "@/app/blocksuite/App";
+const frontmatter = {
+  title: "BlockSuite",
+  favicon: "/y-labs/logos/blocksuite.svg",
+};
+---
+
+<Layout frontmatter={frontmatter} class="min-h-dvh">
+  <App client:only="react" frontmatter={frontmatter} />
+</Layout>
