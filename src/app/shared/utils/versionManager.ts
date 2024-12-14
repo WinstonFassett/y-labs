@@ -81,9 +81,12 @@ export function getLatestVersionId(doc: Y.Doc): string {
 }
 
 export function restoreVersion(sourceDoc: Y.Doc, version: Version): Y.Doc {
+  const priorGc = sourceDoc.gc;
+  sourceDoc.gc = false;
   const snapshot = Y.decodeSnapshot(version.snapshot);
   const newDoc = Y.createDocFromSnapshot(sourceDoc, snapshot);
   newDoc.isLoaded = true
+  sourceDoc.gc = priorGc;
   return newDoc
 }
 
