@@ -25,7 +25,7 @@ export function createEditor(doc: Doc) {
   });
 
   const editor = new AffineEditorContainer();
-  editor.switchEditor('edgeless')
+  // editor.switchEditor('edgeless')
   editor.doc = doc;
   return { editor, collection };
 }

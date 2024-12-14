@@ -26,7 +26,7 @@ export function Workspace() {
       <AppSidebar />
       <SidebarInset className="flex flex-col">
         <AppBar />
-        <div className="flex-1 overflow-auto flex flex-col">
+        <div className="flex-1 overflow-auto flex flex-col relative">
           <Editor />
           {showVersionHistory && <footer className="bg-white dark:bg-black border-t py-2 sm:py-4 shrink-0 sticky bottom-0">
             <VersionTimelineControls />
