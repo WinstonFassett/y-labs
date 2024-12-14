@@ -18,9 +18,10 @@ import { TimelineControls } from "../shared/PlaybackControls"
 import { useStore } from "@nanostores/react"
 import { usePlayback } from "../shared/usePlayback"
 import { useCallback, useMemo } from "react"
+import { TrackHistorySetting } from "../shared/SettingsDialog"
 
 export function Workspace() {
-  const { showVersionHistory, setShowVersionHistory } = useVersionHistory()
+  const { showVersionHistory, setShowVersionHistory, trackHistoryWhenEditing } = useVersionHistory()
   return (
     <SidebarProvider shortcut="l" className="h-screen overflow-hidden">
       <AppSidebar />
@@ -46,6 +47,10 @@ export function Workspace() {
                 <Button variant="ghost"  className="rounded-full h-8 w-8" onClick={() => { setShowVersionHistory(false) }}>
                   <X className="h-2 w-2" />
                 </Button>                
+              </div>
+
+              <div className="text-muted-foreground text-sm p-2">
+                <TrackHistorySetting />
               </div>
 
               {!!showVersionHistory && 
