@@ -1,6 +1,6 @@
 import { mapTemplate } from "@/lib/nanostores-utils/mapTemplate";
 import { AffineSchemas } from '@blocksuite/blocks';
-import { DocCollection, Schema } from '@blocksuite/store';
+import { DocCollection, Schema, Doc as BsDoc } from '@blocksuite/store';
 import { atom } from "nanostores";
 // import { getYdoc, setYdoc } from "./yjs-docs";
 import type { Doc } from "yjs";
@@ -14,7 +14,18 @@ Object.assign(window, {
 collection.meta.initialize();
 
 const blocksuiteDocsT = mapTemplate(
-  id => atom(collection.createDoc({ id })),
+  (id, init?: (doc: BsDoc) => void) => atom<BsDoc>(),
+  (store, id) => {
+    const bsDoc = collection.createDoc({ id })
+    console.log('bsDoc', bsDoc)
+    // init?.(bsDoc)
+    ;(bsDoc.spaceDoc as any).blocksuite = bsDoc
+    store.set(bsDoc);  
+    return () => {      
+      console.log('disposing blocksuite doc', bsDoc)
+      bsDoc.dispose()
+    }
+  }
   // (store, id) => {
     // force use this as doc editor ydoc
     // const ydoc = getYdoc(id).value
@@ -29,7 +40,7 @@ const blocksuiteDocsT = mapTemplate(
     // }
   // }
 )
-export function getBlocksuiteDoc(id: string) {
+export function getBlocksuiteDocStore(id: string) {
   const blocksuiteDoc = blocksuiteDocsT(id);
   return blocksuiteDoc;
 }

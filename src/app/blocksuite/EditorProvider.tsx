@@ -1,6 +1,6 @@
 import { useStore } from '@nanostores/react';
 import { useEffect, useMemo } from 'react';
-import { getBlocksuiteDoc } from '../shared/store/blocksuite-docs';
+import { getBlocksuiteDocStore } from '../shared/store/blocksuite-docs';
 import { useDocParams } from '../shared/useDocParams';
 import { EditorContext } from './context';
 import { createEditor } from './createEditor';
@@ -10,7 +10,7 @@ import * as Y from 'yjs';
 
 export const EditorProvider = ({ children }: { children: React.ReactNode }) => {
   const { docId } = useDocParams()
-  const bsDocStore = getBlocksuiteDoc(docId)
+  const bsDocStore = getBlocksuiteDocStore(docId)
 
   /*
   Hmm. Blocksuite is making this difficult because they insist on creating the Y Doc internally
@@ -36,15 +36,23 @@ export const EditorProvider = ({ children }: { children: React.ReactNode }) => {
   const { loaded, loadState, mode, isLatestVersion, currentDoc, docEditorKey } = useDocEditor({ type: 'blocksuite'})
   
   const currentBsDoc = useMemo(() => {
+    console.log({ currentDoc, isLatestVersion })
     if (isLatestVersion) {
       return bsDoc
     }
-    const bsVersionDoc = createEmptyDoc().init();
+    const bsVersionDoc = createEmptyDoc().doc // .init();
     const update = Y.encodeStateAsUpdate(currentDoc)
     Y.applyUpdate(bsVersionDoc.spaceDoc, update)
+    console.log({bsVersionDoc, json: bsVersionDoc.spaceDoc.toJSON()})
     return bsVersionDoc
   }, [currentDoc])
-  const value = useMemo(() => loaded ? createEditor(currentBsDoc) : undefined, [currentBsDoc, loaded])
+  const value = useMemo(() => {
+    if (loaded) {
+      console.log('loaded. creating editor', currentBsDoc)
+      return createEditor(currentBsDoc)
+    }
+    // loaded ? createEditor(currentBsDoc) : undefined
+  }, [currentBsDoc, loaded])
 
   // useEffect(() => {
   //   console.log('doc changed', docEditorKey)

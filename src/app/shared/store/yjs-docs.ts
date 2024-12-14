@@ -1,7 +1,7 @@
 import { mapTemplate } from "@/lib/nanostores-utils/mapTemplate";
 import { atom } from "nanostores";
 import { Doc } from "yjs";
-import { getBlocksuiteDoc } from "./blocksuite-docs";
+import { getBlocksuiteDocStore } from "./blocksuite-docs";
 
 const ydocsT = mapTemplate(
   (id) =>
@@ -28,7 +28,7 @@ const ydocsT = mapTemplate(
 const blocksuiteYdocsT = mapTemplate(
   id => Object.assign(atom<Doc>(), { id }),
   (store, id) => {
-    const $bsDoc = getBlocksuiteDoc(id);
+    const $bsDoc = getBlocksuiteDocStore(id);
     return $bsDoc.subscribe((bsDoc) => {
       store.set(bsDoc.spaceDoc);
     })
