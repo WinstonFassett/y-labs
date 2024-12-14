@@ -1,8 +1,8 @@
 
 import { useDocRoomRoute } from "../shared/useDocRoomRoute";
-import BlockSuiteEditor from './BlockSuiteAppEditor'
+import BlocksuiteEditor from './BlocksuiteEditor'
 
 export function EditorRoute() {
   useDocRoomRoute()
-  return <BlockSuiteEditor />;
+  return <BlocksuiteEditor />;
 }
