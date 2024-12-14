@@ -42,15 +42,18 @@ export const EditorProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (!editorContext ? <div>Loading...</div> : 
     <EditorContext.Provider value={editorContext}>
-    <Button 
-      variant='outline' 
-      className='absolute top-2 right-2 z-50'
-      size='sm'
-      onClick={() => {        
-        setMode(mode === 'page' ? 'edgeless' : 'page')
-      }}>
-        Show {mode === 'page' ? 'Board' : 'Doc'}
-      </Button>      
+    <div className='sticky top-0 z-50 flex flex-row p-1'>
+      <div className='flex-grow'></div>
+      <Button 
+        variant='outline' 
+        style={{width: 'inherit'}}
+        size='sm'
+        onClick={() => {        
+          setMode(mode === 'page' ? 'edgeless' : 'page')
+        }}>
+          Show {mode === 'page' ? 'Board' : 'Doc'}
+        </Button>      
+    </div>
       {children}
     </EditorContext.Provider>
   );

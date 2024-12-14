@@ -14,8 +14,6 @@ const EditorContainer = () => {
     }
   }, [editor]);
 
-  const [mode, setMode] = useState(editor.mode)
-
   return <>
     
     <div className="editor-container" ref={editorContainerRef}>
