@@ -30,15 +30,14 @@ export const EditorProvider = ({ children }: { children: React.ReactNode }) => {
   const editorContext = useMemo(() => {
     if (!loaded) return null
     const editorContext = createEditor(currentBsDoc)
-    if (editorContext.editor.mode !== mode) {
-      editorContext.editor.switchEditor(mode)
-    }
     return editorContext
   }, [currentBsDoc, loaded])
   
   useEffect(() => {
-    editorContext.editor.switchEditor(mode)
-  },[mode])
+    if (editorContext && editorContext.editor.mode !== mode) {
+      editorContext.editor.switchEditor(mode)
+    }
+  },[editorContext, mode])
 
   return (!editorContext ? <div>Loading...</div> : 
     <EditorContext.Provider value={editorContext}>
