@@ -51,10 +51,10 @@ export function TimelineControls({
       <div className="flex-1 flex items-center gap-3">
         <input
           type="range"
-          min={0}
-          max={Math.max(0, totalVersions - 1)}
-          value={currentIndex}
-          onChange={(e) => onJumpToSnapshot(parseInt(e.target.value))}
+          min={1}
+          max={Math.max(0, totalVersions)}
+          value={currentIndex+1}
+          onChange={(e) => onJumpToSnapshot(parseInt(e.target.value)-1)}
           className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
         />
         

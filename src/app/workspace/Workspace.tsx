@@ -98,7 +98,6 @@ function VersionTimelineControls () {
   return (
       <TimelineControls
       onJumpToSnapshot={(index) => {
-        const versions = Array.from(versionGraph?.nodes.values() || []);
         const version = versions[index]
         if (!version) return;        
         handleJumpToVersion(version.id);
