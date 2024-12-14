@@ -51,6 +51,7 @@ const SidebarProvider = React.forwardRef<
     defaultOpen?: boolean
     open?: boolean
     onOpenChange?: (open: boolean) => void
+    shortcut: string
   }
 >(
   (
@@ -58,6 +59,7 @@ const SidebarProvider = React.forwardRef<
       defaultOpen = true,
       open: openProp,
       onOpenChange: setOpenProp,
+      shortcut = SIDEBAR_KEYBOARD_SHORTCUT,
       className,
       style,
       children,
@@ -98,8 +100,8 @@ const SidebarProvider = React.forwardRef<
     React.useEffect(() => {
       const handleKeyDown = (event: KeyboardEvent) => {
         if (
-          event.key === SIDEBAR_KEYBOARD_SHORTCUT &&
-          (event.metaKey || event.ctrlKey)
+          (event.metaKey || event.ctrlKey) && event.shiftKey &&
+          event.key === shortcut
         ) {
           event.preventDefault()
           toggleSidebar()
@@ -257,28 +259,40 @@ const Sidebar = React.forwardRef<
 )
 Sidebar.displayName = "Sidebar"
 
-const SidebarTrigger = React.forwardRef<
+const DefaultSidebarTrigger = React.forwardRef<
   React.ElementRef<typeof Button>,
   React.ComponentProps<typeof Button>
->(({ className, onClick, ...props }, ref) => {
-  const { toggleSidebar } = useSidebar()
-
-  return (
-    <Button
+>(({ className, ...props }, ref) => {
+  return (<Button
       ref={ref}
       data-sidebar="trigger"
       variant="ghost"
       size="icon"
-      className={cn("h-7 w-7", className)}
+      className={cn("h-7 w-7", className)}      
+      {...props}
+    >
+      <PanelLeft />
+      <span className="sr-only">Toggle Sidebar</span>
+    </Button>)
+})
+
+
+const SidebarTrigger = React.forwardRef<
+  React.ElementRef<typeof Button>,
+  React.ComponentProps<typeof Button>
+>(({ className, onClick, asChild, ...props }, ref) => {
+  const { toggleSidebar } = useSidebar()
+  const Comp = asChild ? Slot : DefaultSidebarTrigger
+  return (
+    <Comp
+      ref={ref}
+      data-sidebar="trigger"      
       onClick={(event) => {
         onClick?.(event)
         toggleSidebar()
       }}
       {...props}
-    >
-      <PanelLeft />
-      <span className="sr-only">Toggle Sidebar</span>
-    </Button>
+    />        
   )
 })
 SidebarTrigger.displayName = "SidebarTrigger"

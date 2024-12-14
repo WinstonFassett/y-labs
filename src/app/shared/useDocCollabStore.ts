@@ -3,7 +3,8 @@ import { useMemo } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import {
   getDocRoomConfig,
-  type DocRoomConfigFields
+  type DocRoomConfigFields,
+  getDocRoomId
 } from "./store/doc-room-config";
 import { getTrysteroDocRoom } from "./store/trystero-doc-room";
 import { getYdoc } from "./store/yjs-docs";
@@ -18,8 +19,8 @@ export function useDocCollabStore(requireDocId = true) {
   }
   const navigate = useNavigate();
 
-  const $ydoc = getYdoc(docId!);
-  const ydoc = useStore($ydoc);
+  const $ydoc = docId ? getYdoc(docId!) : undefined;
+  const ydoc = useStoreIfPresent($ydoc);
   
   const [searchParams] = useSearchParams();
   const roomId = searchParams.get("roomId");
@@ -44,12 +45,17 @@ export function useDocCollabStore(requireDocId = true) {
     }
   }
   const { needsPasswordToConnect, canConnect } = useStoreIfPresent($roomConfig?.$validation) ?? {};
+
+  const docRoomId = getDocRoomId(docId, roomId);
+
   return {
     ydoc,
     docId,
     roomId,
+    docRoomId,
     $room,
     room,
+    provider: room?.provider,
     $roomConfig,
     canConnect,
     needsPasswordToConnect,
@@ -57,3 +63,5 @@ export function useDocCollabStore(requireDocId = true) {
     stopSharing,
   };  
 }
+
+

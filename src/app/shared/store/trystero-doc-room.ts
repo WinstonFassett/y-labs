@@ -54,8 +54,8 @@ function createTrysteroDocRoom(
   const $enabledSharingLink = computed([$config], (config) => {
     return config.enabled ? $config.$sharingLink.get() : undefined
   })
-  
-  const awareness = new Awareness(ydoc)
+
+  const awareness = (ydoc as { awareness?: Awareness }).awareness ?? new Awareness(ydoc)
 
   function setUserInAwareness(user: Readonly<{ username: string; color: string; }>) {
     awareness.setLocalState({

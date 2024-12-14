@@ -5,67 +5,93 @@ import {
   createTLStore,
   defaultShapeUtils,
   getUserPreferences,
-  setUserPreferences
+  setUserPreferences,
+  type TLStoreWithStatus
 } from "@tldraw/tldraw";
-import { useEffect, useState } from "react";
-import { useTheme } from "../../lib/astro-tailwind-themes/useTheme";
-import { getDocLoadState } from "@/app/shared/store/doc-loader";
-import { useDocCollabStore } from "@/app/shared/useDocCollabStore";
-import { useYjsTlDrawStore } from "./use-yjs-tldraw";
 import "@tldraw/tldraw/tldraw.css";
-import "./style.css"
+import { useEffect, useMemo } from "react";
+import { useTheme } from "../../lib/astro-tailwind-themes/useTheme";
+import { getDocIdbStore } from "../shared/store/local-yjs-idb";
+import { useDocEditor } from "../shared/useDocEditor";
+import "./style.css";
+import { TLDrawCollabRoom } from "./yjs-tldraw";
+import { Loading } from "@/components/ui/loading";
 
 export default function TlDrawEditor({ className }: { className?: string; }) {
+  const { docId, currentDoc, provider, loaded, loadState, docEditorKey, readOnly } = useDocEditor({ type: 'tldraw'});
+  
   useEffect(() => {
     document.body.classList.add("tldraw");
     return () => {
       document.body.classList.remove("tldraw");
     }
   }, [])
-  const [store] = useState(() => {
-    const store = createTLStore({
-      shapeUtils: [...defaultShapeUtils],
-    });
 
-    return store;
-  });
-  const { docId, roomId, ydoc, $room } = useDocCollabStore();
-  const $loader = getDocLoadState(docId, roomId);
-  useStore($loader);
-  useStore($loader.$offline.$enabled);
-  const persister = useStore($loader.$offline.$persister);
-  const provider = $room?.get().provider;
-  const tld = useYjsTlDrawStore({
-    yDoc: ydoc,
-    store,
-    name: "tldraw",
-    persister,
-    provider,
-  });
+  const store = useMemo(() => createTLStore({
+    shapeUtils: [...defaultShapeUtils],
+  }), [currentDoc]);
+
+  const storeWithStatus = useMemo<TLStoreWithStatus>(() => {
+    return {
+      status: (!loaded ? "loading" : 'synced-remote') as any,
+      connectionStatus: loaded ? 'online' : 'offline',
+      store
+    }
+  }, [store, loaded, currentDoc])
+
+  const loading = !loaded || storeWithStatus.status === "loading";
+
+  const $offlineStore = getDocIdbStore(docId)
+  const persister = useStore($offlineStore.$persister);
+
+  useEffect(() => {
+    const collab = new TLDrawCollabRoom(
+      store,
+      currentDoc,
+      provider,
+      persister,
+      'tldraw'
+    )
+    return () => {
+      collab.destroy()
+    }
+  }, [store, provider, currentDoc, persister])
+
   const [theme] = useTheme();
   const isDark = theme === "dark";
-  useEffect(() => {
-    const tlPrefs = getUserPreferences();
 
-    if (tlPrefs.isDarkMode !== isDark) {
-      setUserPreferences({ ...tlPrefs, isDarkMode: isDark });
-    }
+  useEffect(() => {
+    ensureTheme(isDark);
+  }, [])
+
+  useEffect(() => {
+    ensureTheme(isDark)
   }, [isDark]);
 
   return (
     <div className={cn(className, "flex-1 flex flex-col max-h-screen overflow-hidden")}>
-
-      {tld.status === "loading" && (
-        <div className="flex-1 flex items-center justify-center">
-          Loading...
-        </div>
+      {loading && (
+        <Loading />
       )}
 
-      {!!tld && (
-        <div className="tldraw__editor flex-1">
-          <Tldraw store={tld} />
+      {!loading && (
+        <div className={cn("tldraw__editor flex-1", readOnly && 'bg-muted')}>
+          <Tldraw key={docEditorKey} store={storeWithStatus} 
+            onMount={(editor) => {
+              if (readOnly) {
+                editor.updateInstanceState({ isReadonly: true })    
+              }
+            }}
+          />
         </div>
       )}
     </div>
   );
+}
+
+function ensureTheme(isDark: boolean) {
+  const tlPrefs = getUserPreferences();
+  if (tlPrefs.isDarkMode !== isDark) {
+    setUserPreferences({ ...tlPrefs, isDarkMode: isDark });
+  }
 }

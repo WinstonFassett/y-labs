@@ -20,6 +20,11 @@ const docTypes = [
     href: "/y-labs/app/tldraw/index.html#/new",
   },
   {
+    label: "BlockSuite",
+    icon: typeIconMap.blocksuite,
+    href: "/y-labs/app/blocksuite/index.html#/new",
+  },
+  {
     label: "Blocknote",
     icon: typeIconMap.blocknote,
     href: "/y-labs/app/blocknote/index.html#/new",
@@ -35,6 +40,8 @@ export function getDocUrl(name: string, type: string) {
   switch (type) {
     case "novel":
       return `/y-labs/app/novel/index.html#/edit/${name}`;
+    case "blocksuite":
+      return `/y-labs/app/blocksuite/index.html#/edit/${name}`;
     case "blocknote":
       return `/y-labs/app/blocknote/index.html#/edit/${name}`;
     case "codemirror":
@@ -84,10 +91,8 @@ export function CreateDocButtons() {
 function Drive({ className }: { className?: string }) {
   return (
     <div className="flex flex-col min-h-screen">
-      <div className={cn("w-full flex-1 mx-auto relative", className)}>
-        <div className="h-full flex flex-col">
-          <DriveListing />
-        </div>
+      <div className={cn("w-full flex-1 flex flex-col mx-auto relative", className)}>
+        <DriveListing />
       </div>
       <SettingsDialog />
       <CreateDocumentDialog />

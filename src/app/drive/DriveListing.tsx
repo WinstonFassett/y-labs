@@ -6,6 +6,7 @@ import { $docMetas } from "../shared/store/doc-metadata.ts";
 import { typeIconMap } from "../shared/typeIconMap.tsx";
 import { EmptyState, getDocUrl as getAppDocUrl } from "./Drive.tsx";
 import { cn } from "@/lib/utils.ts";
+import { Loading } from "@/components/ui/loading.js";
 
 export default function DriveListing({ getDocUrl = getAppDocUrl, className }: { getDocUrl?: (name: string, type: string) => string | undefined; className?: string; }) {
   const allDocMetas = useStore($docMetas);
@@ -22,7 +23,7 @@ export default function DriveListing({ getDocUrl = getAppDocUrl, className }: { 
   }, [allDocMetas]);
 
   if (!documents) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   if (documents.length === 0) {
     return <EmptyState />;

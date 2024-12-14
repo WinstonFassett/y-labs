@@ -12,7 +12,7 @@ export interface DocMetadata {
 
 const metaDb = createStore('docs-metadata', 'metadata');
 
-export const $docMetas = Object.assign(atom<DocMetadata[]|undefined>([]), {
+export const $docMetas = Object.assign(atom<DocMetadata[]|undefined>(), {
   mounted: false
 });
 

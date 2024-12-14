@@ -6,6 +6,7 @@ import { getDocLoadState } from "../shared/store/doc-loader";
 import { useDocCollabStore } from "../shared/useDocCollabStore";
 import { useStoreIfPresent } from "../shared/useStoreIfPresent";
 import Codemirror from "./Codemirror";
+import { Loading } from "@/components/ui/loading";
 
 export function Editor({ className }: { className?: string }) {
   const { docId, roomId, needsPasswordToConnect, $roomConfig } = useDocCollabStore()
@@ -19,7 +20,7 @@ export function Editor({ className }: { className?: string }) {
   return (
     <div className={cn("flex flex-col", className)}>
       <AppBar />
-      {!canShow && <div>Loading...</div>}
+      {!canShow && <Loading />}
       {canShow && <Codemirror className="flex-1 flex flex-col" />}
       <PasswordRequiredDialog />
     </div>

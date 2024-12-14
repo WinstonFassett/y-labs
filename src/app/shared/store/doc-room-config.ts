@@ -89,5 +89,5 @@ export function getDocRoomConfig(docId: string, roomId: string) {
 }
 
 export function getDocRoomId(docId: string, roomId: string) {
-  return `${docId}-${roomId}`;
+  return `${docId}-${roomId ?? 'local'}`;
 }

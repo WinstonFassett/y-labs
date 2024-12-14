@@ -15,6 +15,11 @@ const docTypes = [
     href: "/y-labs/app/workspace/index.html#/new/tldraw",
   },
   {
+    label: "BlockSuite",
+    icon: typeIconMap.blocksuite,
+    href: "/y-labs/app/workspace/index.html#/new/blocksuite",
+  },
+  {
     label: "Blocknote",
     icon: typeIconMap.blocknote,
     href: "/y-labs/app/workspace/index.html#/new/blocknote",

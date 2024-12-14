@@ -130,6 +130,7 @@ export function getOfflineDoc(name: string, destroy = true) {
     // console.log("loaded", name);
   };
   const ydoc = new Y.Doc();
+  ydoc.gc = false
   if (ydoc.isLoaded) {
     onLoad();
     return Promise.resolve(ydoc);
@@ -166,9 +167,12 @@ export async function getOfflineDocMeta(name: string) {
 function getDocMeta(doc: Y.Doc, name: string) {
   const meta = doc.getMap("meta").toJSON() as { [key: string]: any; title?: string; };
   const shares = Array.from(doc.share.keys()) as string[];
-  const type = shares.find((s) => s !== "meta" && s !== "tldraw_meta") || "unknown";
+  let type = shares.find((s) => !Ignores.includes(s)) || "unknown";
+  if (type === 'blocks') { type = 'blocksuite' }
   return Object.assign(meta, { name, type });
 }
+
+const Ignores = ["meta", "versions", "tldraw_meta"];
 
 export async function deleteOfflineDoc(name: string) {
   await deleteDocMetadata(name);

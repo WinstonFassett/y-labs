@@ -4,3 +4,6 @@ body.tldraw {
 body.tldraw .z-50 {
   @apply z-[100000];
 }
+ .tl-background {
+  background-color: transparent;
+}
