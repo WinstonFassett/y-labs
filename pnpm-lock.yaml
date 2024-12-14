@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
+  y-codemirror.next@0.3.2:
+    hash: o3g64ndtgpt35bm3ffbyleh5ei
+    path: patches/y-codemirror.next@0.3.2.patch
   y-protocols@1.0.6:
     hash: qdylwmrh6vedofmwmtwbuzm3yy
     path: patches/y-protocols@1.0.6.patch
@@ -306,7 +309,7 @@ importers:
         version: 11.0.3
       y-codemirror.next:
         specifier: ^0.3.2
-        version: 0.3.2(@codemirror/state@6.4.1)(@codemirror/view@6.25.0)(yjs@13.6.12)
+        version: 0.3.2(patch_hash=o3g64ndtgpt35bm3ffbyleh5ei)(@codemirror/state@6.4.1)(@codemirror/view@6.25.0)(yjs@13.6.12)
       y-indexeddb:
         specifier: ^9.0.12
         version: 9.0.12(yjs@13.6.12)
@@ -28196,7 +28199,7 @@ snapshots:
 
   xtend@4.0.2: {}
 
-  y-codemirror.next@0.3.2(@codemirror/state@6.4.1)(@codemirror/view@6.25.0)(yjs@13.6.12):
+  y-codemirror.next@0.3.2(patch_hash=o3g64ndtgpt35bm3ffbyleh5ei)(@codemirror/state@6.4.1)(@codemirror/view@6.25.0)(yjs@13.6.12):
     dependencies:
       '@codemirror/state': 6.4.1
       '@codemirror/view': 6.25.0

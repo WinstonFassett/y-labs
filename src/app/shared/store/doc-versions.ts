@@ -7,6 +7,7 @@ import { addVersion, buildVersionGraph, restoreVersion, type Version } from '../
 import { getYdoc } from './yjs-docs';
 import { Doc as BlocksuiteDoc } from '@blocksuite/store';
 import { $trackHistoryWhenEditing } from './local-settings';
+// import {  yCodemirrorSyncPluginKey } from 'y-codemirror.next'
 
 const VersionsByDocEditor = mapTemplate((id, { docId, type }:{docId:string, type:string}) => {
   const sourceDoc = getYdoc(docId,).get()
@@ -55,6 +56,7 @@ export function createVersionControlStore(sourceDoc: Y.Doc, {type}:{type: string
 
 
   const trackedOrigins = new Set([
+    "yCodemirrorSyncPluginKey",
     "y-sync$",
     "y-undo$",
     yUndoPluginKey,
