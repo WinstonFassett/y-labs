@@ -23,7 +23,6 @@ export function useVersionHistory(options: {type?: string}={}) {
       console.warn('Cannot show version history without a docId')
       return
     }
-    console.log('setShowVersionHistory', shouldShowVersionHistory)
     navigate({
       pathname: shouldShowVersionHistory
         ? `/versions/${docId}/${type}`

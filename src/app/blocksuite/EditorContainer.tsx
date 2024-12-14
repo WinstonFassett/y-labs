@@ -10,7 +10,6 @@ const EditorContainer = () => {
     if (editorContainerRef.current && editor) {
       editorContainerRef.current.innerHTML = '';
       editorContainerRef.current.appendChild(editor);
-      console.log('appended editor', editor)
     }
   }, [editor]);
 

@@ -25,7 +25,6 @@ onMount($docMetas, () => {
 })
 
 export async function saveDocMetadata(meta: DocMetadata) {
-  // console.log('Saving metadata', meta);
   await set(meta.id, meta, metaDb);
   if (!$docMetas.mounted) return;
   const current = $docMetas.get();

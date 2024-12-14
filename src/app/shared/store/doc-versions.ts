@@ -63,26 +63,15 @@ export function createVersionControlStore(sourceDoc: Y.Doc, {type}:{type: string
     null,
   ])
 
-  // const isBlocksuite = sourceDoc.guid.indexOf('blocksuite-') === 0
   const { blocksuite } = sourceDoc as { blocksuite?: BlocksuiteDoc} 
   if (blocksuite){
     const blocksuiteOrigin = blocksuite?.blockCollection.spaceDoc.clientID
-    console.log('blocksuite doc', blocksuiteOrigin, blocksuite, sourceDoc)
     trackedOrigins.add(blocksuiteOrigin as any)
   }
 
-  const undoManager =
-    // if blocksuite, use its undo manager
-    // ah but it won't be there until
-    // blocksuite loads and calls yInit
-    // store needs to do the loading
-    // instead of the UI
-    // fortunately this load op is synchronous
-    // (blocksuite &&
-    //   ((blocksuite.blockCollection as any)._history as Y.UndoManager)) ??
-    new Y.UndoManager(yTypes, {
-      trackedOrigins,
-    });
+  const undoManager = new Y.UndoManager(yTypes, {
+    trackedOrigins,
+  });
   
   
   onMount(store, () => {

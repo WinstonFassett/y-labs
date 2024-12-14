@@ -167,10 +167,8 @@ export async function getOfflineDocMeta(name: string) {
 function getDocMeta(doc: Y.Doc, name: string) {
   const meta = doc.getMap("meta").toJSON() as { [key: string]: any; title?: string; };
   const shares = Array.from(doc.share.keys()) as string[];
-  console.log('shares', shares)
-  console.log('meta', meta, )
-  const type = shares.find((s) => !Ignores.includes(s)) || "unknown";
-  if (type === 'blocks') return 'blocksuite'
+  let type = shares.find((s) => !Ignores.includes(s)) || "unknown";
+  if (type === 'blocks') { type = 'blocksuite' }
   return Object.assign(meta, { name, type });
 }
 

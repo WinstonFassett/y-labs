@@ -43,6 +43,5 @@ function NewWorkspaceDocRoute() {
     }
     enablePersistence();
   }, [])
-  console.log('Creating', typedId)
   return <div>Creating {typedId}...</div>;
 }

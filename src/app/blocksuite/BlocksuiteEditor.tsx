@@ -1,25 +1,13 @@
-import { EditorProvider } from './EditorProvider';
 import EditorContainer from './EditorContainer';
+import { EditorProvider } from './EditorProvider';
 import './index.css';
-import { useDocEditor } from '../shared/useDocEditor';
 
 function App() {
-  initialize()
   return (
     <EditorProvider>
-      {/* <div className="app"> */}
-        {/* <Sidebar /> */}
-        {/* <div className="main-content"> */}
-          {/* <TopBar /> */}
-          <EditorContainer />
-        {/* </div> */}
-      {/* </div> */}
+      <EditorContainer />
     </EditorProvider>
   );
 }
 
 export default App;
-
-function initialize() {
-  console.log('initializing')
-}

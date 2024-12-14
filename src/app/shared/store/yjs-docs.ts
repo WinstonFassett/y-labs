@@ -9,7 +9,6 @@ const ydocsT = mapTemplate(
       $loaded: atom(false),
     }),
   (store, id) => {
-    // console.log("new ydoc", id);
     const ydoc = new Doc();
     ydoc.gc = false;
     const onLoad = () => {
@@ -42,7 +41,3 @@ export function getYdoc(id: string) {
   const ydoc = ydocsT(id);
   return ydoc;
 }
-
-// export function setYdoc(id: string, ydoc: Doc) {
-//   ydocsT(id).set(ydoc);
-// }
