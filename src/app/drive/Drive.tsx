@@ -91,10 +91,8 @@ export function CreateDocButtons() {
 function Drive({ className }: { className?: string }) {
   return (
     <div className="flex flex-col min-h-screen">
-      <div className={cn("w-full flex-1 mx-auto relative", className)}>
-        <div className="h-full flex flex-col">
-          <DriveListing />
-        </div>
+      <div className={cn("w-full flex-1 flex flex-col mx-auto relative", className)}>
+        <DriveListing />
       </div>
       <SettingsDialog />
       <CreateDocumentDialog />

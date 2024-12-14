@@ -79,7 +79,7 @@ const FolderView = () => {
       <div className="w-full max-w-3xl mx-auto pl-4 pt-4">
         <h3 className="text-2xl text-muted-foreground">Recent Saved Files</h3>
       </div>
-      <Suspense fallback="Loading...">
+      <Suspense fallback="Loading files...">
         <DriveListingComponent getDocUrl={getDocUrl} />
       </Suspense>
     </div>

@@ -9,6 +9,7 @@ import { EditorContext } from './context';
 import { createEditor } from './createEditor';
 import { Button } from '@/components/ui/button';
 import type { DocMode } from '@blocksuite/blocks';
+import { Loading } from '@/components/ui/loading';
 
 export const EditorProvider = ({ children }: { children: React.ReactNode }) => {
   const [mode, setMode] = useState<DocMode>('page')
@@ -39,7 +40,7 @@ export const EditorProvider = ({ children }: { children: React.ReactNode }) => {
     }
   },[editorContext, mode])
 
-  return (!editorContext ? <div>Loading...</div> : 
+  return (!editorContext ? <Loading /> : 
     <EditorContext.Provider value={editorContext}>
     <div className='sticky top-0 z-50 flex flex-row p-1'>
       <div className='flex-grow'></div>

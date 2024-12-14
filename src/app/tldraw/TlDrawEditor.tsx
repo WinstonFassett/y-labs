@@ -15,6 +15,7 @@ import { getDocIdbStore } from "../shared/store/local-yjs-idb";
 import { useDocEditor } from "../shared/useDocEditor";
 import "./style.css";
 import { TLDrawCollabRoom } from "./yjs-tldraw";
+import { Loading } from "@/components/ui/loading";
 
 export default function TlDrawEditor({ className }: { className?: string; }) {
   const { docId, currentDoc, provider, loaded, loadState, docEditorKey, readOnly } = useDocEditor({ type: 'tldraw'});
@@ -70,10 +71,7 @@ export default function TlDrawEditor({ className }: { className?: string; }) {
   return (
     <div className={cn(className, "flex-1 flex flex-col max-h-screen overflow-hidden")}>
       {loading && (
-        <div className="flex-1 flex items-center justify-center">
-          Loading...{loadState} {loaded ? 'loaded' : 'not loaded'} {loading ? 'loading' : 'not loading'}
-          status:{storeWithStatus?.status}
-        </div>
+        <Loading />
       )}
 
       {!loading && (
