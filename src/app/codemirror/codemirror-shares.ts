@@ -4,6 +4,6 @@ import { getBaseShares } from "../shared/shares-base";
 export function getCodeMirrorShares(ydoc: Y.Doc) {
   return {
     ...getBaseShares(ydoc),    
-    codemirror: ydoc.getXmlElement('codemirror')
+    codemirror: ydoc.getText('codemirror')
   }
 }

@@ -17,7 +17,7 @@ export const EditorsByType: Record<string, React.ComponentType<{ className?: str
  = {
   novel: lazy(() => import("./NovelEditor")),
   tldraw: lazy(() => import("@/app/tldraw/TlDrawEditor")),
-  // codemirror: lazy(() => import("@/app/codemirror/Codemirror")),
+  codemirror: lazy(() => import("@/app/codemirror/Codemirror")),
   blocknote: lazy(() => import("@/app/blocknote/Blocknote")),
   blocksuite: lazy(() => import("@/app/blocksuite/BlocksuiteEditor")),
   drive: lazy(() => import("@/app/drive/DriveListing")),
