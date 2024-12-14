@@ -49,12 +49,9 @@
 }
 
 .editor-container {
-  display: flex;
+  height: 100%;
   flex-direction: column;
   flex: 1;
 }
 
-edgeless-editor,
-affine-editor-container {
-  flex: 1;
-}
+
