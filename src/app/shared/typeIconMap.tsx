@@ -43,6 +43,12 @@ export const FileTypeIcons = {
       alt="Blocknote"
       className={cn("h-8 w-8", className)} />
   ),
+  blocksuite: ({ className }: { className: string }) => (
+    <img
+      src="/y-labs/logos/blocksuite2.svg"
+      alt="Blocksuite"
+      className={cn("h-8 w-8", className)} />
+  ),
   novel: ({ className }: { className: string }) => <img src="/y-labs/logos/novel.svg" alt="Novel" className={cn("h-8 w-8", className)} />,
   tldraw: ({ className }: { className: string }) => (
     <img
