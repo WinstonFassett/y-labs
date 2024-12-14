@@ -15,6 +15,10 @@ import { CheckIcon, KeyRoundIcon, XIcon } from "lucide-react";
 import { map } from "nanostores";
 import { $openAiConfigValid, validateOpenAiKey } from "./store/openai";
 import { $openaiApiKey, $openaiApiKey_masked } from "./store/secure-settings";
+import { Switch } from "@/components/ui/switch";
+import { FormItem, FormLabel } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
+import { $trackHistoryWhenEditing } from "./store/local-settings";
 
 export const $settingsStore = map({
   show: false,
@@ -45,8 +49,8 @@ export function SettingsDialog() {
             </p> */}
           </div>
         </DialogHeader>
-        <div>
-          {/* <ThemeSettings /> */}
+        <div className="flex flex-col gap-4">
+          <EditorSettings />
           <AiSettings />
         </div>
         <DialogFooter>
@@ -84,23 +88,45 @@ function SettingsForm() {
   return <>soon</>;
 }
 
-function ThemeSettings() {
+function EditorSettings() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Appearance</CardTitle>
+        <CardTitle>Editor</CardTitle>
       </CardHeader>
       <CardContent>
-        <div>Theme</div>
+        <TrackHistorySetting />
       </CardContent>
     </Card>
   );
 }
 
+export function TrackHistorySetting() {
+  const trackHistory = useStore($trackHistoryWhenEditing);
+  return (
+    <div className="flex items-center justify-between">
+      <Label>
+        Track my edits
+      </Label>
+      <Switch        
+        checked={trackHistory}
+        onCheckedChange={() => {$trackHistoryWhenEditing.update(!trackHistory)}}
+      />
+    </div>
+  );
+}
+
 function AiSettings() {
   return (
-    <OpenApiKeySetting />
-  );
+    <Card>
+      <CardHeader>
+        <CardTitle>AI</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <OpenApiKeySetting />        
+      </CardContent>
+    </Card>
+  )
 }
 
 function OpenApiKeySetting() {
