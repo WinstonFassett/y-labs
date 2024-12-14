@@ -4,6 +4,8 @@ import { getDocVersionsStoreByDocEditor } from "./store/doc-versions";
 import { useDocEditorMode } from "./useDocEditorMode";
 import { useStoreIfPresent } from "./useStoreIfPresent";
 import { useDocParams } from "./useDocParams";
+import { useStore } from "@nanostores/react";
+import { $trackHistoryWhenEditing } from "./store/local-settings";
 
 export function useVersionHistory(options: {type?: string}={}) {
   const navigate = useNavigate();
@@ -11,7 +13,7 @@ export function useVersionHistory(options: {type?: string}={}) {
   const mode = useDocEditorMode();
   const showVersionHistory = !!docId && mode === 'versions';
   const canShowVersionHistory = !!docId
-
+  const trackHistoryWhenEditing = useStore($trackHistoryWhenEditing)
   const $versionHistory = docId ? getDocVersionsStoreByDocEditor(docId, type) : undefined;
   const versionHistoryState = useStoreIfPresent($versionHistory);
   const displayVersionId = versionHistoryState?.displayVersionId;
@@ -34,5 +36,5 @@ export function useVersionHistory(options: {type?: string}={}) {
     setShowVersionHistory(!showVersionHistory);
   }, [showVersionHistory, setShowVersionHistory]);
 
-  return { docId, type, $versionHistory, displayVersionId, currentVersionId, toggleVersionHistory, showVersionHistory, canShowVersionHistory, setShowVersionHistory };
+  return { docId, type, $versionHistory, displayVersionId, currentVersionId, toggleVersionHistory, showVersionHistory, canShowVersionHistory, setShowVersionHistory, trackHistoryWhenEditing };
 }
