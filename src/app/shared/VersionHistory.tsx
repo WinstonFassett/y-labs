@@ -37,7 +37,7 @@ export function VersionHistory() {
     );
   }
   return (
-    <div className=" rounded-lg shadow-lg overflow-hidden flex flex-col h-full">
+    <div className=" rounded-lg overflow-hidden flex flex-col h-full">
       <div className="overflow-y-auto flex-1 space-y-2">
         {
           loadState !== 'loaded' ? (
@@ -45,7 +45,7 @@ export function VersionHistory() {
           ) : (
 
             versionArray.length === 0 ? (
-              <p className="text-gray-500 text-sm">No versions yet</p>
+              <p className="p-3 text-gray-500 text-sm">No versions yet</p>
             ) : (
               versionArray.map((version, idx) => {
                 const versionKey = version.id;
