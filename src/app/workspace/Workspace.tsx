@@ -106,7 +106,7 @@ function VersionTimelineControls () {
       isPlaying={isPlaying}
       onPlayPause={togglePlayback}
       currentIndex={currentIndex}
-      totalVersions={versionGraph?.nodes.size || 0}
+      totalVersions={versions.length}
     />
   )
 }
