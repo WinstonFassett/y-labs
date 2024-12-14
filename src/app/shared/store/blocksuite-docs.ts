@@ -12,7 +12,11 @@ const blocksuiteDocsT = mapTemplate(
   (id) => atom<BsDoc>(),
   (store, id) => {
     const bsDoc = collection.createDoc({ id })
-    ;(bsDoc.spaceDoc as any).blocksuite = bsDoc
+    const awareness = bsDoc.awarenessStore.awareness
+    Object.assign(bsDoc.spaceDoc, {
+      blocksuite: bsDoc,
+      awareness,
+    })    
     store.set(bsDoc);  
     return () => {      
       bsDoc.dispose()
