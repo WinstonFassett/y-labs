@@ -1,11 +1,12 @@
 import { mapTemplate } from '@/lib/nanostores-utils/mapTemplate';
-import { atom, computed, map, onMount } from 'nanostores';
+import { type ReadableAtom, atom, computed, map, onMount } from 'nanostores';
 import { ySyncPluginKey, yUndoPluginKey } from 'y-prosemirror';
 import * as Y from 'yjs';
 import { getSharesForType } from '../shares-lookup';
 import { addVersion, buildVersionGraph, restoreVersion, type Version } from '../utils/versionManager';
 import { getYdoc } from './yjs-docs';
 import { Doc as BlocksuiteDoc } from '@blocksuite/store';
+import { $trackHistoryWhenEditing } from './local-settings';
 
 const VersionsByDocEditor = mapTemplate((id, { docId, type }:{docId:string, type:string}) => {
   const sourceDoc = getYdoc(docId,).get()
@@ -69,28 +70,53 @@ export function createVersionControlStore(sourceDoc: Y.Doc, {type}:{type: string
     trackedOrigins.add(blocksuiteOrigin as any)
   }
 
-  const undoManager = new Y.UndoManager(yTypes, {
-    trackedOrigins,
-  });
   
+  const $undoManager = computed(
+    $trackHistoryWhenEditing,
+    (track) =>
+      track &&
+      new Y.UndoManager(yTypes, {
+        trackedOrigins,
+      }),
+  );
   
   onMount(store, () => {
-    const gcBefore = sourceDoc.gc
-    sourceDoc.gc = false
-    const handleStackChange = () => {
-      $stackSizes.set({
-        undo: undoManager.undoStack.length,
-        redo: undoManager.redoStack.length
-      });
-      addVersion(sourceDoc);
-    };
-    undoManager.on('stack-item-added', handleStackChange);
-    undoManager.on('stack-item-popped', handleStackChange);
-    return () => {
-      undoManager.destroy();
-      sourceDoc.gc = gcBefore
-    }
+    return enterLeave($undoManager, (undoManager) => {
+      if (!undoManager) return;
+      const gcBefore = sourceDoc.gc
+      sourceDoc.gc = false
+      const handleStackChange = () => {
+        $stackSizes.set({
+          undo: undoManager.undoStack.length,
+          redo: undoManager.redoStack.length
+        });
+        addVersion(sourceDoc);
+      };
+      undoManager.on('stack-item-added', handleStackChange);
+      undoManager.on('stack-item-popped', handleStackChange);
+      return () => {
+        console.log('destroying undo manager')
+        undoManager.destroy();
+        sourceDoc.gc = gcBefore
+      }
+    })
   })
+
+  function enterLeave<S extends ReadableAtom<any>>(
+    store: S,
+    onEnter: ((value: ReturnType<S['get']>, prev: ReturnType<S['get']> | undefined) => void) | (() => void)
+  ) {
+    let onLeave: (() => void) | void | null = null;
+    return store.subscribe((value, oldValue) => {
+      if (onLeave) {
+        const leave = onLeave
+        onLeave = null
+        leave()
+      }
+      onLeave = onEnter(value, oldValue);
+    })
+    
+  }
 
   function switchToVersion(versionId: string | null) {
     const versions = $versions.get();
@@ -114,24 +140,12 @@ export function createVersionControlStore(sourceDoc: Y.Doc, {type}:{type: string
     $replayDoc.set(newDoc);
   }
 
-  // Actions
-  function undo() {
-    undoManager.undo();
-  }
-
-  function redo() {
-    undoManager.redo();
-  }
-
   return Object.assign(store, {
     $isLatestVersion,
     $versions,
     $versionGraph,
     $stackSizes,
     $replayDoc,
-    undoManager,
-    undo,
-    redo,
     switchToVersion
   });
 }

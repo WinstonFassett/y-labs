@@ -18,7 +18,7 @@ import { TimelineControls } from "../shared/PlaybackControls"
 import { useStore } from "@nanostores/react"
 import { usePlayback } from "../shared/usePlayback"
 import { useCallback, useMemo } from "react"
-import { TrackHistorySetting } from "../shared/SettingsDialog"
+import { $settingsStore, TrackHistorySetting } from "../shared/SettingsDialog"
 
 export function Workspace() {
   const { showVersionHistory, setShowVersionHistory, trackHistoryWhenEditing } = useVersionHistory()
@@ -49,8 +49,14 @@ export function Workspace() {
                 </Button>                
               </div>
 
-              <div className="text-muted-foreground text-sm p-2">
-                <TrackHistorySetting />
+              <div className="text-center text-xs text-muted-foreground p-2">
+                <button className="text-primary" onClick={() => {
+                  $settingsStore.setKey("show", true)
+                }}>
+                  Edit tracking 
+                </button> is <strong>
+                  {trackHistoryWhenEditing ? "enabled" : "disabled"}
+                </strong>
               </div>
 
               {!!showVersionHistory && 

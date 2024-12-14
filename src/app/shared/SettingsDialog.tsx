@@ -106,7 +106,7 @@ export function TrackHistorySetting() {
   return (
     <div className="flex items-center justify-between">
       <Label>
-        Track my edits
+        Track my edits (experimental)
       </Label>
       <Switch        
         checked={trackHistory}
