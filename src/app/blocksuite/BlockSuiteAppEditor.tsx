@@ -86,5 +86,5 @@ const EditorContainer = () => {
     }
   }, [editor]);
 
-  return <div className="editor-container" ref={editorContainerRef}></div>;
+  return <div className="editor-container" ref={editorContainerRef}></div>
 };

@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { useEditor } from './context';
-import { Button } from '@/components/ui/button';
+import { useEffect, useRef } from "react";
+import { useEditor } from "./context";
 
 const EditorContainer = () => {
   const { editor } = useEditor() || {};
@@ -9,16 +8,12 @@ const EditorContainer = () => {
 
   useEffect(() => {
     if (editorContainerRef.current && editor) {
-      editorContainerRef.current.innerHTML = '';
+      editorContainerRef.current.innerHTML = "";
       editorContainerRef.current.appendChild(editor);
     }
   }, [editor]);
 
-  return <>
-    
-    <div className="editor-container" ref={editorContainerRef}>
-    </div>;
-  </>
+  return <div className="editor-container" ref={editorContainerRef}></div>;
 };
 
 export default EditorContainer;
