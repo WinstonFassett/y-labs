@@ -5,7 +5,7 @@ const { class : className } = Astro.props;
 ---
 
 <section
-  class={cn("flex flex-wrap justify-center items-stretch justify-stretch max-w-7xl w-full mx-auto px-4", className)}
+  class={cn("grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto px-4 pb-12", className)}
 >
   <slot>
     <Card class="flex-1" />

@@ -13,6 +13,9 @@ const sorter = compareDates((x) => x?.data?.pubDate);
 const labs = await getCollection("labs");
 const sortedLabs = labs.sort(sorter);
 
+const taggedAsDrive = labs.filter((lab) => lab.data.tags.includes("drive"));
+const others = labs.filter((lab) => !lab.data.tags.includes("drive"));
+
 function compareDates(get = (x?: any) => x) {
   return (a: any, b: any) => {
     const aPubDate = get(a) ?? 0;
@@ -43,12 +46,25 @@ function compareDates(get = (x?: any) => x) {
 
       <hr class="m-10" />
 
-      <h3 class="text-4xl font-bold pb-6 text-center">Apps</h3>
+      <h3 class="text-4xl font-bold pb-6 text-center">Multi-file Apps</h3>
 
+      <p class="text-center pb-6">These apps are designed to work with multiple files and folders.</p>
 
       <CardList>
-        {sortedLabs.map((lab) => <LabPreview {...lab.data} />)}
+        {taggedAsDrive.map((lab) => 
+          <LabPreview {...lab.data} />
+        )}
       </CardList>
+      
+
+      <h3 class="text-4xl font-bold pb-6 text-center">Standalone Editors</h3>
+
+      <CardList>
+        {others.map((lab) => 
+          <LabPreview {...lab.data} />
+        )}
+      </CardList>
+
     </div>
   </div>
 </MainLayout>
