@@ -2,7 +2,7 @@
 import '@remirror/styles/all.css';
 import { css } from '@emotion/css';
 import { createContextState } from 'create-context-state';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ExtensionPriority, getThemeVar } from 'remirror';
 import {
   BlockquoteExtension,
@@ -35,8 +35,10 @@ import jsx from 'refractor/lang/jsx.js';
 import typescript from 'refractor/lang/typescript.js';
 import md from 'refractor/lang/markdown.js';
 import { Doc } from 'yjs';
-
-const extensions = () => [
+import { YjsExtension } from '@remirror/extension-yjs';
+import { useDocEditor } from '../shared/useDocEditor';
+import { Awareness } from 'y-protocols/awareness';
+const baseExtensions = () => [
   new LinkExtension({ autoLink: true }),
   new BoldExtension(),
   new StrikeExtension(),
@@ -60,7 +62,7 @@ interface Context extends Props {
 }
 
 interface Props {
-  visual: UseRemirrorReturn<ReactExtensions<ReturnType<typeof extensions>[number]>>;
+  visual: UseRemirrorReturn<ReactExtensions<ReturnType<typeof baseExtensions>[number]>>;
   markdown: UseRemirrorReturn<ReactExtensions<DocExtension | CodeBlockExtension>>;
 }
 
@@ -154,7 +156,21 @@ interface YjsRealtimeProvider {
 }
 
 export const DualEditor: React.FC = () => {
-
+  const { currentDoc, provider, docEditorKey } = useDocEditor();
+  const realtime = useMemo(() => {
+    return {
+      extensions: () => [new YjsExtension({
+        getProvider: () => ({
+          doc: currentDoc,
+          awareness: provider?.awareness ?? new Awareness(currentDoc),
+          disconnect: () => provider?.disconnect(),
+          destroy: () => provider?.destroy(),
+        }),
+      })],
+    }
+  }, [
+    currentDoc, provider
+  ])
   // TODO: factor in yjs, factor out other intermediate state
   // const { manager } = useRemirror({
   //   extensions: () => [new YjsExtension({ getProvider })],
@@ -166,11 +182,12 @@ export const DualEditor: React.FC = () => {
   // const { manager } = useRemirror({
   //   extensions: () => [new YjsExtension({ getProvider, disableUndo: true })],
   // });
-
+  const extensions = useMemo(() => [...baseExtensions(), ...realtime.extensions()], [realtime]);
+  console.log({ extensions })
   const visual = useRemirror({
     extensions,
     stringHandler: 'markdown',
-    content: '**Markdown** content is the _best_',
+    // content: '**Markdown** content is the _best_',
   });
 
   const markdown = useRemirror({
@@ -182,6 +199,7 @@ export const DualEditor: React.FC = () => {
         syntaxTheme: 'base16_ateliersulphurpool_light',
         defaultWrap: true,
       }),
+      // ...realtime.extensions(),
     ],
     builtin: {
       exitMarksOnArrowPress: false,
@@ -190,7 +208,7 @@ export const DualEditor: React.FC = () => {
   });
 
   return (
-    <DualEditorProvider visual={visual} markdown={markdown}>
+    <DualEditorProvider key={docEditorKey} visual={visual} markdown={markdown}>
       <ThemeProvider>
         <VisualEditor />
         <MarkdownTextEditor />
