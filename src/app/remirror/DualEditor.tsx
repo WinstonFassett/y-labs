@@ -39,6 +39,7 @@ import { YjsExtension } from './yjs-extension'
 //'@remirror/extension-yjs';
 import { useDocEditor } from '../shared/useDocEditor';
 import { Awareness } from 'y-protocols/awareness';
+import './style.css'
 const baseExtensions = () => [
   new LinkExtension({ autoLink: true }),
   new BoldExtension(),
@@ -121,6 +122,7 @@ const VisualEditor = () => {
       onChange={({ helpers, state }) => setMarkdown(helpers.getMarkdown(state))}
       initialContent={visual.state}
       classNames={[
+        'flex-1',
         css`
           &.ProseMirror {
             p,
@@ -211,8 +213,14 @@ export const DualEditor: React.FC = () => {
   return (
     <DualEditorProvider key={docEditorKey} visual={visual} markdown={markdown}>
       <ThemeProvider>
-        <VisualEditor />
-        <MarkdownTextEditor />
+        <div className="flex-1 flex flex-col sm:flex-row overflow-hidden">
+          <div className="w-full flex flex-col sm:w-1/2 border-b sm:border-b-0 sm:border-r border-gray-300">
+            <VisualEditor />
+          </div>
+          <div className="w-full flex flex-col sm:w-1/2 pt-8">
+            <MarkdownTextEditor />
+          </div>
+        </div>
       </ThemeProvider>
     </DualEditorProvider>
   );
