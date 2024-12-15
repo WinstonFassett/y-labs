@@ -34,6 +34,7 @@ import { MarkdownToolbar } from '@remirror/react-ui';
 import jsx from 'refractor/lang/jsx.js';
 import typescript from 'refractor/lang/typescript.js';
 import md from 'refractor/lang/markdown.js';
+import { Doc } from 'yjs';
 
 const extensions = () => [
   new LinkExtension({ autoLink: true }),
@@ -140,7 +141,32 @@ const VisualEditor = () => {
   );
 };
 
+/**
+ * yjs typings are very rough; so we define here the interface that we require
+ * (y-webrtc and y-websocket providers are both compatible with this interface;
+ * no other providers have been checked).
+ */
+interface YjsRealtimeProvider {
+  doc: Doc;
+  awareness: any;
+  destroy: () => void;
+  disconnect: () => void;
+}
+
 export const DualEditor: React.FC = () => {
+
+  // TODO: factor in yjs, factor out other intermediate state
+  // const { manager } = useRemirror({
+  //   extensions: () => [new YjsExtension({ getProvider })],
+  //   core: {
+  //     excludeExtensions: ['history'],
+  //   },
+  // });
+  // Alternatively you can also disable the "undo"/"redo" functionality of the yjs extension:
+  // const { manager } = useRemirror({
+  //   extensions: () => [new YjsExtension({ getProvider, disableUndo: true })],
+  // });
+
   const visual = useRemirror({
     extensions,
     stringHandler: 'markdown',
