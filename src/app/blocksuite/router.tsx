@@ -1,5 +1,7 @@
-import { createHashRouter } from "react-router-dom";
-import { NewAppDocRoute } from "../shared/NewAppDocRoute";
+import { useEffect } from "react";
+import { createHashRouter, useNavigate } from "react-router-dom";
+import { generateId } from "../shared/generateId";
+import { saveOfflineDoc } from "../shared/store/local-yjs-idb";
 import { EditorRoute } from "./EditorRoute";
 
 export const routes = [
@@ -17,3 +19,17 @@ export const routes = [
 export const router = createHashRouter(routes);
 
 
+export function NewAppDocRoute() {
+  const id = `blocksuite-${generateId()}`
+  const navigate = useNavigate();  
+
+  useEffect(() => {
+    async function enablePersistence() {
+      await saveOfflineDoc(id);
+      navigate(`/edit/${id}`, { replace: true });
+    }
+    enablePersistence();
+  }, []);
+
+  return <div>Creating {id}...</div>;
+}

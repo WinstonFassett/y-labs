@@ -6,7 +6,7 @@ import BlocksuiteEditor from './BlocksuiteEditor'
 export function EditorRoute() {
   useDocRoomRoute()
   return <>
-    <div className="h-full">
+    <div className="h-full flex flex-col">
       <AppBar />
       <BlocksuiteEditor />
     </div>
