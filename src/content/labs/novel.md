@@ -1,11 +1,6 @@
 ---
 tags:
-  - astro
-  - yjs
-  - trystero
-  - novel
-  - nanostores
-  - react
+  - writing
 title: Novel P2P
 url: /y-labs/app/novel/index.html
 description: "Notion-style WYSIWYG editor"

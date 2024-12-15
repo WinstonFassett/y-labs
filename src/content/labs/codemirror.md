@@ -1,11 +1,6 @@
 ---
 tags:
-  - astro
-  - yjs
-  - trystero
-  - codemirror
-  - nanostores
-  - react
+  - coding
 title: CodeMirror P2P
 description: HTML, CSS and JS code editor
 url: /y-labs/app/codemirror/index.html

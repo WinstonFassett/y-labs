@@ -1,18 +1,19 @@
 ---
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
-let { title, url, description, image } = Astro.props.frontmatter || Astro.props;
+import { cn } from "@/lib/utils";
+let { title, url, description, image, class: className } = Astro.props.frontmatter || Astro.props;
 ---
 
-<a href={url}>
-  <Card className="transition-all shadow-medium hover:bg-secondary cursor-pointer  active:scale-[0.97]">
+<a href={url} class={className}>
+  <Card className={cn("transition-all shadow-medium hover:bg-secondary cursor-pointer  active:scale-[0.97]")}>
     <CardHeader>
       <slot name="header">
          <CardTitle>{title}</CardTitle>
       </slot>
     </CardHeader>
     <CardContent>
-      <p class="text-xs">
-        {description}
+      <p class={cn("text-xs")}>
+        {description} {className}
       </p>
 
       {
