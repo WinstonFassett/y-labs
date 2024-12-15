@@ -35,7 +35,8 @@ import jsx from 'refractor/lang/jsx.js';
 import typescript from 'refractor/lang/typescript.js';
 import md from 'refractor/lang/markdown.js';
 import { Doc } from 'yjs';
-import { YjsExtension } from '@remirror/extension-yjs';
+import { YjsExtension } from './yjs-extension'
+//'@remirror/extension-yjs';
 import { useDocEditor } from '../shared/useDocEditor';
 import { Awareness } from 'y-protocols/awareness';
 const baseExtensions = () => [
