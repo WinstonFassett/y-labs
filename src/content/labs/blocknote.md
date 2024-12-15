@@ -1,11 +1,9 @@
 ---
 tags:
-  - astro
-  - yjs
-  - trystero
   - blocknote
-  - nanostores
-  - react
+  - writing
+  - markdown
+  - tables
 title: BlockNote P2P
 description: "Block-based rich text editor"
 url: /y-labs/app/blocknote/index.html

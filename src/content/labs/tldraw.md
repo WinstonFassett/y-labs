@@ -1,11 +1,6 @@
 ---
 tags:
-  - astro
-  - yjs
-  - trystero
-  - tldraw
-  - nanostores
-  - react
+  - whiteboard  
 title: TLDraw P2P
 url: /y-labs/app/tldraw/index.html
 description: Instant collaborative whiteboarding
