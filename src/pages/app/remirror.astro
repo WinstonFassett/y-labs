@@ -1,0 +1,9 @@
+---
+import Layout from "@/layouts/LabLayout.astro";
+import App from "@/app/remirror/App";
+const frontmatter = { title: "Remirror", favicon: "/y-labs/logos/remirror.svg" };
+---
+
+<Layout frontmatter={frontmatter} class="h-dvh overflow-hidden flex flex-col">
+  <App client:only="react" frontmatter={frontmatter} />
+</Layout>
