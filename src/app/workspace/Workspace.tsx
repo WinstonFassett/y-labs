@@ -23,7 +23,7 @@ import { $settingsStore, TrackHistorySetting } from "../shared/SettingsDialog"
 export function Workspace() {
   const { showVersionHistory, setShowVersionHistory, trackHistoryWhenEditing } = useVersionHistory()
   return (
-    <SidebarProvider shortcut="l" className="h-screen overflow-hidden">
+    <SidebarProvider shortcut="l" className="h-dvh overflow-hidden">
       <AppSidebar />
       <SidebarInset className="flex flex-col">
         <AppBar />
