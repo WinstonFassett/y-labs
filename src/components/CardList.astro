@@ -1,11 +1,13 @@
 ---
+import { cn } from "@/lib/utils";
 import Card from "./Card.astro";
+const { class : className } = Astro.props;
 ---
 
 <section
-  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto px-4 pb-12"
+  class={cn("flex flex-wrap justify-center items-stretch justify-stretch max-w-7xl w-full mx-auto px-4", className)}
 >
   <slot>
-    <Card />
+    <Card class="flex-1" />
   </slot>
 </section>
