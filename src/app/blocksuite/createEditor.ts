@@ -1,11 +1,12 @@
 import { collection } from '@/app/shared/store/blocksuite-docs';
 import { AffineEditorContainer } from '@blocksuite/presets';
-import { Doc, DocCollection } from '@blocksuite/store';
+import { Doc, DocCollection, Text } from '@blocksuite/store';
 
-import '@blocksuite/presets/themes/affine.css';
+import { effects as blocksEffects } from '@blocksuite/blocks/effects';
+import { effects as presetsEffects } from '@blocksuite/presets/effects';
 
-// blocksEffects();
-// presetsEffects();
+blocksEffects();
+presetsEffects();
 
 export interface EditorContextType {
   editor: AffineEditorContainer | null;
@@ -13,13 +14,15 @@ export interface EditorContextType {
   updateCollection: (newCollection: DocCollection) => void;
 }
 
-export function createEditor(doc: Doc) {
+export function createEditor(doc: Doc, mode: 'edgeless' | 'page' = 'edgeless') {
+  
   doc.load(() => {
     if (doc.isEmpty) {
-      const pageBlockId = doc.addBlock('affine:page', {});
-      doc.addBlock('affine:surface', {}, pageBlockId);
+      const rootId = doc.addBlock('affine:page', {
+        title: new Text()
+      });
+      doc.addBlock('affine:surface', {}, rootId);
     }
-      
   });
 
   const editor = new AffineEditorContainer();

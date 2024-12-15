@@ -31,7 +31,7 @@ function App() {
 
   const editorContext = useMemo(() => {
     if (!loaded) return null
-    const editorContext = createEditor(currentBsDoc)
+    const editorContext = createEditor(currentBsDoc, mode)
     return editorContext
   }, [currentBsDoc, loaded])
   
