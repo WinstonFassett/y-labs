@@ -16,7 +16,7 @@ const blocksuiteDocsT = mapTemplate(
     Object.assign(bsDoc.spaceDoc, {
       blocksuite: bsDoc,
       awareness,
-    })    
+    })
     store.set(bsDoc);  
     return () => {      
       bsDoc.dispose()
