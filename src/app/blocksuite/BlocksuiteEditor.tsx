@@ -9,7 +9,7 @@ import { useDocParams } from '../shared/useDocParams';
 import EditorContainer from './EditorContainer';
 import { EditorProvider } from './EditorProvider';
 import { createEditor } from './createEditor';
-import './index.css';
+import './style.css';
 import { Button } from '@/components/ui/button';
 
 function App() {
