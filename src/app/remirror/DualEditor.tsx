@@ -40,7 +40,6 @@ import { YjsExtension } from './yjs-extension'
 import { useDocEditor } from '../shared/useDocEditor';
 import { Awareness } from 'y-protocols/awareness';
 import './style.css'
-import { Loading } from '@/components/ui/loading';
 const baseExtensions = () => [
   new LinkExtension({ autoLink: true }),
   new BoldExtension(),
@@ -211,7 +210,7 @@ export const DualEditor: React.FC = () => {
     stringHandler: 'html',
   });
 
-  return (!loaded ? <Loading /> :
+  return (
     <DualEditorProvider key={docEditorKey} visual={visual} markdown={markdown}>
       <ThemeProvider>
         <div className="flex-1 flex flex-col sm:flex-row overflow-hidden">
