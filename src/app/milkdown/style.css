@@ -1,7 +1,12 @@
 .split-editor {
+  flex: 1;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: 1fr;
+}
+
+.split-editor > div:first-child {
+  padding: 1em;
 }
 
 .split-editor:has(.milkdown-split-editor.hidden) {
@@ -10,4 +15,16 @@
 
 .milkdown-split-editor.hidden {
   display: none;
+}
+
+[data-milkdown-root="true"] {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.milkdown {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
