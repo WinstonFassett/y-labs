@@ -1,7 +1,7 @@
 
 import AppBar from "../shared/AppBar";
 import { useDocRoomRoute } from "../shared/useDocRoomRoute";
-import Editor from "./MilkdownEditor";
+import Editor from "./playground";
 
 export function EditorRoute() {
   useDocRoomRoute()
