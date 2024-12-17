@@ -26,6 +26,7 @@ import "@milkdown/crepe/theme/frame.css";
 // import "@/styles/toast.css";
 // import "@/styles/liquid.css";
 import "./styles/crepe.css";
+import './styles/collab.css'
 // import "@milkdown/crepe/theme/common/style.css";
 
 // const PlaygroundMilkdown = dynamic(() => import("./Crepe"), {
