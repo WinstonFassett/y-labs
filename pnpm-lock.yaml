@@ -70,9 +70,6 @@ importers:
       '@codemirror/state':
         specifier: ^6.5.0
         version: 6.5.0
-      '@codemirror/theme-one-dark':
-        specifier: ^6.1.2
-        version: 6.1.2
       '@codemirror/view':
         specifier: ^6.35.3
         version: 6.35.3
@@ -82,20 +79,17 @@ importers:
       '@lezer/highlight':
         specifier: ^1.2.1
         version: 1.2.1
-      '@milkdown-lab/plugin-split-editing':
-        specifier: ^1.3.1
-        version: 1.3.1(@milkdown/core@7.5.9(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9)))(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9))
       '@milkdown/crepe':
-        specifier: ^7.5.9
+        specifier: ^7.5.6
         version: 7.5.9(@lezer/common@1.2.1)(element-internals-polyfill@0.1.55)
       '@milkdown/kit':
-        specifier: ^7.5.9
+        specifier: ^7.5.6
         version: 7.5.9(@codemirror/language@6.10.6)(@codemirror/state@6.5.0)(@codemirror/view@6.35.3)(element-internals-polyfill@0.1.55)
       '@milkdown/react':
-        specifier: ^7.5.9
+        specifier: ^7.5.6
         version: 7.5.9(@milkdown/core@7.5.9(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9)))(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@milkdown/theme-nord':
-        specifier: ^7.5.9
+        specifier: ^7.5.6
         version: 7.5.9(@milkdown/core@7.5.9(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9)))(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)
       '@nanostores/react':
         specifier: ^0.7.2
@@ -334,6 +328,9 @@ importers:
       tailwind-merge:
         specifier: ^2.2.1
         version: 2.2.1
+      tailwind-nord:
+        specifier: ^1.3.0
+        version: 1.3.0
       tailwind-variants:
         specifier: ^0.2.1
         version: 0.2.1(tailwindcss@3.4.1)
@@ -2543,12 +2540,6 @@ packages:
 
   '@medv/finder@3.1.0':
     resolution: {integrity: sha512-ojkXjR3K0Zz3jnCR80tqPL+0yvbZk/lEodb6RIVjLz7W8RVA2wrw8ym/CzCpXO9SYVUIKHFUpc7jvf8UKfIM3w==}
-
-  '@milkdown-lab/plugin-split-editing@1.3.1':
-    resolution: {integrity: sha512-biBq7d+5RqcUnEN0vkOib3sA7GXGGBIJ2caOxnGgqDlUYofzMM9F6SoM568ZOInobIz1KU3RnQNYZDx9XeuQtg==}
-    peerDependencies:
-      '@milkdown/core': '>=7.0.0'
-      '@milkdown/prose': '>=7.0.0'
 
   '@milkdown/components@7.5.9':
     resolution: {integrity: sha512-HO9cSW6rZDkOA9H9W7otQBPYc7BEYtylcsyMVr3rMKC8lTwoD+m/djBUHA39j3ZSFyCA1f2FeUWsI6neOpfx4Q==}
@@ -10460,6 +10451,9 @@ packages:
   tailwind-merge@2.2.1:
     resolution: {integrity: sha512-o+2GTLkthfa5YUt4JxPfzMIpQzZ3adD1vLVkvKE1Twl9UAhGsEbIZhHHZVRttyW177S8PDJI3bTQNaebyofK3Q==}
 
+  tailwind-nord@1.3.0:
+    resolution: {integrity: sha512-F5tdTG3n9zzctAuRqjX2sdpmwSjbYC/HQdXSg/TQIxaynO1DNvnqBaE+IhmPbQIttMvvY54KiYMDXJqMdQLi1Q==}
+
   tailwind-variants@0.2.1:
     resolution: {integrity: sha512-2xmhAf4UIc3PijOUcJPA1LP4AbxhpcHuHM2C26xM0k81r0maAO6uoUSHl3APmvHZcY5cZCY/bYuJdfFa4eGoaw==}
     engines: {node: '>=16.x', pnpm: '>=7.x'}
@@ -12022,7 +12016,7 @@ snapshots:
       '@babel/core': 7.23.6
       '@babel/helper-compilation-targets': 7.23.6
       '@babel/helper-plugin-utils': 7.24.0
-      debug: 4.3.4
+      debug: 4.3.7
       lodash.debounce: 4.0.8
       resolve: 1.22.4
     transitivePeerDependencies:
@@ -12033,7 +12027,7 @@ snapshots:
       '@babel/core': 7.23.6
       '@babel/helper-compilation-targets': 7.23.6
       '@babel/helper-plugin-utils': 7.24.0
-      debug: 4.3.4
+      debug: 4.3.7
       lodash.debounce: 4.0.8
       resolve: 1.22.4
     transitivePeerDependencies:
@@ -14885,21 +14879,6 @@ snapshots:
       - supports-color
 
   '@medv/finder@3.1.0': {}
-
-  '@milkdown-lab/plugin-split-editing@1.3.1(@milkdown/core@7.5.9(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9)))(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9))':
-    dependencies:
-      '@codemirror/commands': 6.7.1
-      '@codemirror/lang-markdown': 6.3.1
-      '@codemirror/language': 6.10.6
-      '@codemirror/state': 6.5.0
-      '@codemirror/view': 6.35.3
-      '@milkdown/core': 7.5.9(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9))
-      '@milkdown/ctx': 7.5.9
-      '@milkdown/prose': 7.5.9
-      '@milkdown/utils': 7.5.9(@milkdown/core@7.5.9(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9)))(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9))
-      style-mod: 4.1.2
-    transitivePeerDependencies:
-      - '@milkdown/transformer'
 
   '@milkdown/components@7.5.9(mmwx2c2bp2w57l6cxk7rnqab5y)':
     dependencies:
@@ -22874,7 +22853,7 @@ snapshots:
 
   dns-over-http-resolver@3.0.2:
     dependencies:
-      debug: 4.3.4
+      debug: 4.3.7
       receptacle: 1.3.2
     transitivePeerDependencies:
       - supports-color
@@ -24639,7 +24618,7 @@ snapshots:
   log4js@6.9.1:
     dependencies:
       date-format: 4.0.14
-      debug: 4.3.4
+      debug: 4.3.7
       flatted: 3.3.1
       rfdc: 1.3.1
       streamroller: 3.1.5
@@ -25110,7 +25089,7 @@ snapshots:
   mdast-util-to-hast@13.0.2:
     dependencies:
       '@types/hast': 3.0.3
-      '@types/mdast': 4.0.0
+      '@types/mdast': 4.0.4
       '@ungap/structured-clone': 1.2.0
       devlop: 1.1.0
       micromark-util-sanitize-uri: 2.0.0
@@ -25741,7 +25720,7 @@ snapshots:
 
   micromark@2.11.4:
     dependencies:
-      debug: 4.3.4
+      debug: 4.3.7
       parse-entities: 2.0.0
     transitivePeerDependencies:
       - supports-color
@@ -25749,7 +25728,7 @@ snapshots:
   micromark@3.2.0:
     dependencies:
       '@types/debug': 4.1.8
-      debug: 4.3.4
+      debug: 4.3.7
       decode-named-character-reference: 1.0.2
       micromark-core-commonmark: 1.1.0
       micromark-factory-space: 1.1.0
@@ -25771,7 +25750,7 @@ snapshots:
   micromark@4.0.0:
     dependencies:
       '@types/debug': 4.1.8
-      debug: 4.3.4
+      debug: 4.3.7
       decode-named-character-reference: 1.0.2
       devlop: 1.1.0
       micromark-core-commonmark: 2.0.0
@@ -25856,7 +25835,7 @@ snapshots:
   mqtt-packet@9.0.1:
     dependencies:
       bl: 6.0.11
-      debug: 4.3.4
+      debug: 4.3.7
       process-nextick-args: 2.0.1
     transitivePeerDependencies:
       - supports-color
@@ -26073,7 +26052,7 @@ snapshots:
 
   number-allocator@1.0.14:
     dependencies:
-      debug: 4.3.4
+      debug: 4.3.7
       js-sdsl: 4.3.0
     transitivePeerDependencies:
       - supports-color
@@ -27522,7 +27501,7 @@ snapshots:
 
   remark-parse@11.0.0:
     dependencies:
-      '@types/mdast': 4.0.0
+      '@types/mdast': 4.0.4
       mdast-util-from-markdown: 2.0.0
       micromark-util-types: 2.0.0
       unified: 11.0.5
@@ -27545,7 +27524,7 @@ snapshots:
   remark-rehype@11.0.0:
     dependencies:
       '@types/hast': 3.0.3
-      '@types/mdast': 4.0.0
+      '@types/mdast': 4.0.4
       mdast-util-to-hast: 13.0.2
       unified: 11.0.5
       vfile: 6.0.1
@@ -28037,7 +28016,7 @@ snapshots:
   streamroller@3.1.5:
     dependencies:
       date-format: 4.0.14
-      debug: 4.3.4
+      debug: 4.3.7
       fs-extra: 8.1.0
     transitivePeerDependencies:
       - supports-color
@@ -28258,6 +28237,8 @@ snapshots:
   tailwind-merge@2.2.1:
     dependencies:
       '@babel/runtime': 7.23.9
+
+  tailwind-nord@1.3.0: {}
 
   tailwind-variants@0.2.1(tailwindcss@3.4.1):
     dependencies:

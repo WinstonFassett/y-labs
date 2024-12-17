@@ -1,8 +1,7 @@
 import { useToast } from "./toast";
-import { useDarkMode } from "./DarkModeProvider";
 import { encode } from "./share";
 import { Crepe } from "@milkdown/crepe";
-import { editorViewCtx, parserCtx } from "@milkdown/kit/core";
+import { defaultValueCtx, editorViewCtx, parserCtx } from "@milkdown/kit/core";
 import { listener, listenerCtx } from "@milkdown/kit/plugin/listener";
 import { Slice } from "@milkdown/kit/prose/model";
 import { Selection } from "@milkdown/kit/prose/state";
@@ -12,6 +11,8 @@ import { useAtomValue, useSetAtom } from "jotai";
 import throttle from "lodash.throttle";
 import { type FC, type MutableRefObject, useLayoutEffect, useRef } from "react";
 import { crepeAPI, markdown } from "./atom";
+import { useTheme } from "@/lib/astro-tailwind-themes/useTheme";
+import template from '../template.md?raw'
 
 interface MilkdownProps {
   onChange: (markdown: string) => void;
@@ -19,7 +20,8 @@ interface MilkdownProps {
 
 const CrepeEditor: FC<MilkdownProps> = ({ onChange }) => {
   const crepeRef = useRef<Crepe>(null);
-  const darkMode = useDarkMode();
+  const [theme] = useTheme()
+  const darkMode = theme === "dark";
   const divRef = useRef<HTMLDivElement>(null);
   const loading = useRef(false);
   const toast = useToast();
@@ -35,7 +37,7 @@ const CrepeEditor: FC<MilkdownProps> = ({ onChange }) => {
       defaultValue: content,
       featureConfigs: {
         [Crepe.Feature.CodeMirror]: {
-          theme: darkMode ? undefined : eclipse,
+          // theme: darkMode ? undefined : eclipse,
         },
         [Crepe.Feature.LinkTooltip]: {
           onCopyLink: () => {
@@ -52,6 +54,7 @@ const CrepeEditor: FC<MilkdownProps> = ({ onChange }) => {
             onChange(markdown);
           }, 200)
         );
+        ctx.set(defaultValueCtx, template);
       })
       .use(listener);
 

@@ -1,15 +1,16 @@
-import { useDarkMode } from "../DarkModeProvider";
 import { useAtomValue, useSetAtom } from "jotai";
 import { type FC, useLayoutEffect, useRef } from "react";
 import { cmAPI, markdown, focus } from "../atom";
 import { createCodeMirrorState, createCodeMirrorView } from "./setup";
+import { useTheme } from "@/lib/astro-tailwind-themes/useTheme";
 
 export interface CodemirrorProps {
   onChange: (getString: () => string) => void;
 }
 export const Codemirror: FC<CodemirrorProps> = ({ onChange }) => {
   const divRef = useRef<HTMLDivElement>(null);
-  const dark = useDarkMode();
+  const [theme] = useTheme()
+  const dark = theme === 'dark'
   const content = useAtomValue(markdown);
   const setCmAPI = useSetAtom(cmAPI);
   const setFocus = useSetAtom(focus);

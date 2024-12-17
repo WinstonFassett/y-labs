@@ -7,6 +7,26 @@ import { cmAPI, crepeAPI, focus } from "./atom";
 import { Loading } from "@/components/ui/loading";
 import PlaygroundMilkdown from "./Crepe";
 import ControlPanel from "./ControlPanel";
+
+import "@milkdown/crepe/theme/common/style.css";
+
+// We have some themes for you to choose
+import "@milkdown/crepe/theme/frame.css";
+// import "@milkdown/crepe/theme/frame.css";
+// import "@milkdown/theme-nord";
+
+// import "@docsearch/css";
+// import "@milkdown/theme-nord";
+// import "@/styles/globals.css";
+// import "@/styles/docsearch.css";
+// import "@/styles/prosemirror.css";
+// import "@/styles/prose.css";
+// import "@/styles/playground.css";
+// import "@/styles/toast.css";
+// import "@/styles/liquid.css";
+import "./styles/crepe.css";
+// import "@milkdown/crepe/theme/common/style.css";
+
 // const PlaygroundMilkdown = dynamic(() => import("./Crepe"), {
 //   ssr: false,
 //   loading: () => <Loading />,
@@ -42,7 +62,7 @@ const Dual: FC = () => {
     <>
       <div
         className={clsx(
-          "h-[calc(50vh-2rem)] md:h-[calc(100vh-72px)]",
+          "h-[calc(100vh-72px)]",
           expand
             ? "expanded relative col-span-2 mx-auto mt-16 mb-24 flex !h-fit min-h-[80vh] w-full max-w-5xl flex-col border-gray-300 dark:border-gray-600"
             : "fixed bottom-0 left-0 w-1/2"
@@ -52,7 +72,7 @@ const Dual: FC = () => {
       </div>
       <div
         className={clsx(
-          "h-[calc(50vh-2rem)] border-l border-gray-300 dark:border-gray-600 md:h-[calc(100vh-72px)]",
+          "border-l border-gray-300 dark:border-gray-600 h-[calc(100vh-72px)]",
           expand ? "!h-0" : "fixed bottom-0 right-0 w-1/2"
         )}
       >
