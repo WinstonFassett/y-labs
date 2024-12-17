@@ -39,13 +39,13 @@ importers:
         version: 0.11.2(@tiptap/pm@2.2.4)(@types/react@18.2.58)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@blocksuite/blocks':
         specifier: 0.0.0-canary-20241215001705
-        version: 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.12)
+        version: 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.20)
       '@blocksuite/presets':
         specifier: 0.0.0-canary-20241215001705
-        version: 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.12)
+        version: 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.20)
       '@blocksuite/store':
         specifier: 0.0.0-canary-20241215001705
-        version: 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
+        version: 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
       '@codemirror/autocomplete':
         specifier: ^6.18.3
         version: 6.18.3(@codemirror/language@6.10.6)(@codemirror/state@6.5.0)(@codemirror/view@6.35.3)(@lezer/common@1.2.1)
@@ -70,6 +70,9 @@ importers:
       '@codemirror/state':
         specifier: ^6.5.0
         version: 6.5.0
+      '@codemirror/theme-one-dark':
+        specifier: ^6.1.2
+        version: 6.1.2
       '@codemirror/view':
         specifier: ^6.35.3
         version: 6.35.3
@@ -80,16 +83,19 @@ importers:
         specifier: ^1.2.1
         version: 1.2.1
       '@milkdown/crepe':
-        specifier: ^7.5.6
+        specifier: ^7.5.9
         version: 7.5.9(@lezer/common@1.2.1)(element-internals-polyfill@0.1.55)
       '@milkdown/kit':
-        specifier: ^7.5.6
+        specifier: ^7.5.9
         version: 7.5.9(@codemirror/language@6.10.6)(@codemirror/state@6.5.0)(@codemirror/view@6.35.3)(element-internals-polyfill@0.1.55)
+      '@milkdown/plugin-collab':
+        specifier: ^7.5.9
+        version: 7.5.9(@milkdown/core@7.5.9(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9)))(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9))(y-prosemirror@1.2.15(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20))(yjs@13.6.20))(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20))(yjs@13.6.20)
       '@milkdown/react':
-        specifier: ^7.5.6
+        specifier: ^7.5.9
         version: 7.5.9(@milkdown/core@7.5.9(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9)))(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@milkdown/theme-nord':
-        specifier: ^7.5.6
+        specifier: ^7.5.9
         version: 7.5.9(@milkdown/core@7.5.9(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9)))(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)
       '@nanostores/react':
         specifier: ^0.7.2
@@ -159,10 +165,10 @@ importers:
         version: 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(@tiptap/extension-code-block@2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(@tiptap/pm@2.2.4))(@tiptap/pm@2.2.4)
       '@tiptap/extension-collaboration':
         specifier: ^2.2.4
-        version: 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(@tiptap/pm@2.2.4)(y-prosemirror@1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.12))(yjs@13.6.12))
+        version: 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(@tiptap/pm@2.2.4)(y-prosemirror@1.2.15(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20))(yjs@13.6.20))
       '@tiptap/extension-collaboration-cursor':
         specifier: ^2.2.4
-        version: 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(y-prosemirror@1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.12))(yjs@13.6.12))
+        version: 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(y-prosemirror@1.2.15(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20))(yjs@13.6.20))
       '@tiptap/extension-color':
         specifier: ^2.10.2
         version: 2.10.2(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(@tiptap/extension-text-style@2.10.2(@tiptap/core@2.2.4(@tiptap/pm@2.2.4)))
@@ -360,22 +366,22 @@ importers:
         version: 11.0.3
       y-codemirror.next:
         specifier: ^0.3.2
-        version: 0.3.2(patch_hash=o3g64ndtgpt35bm3ffbyleh5ei)(@codemirror/state@6.5.0)(@codemirror/view@6.35.3)(yjs@13.6.12)
+        version: 0.3.2(patch_hash=o3g64ndtgpt35bm3ffbyleh5ei)(@codemirror/state@6.5.0)(@codemirror/view@6.35.3)(yjs@13.6.20)
       y-indexeddb:
         specifier: ^9.0.12
-        version: 9.0.12(yjs@13.6.12)
+        version: 9.0.12(yjs@13.6.20)
       y-prosemirror:
-        specifier: ^1.2.1
-        version: 1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.12))(yjs@13.6.12)
+        specifier: ^1.2.15
+        version: 1.2.15(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20))(yjs@13.6.20)
       y-protocols:
         specifier: ^1.0.6
-        version: 1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.12)
+        version: 1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20)
       y-utility:
-        specifier: ^0.1.3
-        version: 0.1.3(yjs@13.6.12)
+        specifier: ^0.1.4
+        version: 0.1.4(yjs@13.6.20)
       yjs:
-        specifier: ^13.6.12
-        version: 13.6.12
+        specifier: ^13.6.20
+        version: 13.6.20
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -2587,6 +2593,16 @@ packages:
     peerDependencies:
       '@milkdown/core': ^7.2.0
       '@milkdown/prose': ^7.2.0
+
+  '@milkdown/plugin-collab@7.5.9':
+    resolution: {integrity: sha512-bqQIuEsBGQdjFgjhTuuQrKajGQM14iXWbLX9BB/0cExvusZQABb1PBPqWCXshmxrtIyYGaHtXbf98USh5kks3g==}
+    peerDependencies:
+      '@milkdown/core': ^7.2.0
+      '@milkdown/ctx': ^7.2.0
+      '@milkdown/prose': ^7.2.0
+      y-prosemirror: '*'
+      y-protocols: '*'
+      yjs: '*'
 
   '@milkdown/plugin-cursor@7.5.9':
     resolution: {integrity: sha512-xwfHVVuowys8g3kn9WvsDoK4fPkesQIX5ciPfAeS+X5PmE/gMYpH0AYKqIbpZlwttmO8YgkUfHXIFQmcVVumiA==}
@@ -11410,14 +11426,24 @@ packages:
       y-protocols: ^1.0.1
       yjs: ^13.5.38
 
+  y-prosemirror@1.2.15:
+    resolution: {integrity: sha512-XDdrytq2M5bIy3qusQvfRclLu2eWZYPA+BbGWAb9FFWEhOB5FCrnzez2vsA+gvAd0FJTAcr89mjJ5g45r0j7TQ==}
+    engines: {node: '>=16.0.0', npm: '>=8.0.0'}
+    peerDependencies:
+      prosemirror-model: ^1.7.1
+      prosemirror-state: ^1.2.3
+      prosemirror-view: ^1.9.10
+      y-protocols: ^1.0.1
+      yjs: ^13.5.38
+
   y-protocols@1.0.6:
     resolution: {integrity: sha512-vHRF2L6iT3rwj1jub/K5tYcTT/mEYDUppgNPXwp8fmLpui9f7Yeq3OEtTLVF012j39QnV+KEQpNqoN7CWU7Y9Q==}
     engines: {node: '>=16.0.0', npm: '>=8.0.0'}
     peerDependencies:
       yjs: ^13.0.0
 
-  y-utility@0.1.3:
-    resolution: {integrity: sha512-o9aXG5ZG4c/QgiK1Bt9UDXGVCNwn0dLti/rZSPTsjtuvwH6sshslU2SfoW65pfZqjLJYEHclM/JtUPPjv05lLw==}
+  y-utility@0.1.4:
+    resolution: {integrity: sha512-i8HSo2DGRB13PSm9B0hbljPBramKWK2Gi9R+ZCPrstyIx0VJAdcaurGdYTmcu2SBJI9HWcSCW0siSF2SyRa4lg==}
     engines: {node: '>=16'}
     peerDependencies:
       yjs: ^13.5.29
@@ -11464,8 +11490,8 @@ packages:
     engines: {node: '>=4.0.0'}
     hasBin: true
 
-  yjs@13.6.12:
-    resolution: {integrity: sha512-KOT8ILoyVH2f/PxPadeu5kVVS055D1r3x1iFfJVJzFdnN98pVGM8H07NcKsO+fG3F7/0tf30Vnokf5YIqhU/iw==}
+  yjs@13.6.20:
+    resolution: {integrity: sha512-Z2YZI+SYqK7XdWlloI3lhMiKnCdFCVC4PchpdO+mCYwtiTwncjUbnRK9R1JmkNfdmHyDXuWN3ibJAt0wsqTbLQ==}
     engines: {node: '>=16.0.0', npm: '>=8.0.0'}
 
   yocto-queue@0.1.0:
@@ -12724,8 +12750,8 @@ snapshots:
       '@tiptap/core': 2.2.4(@tiptap/pm@2.2.4)
       '@tiptap/extension-bold': 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))
       '@tiptap/extension-code': 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))
-      '@tiptap/extension-collaboration': 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(@tiptap/pm@2.2.4)(y-prosemirror@1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.12))(yjs@13.6.12))
-      '@tiptap/extension-collaboration-cursor': 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(y-prosemirror@1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.12))(yjs@13.6.12))
+      '@tiptap/extension-collaboration': 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(@tiptap/pm@2.2.4)(y-prosemirror@1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20))(yjs@13.6.20))
+      '@tiptap/extension-collaboration-cursor': 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(y-prosemirror@1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20))(yjs@13.6.20))
       '@tiptap/extension-dropcursor': 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(@tiptap/pm@2.2.4)
       '@tiptap/extension-gapcursor': 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(@tiptap/pm@2.2.4)
       '@tiptap/extension-hard-break': 2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))
@@ -12757,9 +12783,9 @@ snapshots:
       remark-stringify: 10.0.3
       unified: 10.1.2
       uuid: 8.3.2
-      y-prosemirror: 1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.12))(yjs@13.6.12)
-      y-protocols: 1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.12)
-      yjs: 13.6.12
+      y-prosemirror: 1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20))(yjs@13.6.20)
+      y-protocols: 1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20)
+      yjs: 13.6.20
     transitivePeerDependencies:
       - supports-color
 
@@ -12784,17 +12810,17 @@ snapshots:
       - '@types/react'
       - supports-color
 
-  '@blocksuite/affine-block-embed@0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.12)':
+  '@blocksuite/affine-block-embed@0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.20)':
     dependencies:
-      '@blocksuite/affine-block-surface': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.12)
-      '@blocksuite/affine-components': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.12)
-      '@blocksuite/affine-model': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
-      '@blocksuite/affine-shared': 0.0.0-canary-20241215001705(yjs@13.6.12)
-      '@blocksuite/block-std': 0.0.0-canary-20241215001705(yjs@13.6.12)
+      '@blocksuite/affine-block-surface': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.20)
+      '@blocksuite/affine-components': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.20)
+      '@blocksuite/affine-model': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
+      '@blocksuite/affine-shared': 0.0.0-canary-20241215001705(yjs@13.6.20)
+      '@blocksuite/block-std': 0.0.0-canary-20241215001705(yjs@13.6.20)
       '@blocksuite/global': 0.0.0-canary-20241215001705
       '@blocksuite/icons': 2.1.75(@types/react@18.2.58)(lit@3.2.1)(react@18.2.0)
-      '@blocksuite/inline': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
-      '@blocksuite/store': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
+      '@blocksuite/inline': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
+      '@blocksuite/store': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
       '@floating-ui/dom': 1.6.12
       '@lit/context': 1.1.3
       '@preact/signals-core': 1.8.0
@@ -12807,37 +12833,15 @@ snapshots:
       - react
       - yjs
 
-  '@blocksuite/affine-block-list@0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.12)':
+  '@blocksuite/affine-block-list@0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.20)':
     dependencies:
-      '@blocksuite/affine-components': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.12)
-      '@blocksuite/affine-model': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
-      '@blocksuite/affine-shared': 0.0.0-canary-20241215001705(yjs@13.6.12)
-      '@blocksuite/block-std': 0.0.0-canary-20241215001705(yjs@13.6.12)
+      '@blocksuite/affine-components': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.20)
+      '@blocksuite/affine-model': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
+      '@blocksuite/affine-shared': 0.0.0-canary-20241215001705(yjs@13.6.20)
+      '@blocksuite/block-std': 0.0.0-canary-20241215001705(yjs@13.6.20)
       '@blocksuite/global': 0.0.0-canary-20241215001705
-      '@blocksuite/inline': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
-      '@blocksuite/store': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
-      '@floating-ui/dom': 1.6.12
-      '@lit/context': 1.1.3
-      '@preact/signals-core': 1.8.0
-      '@toeverything/theme': 1.1.1
-      '@types/mdast': 4.0.4
-      lit: 3.2.1
-      minimatch: 10.0.1
-      zod: 3.23.8
-    transitivePeerDependencies:
-      - '@types/react'
-      - react
-      - yjs
-
-  '@blocksuite/affine-block-paragraph@0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.12)':
-    dependencies:
-      '@blocksuite/affine-components': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.12)
-      '@blocksuite/affine-model': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
-      '@blocksuite/affine-shared': 0.0.0-canary-20241215001705(yjs@13.6.12)
-      '@blocksuite/block-std': 0.0.0-canary-20241215001705(yjs@13.6.12)
-      '@blocksuite/global': 0.0.0-canary-20241215001705
-      '@blocksuite/inline': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
-      '@blocksuite/store': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
+      '@blocksuite/inline': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
+      '@blocksuite/store': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
       '@floating-ui/dom': 1.6.12
       '@lit/context': 1.1.3
       '@preact/signals-core': 1.8.0
@@ -12851,15 +12855,37 @@ snapshots:
       - react
       - yjs
 
-  '@blocksuite/affine-block-surface@0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.12)':
+  '@blocksuite/affine-block-paragraph@0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.20)':
     dependencies:
-      '@blocksuite/affine-components': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.12)
-      '@blocksuite/affine-model': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
-      '@blocksuite/affine-shared': 0.0.0-canary-20241215001705(yjs@13.6.12)
-      '@blocksuite/block-std': 0.0.0-canary-20241215001705(yjs@13.6.12)
+      '@blocksuite/affine-components': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.20)
+      '@blocksuite/affine-model': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
+      '@blocksuite/affine-shared': 0.0.0-canary-20241215001705(yjs@13.6.20)
+      '@blocksuite/block-std': 0.0.0-canary-20241215001705(yjs@13.6.20)
       '@blocksuite/global': 0.0.0-canary-20241215001705
-      '@blocksuite/inline': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
-      '@blocksuite/store': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
+      '@blocksuite/inline': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
+      '@blocksuite/store': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
+      '@floating-ui/dom': 1.6.12
+      '@lit/context': 1.1.3
+      '@preact/signals-core': 1.8.0
+      '@toeverything/theme': 1.1.1
+      '@types/mdast': 4.0.4
+      lit: 3.2.1
+      minimatch: 10.0.1
+      zod: 3.23.8
+    transitivePeerDependencies:
+      - '@types/react'
+      - react
+      - yjs
+
+  '@blocksuite/affine-block-surface@0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.20)':
+    dependencies:
+      '@blocksuite/affine-components': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.20)
+      '@blocksuite/affine-model': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
+      '@blocksuite/affine-shared': 0.0.0-canary-20241215001705(yjs@13.6.20)
+      '@blocksuite/block-std': 0.0.0-canary-20241215001705(yjs@13.6.20)
+      '@blocksuite/global': 0.0.0-canary-20241215001705
+      '@blocksuite/inline': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
+      '@blocksuite/store': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
       '@lit/context': 1.1.3
       '@preact/signals-core': 1.8.0
       '@toeverything/theme': 1.1.1
@@ -12873,15 +12899,15 @@ snapshots:
       - react
       - yjs
 
-  '@blocksuite/affine-components@0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.12)':
+  '@blocksuite/affine-components@0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.20)':
     dependencies:
-      '@blocksuite/affine-model': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
-      '@blocksuite/affine-shared': 0.0.0-canary-20241215001705(yjs@13.6.12)
-      '@blocksuite/block-std': 0.0.0-canary-20241215001705(yjs@13.6.12)
+      '@blocksuite/affine-model': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
+      '@blocksuite/affine-shared': 0.0.0-canary-20241215001705(yjs@13.6.20)
+      '@blocksuite/block-std': 0.0.0-canary-20241215001705(yjs@13.6.20)
       '@blocksuite/global': 0.0.0-canary-20241215001705
       '@blocksuite/icons': 2.1.75(@types/react@18.2.58)(lit@3.2.1)(react@18.2.0)
-      '@blocksuite/inline': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
-      '@blocksuite/store': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
+      '@blocksuite/inline': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
+      '@blocksuite/store': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
       '@floating-ui/dom': 1.6.12
       '@lit/context': 1.1.3
       '@lottiefiles/dotlottie-wc': 0.4.1
@@ -12899,25 +12925,25 @@ snapshots:
       - react
       - yjs
 
-  '@blocksuite/affine-model@0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)':
+  '@blocksuite/affine-model@0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)':
     dependencies:
-      '@blocksuite/block-std': 0.0.0-canary-20241215001705(yjs@13.6.12)
+      '@blocksuite/block-std': 0.0.0-canary-20241215001705(yjs@13.6.20)
       '@blocksuite/global': 0.0.0-canary-20241215001705
-      '@blocksuite/inline': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
-      '@blocksuite/store': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
+      '@blocksuite/inline': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
+      '@blocksuite/store': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
       fractional-indexing: 3.2.0
       zod: 3.23.8
     transitivePeerDependencies:
       - lit
       - yjs
 
-  '@blocksuite/affine-shared@0.0.0-canary-20241215001705(yjs@13.6.12)':
+  '@blocksuite/affine-shared@0.0.0-canary-20241215001705(yjs@13.6.20)':
     dependencies:
-      '@blocksuite/affine-model': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
-      '@blocksuite/block-std': 0.0.0-canary-20241215001705(yjs@13.6.12)
+      '@blocksuite/affine-model': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
+      '@blocksuite/block-std': 0.0.0-canary-20241215001705(yjs@13.6.20)
       '@blocksuite/global': 0.0.0-canary-20241215001705
-      '@blocksuite/inline': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
-      '@blocksuite/store': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
+      '@blocksuite/inline': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
+      '@blocksuite/store': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
       '@floating-ui/dom': 1.6.12
       '@lit/context': 1.1.3
       '@preact/signals-core': 1.8.0
@@ -12932,11 +12958,11 @@ snapshots:
     transitivePeerDependencies:
       - yjs
 
-  '@blocksuite/affine-widget-scroll-anchoring@0.0.0-canary-20241215001705(yjs@13.6.12)':
+  '@blocksuite/affine-widget-scroll-anchoring@0.0.0-canary-20241215001705(yjs@13.6.20)':
     dependencies:
-      '@blocksuite/affine-model': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
-      '@blocksuite/affine-shared': 0.0.0-canary-20241215001705(yjs@13.6.12)
-      '@blocksuite/block-std': 0.0.0-canary-20241215001705(yjs@13.6.12)
+      '@blocksuite/affine-model': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
+      '@blocksuite/affine-shared': 0.0.0-canary-20241215001705(yjs@13.6.20)
+      '@blocksuite/block-std': 0.0.0-canary-20241215001705(yjs@13.6.20)
       '@blocksuite/global': 0.0.0-canary-20241215001705
       '@preact/signals-core': 1.8.0
       '@toeverything/theme': 1.1.1
@@ -12944,11 +12970,11 @@ snapshots:
     transitivePeerDependencies:
       - yjs
 
-  '@blocksuite/block-std@0.0.0-canary-20241215001705(yjs@13.6.12)':
+  '@blocksuite/block-std@0.0.0-canary-20241215001705(yjs@13.6.20)':
     dependencies:
       '@blocksuite/global': 0.0.0-canary-20241215001705
-      '@blocksuite/inline': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
-      '@blocksuite/store': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
+      '@blocksuite/inline': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
+      '@blocksuite/store': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
       '@lit/context': 1.1.3
       '@preact/signals-core': 1.8.0
       '@types/hast': 3.0.4
@@ -12963,22 +12989,22 @@ snapshots:
     transitivePeerDependencies:
       - yjs
 
-  '@blocksuite/blocks@0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.12)':
+  '@blocksuite/blocks@0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.20)':
     dependencies:
-      '@blocksuite/affine-block-embed': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.12)
-      '@blocksuite/affine-block-list': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.12)
-      '@blocksuite/affine-block-paragraph': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.12)
-      '@blocksuite/affine-block-surface': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.12)
-      '@blocksuite/affine-components': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.12)
-      '@blocksuite/affine-model': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
-      '@blocksuite/affine-shared': 0.0.0-canary-20241215001705(yjs@13.6.12)
-      '@blocksuite/affine-widget-scroll-anchoring': 0.0.0-canary-20241215001705(yjs@13.6.12)
-      '@blocksuite/block-std': 0.0.0-canary-20241215001705(yjs@13.6.12)
-      '@blocksuite/data-view': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.12)
+      '@blocksuite/affine-block-embed': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.20)
+      '@blocksuite/affine-block-list': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.20)
+      '@blocksuite/affine-block-paragraph': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.20)
+      '@blocksuite/affine-block-surface': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.20)
+      '@blocksuite/affine-components': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.20)
+      '@blocksuite/affine-model': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
+      '@blocksuite/affine-shared': 0.0.0-canary-20241215001705(yjs@13.6.20)
+      '@blocksuite/affine-widget-scroll-anchoring': 0.0.0-canary-20241215001705(yjs@13.6.20)
+      '@blocksuite/block-std': 0.0.0-canary-20241215001705(yjs@13.6.20)
+      '@blocksuite/data-view': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.20)
       '@blocksuite/global': 0.0.0-canary-20241215001705
       '@blocksuite/icons': 2.1.75(@types/react@18.2.58)(lit@3.2.1)(react@18.2.0)
-      '@blocksuite/inline': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
-      '@blocksuite/store': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
+      '@blocksuite/inline': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
+      '@blocksuite/store': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
       '@floating-ui/dom': 1.6.12
       '@lit/context': 1.1.3
       '@preact/signals-core': 1.8.0
@@ -13022,14 +13048,14 @@ snapshots:
       - supports-color
       - yjs
 
-  '@blocksuite/data-view@0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.12)':
+  '@blocksuite/data-view@0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.20)':
     dependencies:
-      '@blocksuite/affine-components': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.12)
-      '@blocksuite/affine-shared': 0.0.0-canary-20241215001705(yjs@13.6.12)
-      '@blocksuite/block-std': 0.0.0-canary-20241215001705(yjs@13.6.12)
+      '@blocksuite/affine-components': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.20)
+      '@blocksuite/affine-shared': 0.0.0-canary-20241215001705(yjs@13.6.20)
+      '@blocksuite/block-std': 0.0.0-canary-20241215001705(yjs@13.6.20)
       '@blocksuite/global': 0.0.0-canary-20241215001705
       '@blocksuite/icons': 2.1.75(@types/react@18.2.58)(lit@3.2.1)(react@18.2.0)
-      '@blocksuite/store': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
+      '@blocksuite/store': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
       '@emotion/hash': 0.9.2
       '@floating-ui/dom': 1.6.12
       '@lit/context': 1.1.3
@@ -13057,24 +13083,24 @@ snapshots:
       lit: 3.2.1
       react: 18.2.0
 
-  '@blocksuite/inline@0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)':
+  '@blocksuite/inline@0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)':
     dependencies:
       '@blocksuite/global': 0.0.0-canary-20241215001705
       '@preact/signals-core': 1.8.0
       lit: 3.2.1
-      yjs: 13.6.12
+      yjs: 13.6.20
       zod: 3.23.8
 
-  '@blocksuite/presets@0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.12)':
+  '@blocksuite/presets@0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.20)':
     dependencies:
-      '@blocksuite/affine-block-surface': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.12)
-      '@blocksuite/affine-model': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
-      '@blocksuite/affine-shared': 0.0.0-canary-20241215001705(yjs@13.6.12)
-      '@blocksuite/block-std': 0.0.0-canary-20241215001705(yjs@13.6.12)
-      '@blocksuite/blocks': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.12)
+      '@blocksuite/affine-block-surface': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.20)
+      '@blocksuite/affine-model': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
+      '@blocksuite/affine-shared': 0.0.0-canary-20241215001705(yjs@13.6.20)
+      '@blocksuite/block-std': 0.0.0-canary-20241215001705(yjs@13.6.20)
+      '@blocksuite/blocks': 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.20)
       '@blocksuite/global': 0.0.0-canary-20241215001705
-      '@blocksuite/inline': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
-      '@blocksuite/store': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
+      '@blocksuite/inline': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
+      '@blocksuite/store': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
       '@floating-ui/dom': 1.6.12
       '@lottiefiles/dotlottie-wc': 0.4.1
       '@preact/signals-core': 1.8.0
@@ -13087,11 +13113,11 @@ snapshots:
       - supports-color
       - yjs
 
-  '@blocksuite/store@0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)':
+  '@blocksuite/store@0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)':
     dependencies:
       '@blocksuite/global': 0.0.0-canary-20241215001705
-      '@blocksuite/inline': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
-      '@blocksuite/sync': 0.0.0-canary-20241215001705(yjs@13.6.12)
+      '@blocksuite/inline': 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.20)
+      '@blocksuite/sync': 0.0.0-canary-20241215001705(yjs@13.6.20)
       '@preact/signals-core': 1.8.0
       '@types/flexsearch': 0.7.6
       '@types/lodash.ismatch': 4.4.9
@@ -13103,19 +13129,19 @@ snapshots:
       lodash.merge: 4.6.2
       minimatch: 10.0.1
       nanoid: 5.0.8
-      y-protocols: 1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.12)
-      yjs: 13.6.12
+      y-protocols: 1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20)
+      yjs: 13.6.20
       zod: 3.23.8
     transitivePeerDependencies:
       - lit
 
-  '@blocksuite/sync@0.0.0-canary-20241215001705(yjs@13.6.12)':
+  '@blocksuite/sync@0.0.0-canary-20241215001705(yjs@13.6.20)':
     dependencies:
       '@blocksuite/global': 0.0.0-canary-20241215001705
       idb: 8.0.0
       idb-keyval: 6.2.1
-      y-protocols: 1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.12)
-      yjs: 13.6.12
+      y-protocols: 1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20)
+      yjs: 13.6.20
 
   '@cfcs/core@0.0.6':
     dependencies:
@@ -15004,6 +15030,20 @@ snapshots:
       tslib: 2.6.2
     transitivePeerDependencies:
       - '@milkdown/ctx'
+      - '@milkdown/transformer'
+
+  '@milkdown/plugin-collab@7.5.9(@milkdown/core@7.5.9(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9)))(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9))(y-prosemirror@1.2.15(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20))(yjs@13.6.20))(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20))(yjs@13.6.20)':
+    dependencies:
+      '@milkdown/core': 7.5.9(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9))
+      '@milkdown/ctx': 7.5.9
+      '@milkdown/exception': 7.5.9
+      '@milkdown/prose': 7.5.9
+      '@milkdown/utils': 7.5.9(@milkdown/core@7.5.9(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9)))(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9))
+      tslib: 2.6.2
+      y-prosemirror: 1.2.15(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20))(yjs@13.6.20)
+      y-protocols: 1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20)
+      yjs: 13.6.20
+    transitivePeerDependencies:
       - '@milkdown/transformer'
 
   '@milkdown/plugin-cursor@7.5.9(@milkdown/core@7.5.9(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9)))(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9))':
@@ -18747,16 +18787,27 @@ snapshots:
     dependencies:
       '@tiptap/core': 2.2.4(@tiptap/pm@2.2.4)
 
-  '@tiptap/extension-collaboration-cursor@2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(y-prosemirror@1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.12))(yjs@13.6.12))':
+  '@tiptap/extension-collaboration-cursor@2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(y-prosemirror@1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20))(yjs@13.6.20))':
     dependencies:
       '@tiptap/core': 2.2.4(@tiptap/pm@2.2.4)
-      y-prosemirror: 1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.12))(yjs@13.6.12)
+      y-prosemirror: 1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20))(yjs@13.6.20)
 
-  '@tiptap/extension-collaboration@2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(@tiptap/pm@2.2.4)(y-prosemirror@1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.12))(yjs@13.6.12))':
+  '@tiptap/extension-collaboration-cursor@2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(y-prosemirror@1.2.15(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20))(yjs@13.6.20))':
+    dependencies:
+      '@tiptap/core': 2.2.4(@tiptap/pm@2.2.4)
+      y-prosemirror: 1.2.15(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20))(yjs@13.6.20)
+
+  '@tiptap/extension-collaboration@2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(@tiptap/pm@2.2.4)(y-prosemirror@1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20))(yjs@13.6.20))':
     dependencies:
       '@tiptap/core': 2.2.4(@tiptap/pm@2.2.4)
       '@tiptap/pm': 2.2.4
-      y-prosemirror: 1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.12))(yjs@13.6.12)
+      y-prosemirror: 1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20))(yjs@13.6.20)
+
+  '@tiptap/extension-collaboration@2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(@tiptap/pm@2.2.4)(y-prosemirror@1.2.15(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20))(yjs@13.6.20))':
+    dependencies:
+      '@tiptap/core': 2.2.4(@tiptap/pm@2.2.4)
+      '@tiptap/pm': 2.2.4
+      y-prosemirror: 1.2.15(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20))(yjs@13.6.20)
 
   '@tiptap/extension-color@2.10.2(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(@tiptap/extension-text-style@2.10.2(@tiptap/core@2.2.4(@tiptap/pm@2.2.4)))':
     dependencies:
@@ -29473,36 +29524,45 @@ snapshots:
 
   xtend@4.0.2: {}
 
-  y-codemirror.next@0.3.2(patch_hash=o3g64ndtgpt35bm3ffbyleh5ei)(@codemirror/state@6.5.0)(@codemirror/view@6.35.3)(yjs@13.6.12):
+  y-codemirror.next@0.3.2(patch_hash=o3g64ndtgpt35bm3ffbyleh5ei)(@codemirror/state@6.5.0)(@codemirror/view@6.35.3)(yjs@13.6.20):
     dependencies:
       '@codemirror/state': 6.5.0
       '@codemirror/view': 6.35.3
       lib0: 0.2.89
-      yjs: 13.6.12
+      yjs: 13.6.20
 
-  y-indexeddb@9.0.12(yjs@13.6.12):
+  y-indexeddb@9.0.12(yjs@13.6.20):
     dependencies:
-      lib0: 0.2.89
-      yjs: 13.6.12
+      lib0: 0.2.99
+      yjs: 13.6.20
 
-  y-prosemirror@1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.12))(yjs@13.6.12):
+  y-prosemirror@1.2.1(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20))(yjs@13.6.20):
     dependencies:
-      lib0: 0.2.89
+      lib0: 0.2.99
       prosemirror-model: 1.19.4
       prosemirror-state: 1.4.3
       prosemirror-view: 1.37.1
-      y-protocols: 1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.12)
-      yjs: 13.6.12
+      y-protocols: 1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20)
+      yjs: 13.6.20
 
-  y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.12):
+  y-prosemirror@1.2.15(prosemirror-model@1.19.4)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20))(yjs@13.6.20):
     dependencies:
-      lib0: 0.2.89
-      yjs: 13.6.12
+      lib0: 0.2.99
+      prosemirror-model: 1.19.4
+      prosemirror-state: 1.4.3
+      prosemirror-view: 1.37.1
+      y-protocols: 1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20)
+      yjs: 13.6.20
 
-  y-utility@0.1.3(yjs@13.6.12):
+  y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.20):
     dependencies:
-      lib0: 0.2.89
-      yjs: 13.6.12
+      lib0: 0.2.99
+      yjs: 13.6.20
+
+  y-utility@0.1.4(yjs@13.6.20):
+    dependencies:
+      lib0: 0.2.99
+      yjs: 13.6.20
 
   y18n@4.0.3: {}
 
@@ -29549,9 +29609,9 @@ snapshots:
 
   yarn@1.22.21: {}
 
-  yjs@13.6.12:
+  yjs@13.6.20:
     dependencies:
-      lib0: 0.2.89
+      lib0: 0.2.99
 
   yocto-queue@0.1.0: {}
 

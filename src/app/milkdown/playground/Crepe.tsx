@@ -13,12 +13,18 @@ import { type FC, type MutableRefObject, useLayoutEffect, useRef } from "react";
 import { crepeAPI, markdown } from "./atom";
 import { useTheme } from "@/lib/astro-tailwind-themes/useTheme";
 import template from '../template.md?raw'
+import { CollabReady, collab, collabServiceCtx } from '@milkdown/plugin-collab';
+import * as Y from 'yjs'
+import { Awareness } from 'y-protocols/awareness'
 
 interface MilkdownProps {
   onChange: (markdown: string) => void;
+  doc: Y.Doc;
+  awareness?: Awareness;
 }
 
-const CrepeEditor: FC<MilkdownProps> = ({ onChange }) => {
+const CrepeEditor: FC<MilkdownProps> = ({ onChange, doc, awareness }) => {
+  console.log('awareness 2', awareness)
   const crepeRef = useRef<Crepe>(null);
   const [theme] = useTheme()
   const darkMode = theme === "dark";
@@ -27,10 +33,12 @@ const CrepeEditor: FC<MilkdownProps> = ({ onChange }) => {
   const toast = useToast();
   const content = useAtomValue(markdown);
   const setCrepeAPI = useSetAtom(crepeAPI);
-
+  const collabRef = useRef({ doc, awareness })
+  collabRef.current = { doc, awareness }
   useLayoutEffect(() => {
+    console.log('layoutEffect')
     if (!divRef.current || loading.current) return;
-
+    
     loading.current = true;
     const crepe = new Crepe({
       root: divRef.current,
@@ -48,17 +56,44 @@ const CrepeEditor: FC<MilkdownProps> = ({ onChange }) => {
     });
 
     crepe.editor
+      .use(collab)
+    crepe.editor
       .config((ctx) => {
         ctx.get(listenerCtx).markdownUpdated(
           throttle((_, markdown) => {
             onChange(markdown);
           }, 200)
         );
-        ctx.set(defaultValueCtx, template);
+        
       })
       .use(listener);
 
-    crepe.create().then(() => {
+    crepe.create().then(async () => {
+      const { doc, awareness } = collabRef.current
+      const theAwareness = awareness
+      console.log('using collab', { awareness, theAwareness })
+      console.log('created doc', { doc, awareness, theAwareness })
+      if (doc) {
+        console.log('setup collab', {doc, awareness, theAwareness})      
+        // ctx.set(defaultValueCtx, template);      
+        await crepe.editor
+        .action(async (ctx) => {
+          // await ctx.wait(CollabReady)
+          console.log('COLLAB READY', { doc, awareness, theAwareness })
+          const collabService = ctx.get(collabServiceCtx);
+      
+          collabService
+            // bind doc and awareness
+            .bindDoc(doc)
+          if (awareness) {
+            collabService
+              .setAwareness(awareness)
+          }
+            collabService
+            // connect yjs with milkdown
+            .connect();
+        });
+      }
       (crepeRef as MutableRefObject<Crepe>).current = crepe;
       loading.current = false;
     });
@@ -101,6 +136,7 @@ const CrepeEditor: FC<MilkdownProps> = ({ onChange }) => {
 
     return () => {
       if (loading.current) return;
+      console.log('DESTROY CREPE')
       crepe.destroy();
       setCrepeAPI({
         loaded: false,
@@ -108,7 +144,7 @@ const CrepeEditor: FC<MilkdownProps> = ({ onChange }) => {
         update: () => {},
       });
     };
-  }, [content, darkMode, onChange, setCrepeAPI, toast]);
+  }, [doc, awareness, content, darkMode, onChange, setCrepeAPI, toast]);
 
   return <div className="crepe flex h-full flex-1 flex-col" ref={divRef} />;
 };

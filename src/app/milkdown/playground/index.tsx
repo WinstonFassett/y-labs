@@ -7,7 +7,8 @@ import { cmAPI, crepeAPI, focus } from "./atom";
 import { Loading } from "@/components/ui/loading";
 import PlaygroundMilkdown from "./Crepe";
 import ControlPanel from "./ControlPanel";
-
+import * as Y from 'yjs'
+import { Awareness } from 'y-protocols/awareness'
 import "@milkdown/crepe/theme/common/style.css";
 
 // We have some themes for you to choose
@@ -37,9 +38,9 @@ import "./styles/crepe.css";
 //   loading: () => <Loading />,
 // });
 
-const Dual: FC = () => {
+export default function Dual ({ doc, awareness }: { doc: Y.Doc, awareness?: Awareness }) {
   const [expand, setExpand] = useState(false);
-
+  console.log('awareness', awareness)
   const onMilkdownChange = useAtomCallback(
     useCallback((get, _set, markdown: string) => {
       const cmAPIValue = get(cmAPI);
@@ -68,7 +69,7 @@ const Dual: FC = () => {
             : "fixed bottom-0 left-0 w-1/2"
         )}
       >
-        <PlaygroundMilkdown onChange={onMilkdownChange} />
+        <PlaygroundMilkdown onChange={onMilkdownChange} doc={doc} awareness={awareness}  />
       </div>
       <div
         className={clsx(
@@ -85,4 +86,3 @@ const Dual: FC = () => {
     </>
   );
 };
-export default Dual;
