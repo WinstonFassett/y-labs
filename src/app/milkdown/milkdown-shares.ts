@@ -4,6 +4,6 @@ import { getBaseShares } from "../shared/shares-base";
 export function getMilkdownShares(ydoc: Y.Doc) {
   return {
     ...getBaseShares(ydoc),    
-    codemirror: ydoc.getXmlElement('milkdown')
+    prosemirror: ydoc.getXmlFragment('prosemirror')
   }
 }
