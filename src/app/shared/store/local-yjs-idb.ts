@@ -169,6 +169,7 @@ function getDocMeta(doc: Y.Doc, name: string) {
   const shares = Array.from(doc.share.keys()) as string[];
   let type = shares.find((s) => !Ignores.includes(s)) || "unknown";
   if (type === 'blocks') { type = 'blocksuite' }
+  if (type === 'prosemirror') { type = 'milkdown' }
   return Object.assign(meta, { name, type });
 }
 

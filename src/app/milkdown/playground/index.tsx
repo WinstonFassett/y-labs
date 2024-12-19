@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import { useAtomCallback } from "jotai/utils";
 // import dynamic from "next/dynamic";
-import { type FC, useCallback, useState } from "react";
+import { type FC, useCallback, useState, useEffect } from "react";
 import { cmAPI, crepeAPI, focus } from "./atom";
 import { Loading } from "@/components/ui/loading";
 import PlaygroundMilkdown from "./Crepe";
@@ -51,31 +51,37 @@ export default function Dual ({ doc, awareness }: { doc: Y.Doc, awareness?: Awar
       cmAPIValue.update(markdown);
     }, [])
   );
+  // useEffect(() => {
+  //   const initialContent = doc.getXmlFragment('prosemirror').toString()
+  //   console.log('initialContent', initialContent)
+  //   onMilkdownChange(initialContent)
+  // }, [onMilkdownChange])
 
   const onCodemirrorChange = useAtomCallback(
     useCallback((get, _set, getCode: () => string) => {
       const value = getCode();
+      console.log('codemirror', { value })
       const crepeAPIValue = get(crepeAPI);
       crepeAPIValue.update(value);
     }, [])
   );
 
   return (
-    <>
+    <div className="h-dvh overflow-hidden relative bg-red-300">
       <div
         className={clsx(
-          "h-[calc(100vh-72px)]",
+          "pt-14",
           expand
             ? "expanded relative col-span-2 mx-auto mt-16 mb-24 flex !h-fit min-h-[80vh] w-full max-w-5xl flex-col border-gray-300 dark:border-gray-600"
-            : "fixed bottom-0 left-0 w-1/2"
+            : "fixed bottom-0 top-0 left-0 w-1/2"
         )}
       >
         <PlaygroundMilkdown onChange={onMilkdownChange} doc={doc} awareness={awareness}  />
       </div>
       <div
         className={clsx(
-          "border-l border-gray-300 dark:border-gray-600 h-[calc(100vh-72px)]",
-          expand ? "!h-0" : "fixed bottom-0 right-0 w-1/2"
+          "pt-14 border-l border-gray-300 dark:border-gray-600",
+          expand ? "!h-0" : "fixed bottom-0 top-0 right-0 w-1/2"
         )}
       >
         <ControlPanel
@@ -84,6 +90,6 @@ export default function Dual ({ doc, awareness }: { doc: Y.Doc, awareness?: Awar
           onChange={onCodemirrorChange}
         />
       </div>
-    </>
+    </div>
   );
 };

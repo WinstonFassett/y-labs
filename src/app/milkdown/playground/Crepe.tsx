@@ -7,15 +7,16 @@ import { Slice } from "@milkdown/kit/prose/model";
 import { Selection } from "@milkdown/kit/prose/state";
 import { getMarkdown } from "@milkdown/kit/utils";
 import { eclipse } from "@uiw/codemirror-theme-eclipse";
-import { useAtomValue, useSetAtom } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import throttle from "lodash.throttle";
-import { type FC, type MutableRefObject, useLayoutEffect, useRef } from "react";
+import { type FC, type MutableRefObject, useLayoutEffect, useRef, useCallback } from "react";
 import { crepeAPI, markdown } from "./atom";
 import { useTheme } from "@/lib/astro-tailwind-themes/useTheme";
 import template from '../template.md?raw'
 import { CollabReady, collab, collabServiceCtx } from '@milkdown/plugin-collab';
 import * as Y from 'yjs'
 import { Awareness } from 'y-protocols/awareness'
+import { useAtomCallback } from "jotai/utils";
 
 interface MilkdownProps {
   onChange: (markdown: string) => void;
@@ -31,7 +32,11 @@ const CrepeEditor: FC<MilkdownProps> = ({ onChange, doc, awareness }) => {
   const divRef = useRef<HTMLDivElement>(null);
   const loading = useRef(false);
   const toast = useToast();
-  const content = useAtomValue(markdown);
+  // const content = useAtomValue(markdown);
+  const [content, setMarkdown] = useAtom(markdown)
+  // const getMarkdown = useAtomCallback(useCallback((get, set) => {
+  //   return get(markdown)
+  // }, []))
   const setCrepeAPI = useSetAtom(crepeAPI);
   const collabRef = useRef({ doc, awareness })
   collabRef.current = { doc, awareness }
@@ -59,8 +64,10 @@ const CrepeEditor: FC<MilkdownProps> = ({ onChange, doc, awareness }) => {
       .use(collab)
     crepe.editor
       .config((ctx) => {
+        console.log('markdown updated', { markdown})
         ctx.get(listenerCtx).markdownUpdated(
           throttle((_, markdown) => {
+            console.log('throttled markdown change', { markdown})
             onChange(markdown);
           }, 200)
         );
@@ -89,9 +96,12 @@ const CrepeEditor: FC<MilkdownProps> = ({ onChange, doc, awareness }) => {
             collabService
               .setAwareness(awareness)
           }
-            collabService
-            // connect yjs with milkdown
-            .connect();
+          // connect yjs with milkdown
+          collabService.connect();
+          // const md = getMarkdown()(ctx)
+          const md = crepe.editor.action(getMarkdown());
+          console.log('markdown', md)
+          onChange(md);
         });
       }
       (crepeRef as MutableRefObject<Crepe>).current = crepe;
@@ -112,6 +122,7 @@ const CrepeEditor: FC<MilkdownProps> = ({ onChange, doc, awareness }) => {
         window.history.pushState({}, "", url.toString());
       },
       update: (markdown: string) => {
+        console.log('update from markdown', markdown)
         const crepe = crepeRef.current;
         if (!crepe) return;
         crepe.editor.action((ctx) => {

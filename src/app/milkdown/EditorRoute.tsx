@@ -8,8 +8,8 @@ export function EditorRoute() {
   useDocRoomRoute()
   const { currentDoc, docEditorKey, provider } = useDocEditor();
   console.log({ currentDoc, provider, docEditorKey })
-  return <div className="flex-1 flex flex-col">
+  return <>
     <AppBar />
     <Editor key={docEditorKey} doc={currentDoc} awareness={provider?.awareness} />    
-  </div>;
+  </>;
 }

@@ -20,6 +20,7 @@ export const EditorsByType: Record<string, React.ComponentType<{ className?: str
   codemirror: lazy(() => import("@/app/codemirror/Codemirror")),
   blocknote: lazy(() => import("@/app/blocknote/Blocknote")),
   blocksuite: lazy(() => import("@/app/blocksuite/BlocksuiteEditor")),
+  milkdown: lazy(() => import("@/app/milkdown/Editor")),
   drive: lazy(() => import("@/app/drive/DriveListing")),
   UNKNOWN: UnknownEditorType,
 }
