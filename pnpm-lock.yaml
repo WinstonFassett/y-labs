@@ -29,7 +29,7 @@ patchedDependencies:
     hash: o3g64ndtgpt35bm3ffbyleh5ei
     path: patches/y-codemirror.next@0.3.2.patch
   y-prosemirror:
-    hash: uralagrjrh34svftfnxbwu2h7y
+    hash: 5fcsrlqgkagh6tnn74qpavl4li
     path: patches/y-prosemirror.patch
   y-protocols@1.0.6:
     hash: qdylwmrh6vedofmwmtwbuzm3yy
@@ -116,7 +116,7 @@ importers:
         version: 7.5.9(@codemirror/language@6.10.7)(@codemirror/state@6.5.0)(@codemirror/view@6.36.1)(element-internals-polyfill@0.1.55)
       '@milkdown/plugin-collab':
         specifier: ^7.5.9
-        version: 7.5.9(@milkdown/core@7.5.9(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9)))(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9))(y-prosemirror@1.2.15(patch_hash=uralagrjrh34svftfnxbwu2h7y)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21))(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21)
+        version: 7.5.9(@milkdown/core@7.5.9(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9)))(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9))(y-prosemirror@1.2.15(patch_hash=5fcsrlqgkagh6tnn74qpavl4li)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21))(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21)
       '@milkdown/react':
         specifier: ^7.5.9
         version: 7.5.9(@milkdown/core@7.5.9(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9)))(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -203,10 +203,10 @@ importers:
         version: 2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(@tiptap/extension-code-block@2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)(highlight.js@11.11.0)(lowlight@3.3.0)
       '@tiptap/extension-collaboration':
         specifier: 2.10.4
-        version: 2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)(y-prosemirror@1.2.15(patch_hash=uralagrjrh34svftfnxbwu2h7y)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21))
+        version: 2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)(y-prosemirror@1.2.15(patch_hash=5fcsrlqgkagh6tnn74qpavl4li)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21))
       '@tiptap/extension-collaboration-cursor':
         specifier: 2.10.4
-        version: 2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(y-prosemirror@1.2.15(patch_hash=uralagrjrh34svftfnxbwu2h7y)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21))
+        version: 2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(y-prosemirror@1.2.15(patch_hash=5fcsrlqgkagh6tnn74qpavl4li)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21))
       '@tiptap/extension-color':
         specifier: 2.10.4
         version: 2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(@tiptap/extension-text-style@2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4)))
@@ -422,7 +422,7 @@ importers:
         version: 9.0.12(yjs@13.6.21)
       y-prosemirror:
         specifier: 1.2.15
-        version: 1.2.15(patch_hash=uralagrjrh34svftfnxbwu2h7y)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21)
+        version: 1.2.15(patch_hash=5fcsrlqgkagh6tnn74qpavl4li)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21)
       y-protocols:
         specifier: ^1.0.6
         version: 1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21)
@@ -11042,8 +11042,8 @@ snapshots:
       '@tiptap/core': 2.10.4(@tiptap/pm@2.10.4)
       '@tiptap/extension-bold': 2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))
       '@tiptap/extension-code': 2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))
-      '@tiptap/extension-collaboration': 2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)(y-prosemirror@1.2.15(patch_hash=uralagrjrh34svftfnxbwu2h7y)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21))
-      '@tiptap/extension-collaboration-cursor': 2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(y-prosemirror@1.2.15(patch_hash=uralagrjrh34svftfnxbwu2h7y)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21))
+      '@tiptap/extension-collaboration': 2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)(y-prosemirror@1.2.15(patch_hash=5fcsrlqgkagh6tnn74qpavl4li)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21))
+      '@tiptap/extension-collaboration-cursor': 2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(y-prosemirror@1.2.15(patch_hash=5fcsrlqgkagh6tnn74qpavl4li)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21))
       '@tiptap/extension-dropcursor': 2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)
       '@tiptap/extension-gapcursor': 2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)
       '@tiptap/extension-hard-break': 2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))
@@ -11075,7 +11075,7 @@ snapshots:
       remark-stringify: 10.0.3
       unified: 10.1.2
       uuid: 8.3.2
-      y-prosemirror: 1.2.15(patch_hash=uralagrjrh34svftfnxbwu2h7y)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21)
+      y-prosemirror: 1.2.15(patch_hash=5fcsrlqgkagh6tnn74qpavl4li)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21)
       y-protocols: 1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21)
       yjs: 13.6.21
     transitivePeerDependencies:
@@ -12982,7 +12982,7 @@ snapshots:
       - '@milkdown/ctx'
       - '@milkdown/transformer'
 
-  '@milkdown/plugin-collab@7.5.9(@milkdown/core@7.5.9(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9)))(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9))(y-prosemirror@1.2.15(patch_hash=uralagrjrh34svftfnxbwu2h7y)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21))(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21)':
+  '@milkdown/plugin-collab@7.5.9(@milkdown/core@7.5.9(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9)))(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9))(y-prosemirror@1.2.15(patch_hash=5fcsrlqgkagh6tnn74qpavl4li)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21))(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21)':
     dependencies:
       '@milkdown/core': 7.5.9(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9))
       '@milkdown/ctx': 7.5.9
@@ -12990,7 +12990,7 @@ snapshots:
       '@milkdown/prose': 7.5.9
       '@milkdown/utils': 7.5.9(@milkdown/core@7.5.9(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9)))(@milkdown/ctx@7.5.9)(@milkdown/prose@7.5.9)(@milkdown/transformer@7.5.9(@milkdown/prose@7.5.9))
       tslib: 2.8.1
-      y-prosemirror: 1.2.15(patch_hash=uralagrjrh34svftfnxbwu2h7y)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21)
+      y-prosemirror: 1.2.15(patch_hash=5fcsrlqgkagh6tnn74qpavl4li)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21)
       y-protocols: 1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21)
       yjs: 13.6.21
     transitivePeerDependencies:
@@ -16525,16 +16525,16 @@ snapshots:
     dependencies:
       '@tiptap/core': 2.10.4(@tiptap/pm@2.10.4)
 
-  '@tiptap/extension-collaboration-cursor@2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(y-prosemirror@1.2.15(patch_hash=uralagrjrh34svftfnxbwu2h7y)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21))':
+  '@tiptap/extension-collaboration-cursor@2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(y-prosemirror@1.2.15(patch_hash=5fcsrlqgkagh6tnn74qpavl4li)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21))':
     dependencies:
       '@tiptap/core': 2.10.4(@tiptap/pm@2.10.4)
-      y-prosemirror: 1.2.15(patch_hash=uralagrjrh34svftfnxbwu2h7y)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21)
+      y-prosemirror: 1.2.15(patch_hash=5fcsrlqgkagh6tnn74qpavl4li)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21)
 
-  '@tiptap/extension-collaboration@2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)(y-prosemirror@1.2.15(patch_hash=uralagrjrh34svftfnxbwu2h7y)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21))':
+  '@tiptap/extension-collaboration@2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)(y-prosemirror@1.2.15(patch_hash=5fcsrlqgkagh6tnn74qpavl4li)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21))':
     dependencies:
       '@tiptap/core': 2.10.4(@tiptap/pm@2.10.4)
       '@tiptap/pm': 2.10.4
-      y-prosemirror: 1.2.15(patch_hash=uralagrjrh34svftfnxbwu2h7y)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21)
+      y-prosemirror: 1.2.15(patch_hash=5fcsrlqgkagh6tnn74qpavl4li)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21)
 
   '@tiptap/extension-color@2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(@tiptap/extension-text-style@2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4)))':
     dependencies:
@@ -23203,7 +23203,7 @@ snapshots:
       lib0: 0.2.99
       yjs: 13.6.21
 
-  y-prosemirror@1.2.15(patch_hash=uralagrjrh34svftfnxbwu2h7y)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21):
+  y-prosemirror@1.2.15(patch_hash=5fcsrlqgkagh6tnn74qpavl4li)(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(patch_hash=qdylwmrh6vedofmwmtwbuzm3yy)(yjs@13.6.21))(yjs@13.6.21):
     dependencies:
       lib0: 0.2.99
       prosemirror-model: 1.24.1
