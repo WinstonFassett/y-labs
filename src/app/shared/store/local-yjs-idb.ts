@@ -136,14 +136,22 @@ export function getOfflineDoc(name: string, destroy = true) {
     return Promise.resolve(ydoc);
   } else {
     return new Promise<Y.Doc>((resolve, reject) => {
+
       const persister = new IndexeddbPersistence(name, ydoc);
+      let resolver = resolve as typeof resolve | undefined
       persister.once("synced", () => {
         onLoad();
         if (destroy) {
           persister.destroy();
         }
-        resolve(ydoc);
+        resolver?.(ydoc);
       });
+
+      persister._load.catch(err => {
+        console.error("Error loading doc", name, err);
+        reject?.(err);
+        resolver = undefined;
+      })
     });
   }
 }
