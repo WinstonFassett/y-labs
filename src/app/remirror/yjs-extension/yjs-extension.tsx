@@ -184,7 +184,7 @@ export class YjsExtension extends PlainExtension<YjsOptions> {
     } = Object.assign({}, defaultOptions, this.options);
 
     const yDoc = this.provider.doc;
-    const type = yDoc.getXmlFragment('prosemirror');
+    const type = yDoc.getXmlFragment('remirror');
 
     const plugins = [
       ySyncPlugin(type, syncPluginOptions),

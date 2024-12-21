@@ -4,6 +4,6 @@ import { getBaseShares } from "../shared/shares-base";
 export function getRemirrorShares(ydoc: Y.Doc) {
   return {
     ...getBaseShares(ydoc),    
-    prosemirror: ydoc.getXmlElement('prosemirror')
+    remirror: ydoc.getXmlElement('remirror')
   }
 }

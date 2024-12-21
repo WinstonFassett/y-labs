@@ -25,6 +25,11 @@ const docTypes = [
     href: "/y-labs/app/workspace/index.html#/new/milkdown",
   },
   {
+    label: "Remirror",
+    icon: typeIconMap.remirror,
+    href: "/y-labs/app/workspace/index.html#/new/remirror",
+  },
+  {
     label: "Blocknote",
     icon: typeIconMap.blocknote,
     href: "/y-labs/app/workspace/index.html#/new/blocknote",

@@ -30,6 +30,11 @@ const docTypes = [
     href: "/y-labs/app/milkdown/index.html#/new",
   },
   {
+    label: "Remirror",
+    icon: typeIconMap.remirror,
+    href: "/y-labs/app/remirror/index.html#/new",
+  },
+  {
     label: "Blocknote",
     icon: typeIconMap.blocknote,
     href: "/y-labs/app/blocknote/index.html#/new",
@@ -51,6 +56,8 @@ export function getDocUrl(name: string, type: string) {
       return `/y-labs/app/blocknote/index.html#/edit/${name}`;
     case "milkdown":
       return `/y-labs/app/milkdown/index.html#/edit/${name}`;
+    case "remirror":
+      return `/y-labs/app/remirror/index.html#/edit/${name}`;      
     case "codemirror":
       return `/y-labs/app/codemirror/index.html#/edit/${name}`;
     case "tldraw":

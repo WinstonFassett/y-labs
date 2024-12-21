@@ -164,12 +164,13 @@ export async function getOfflineDocMeta(name: string) {
   doc.destroy();
   return meta;
 }
+
+// TODO: Improve this and move it
 function getDocMeta(doc: Y.Doc, name: string) {
   const meta = doc.getMap("meta").toJSON() as { [key: string]: any; title?: string; };
   const shares = Array.from(doc.share.keys()) as string[];
   let type = shares.find((s) => !Ignores.includes(s)) || "unknown";
   if (type === 'blocks') { type = 'blocksuite' }
-  if (type === 'prosemirror') { type = 'milkdown' }
   return Object.assign(meta, { name, type });
 }
 
