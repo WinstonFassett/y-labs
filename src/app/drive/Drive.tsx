@@ -78,7 +78,6 @@ export function CreateDocButtons() {
   const body = "flex items-center justify-center flex-grow"
   return (
     <div>
-      <p className="text-default-600 text-center">Create a new document:</p>
       <div className="gap-2 grid grid-cols-2 justify-items-center items-center mt-8">
         {docTypes.map((docType) => (
           <a href={docType.href}>
