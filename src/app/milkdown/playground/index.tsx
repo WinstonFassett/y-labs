@@ -9,6 +9,7 @@ import PlaygroundMilkdown from "./Crepe";
 import ControlPanel from "./ControlPanel";
 import * as Y from 'yjs'
 import { Awareness } from 'y-protocols/awareness'
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
 import "@milkdown/crepe/theme/common/style.css";
 
 // We have some themes for you to choose
@@ -65,6 +66,24 @@ export default function Dual ({ doc, awareness }: { doc: Y.Doc, awareness?: Awar
   );
 
   return (
+    <div className="flex-1 flex flex-col overflow-hidden relative">
+      <PanelGroup className="thePanels flex-1" direction="horizontal">
+        <Panel>
+          <PlaygroundMilkdown onChange={onMilkdownChange} doc={doc} awareness={awareness}  />
+        </Panel>
+        <PanelResizeHandle className="w-1 bg-muted" />
+        <Panel>
+          <ControlPanel
+            hide={expand}
+            setHide={setExpand}
+            onChange={onCodemirrorChange}
+          />
+        </Panel>
+      </PanelGroup>      
+    </div>
+  )
+
+  return (
     <div className="h-dvh overflow-hidden relative">
       <div
         className={clsx(
@@ -73,20 +92,14 @@ export default function Dual ({ doc, awareness }: { doc: Y.Doc, awareness?: Awar
             ? "expanded relative col-span-2 mx-auto mt-16 mb-24 flex !h-fit min-h-[80vh] w-full max-w-5xl flex-col border-gray-300 dark:border-gray-600"
             : "fixed bottom-0 top-0 left-0 w-1/2"
         )}
-      >
-        <PlaygroundMilkdown onChange={onMilkdownChange} doc={doc} awareness={awareness}  />
-      </div>
+      ></div>
       <div
         className={clsx(
           "pt-14 border-l border-gray-300 dark:border-gray-600",
           expand ? "!h-0" : "fixed bottom-0 top-0 right-0 w-1/2"
         )}
       >
-        <ControlPanel
-          hide={expand}
-          setHide={setExpand}
-          onChange={onCodemirrorChange}
-        />
+        
       </div>
     </div>
   );
