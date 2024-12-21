@@ -34,7 +34,7 @@ import {
   getDocFromUrlParams,
   listenHashChange,
   setDocModeFromUrlParams,
-} from '../../_common/history.js';
+} from '../../_common/history-delete.js';
 import {
   mockDocModeService,
   mockGenerateDocUrlService,

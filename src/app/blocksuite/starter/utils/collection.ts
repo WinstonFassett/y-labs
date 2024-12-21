@@ -18,14 +18,9 @@ import {
   MemoryBlobSource,
 } from '@blocksuite/sync';
 
-export interface InitFn {
-  (collection: DocCollection, docId: string): Promise<void> | void;
-  id: string;
-  displayName: string;
-  description: string;
-}
+import type { InitFn } from '../data/utils.js';
 
-// import { MockServerBlobSource } from '../../_common/sync/blob/mock-server.js';
+import { MockServerBlobSource } from '../../_common/sync/blob/mock-server.js';
 
 const params = new URLSearchParams(location.search);
 const room = params.get('room');
@@ -52,9 +47,9 @@ export function createStarterDocCollection() {
     main: new MemoryBlobSource(),
     shadows: [] as BlobSource[],
   } satisfies DocCollectionOptions['blobSources'];
-  // if (blobSourceArgs.includes('mock')) {
-  //   blobSources.shadows.push(new MockServerBlobSource(collectionId));
-  // }
+  if (blobSourceArgs.includes('mock')) {
+    blobSources.shadows.push(new MockServerBlobSource(collectionId));
+  }
   if (blobSourceArgs.includes('idb')) {
     blobSources.shadows.push(new IndexedDBBlobSource(collectionId));
   }
@@ -88,13 +83,11 @@ export function createStarterDocCollection() {
   collection.start();
 
   // debug info
-  Object.assign(globalThis, {
-    collection,
-    blockSchemas: AffineSchemas,
-    job: new Job({ collection }),
-    Y: DocCollection.Y,
-    testUtils: new TestUtils(),
-  })
+  window.collection = collection;
+  window.blockSchemas = AffineSchemas;
+  window.job = new Job({ collection: collection });
+  window.Y = DocCollection.Y;
+  window.testUtils = new TestUtils();
 
   return collection;
 }

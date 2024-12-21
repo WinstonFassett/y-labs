@@ -16,52 +16,52 @@ import {
   IndexedDBDocSource,
 } from '@blocksuite/sync';
 
-import { WebSocketAwarenessSource } from '../../_common/sync/websocket/awareness';
-import { WebSocketDocSource } from '../../_common/sync/websocket/doc';
+// import { WebSocketAwarenessSource } from '../../_common/sync/websocket/awareness';
+// import { WebSocketDocSource } from '../../_common/sync/websocket/doc';
 
-const BASE_WEBSOCKET_URL = new URL(import.meta.env.PLAYGROUND_WS);
+// const BASE_WEBSOCKET_URL = new URL(import.meta.env.PLAYGROUND_WS);
 
 export async function createDefaultDocCollection() {
   const idGenerator: IdGeneratorType = IdGeneratorType.NanoID;
   const schema = new Schema();
   schema.register(AffineSchemas);
 
-  const params = new URLSearchParams(location.search);
+  // const params = new URLSearchParams(location.search);
   let docSources: DocCollectionOptions['docSources'] = {
     main: new IndexedDBDocSource(),
   };
   let awarenessSources: DocCollectionOptions['awarenessSources'];
-  const room = params.get('room');
-  if (room) {
-    const ws = new WebSocket(new URL(`/room/${room}`, BASE_WEBSOCKET_URL));
-    await new Promise((resolve, reject) => {
-      ws.addEventListener('open', resolve);
-      ws.addEventListener('error', reject);
-    })
-      .then(() => {
-        docSources = {
-          main: new IndexedDBDocSource(),
-          shadows: [new WebSocketDocSource(ws)],
-        };
-        awarenessSources = [new WebSocketAwarenessSource(ws)];
-      })
-      .catch(() => {
-        docSources = {
-          main: new IndexedDBDocSource(),
-          shadows: [new BroadcastChannelDocSource()],
-        };
-        awarenessSources = [
-          new BroadcastChannelAwarenessSource('collabPlayground'),
-        ];
-      });
-  }
+  // const room = params.get('room');
+  // if (room) {
+  //   const ws = new WebSocket(new URL(`/room/${room}`, BASE_WEBSOCKET_URL));
+  //   await new Promise((resolve, reject) => {
+  //     ws.addEventListener('open', resolve);
+  //     ws.addEventListener('error', reject);
+  //   })
+  //     .then(() => {
+  //       docSources = {
+  //         main: new IndexedDBDocSource(),
+  //         shadows: [new WebSocketDocSource(ws)],
+  //       };
+  //       awarenessSources = [new WebSocketAwarenessSource(ws)];
+  //     })
+  //     .catch(() => {
+  //       docSources = {
+  //         main: new IndexedDBDocSource(),
+  //         shadows: [new BroadcastChannelDocSource()],
+  //       };
+  //       awarenessSources = [
+  //         new BroadcastChannelAwarenessSource('collabPlayground'),
+  //       ];
+  //     });
+  // }
 
-  const flags: Partial<BlockSuiteFlags> = Object.fromEntries(
-    [...params.entries()]
-      .filter(([key]) => key.startsWith('enable_'))
-      .map(([k, v]) => [k, v === 'true'])
-  );
-
+  // const flags: Partial<BlockSuiteFlags> = Object.fromEntries(
+  //   [...params.entries()]
+  //     .filter(([key]) => key.startsWith('enable_'))
+  //     .map(([k, v]) => [k, v === 'true'])
+  // );
+  const flags = {}
   const options: DocCollectionOptions = {
     id: 'collabPlayground',
     schema,
@@ -82,11 +82,13 @@ export async function createDefaultDocCollection() {
   const collection = new DocCollection(options);
   collection.start();
 
-  // debug info
-  window.collection = collection;
-  window.blockSchemas = AffineSchemas;
-  window.job = new Job({ collection });
-  window.Y = DocCollection.Y;
+  // debug info  
+  Object.assign(window, {
+    collection,
+    blockSchemas: AffineSchemas,
+    job: new Job({ collection }),
+    Y: DocCollection.Y,
+  });
 
   return collection;
 }
