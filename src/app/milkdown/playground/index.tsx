@@ -67,7 +67,7 @@ export default function Dual ({ doc, awareness }: { doc: Y.Doc, awareness?: Awar
   );
 
   return (
-    <div className="h-dvh overflow-hidden relative bg-red-300">
+    <div className="h-dvh overflow-hidden relative">
       <div
         className={clsx(
           "pt-14",
