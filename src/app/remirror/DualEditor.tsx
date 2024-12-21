@@ -1,8 +1,19 @@
 // DualEditor.tsx
-import '@remirror/styles/all.css';
 import { css } from '@emotion/css';
+import {
+  Remirror,
+  ThemeProvider,
+  useRemirror,
+  type ReactExtensions,
+  type UseRemirrorReturn
+} from '@remirror/react';
+import { MarkdownToolbar } from '@remirror/react-ui';
+import '@remirror/styles/all.css';
 import { createContextState } from 'create-context-state';
 import React, { useMemo } from 'react';
+import jsx from 'refractor/lang/jsx.js';
+import md from 'refractor/lang/markdown.js';
+import typescript from 'refractor/lang/typescript.js';
 import { ExtensionPriority, getThemeVar } from 'remirror';
 import {
   BlockquoteExtension,
@@ -22,24 +33,13 @@ import {
   TableExtension,
   TrailingNodeExtension,
 } from 'remirror/extensions';
-import {
-  Remirror,
-  ThemeProvider,
-  useHelpers,
-  useRemirror,
-  type UseRemirrorReturn,
-  type ReactExtensions,
-} from '@remirror/react';
-import { MarkdownToolbar } from '@remirror/react-ui';
-import jsx from 'refractor/lang/jsx.js';
-import typescript from 'refractor/lang/typescript.js';
-import md from 'refractor/lang/markdown.js';
 import { Doc } from 'yjs';
-import { YjsExtension } from './yjs-extension'
+import { YjsExtension } from './yjs-extension';
 //'@remirror/extension-yjs';
-import { useDocEditor } from '../shared/useDocEditor';
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import { Awareness } from 'y-protocols/awareness';
-import './style.css'
+import { useDocEditor } from '../shared/useDocEditor';
+import './style.css';
 const baseExtensions = () => [
   new LinkExtension({ autoLink: true }),
   new BoldExtension(),
@@ -104,6 +104,9 @@ const MarkdownTextEditor = () => {
               padding: ${getThemeVar('space', 3)};
               margin: 0;
             }
+            pre[class*='language-'] {
+              background-color: transparent;
+            }              
           }
         `,
       ]}
@@ -213,15 +216,19 @@ export const DualEditor: React.FC = () => {
   return (
     <DualEditorProvider key={docEditorKey} visual={visual} markdown={markdown}>
       <ThemeProvider>
-        <div className="flex-1 flex flex-col sm:flex-row overflow-hidden">
-          <div className="w-full flex flex-col sm:w-1/2 border-b sm:border-b-0 sm:border-r border-gray-300">
-            <VisualEditor />
-          </div>
-          <div className="w-full flex flex-col sm:w-1/2 pt-8">
-            <MarkdownTextEditor />
-          </div>
-        </div>
+        <div className="flex-1 flex flex-col overflow-hidden relative">
+          <PanelGroup className="flex-1" direction="horizontal">
+            <Panel className='flex flex-col'>
+              <VisualEditor />
+            </Panel>
+            <PanelResizeHandle className="w-1 bg-muted" />
+            <Panel className='flex flex-col'>              
+              <MarkdownTextEditor />
+            </Panel>
+          </PanelGroup>      
+        </div>    
       </ThemeProvider>
-    </DualEditorProvider>
-  );
+    </DualEditorProvider>        
+  )
+  
 };

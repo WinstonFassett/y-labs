@@ -5,11 +5,13 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  --rmr-color-text: inherit !important;
 }
 
 .remirror-editor-wrapper {
-  overflow-y: hidden;
+  overflow-y: auto;
   flex: 1;
+  padding: 0;
 }
 .remirror-editor {
   height: 100%;
@@ -19,4 +21,21 @@
 .remirror-editor {
   /* height: 100%; */
   
+}
+.remirror-editor.ProseMirror {
+  overflow-y: auto;
+}
+
+.remirror-theme .MuiStack-root,
+.remirror-theme .MuiBox-root,
+.MuiList-root
+ {
+  @apply bg-background text-foreground
+}
+
+.remirror-theme .MuiButtonBase-root {
+  @apply text-foreground
+}
+.remirror-theme .MuiButtonBase-root.Mui-disabled {
+  @apply text-muted
 }
