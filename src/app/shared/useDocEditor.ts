@@ -14,7 +14,6 @@ export function useDocEditor(options: {type?: string}={}) {
   const currentVersionStuff = useCurrentVersion({ type });
   const { ydoc, versionKey, isReplay } = currentVersionStuff;
   const { roomId, docRoomId } = collabStuff;
-  console.log(collabStuff)
   const mode = useDocEditorMode();
   const loadState = useStore(getDocLoadState(docId, roomId));
   const shares = useMemo(() => getSharesForType(ydoc, type), [type]);

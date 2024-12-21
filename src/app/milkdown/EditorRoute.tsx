@@ -7,7 +7,6 @@ import Editor from "./playground";
 export function EditorRoute() {
   useDocRoomRoute()
   const { currentDoc, docEditorKey, provider } = useDocEditor();
-  console.log({ currentDoc, provider, docEditorKey })
   return <>
     <AppBar />
     <Editor key={docEditorKey} doc={currentDoc} awareness={provider?.awareness} />    

@@ -41,7 +41,6 @@ import './styles/collab.css'
 
 export default function Dual ({ doc, awareness }: { doc: Y.Doc, awareness?: Awareness }) {
   const [expand, setExpand] = useState(false);
-  console.log('awareness', awareness)
   const onMilkdownChange = useAtomCallback(
     useCallback((get, _set, markdown: string) => {
       const cmAPIValue = get(cmAPI);
@@ -60,7 +59,6 @@ export default function Dual ({ doc, awareness }: { doc: Y.Doc, awareness?: Awar
   const onCodemirrorChange = useAtomCallback(
     useCallback((get, _set, getCode: () => string) => {
       const value = getCode();
-      console.log('codemirror', { value })
       const crepeAPIValue = get(crepeAPI);
       crepeAPIValue.update(value);
     }, [])

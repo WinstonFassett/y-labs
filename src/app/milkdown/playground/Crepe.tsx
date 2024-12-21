@@ -25,7 +25,6 @@ interface MilkdownProps {
 }
 
 const CrepeEditor: FC<MilkdownProps> = ({ onChange, doc, awareness }) => {
-  console.log('awareness 2', awareness)
   const crepeRef = useRef<Crepe>(null);
   const [theme] = useTheme()
   const darkMode = theme === "dark";
@@ -41,7 +40,6 @@ const CrepeEditor: FC<MilkdownProps> = ({ onChange, doc, awareness }) => {
   const collabRef = useRef({ doc, awareness })
   collabRef.current = { doc, awareness }
   useLayoutEffect(() => {
-    console.log('layoutEffect')
     if (!divRef.current || loading.current) return;
     
     loading.current = true;
@@ -64,10 +62,8 @@ const CrepeEditor: FC<MilkdownProps> = ({ onChange, doc, awareness }) => {
       .use(collab)
     crepe.editor
       .config((ctx) => {
-        console.log('markdown updated', { markdown})
         ctx.get(listenerCtx).markdownUpdated(
           throttle((_, markdown) => {
-            console.log('throttled markdown change', { markdown})
             onChange(markdown);
           }, 200)
         );
@@ -78,17 +74,12 @@ const CrepeEditor: FC<MilkdownProps> = ({ onChange, doc, awareness }) => {
     crepe.create().then(async () => {
       const { doc, awareness } = collabRef.current
       const theAwareness = awareness
-      console.log('using collab', { awareness, theAwareness })
-      console.log('created doc', { doc, awareness, theAwareness })
       if (doc) {
-        console.log('setup collab', {doc, awareness, theAwareness})      
         // ctx.set(defaultValueCtx, template);      
         await crepe.editor
         .action(async (ctx) => {
           // await ctx.wait(CollabReady)
-          console.log('COLLAB READY', { doc, awareness, theAwareness })
           const collabService = ctx.get(collabServiceCtx);
-      
           collabService
             // bind doc and awareness
             .bindDoc(doc)
@@ -100,7 +91,6 @@ const CrepeEditor: FC<MilkdownProps> = ({ onChange, doc, awareness }) => {
           collabService.connect();
           // const md = getMarkdown()(ctx)
           const md = crepe.editor.action(getMarkdown());
-          console.log('markdown', md)
           onChange(md);
         });
       }
@@ -122,7 +112,6 @@ const CrepeEditor: FC<MilkdownProps> = ({ onChange, doc, awareness }) => {
         window.history.pushState({}, "", url.toString());
       },
       update: (markdown: string) => {
-        console.log('update from markdown', markdown)
         const crepe = crepeRef.current;
         if (!crepe) return;
         crepe.editor.action((ctx) => {
@@ -147,7 +136,6 @@ const CrepeEditor: FC<MilkdownProps> = ({ onChange, doc, awareness }) => {
 
     return () => {
       if (loading.current) return;
-      console.log('DESTROY CREPE')
       crepe.destroy();
       setCrepeAPI({
         loaded: false,

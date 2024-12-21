@@ -18,7 +18,6 @@ const ydocsT = mapTemplate(
     store.set(ydoc);
     return () => {
       ydoc.off("load", onLoad);
-      console.log("done with ydoc", id, store, ydoc);
       ydoc.destroy();
     };
   },
