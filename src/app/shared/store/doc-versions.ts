@@ -97,7 +97,6 @@ export function createVersionControlStore(sourceDoc: Y.Doc, {type}:{type: string
       undoManager.on('stack-item-added', handleStackChange);
       undoManager.on('stack-item-popped', handleStackChange);
       return () => {
-        console.log('destroying undo manager')
         undoManager.destroy();
         sourceDoc.gc = gcBefore
       }
