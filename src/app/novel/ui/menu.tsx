@@ -4,11 +4,11 @@
 // import { AppContext } from "../app/providers";
 // import { FontDefault, FontSerif, FontMono } from "@/ui/icons";
 import { Check, Menu as MenuIcon, Monitor, Moon, SunDim } from "lucide-react";
-import { useTheme } from "next-themes";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
 import { Button } from "./button";
+import { useTheme } from "@/lib/astro-tailwind-themes/useTheme";
 
 // const fonts = [
 //   {
@@ -40,7 +40,7 @@ const appearances = [
 ];
 export default function Menu() {
   // const { font: currentFont, setFont } = useContext(AppContext);
-  const { theme: currentTheme, setTheme } = useTheme();
+  const [currentTheme, setTheme] = useTheme();
 
   return (
     <Popover>
