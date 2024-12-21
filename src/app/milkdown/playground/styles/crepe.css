@@ -21,7 +21,7 @@ div:not(.expanded) .crepe .milkdown .ProseMirror {
 }
 
 .crepe .ProseMirror:not(.expanded .crepe .ProseMirror) {
-  @apply overflow-y-scroll overscroll-none;
+  @apply overflow-y-auto overscroll-none;
 }
 
 .cm-editor {
