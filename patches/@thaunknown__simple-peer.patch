@@ -1,0 +1,14 @@
+diff --git a/lite.js b/lite.js
+index ec65a75dffa093f4b379bb9dcb948397ead4b987..6f04ea1cb989741fced3c22e7c649c70ce9c9b23 100644
+--- a/lite.js
++++ b/lite.js
+@@ -349,6 +349,9 @@ class Peer extends Duplex {
+   }
+ 
+   _setupData (event) {
++    console.log('PEER SETUP DATA', event)
++    let shouldProceed = this._channel === null
++    if (!shouldProceed) return;
+     if (!event.channel) {
+       // In some situations `pc.createDataChannel()` returns `undefined` (in wrtc),
+       // which is invalid behavior. Handle it gracefully.
