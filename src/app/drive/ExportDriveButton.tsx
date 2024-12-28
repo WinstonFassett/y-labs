@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import * as Y from "yjs";
-import { getOfflineDoc } from "../shared/store/local-yjs-idb";
+import { getOfflineDoc } from "../shared/store/local-yjs-idb-offline";
 import { resolveShare } from "../shared/store/resolveShare";
 import { getAllDocMetadata } from "../shared/store/doc-metadata";
 

@@ -1,7 +1,7 @@
 import { createStore, del, get, keys, set } from 'idb-keyval';
 import { atom, onMount } from 'nanostores';
 import { listDatabases } from './listDatabases';
-import { getOfflineDocMeta } from './local-yjs-idb';
+import { getOfflineDocMeta } from "./local-yjs-idb-offline";
 
 export interface DocMetadata {
   id: string;

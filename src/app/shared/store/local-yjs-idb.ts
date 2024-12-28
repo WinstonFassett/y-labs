@@ -3,10 +3,11 @@ import { storeKey } from "@/lib/nanostores-utils/storeKey";
 import * as idb from "lib0/indexeddb";
 import { computed, map, onSet } from "nanostores";
 import { IndexeddbPersistence } from "y-indexeddb";
-import * as Y from "yjs";
 import { $docMetas, deleteDocMetadata, saveDocMetadata } from "./doc-metadata";
 import { getYdoc } from "./yjs-docs";
 import { debounce } from "../../../lib/debounce";
+import { getDocMeta } from "./extract-doc-meta";
+import { getHasDocIdb } from "./local-yjs-idb-offline";
 
 interface DocIdbStoreFields {
   enabled: boolean;
@@ -102,88 +103,4 @@ const docIdbStoreT = mapTemplate(
 
 export const getDocIdbStore = docIdbStoreT;
 
-export const getHasDocIdb = (id: string) => checkDatabaseExists(id);
-
-function checkDatabaseExists(dbName: string): Promise<boolean> {
-  return new Promise((resolve) => {
-    let dbExists: boolean = true; // Assume the database exists
-    const request: IDBOpenDBRequest = indexedDB.open(dbName);
-    request.onupgradeneeded = (event: IDBVersionChangeEvent) => {
-      dbExists = false; // The database does not exist
-      (event.target as IDBOpenDBRequest).result.close();
-      idb.deleteDB(dbName);
-    };
-
-    request.onsuccess = (event: Event) => {
-      (event.target as IDBOpenDBRequest).result.close(); // Close the database connection
-      resolve(dbExists);
-    };
-
-    request.onerror = (event: Event) => {
-      resolve(false);
-    };
-  });
-}
-
-export function getOfflineDoc(name: string, destroy = true) {
-  const onLoad = () => {
-    // console.log("loaded", name);
-  };
-  const ydoc = new Y.Doc();
-  ydoc.gc = false
-  if (ydoc.isLoaded) {
-    onLoad();
-    return Promise.resolve(ydoc);
-  } else {
-    return new Promise<Y.Doc>((resolve, reject) => {
-
-      const persister = new IndexeddbPersistence(name, ydoc);
-      let resolver = resolve as typeof resolve | undefined
-      persister.once("synced", () => {
-        onLoad();
-        if (destroy) {
-          persister.destroy();
-        }
-        resolver?.(ydoc);
-      });
-
-      persister._load.catch(err => {
-        console.error("Error loading doc", name, err);
-        reject?.(err);
-        resolver = undefined;
-      })
-    });
-  }
-}
-
-export function saveOfflineDoc(name: string, ydoc: Y.Doc = new Y.Doc()) {
-  const persister = new IndexeddbPersistence(name, ydoc);
-  return new Promise<void>((resolve, reject) => {
-    persister.once("synced", () => {
-      persister.destroy();
-      resolve();
-    });
-  });
-}
-
-export async function getOfflineDocMeta(name: string) {
-  const doc = await getOfflineDoc(name);
-  const meta = getDocMeta(doc, name);
-  doc.destroy();
-  return meta;
-}
-function getDocMeta(doc: Y.Doc, name: string) {
-  const meta = doc.getMap("meta").toJSON() as { [key: string]: any; title?: string; };
-  const shares = Array.from(doc.share.keys()) as string[];
-  let type = shares.find((s) => !Ignores.includes(s)) || "unknown";
-  if (type === 'blocks') { type = 'blocksuite' }
-  return Object.assign(meta, { name, type });
-}
-
-const Ignores = ["meta", "versions", "tldraw_meta"];
-
-export async function deleteOfflineDoc(name: string) {
-  await deleteDocMetadata(name);
-  await idb.deleteDB(name);
-}
 

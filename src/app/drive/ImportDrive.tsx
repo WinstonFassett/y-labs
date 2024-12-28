@@ -16,7 +16,7 @@ import { map } from "nanostores";
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import * as Y from "yjs";
-import { getOfflineDoc } from "../shared/store/local-yjs-idb";
+import { getOfflineDoc } from "../shared/store/local-yjs-idb-offline";
 
 const importDriveState = map({
   visible: false,

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { createHashRouter, useNavigate } from "react-router-dom";
 import { generateId } from "../shared/generateId";
-import { saveOfflineDoc } from "../shared/store/local-yjs-idb";
+import { saveOfflineDoc } from "../shared/store/local-yjs-idb-offline";
 import { EditorRoute } from "./EditorRoute";
 
 export const routes = [

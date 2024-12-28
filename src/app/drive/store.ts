@@ -1,5 +1,5 @@
 import { atom, onMount } from "nanostores";
-import { getOfflineDocMeta } from "../shared/store/local-yjs-idb";
+import { getOfflineDocMeta } from "../shared/store/local-yjs-idb-offline";
 
 const UNTITLED = "[Untitled]";
 

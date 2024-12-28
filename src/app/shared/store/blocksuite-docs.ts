@@ -2,15 +2,36 @@ import { createDefaultDocCollection, initDefaultDocCollection } from "@/app/bloc
 import { mapTemplate } from "@/lib/nanostores-utils/mapTemplate";
 import { AffineSchemas } from '@blocksuite/blocks';
 import { Doc as BsDoc, DocCollection, Schema } from '@blocksuite/store';
-import { atom } from "nanostores";
+import { atom, onMount, task } from "nanostores";
 
 // export const schema = new Schema().register(AffineSchemas);
 
 // export const collection = new DocCollection({ schema });
 // collection.meta.initialize();
-export const collection = await createDefaultDocCollection();
-  await initDefaultDocCollection(collection);
-  
+export const collection = createDefaultDocCollection();
+
+export const CollectionReady = (
+  (async () => {
+    await initDefaultDocCollection(collection);
+    console.log('collection ready')
+  })
+)()
+
+// export const $collection = atom<DocCollection>(undefined as any)
+// export const $collectionReady = atom(false)
+// onMount($collection, () => {
+//   const collection = createDefaultDocCollection();
+//   $collection.set(collection)
+//   task(async () => {
+//     await initDefaultDocCollection(collection);
+//     $collectionReady.set(true)
+//   })
+// })
+
+// export async function getCollection () {
+//   const collection = $collection.get()
+// }
+
 
 const blocksuiteDocsT = mapTemplate(
   (id) => atom<BsDoc>(),

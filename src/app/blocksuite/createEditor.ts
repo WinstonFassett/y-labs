@@ -15,9 +15,16 @@ export interface EditorContextType {
 }
 
 export function createEditor(doc: Doc, mode: 'edgeless' | 'page' = 'edgeless') {
-  
+
+  // ok the problem is
+  // blocksuite's background sync is marking this as synced/loaded
+  // even though still waiting on loader to load it
+  // making this probably the wrong place to initialize
+  // a new blocksuite doc
+  // in the case when doc is marked loaded, it does exist
   doc.load(() => {
     if (doc.isEmpty) {
+      console.log('doc is empty (it seems)')
       const rootId = doc.addBlock('affine:page', {
         title: new Text()
       });

@@ -9,14 +9,32 @@ import { $newDocIds } from "./new-doc-ids";
 
 type LoadingState = "unloaded" | "loading" | "loaded" | "error";
 
+console.log({ getDocIdbStore })
+
 const docLoadStateT = mapTemplate(
   (id, roomId?: string) => {
     const store = atom("unloaded" as LoadingState);
+    console.log('loadstate', { id, roomId })
+    console.log({ getDocIdbStore })
     const $offline = getDocIdbStore(id);
     const $room = roomId ? getTrysteroDocRoom(id, roomId) : undefined;
+    function load () {
+      return new Promise<void>((resolve, reject) => {
+        const unsubscribe = store.subscribe(value => {
+          if (value === 'loaded') {
+            resolve()
+            unsubscribe()
+          } else if (value === 'error') {
+            reject()
+            unsubscribe()
+          }
+        })
+      })
+    }
     return Object.assign(store, {
       $offline,
       $room,
+      load
     });
   },
   (store, id, roomId) => {

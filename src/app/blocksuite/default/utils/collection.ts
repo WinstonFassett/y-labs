@@ -16,6 +16,7 @@ import {
   IndexedDBDocSource,
 } from '@blocksuite/sync';
 import { HyperdriveBlobSource } from './CollabBlobSource';
+import { StoreDocSource } from './StoreDocSource';
 
 // const localBlobSource = new IndexedDBBlobSource('collabPlayground');
 // const trysteroBlobSource = new CollabBlobSource();
@@ -27,7 +28,7 @@ console.log('localBlobSource', localBlobSource)
 
 // const BASE_WEBSOCKET_URL = new URL(import.meta.env.PLAYGROUND_WS);
 
-export async function createDefaultDocCollection() {
+export function createDefaultDocCollection() {
   const idGenerator: IdGeneratorType = IdGeneratorType.NanoID;
   const schema = new Schema();
   schema.register(AffineSchemas);
@@ -35,6 +36,7 @@ export async function createDefaultDocCollection() {
   // const params = new URLSearchParams(location.search);
   let docSources: DocCollectionOptions['docSources'] = {
     // main: new IndexedDBDocSource(),
+    main: new StoreDocSource()
   };
   let awarenessSources: DocCollectionOptions['awarenessSources'];
   // const room = params.get('room');
@@ -81,7 +83,7 @@ export async function createDefaultDocCollection() {
         // trysteroBlobSource
       ]
     },
-    // docSources,
+    docSources,
     awarenessSources,
     defaultFlags: {
       enable_synced_doc_block: true,
@@ -92,7 +94,8 @@ export async function createDefaultDocCollection() {
     },
   };
   const collection = new DocCollection(options);
-  collection.start();
+  // collection.start();
+  // TODO: start, waitForSynced, initialize and reset history
 
   // debug info  
   Object.assign(window, {
@@ -107,9 +110,9 @@ export async function createDefaultDocCollection() {
 
 export async function initDefaultDocCollection(collection: DocCollection) {
   // const params = new URLSearchParams(location.search);
-  console.log('initializing default doc collection')
-  await collection.waitForSynced();
-  console.log('initialized default doc collection')
+  // console.log('initializing default doc collection')
+  // await collection.waitForSynced();
+  // console.log('initialized default doc collection')
 
   const shouldInit = collection.docs.size === 0 
     // && !params.get('room')

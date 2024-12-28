@@ -19,7 +19,8 @@ import { useState } from "react";
 import { useNavigateMaybe } from "../../lib/useNavigateMaybe";
 import { useDocParams } from "./useDocParams";
 import type { DocMetadata } from "./store/doc-metadata";
-import { deleteOfflineDoc, getDocIdbStore, getHasDocIdb } from "./store/local-yjs-idb";
+import { getDocIdbStore } from "./store/local-yjs-idb";
+import { deleteOfflineDoc, getHasDocIdb } from "./store/local-yjs-idb-offline";
 
 const DefaultTriggerButton = (props: any) => {
   return (
