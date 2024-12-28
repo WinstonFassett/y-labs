@@ -15,12 +15,32 @@ export function mapTemplate<
   build?: (id: string, ...args: A) => S,
   mount?: (store: S, id: string, ...args: A) => (() => void) | undefined,
 ): (id: string, ...args: A) => S {
+  
+  
+  const cacheStore = map<Record<string, S>>();
+  const mountedStore = map<Record<string, S>>();
+  
   let Template: any = (id: string, ...args: A) => {
-    if (!Template.cache[id]) {
-      Template.cache[id] = Template.build(id, ...args);
+    let cachedValue = cacheStore.get()[id]
+    if (!cachedValue) {
+      console.log('building', id)
+      const item = Template.build(id, ...args)
+      // cacheStore.setKey(id, item);
+      console.log('checking', 
+        !cachedValue || cachedValue === item,
+        cacheStore.value === cacheStore.value
+      )
+      cacheStore.setKey(id, item);
+      cachedValue = item
+      console.log('cached', id, item)
+      // cacheStore.notify(cacheStore.value)
     }
-    return Template.cache[id];
-  };
+    return cachedValue;
+  };  
+  Template.$cache = cacheStore
+  console.log('checking 1',     
+    cacheStore.value === cacheStore.value
+  )
 
   Template.build = (id: string, ...args: A) => {
     let store = build?.(id, ...args) ?? (map({ id }) as S);
@@ -28,7 +48,8 @@ export function mapTemplate<
       let destroy: (() => void) | undefined;
       if (mount) destroy = mount(store, id, ...args);
       return () => {
-        delete Template.cache[id];
+        // delete cacheStore.value[id];
+        cacheStore.setKey(id, undefined as any);
         if (destroy) destroy();
       };
     });
@@ -36,12 +57,14 @@ export function mapTemplate<
   };
 
   Template.evict = (id: string) => {
-    const it = Template.cache[id];
-    delete Template.cache[id];
+    const it = cacheStore.value[id];
+    delete cacheStore.value[id];
     console.log("evicted", id, it);
   };
 
-  Template.cache = {} as Record<string, S>;
+  // const model = Object.assign(Template, {    
+  //   $cache: cacheStore,
+  // })
 
   return Template;
 }
