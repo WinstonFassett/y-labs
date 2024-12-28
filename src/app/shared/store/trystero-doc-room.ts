@@ -14,6 +14,12 @@ import { getDocRoomConfig, type DocRoomConfigFields } from "./doc-room-config";
 import { user } from "./local-user";
 import { getYdoc } from "./yjs-docs";
 
+import DataChannelStream from '@/lib/dcs'
+import NotSecretStream from 'not-secret-stream'
+import Protomux from 'protomux'
+import { corestore } from "../corestore";
+import crypto from 'hypercore-crypto'
+
 type ConnectionStatus = "connected" | "disconnected"
 type SyncStatus = "synced" | "unsynced"
 type LoadStatus = "loaded" | "loading" | "waiting" | "receiving" | "unloaded"
@@ -130,10 +136,43 @@ function createTrysteroDocRoom(
       accessLevel: config.accessLevel,
       awareness
     });
+    let initialized = false
+
+    const initialize = () => {
+      console.log('INTIALIZING PEER DATA')
+      const peersById = new Map<string, TrysteroHypercoreReplicationPeer>();
+      const room = provider.trystero
+      room.onPeerJoin((peerId) => {
+        console.log('🟢 Peer connected:', peerId);
+        const peerConnections = room.getPeers();
+        const peerConnection = peerConnections[peerId];
+  
+        if (!peerConnection) {
+          throw new Error('No RTCPeerConnection found');
+        }
+        const trysteroPeer = new TrysteroHypercoreReplicationPeer(peerId, peerConnection);
+        console.log('Peer initialized:', peerId, trysteroPeer);
+      })
+      provider.trystero.onPeerLeave((peerId) => {
+  
+        console.log('Peer destroyed:', peerId);
+        const peer = peersById.get(peerId);
+        if (peer) {
+          peer.destroy();
+          peersById.delete(peerId);
+          console.log('Removed destroyed peer:', peerId);
+        }
+  
+      })
+              
+      setUserInAwareness(user.get())
+      $connectionState.set('connected')
+      initialized = true
+    }
+
     provider.on('status', ({ connected }: { connected: boolean }) => {
-      if (connected) {
-        setUserInAwareness(user.get())
-        $connectionState.set('connected')
+      if (connected && !initialized) {
+        initialize()
       }
     });  
     provider.on("synced", ({ synced }: { synced: boolean }) => {
@@ -149,6 +188,8 @@ function createTrysteroDocRoom(
       const { added, removed, resurrected } = e;
       $peerIds.set( $peerIds.get().concat(added).concat(resurrected).filter((it) => !removed.includes(it)));
     })
+
+
     return provider
   }
 
@@ -173,3 +214,47 @@ const trysteroDocRoomT = mapTemplate(
       roomId,
     )
 );
+
+
+
+class TrysteroHypercoreReplicationPeer {
+  constructor(peerId: string, peerConnection: RTCPeerConnection) {
+    this.peerId = peerId
+    this.peerConnection = peerConnection
+    this.wss = new DataChannelStream(peerConnection.createDataChannel(
+      'hypercore',
+      {
+        negotiated: true,
+        id: 11
+      }
+    ))
+    // this.wss = dataChannelToStream(peerConnection.createDataChannel('hypercore'))
+    const keyPair = crypto.keyPair();
+    this.framed = new NotSecretStream(this.wss, { keyPair })
+    this.mux = Protomux.from(this.framed)
+    // this.rpc = new JRPC(new RPC(this.mux))
+    this.replication = corestore.replicate(this.mux)
+
+    console.log('Replication started for peer:', peerId)
+
+    this.replication.on('data', (data) => {
+      console.log('Replication data received:', {data})
+    })
+    this.replication.on('error', (err) => {
+      console.error('Replication error:', err)
+    })
+    this.replication.on('end', () => {
+      console.log('Replication ended')
+    })
+
+    console.log('TrysteroPeer created', { peerId }, this)
+  }
+  destroy() {
+    console.log
+    (`this.replication.destroy()
+    this.rpc.destroy()
+    this.mux.destroy()
+    this.framed.destroy()
+    this.wss.destroy()`)
+  }
+}

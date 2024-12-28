@@ -11,7 +11,7 @@ import * as promise from "lib0/promise";
 import * as random from "lib0/random";
 
 import * as Y from "yjs";
-import { selfId, type joinRoom as trysteroJoinRoom } from "trystero";
+import { selfId, type Room, type joinRoom as trysteroJoinRoom } from "trystero";
 
 import * as syncProtocol from "y-protocols/sync";
 import * as awarenessProtocol from "y-protocols/awareness";
@@ -583,7 +583,7 @@ export class TrysteroProvider extends ObservableV2<TrysteroProviderEvents> {
   roomName: string;
   awareness: awarenessProtocol.Awareness;
   shouldConnect: boolean;
-  trystero: any;
+  trystero: Room = undefined as any;
   sendDocData: (data: Uint8Array, peerId?: string) => void;
   listenDocData: (callback: (data: Uint8Array, peerId: string) => void) => void;
 

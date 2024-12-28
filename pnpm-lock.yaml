@@ -262,6 +262,9 @@ importers:
       next-themes:
         specifier: ^0.3.0
         version: 0.3.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      not-secret-stream:
+        specifier: ^1.0.0
+        version: 1.0.0(sodium-javascript@0.8.0)
       novel:
         specifier: ^0.5.0
         version: 0.5.0(@tiptap/extension-code-block@2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(@tiptap/pm@2.2.4))(@types/react@18.2.58)(highlight.js@11.9.0)(immer@9.0.21)(lowlight@3.2.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -274,6 +277,9 @@ importers:
       prettier-plugin-astro:
         specifier: ^0.13.0
         version: 0.13.0
+      protomux:
+        specifier: ^3.10.0
+        version: 3.10.0
       random-access-web:
         specifier: ^2.0.3
         version: 2.0.3
@@ -6802,6 +6808,9 @@ packages:
     resolution: {integrity: sha512-PcOxmqwYCW7O2ovKRU8OoQQj2yqTfEB/yeTYk4gPid6dN5ODRfU1hXd9tTVZzax/0NkO7AxpHykvZnT1aYp/BQ==}
     engines: {node: ^14.13.1 || >=16.0.0}
 
+  framed-stream@1.0.1:
+    resolution: {integrity: sha512-x0At1ETY20yXARxM6Qr5BGasgPpD0/HVYDyA7Uiaf9LfSqrb8p/F9i0s2/8YoeHkZcJeKsnwWBrnJCfZZoxHjA==}
+
   framer-motion@11.0.6:
     resolution: {integrity: sha512-BpO3mWF8UwxzO3Ca5AmSkrg14QYTeJa9vKgoLOoBdBdTPj0e81i1dMwnX6EQJXRieUx20uiDBXq8bA6y7N6b8Q==}
     peerDependencies:
@@ -8795,6 +8804,9 @@ packages:
   normalize-range@0.1.2:
     resolution: {integrity: sha512-bdok/XvKII3nUpklnV6P2hxtMNrCboOjAcyBuQnWEhO665FwrSNRxU+AqpsyvO6LgGYPspN+lu5CLtw4jPRKNA==}
     engines: {node: '>=0.10.0'}
+
+  not-secret-stream@1.0.0:
+    resolution: {integrity: sha512-dQCpjl44rsCbGDrH0tcEIxX8J1zun+e9q1HT8eABm5JFZb2O3G457y2n/mP7TT3VYTx+0uLgn9hLCP/aug8RhQ==}
 
   novel@0.5.0:
     resolution: {integrity: sha512-Wb4fGSQ7nGxgiZDs7XPeSjC/Kr6YPb4KxzxuJp+80W+lqqG0yu265yRPGROTUvJWcZtiLpWjMSwz978I1PTOww==}
@@ -22910,6 +22922,11 @@ snapshots:
 
   fractional-indexing@3.2.0: {}
 
+  framed-stream@1.0.1:
+    dependencies:
+      b4a: 1.6.7
+      streamx: 2.21.1
+
   framer-motion@11.0.6(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       tslib: 2.6.2
@@ -25742,6 +25759,16 @@ snapshots:
   normalize-path@3.0.0: {}
 
   normalize-range@0.1.2: {}
+
+  not-secret-stream@1.0.0(sodium-javascript@0.8.0):
+    dependencies:
+      b4a: 1.6.7
+      compact-encoding: 2.16.0
+      framed-stream: 1.0.1
+      hypercore-crypto: 3.4.2(sodium-javascript@0.8.0)
+      streamx: 2.21.1
+    transitivePeerDependencies:
+      - sodium-javascript
 
   novel@0.5.0(@tiptap/extension-code-block@2.2.4(@tiptap/core@2.2.4(@tiptap/pm@2.2.4))(@tiptap/pm@2.2.4))(@types/react@18.2.58)(highlight.js@11.9.0)(immer@9.0.21)(lowlight@3.2.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
