@@ -7,10 +7,14 @@ export const documentsStore = atom<Record<string, any>[] | undefined>(
   undefined,
 );
 
-const EXCLUDES = ["docs-metadata"];
+const EXCLUDES = ["docs-metadata", "corestore", "primary-key", "###meta", "cores"];
 
 export async function loadDocuments() {
-  const databases = (await indexedDB.databases()).filter(x => !EXCLUDES.includes(x.name ??""));
+  const databases = (await indexedDB.databases()).filter(
+    x => 
+      !EXCLUDES.includes(x.name ??"") &&
+      !x.name?.startsWith("cores/")
+  );
   const documents: Array<Record<string, any>> = [];
   for (const db of databases) {
     const name = db.name;

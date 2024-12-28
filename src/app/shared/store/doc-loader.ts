@@ -36,9 +36,12 @@ const docLoadStateT = mapTemplate(
     const unsub = batched(deps, () => {}).listen(() => {});
     const onLoad = () => {
       store.set("loaded");
+      console.log("finished loading", { id, roomId });
     };
     if (initialState !== "loaded") {
       y.once("load", onLoad);
+    } else {
+      console.log('already loaded')
     }
     return () => {
       unsub();

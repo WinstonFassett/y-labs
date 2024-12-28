@@ -648,6 +648,8 @@ export class TrysteroProvider extends ObservableV2<TrysteroProviderEvents> {
     const safeUniquePartOfKey = key ? await extractPartOfKey(key, 4) : ""
     const safeRoomName = `${this.roomName}-${safeUniquePartOfKey}`
     const trysteroRoom = this.trystero = this.joinRoom(this.trysteroConfig, safeRoomName);
+    this.emit('joined', [{ room: trysteroRoom }])
+    
     const [sendDocData, listenDocData] = trysteroRoom.makeAction<Uint8Array>("docdata");
     this.sendDocData = sendDocData;
     this.listenDocData = listenDocData;
@@ -672,6 +674,7 @@ export class TrysteroProvider extends ObservableV2<TrysteroProviderEvents> {
     this.shouldConnect = false;
     if (this.room) {
       this.room.disconnect();
+      this.emit("left", [{ room: this.room }]);
     }
   }
 

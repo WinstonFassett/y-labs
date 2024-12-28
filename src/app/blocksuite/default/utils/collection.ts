@@ -15,7 +15,13 @@ import {
   IndexedDBBlobSource,
   IndexedDBDocSource,
 } from '@blocksuite/sync';
+import { HyperdriveBlobSource } from './CollabBlobSource';
 
+// const localBlobSource = new IndexedDBBlobSource('collabPlayground');
+// const trysteroBlobSource = new CollabBlobSource();
+
+const localBlobSource = new HyperdriveBlobSource('collabPlayground')
+console.log('localBlobSource', localBlobSource)
 // import { WebSocketAwarenessSource } from '../../_common/sync/websocket/awareness';
 // import { WebSocketDocSource } from '../../_common/sync/websocket/doc';
 
@@ -28,7 +34,7 @@ export async function createDefaultDocCollection() {
 
   // const params = new URLSearchParams(location.search);
   let docSources: DocCollectionOptions['docSources'] = {
-    main: new IndexedDBDocSource(),
+    // main: new IndexedDBDocSource(),
   };
   let awarenessSources: DocCollectionOptions['awarenessSources'];
   // const room = params.get('room');
@@ -61,15 +67,21 @@ export async function createDefaultDocCollection() {
   //     .filter(([key]) => key.startsWith('enable_'))
   //     .map(([k, v]) => [k, v === 'true'])
   // );
+
+
+
   const flags = {}
   const options: DocCollectionOptions = {
     id: 'collabPlayground',
     schema,
     idGenerator,
     blobSources: {
-      main: new IndexedDBBlobSource('collabPlayground'),
+      main: localBlobSource,
+      shadows: [
+        // trysteroBlobSource
+      ]
     },
-    docSources,
+    // docSources,
     awarenessSources,
     defaultFlags: {
       enable_synced_doc_block: true,
@@ -94,19 +106,24 @@ export async function createDefaultDocCollection() {
 }
 
 export async function initDefaultDocCollection(collection: DocCollection) {
-  const params = new URLSearchParams(location.search);
-
+  // const params = new URLSearchParams(location.search);
+  console.log('initializing default doc collection')
   await collection.waitForSynced();
+  console.log('initialized default doc collection')
 
-  const shouldInit = collection.docs.size === 0 && !params.get('room');
+  const shouldInit = collection.docs.size === 0 
+    // && !params.get('room')
+    ;
   if (shouldInit) {
     collection.meta.initialize();
-    const doc = collection.createDoc({ id: 'doc:home' });
-    doc.load();
-    const rootId = doc.addBlock('affine:page', {
-      title: new Text(),
-    });
-    doc.addBlock('affine:surface', {}, rootId);
-    doc.resetHistory();
+  //   const doc = collection.createDoc({ id: 'doc:home' });
+  //   doc.load();
+  //   const rootId = doc.addBlock('affine:page', {
+  //     title: new Text(),
+  //   });
+  //   doc.addBlock('affine:surface', {}, rootId);
+  //   doc.resetHistory();
   }
 }
+
+

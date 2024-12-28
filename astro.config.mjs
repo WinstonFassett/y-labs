@@ -4,6 +4,7 @@ import tailwind from "@astrojs/tailwind";
 import mdx from "@astrojs/mdx";
 import serviceWorker from "astrojs-service-worker";
 import svelte from "@astrojs/svelte";
+import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
 // https://astro.build/config
 export default defineConfig({
@@ -25,4 +26,14 @@ export default defineConfig({
   define: {
     "process.env": {},
   },
+  vite: {
+    plugins: [nodePolyfills({
+      buffer: true,
+      crypto: true,
+      stream: true,
+      http: true,
+      https: true,
+      os: true,
+    })]
+  }
 });

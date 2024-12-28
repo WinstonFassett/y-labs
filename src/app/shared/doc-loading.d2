@@ -1,0 +1,35 @@
+direction:right 
+
+roomId
+
+docId
+
+docRoomId -> roomId
+docRoomId -> docId
+
+
+docMeta
+
+docPersister
+
+blocksuiteDoc
+
+blocksuiteDoc -> spaceDoc
+
+
+docEditor -> docMeta
+docEditor -> docPersister
+docEditor -> docRoomId
+docEditor -> blocksuiteDoc
+
+shouldInitialize
+
+docLoader -> shouldInitialize
+
+errorCreatingBlocksuiteDoc_AlreadyExists
+
+YDocsT
+
+BlocksuiteDocsT
+
+DocSessionT
