@@ -83,6 +83,7 @@
     "do_username": "^1.0.0",
     "framer-motion": "^11.0.6",
     "highlight.js": "^11.9.0",
+    "hyperbee": "^2.20.7",
     "hypercore-crypto": "^3.4.2",
     "hyperdrive": "^11.13.3",
     "idb-keyval": "^6.2.1",

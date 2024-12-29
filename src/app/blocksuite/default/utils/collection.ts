@@ -127,6 +127,7 @@ export async function initDefaultDocCollection(collection: DocCollection) {
   //   doc.addBlock('affine:surface', {}, rootId);
   //   doc.resetHistory();
   }
+  console.log('collection', collection)
 }
 
 

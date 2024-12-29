@@ -232,6 +232,9 @@ importers:
       highlight.js:
         specifier: ^11.9.0
         version: 11.9.0
+      hyperbee:
+        specifier: ^2.20.7
+        version: 2.20.7
       hypercore-crypto:
         specifier: ^3.4.2
         version: 3.4.2(sodium-javascript@0.8.0)
