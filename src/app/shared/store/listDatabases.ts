@@ -10,7 +10,8 @@ export async function listDatabases() {
       !EXCLUDES.includes(name) &&
       !name.endsWith("_blob") &&
       !name.endsWith("_mime") && 
-      !name.startsWith("cores/")
+      !name.startsWith("cores/") &&
+      !name.startsWith("level-js")
     )
     ;
 }

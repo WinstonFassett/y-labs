@@ -13,6 +13,7 @@ export async function loadDocuments() {
   const databases = (await indexedDB.databases()).filter(
     x => 
       !EXCLUDES.includes(x.name ??"") &&
+      !x.name?.startsWith("level-js") &&
       !x.name?.startsWith("cores/")
   );
   const documents: Array<Record<string, any>> = [];
