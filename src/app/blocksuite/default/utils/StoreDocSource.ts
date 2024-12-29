@@ -1,4 +1,4 @@
-import { getDocLoadState } from '@/app/shared/store/doc-loader';
+// import { getDocLoadState } from '@/app/shared/store/doc-loader';
 import { type DocSource } from '@blocksuite/sync';
 
 export class StoreDocSource implements DocSource {
@@ -10,6 +10,10 @@ export class StoreDocSource implements DocSource {
   
   async pull(docId: string, state: Uint8Array) {
     console.log('pull', docId, state);
+    // import 
+    const DocLoaderModule = await import('@/app/shared/store/doc-loader');
+    console.log('DocLoaderModule', DocLoaderModule);
+    const { getDocLoadState } = DocLoaderModule;
     const $loader = getDocLoadState(docId);
     console.log('loading', docId);
     await $loader.load();
