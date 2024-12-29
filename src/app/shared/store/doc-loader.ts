@@ -9,13 +9,9 @@ import { $newDocIds } from "./new-doc-ids";
 
 type LoadingState = "unloaded" | "loading" | "loaded" | "error";
 
-console.log({ getDocIdbStore })
-
 const docLoadStateT = mapTemplate(
   (id, roomId?: string) => {
     const store = atom("unloaded" as LoadingState);
-    console.log('loadstate', { id, roomId })
-    console.log({ getDocIdbStore })
     const $offline = getDocIdbStore(id);
     const $room = roomId ? getTrysteroDocRoom(id, roomId) : undefined;
     function load () {
@@ -54,16 +50,12 @@ const docLoadStateT = mapTemplate(
     const unsub = batched(deps, () => {}).listen(() => {});
     const onLoad = () => {
       store.set("loaded");
-      console.log("finished loading", { id, roomId });
     };
     if (initialState !== "loaded") {
       y.once("load", onLoad);
-    } else {
-      console.log('already loaded')
     }
     return () => {
       unsub();
-      // console.log("loader released", { id, roomId });
     };
   },
 );

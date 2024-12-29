@@ -18,7 +18,6 @@ const ydocsT = mapTemplate(
     store.set(ydoc);
     return () => {
       ydoc.off("load", onLoad);
-      console.log("done with ydoc", id, store, ydoc);
       ydoc.destroy();
     };
   },
@@ -27,7 +26,6 @@ const ydocsT = mapTemplate(
 const blocksuiteYdocsT = mapTemplate(
   id => Object.assign(atom<Doc>(), { id }),
   (store, id) => {
-    console.log('init y blocksuite doc ydoc', id);
     const $bsDoc = getBlocksuiteDocStore(id);
     return $bsDoc.subscribe((bsDoc) => {
       store.set(bsDoc.spaceDoc);

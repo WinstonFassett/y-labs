@@ -4,49 +4,27 @@ import { AffineSchemas } from '@blocksuite/blocks';
 import { Doc as BsDoc, DocCollection, Schema } from '@blocksuite/store';
 import { atom, onMount, task } from "nanostores";
 
-// export const schema = new Schema().register(AffineSchemas);
 
-// export const collection = new DocCollection({ schema });
-// collection.meta.initialize();
 export const collection = createDefaultDocCollection();
 
 export const CollectionReady = (
   (async () => {
     await initDefaultDocCollection(collection);
-    console.log('collection ready')
   })
 )()
 
-// export const $collection = atom<DocCollection>(undefined as any)
-// export const $collectionReady = atom(false)
-// onMount($collection, () => {
-//   const collection = createDefaultDocCollection();
-//   $collection.set(collection)
-//   task(async () => {
-//     await initDefaultDocCollection(collection);
-//     $collectionReady.set(true)
-//   })
-// })
-
-// export async function getCollection () {
-//   const collection = $collection.get()
-// }
-
-
 const blocksuiteDocsT = mapTemplate(
   (id) => atom<BsDoc>(),
-  // OH. This is not allowed to fail. Must handle errors here.
   (store, id) => {
-    console.log('creating bsDoc', id)
-    // if doc exists in storage, load it
     
-    // otherwise create it
     
     const bsDoc = 
-      collection.getDoc(id) ??
+    // if doc exists in storage, load it
+    collection.getDoc(id) ??
+    // otherwise create it
       collection.createDoc({ id })
-    console.log('bsDoc', bsDoc)
-    const awareness = bsDoc.awarenessStore.awareness
+
+      const awareness = bsDoc.awarenessStore.awareness
     Object.assign(bsDoc.spaceDoc, {
       blocksuite: bsDoc,
       awareness,
