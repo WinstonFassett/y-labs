@@ -19,6 +19,11 @@ export function CorestoreAdmin () {
       {driveEntries.map(([key, $drive]) => {
         return <DriveStoreCard key={key} $drive={$drive} />
       })}
+
+      <h1 className='text-2xl'>Older</h1>
+
+      <CorestoreAdminR1 />      
+
     </div>
   )
 }
@@ -42,11 +47,11 @@ export function CorestoreAdminR1() {
   const [coreDrives, setCoreDrives] = useState<{[key: string]: Hyperdrive}>(
     Array.from(cores.entries()).reduce((acc, [key, core]) => {
       let hyperdrive
-      hyperdrive = getHyperdriveMaybe(core);
-      if (hyperdrive) {
-        coreDriveMapRef.current.set(key, hyperdrive);
-        acc[key] = hyperdrive;
-      }
+      // hyperdrive = getHyperdriveMaybe(core);
+      // if (hyperdrive) {
+      //   coreDriveMapRef.current.set(key, hyperdrive);
+      //   acc[key] = hyperdrive;
+      // }
       return acc;
     }, {} as any)
   );
@@ -54,11 +59,11 @@ export function CorestoreAdminR1() {
     function onCoreOpen(core) {
       console.log('corestore opened', core);
       setCores(new Map(corestore.cores));
-      const drive = getHyperdriveMaybe(core);
-      if (drive) {
-        coreDriveMapRef.current.set(core.key, drive);
-        setCoreDrives(value => value.concat(drive));
-      }
+      // const drive = getHyperdriveMaybe(core);
+      // if (drive) {
+      //   coreDriveMapRef.current.set(core.key, drive);
+      //   setCoreDrives(value => value.concat(drive));
+      // }
     }
     function onCoreClose(core) {
       console.log('corestore closed');
@@ -91,10 +96,10 @@ export function CorestoreAdminR1() {
       {Array.from(cores.keys()).map((key) => {
         const core = cores.get(key);
         
-        const drive = coreDriveMapRef.current.get(key);
-        if (drive) {
-          console.log('DRIVE!', drive);
-        }
+        // const drive = coreDriveMapRef.current.get(key);
+        // if (drive) {
+        //   console.log('DRIVE!', drive);
+        // }
 
         // if (core.length > 1) {
         //   console.log('maybe drive', core);
@@ -112,7 +117,7 @@ export function CorestoreAdminR1() {
           <p>
             {key}
           </p>
-          {drive && <DriveAdminR1 drive={drive} />}
+          {/* {drive && <DriveAdminR1 drive={drive} />} */}
         </Card>
       })}
     </ul>
