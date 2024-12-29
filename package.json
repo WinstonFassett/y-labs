@@ -98,6 +98,7 @@
     "openai": "^4.52.7",
     "prettier": "^3.2.5",
     "prettier-plugin-astro": "^0.13.0",
+    "pretty-bytes": "^6.1.1",
     "protomux": "^3.10.0",
     "random-access-web": "^2.0.3",
     "react": "^18.2.0",

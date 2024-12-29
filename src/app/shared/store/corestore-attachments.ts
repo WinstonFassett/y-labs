@@ -22,6 +22,9 @@ const attachmentDriveT = mapTemplate(
     return atom(drive);
   }
 );
+
+export const $attachmentDrivesById = attachmentDriveT.$cache
+
 export function getAttachmentDrive(permalinkAsId: string) {
   const { keyStr, path } = parseHyperdrivePermalink(permalinkAsId)!;
   console.log('getting attachment drive', keyStr, 'for', path);
@@ -29,7 +32,9 @@ export function getAttachmentDrive(permalinkAsId: string) {
 }
 export function setAttachmentDrive(permalinkAsId: string, drive: Hyperdrive) {
   const { keyStr } = parseHyperdrivePermalink(permalinkAsId)!;
-  attachmentDriveT.cache[keyStr] = atom(drive);
+  // attachmentDriveT.cache[keyStr] = atom(drive);
+  console.log('set attachment drive', keyStr, drive);
+  attachmentDriveT.$cache.setKey(keyStr, atom(drive));
 }
 // const $attachmentScopeDrive = computed([$attachmentScopeStore], (scopeStore) => {
 //   return new Hyperdrive(scopeStore)

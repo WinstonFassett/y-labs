@@ -2,9 +2,40 @@ import { useEffect, useRef, useState } from "react";
 import { corestore } from "../shared/corestore";
 import { Card } from "@/components/ui/card";
 import Hyperdrive from "hyperdrive";
+import { $attachmentDrivesById } from "../shared/store/corestore-attachments";
+import { useStore } from "@nanostores/react";
+import prettyBytes from 'pretty-bytes';
 
+export function CorestoreAdmin () {
+  const driveMap = useStore($attachmentDrivesById)
+  console.log('driveMap', driveMap);
+  const driveEntries = Object.entries(driveMap);
+  return (
+    <div>
+      <h1 className='text-2xl'>Corestore Admin</h1>
+      <h2 className='text-lg'>Drives ({
+        Object.keys(driveMap).length  
+      })</h2>
+      {driveEntries.map(([key, $drive]) => {
+        return <DriveStoreCard key={key} $drive={$drive} />
+      })}
+    </div>
+  )
+}
 
-export function CorestoreAdmin() {
+function DriveStoreCard ({ $drive }) {
+  const drive = useStore($drive);
+  return (
+    <Card>
+      <p>Drive</p>
+      <p>Key: {drive.key}</p>
+      <p>Version: {drive.version}</p>
+      <DriveAdminR1 drive={drive} />
+    </Card>
+  )
+}
+
+export function CorestoreAdminR1() {
   console.log('corestore', corestore);
   const [cores, setCores] = useState<Map<string, any>>(corestore.cores);
   const coreDriveMapRef = useRef<Map<string, Hyperdrive>>(new Map()); 
@@ -81,7 +112,7 @@ export function CorestoreAdmin() {
           <p>
             {key}
           </p>
-          {drive && <DriveAdmin drive={drive} />}
+          {drive && <DriveAdminR1 drive={drive} />}
         </Card>
       })}
     </ul>
@@ -99,7 +130,7 @@ function getHyperdriveMaybe(core: any) {
 }
 
 
-function DriveAdmin({drive}: {drive: Hyperdrive}) {
+function DriveAdminR1({drive}: {drive: Hyperdrive}) {
   const [files, setFiles] = useState<any[]>([]);
   console.log('get files', drive)
   useEffect(() => {
@@ -113,11 +144,31 @@ function DriveAdmin({drive}: {drive: Hyperdrive}) {
       }
     }
     getfiles();
+    return () => {
+      setFiles([])
+    }
   }, [drive])
   return <div>
     <h2 className='text-lg'>Drive Admin</h2>
-    {files && <div>Info: {files?.length ?? "NO INFO"}</div>}
-    <InspectCore core={drive.core} />
+    {files && <div>Files: {files?.length ?? "0"}</div>}
+
+    <ul className="list-disc list-inside">
+      {files.map((file) => {
+        const {
+          key, 
+          seq,
+          value: { 
+            blob: {
+              byteLength
+            },
+            metadata
+          }
+        } = file
+        return <li key={key}>({ prettyBytes(byteLength) }) at v{seq} {key}</li>
+      })}
+    </ul>
+
+    {/* <InspectCore core={drive.core} /> */}
   </div>
 }
 
