@@ -11,7 +11,6 @@ import { EditorProvider } from './EditorProvider';
 import { createEditor } from './createEditor';
 import './style.css';
 import { Button } from '@/components/ui/button';
-import { CorestoreAdmin } from './CorestoreAdmin';
 
 function App() {
   const [mode, setMode] = useState<DocMode>('page')
@@ -44,7 +43,7 @@ function App() {
   return (
     <EditorProvider value={editorContext}>
 
-        {mode === 'edgeless' ? <EditorContainer /> : <CorestoreAdmin />}
+        <EditorContainer />
         <div className='fixed top-16 right-5 flex flex-row items-center'>
           <div className='flex-grow'></div>
           <Button 
@@ -62,4 +61,3 @@ function App() {
 }
 
 export default App;
-

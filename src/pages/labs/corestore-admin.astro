@@ -1,0 +1,11 @@
+---
+import Layout from "@/layouts/MainLayout.astro";
+import Prose from "@/components/Prose.astro";
+import { DbAdmin } from "@/app/blocksuite/DbAdmin";
+---
+
+<Layout>
+  <Prose>
+    <DbAdmin client:only="react" />
+  </Prose>
+</Layout>
