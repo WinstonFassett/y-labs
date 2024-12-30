@@ -3,19 +3,19 @@ import Corestore from 'corestore';
 import crypto from 'hypercore-crypto';
 // import { createFile } from '@zacharygriffee/random-access-idb';
 import { createLevelRandomAccessFileSystem } from '@/lib/level-random-access';
-import { BrowserLevel } from 'browser-level';
-import levelup from 'levelup';
-import memdown from 'memdown';
+// import { BrowserLevel } from 'browser-level';
+// import levelup from 'levelup';
+// import memdown from 'memdown';
 // just used for handshake (I think)
 export const keyPair = crypto.keyPair();
 export const keystr = b4a.toString(keyPair.publicKey, 'hex');
 
 // const db = new BrowserLevel('example', { valueEncoding: 'json' })
-const db = levelup('memdb', {db:memdown})
+// const db = levelup('memdb', {db:memdown})
 
 
-console.log('db', db)
-const {fs, createFile} = createLevelRandomAccessFileSystem(db)
+// console.log('db', db)
+const {fs, createFile} = createLevelRandomAccessFileSystem()
 console.log('FS', {fs, createFile})
 
 // window.fs = fs

@@ -1,23 +1,24 @@
 import RandomAccessStorage from 'random-access-storage';
-import type { AbstractSublevel, AbstractLevel } from 'abstract-level';
-import createFilesystem from 'level-filesystem';
+// import type { AbstractSublevel, AbstractLevel } from 'abstract-level';
+// import createFilesystem from 'level-filesystem';
 // import createFilesystem from 'level-fs'
 
+import { fs } from '@/app/shared/zen-fs';
 
-
-export function createLevelRandomAccessFileSystem(db: AbstractLevel<any, string, Buffer>) {
-  const fs = createFilesystem(db);
+console.log({ fs })
+export function createLevelRandomAccessFileSystem() {
+  // const fs = createFilesystem(db);
   let ready = false
   const DatabaseOpened = Promise.resolve()
   // db.open().then(() => {
   //   console.log('DATABASE IS READY')
   //   ready = true
   // })
-  console.log('new LevelRandomAccessFileSystem', { db, fs });
+  console.log('new LevelRandomAccessFileSystem', { fs });
   function createFile(name: string) {
     name = "/" + name;
     // replace / with escape character
-    name = name.replace(/\//g, '\\');
+    name = name.replace(/\//g, '@');
     console.log('createFile', name);
     let fd = 0;
     const ras = new RandomAccessStorage({

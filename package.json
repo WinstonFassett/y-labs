@@ -71,6 +71,8 @@
     "@types/react": "^18.2.58",
     "@types/react-dom": "^18.2.19",
     "@zacharygriffee/random-access-idb": "^4.1.2",
+    "@zenfs/core": "^1.6.16",
+    "@zenfs/dom": "^1.1.0",
     "abstract-level": "^2.0.2",
     "ai": "^3.2.22",
     "astro": "^4.4.2",
@@ -94,15 +96,12 @@
     "json-sorted-stringify": "^1.0.0",
     "level-filesystem": "^1.2.0",
     "level-fs": "^0.11.2",
+    "levelup": "^0.18.2",
     "lib0": "^0.2.89",
     "lowlight": "^3.1.0",
     "lucide-react": "^0.338.0",
     "memdb": "^0.1.0",
-    
     "memdown": "git://github.com/maxogden/memdown",
-    "levelup": "^0.18.2",
-
-    
     "nanoid": "^5.0.8",
     "nanostores": "^0.10.0",
     "next-themes": "^0.3.0",
