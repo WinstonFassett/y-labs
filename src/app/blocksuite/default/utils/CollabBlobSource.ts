@@ -48,8 +48,8 @@ export class HyperdriveBlobSource implements BlobSource {
     // const drive = new Hyperdrive(attachmentStore, driveKey);
     const drive = getAttachmentDrive(key);
     console.log('drive', drive);
-    await drive.ready();
-    console.log('drive ready');
+    const ready = await drive.ready();
+    console.log('drive ready', { ready, drive});
     const blobs = await drive.getBlobs();
     console.log('blobs', blobs);
     return await readBlobFromHyperdrive(drive, path);    

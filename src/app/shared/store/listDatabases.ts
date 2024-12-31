@@ -1,4 +1,4 @@
-const EXCLUDES = ["docs-metadata", "blocksuite-local", "corestore", "primary-key", "###meta", "cores"];
+const EXCLUDES = ["docs-metadata", "blocksuite-local", "corestore", "primary-key", "###meta", "cores", "zenfs"];
 export async function listDatabases() {
   if (!indexedDB?.databases) {
     console.warn("unable to list databases");
