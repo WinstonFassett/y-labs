@@ -37,15 +37,27 @@ importers:
       '@blocknote/react':
         specifier: ^0.11.2
         version: 0.11.2(@tiptap/pm@2.2.4)(@types/react@18.2.58)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@blocksuite/affine-components':
+        specifier: 0.0.0-canary-20241215001705
+        version: 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.12)
+      '@blocksuite/block-std':
+        specifier: 0.0.0-canary-20241215001705
+        version: 0.0.0-canary-20241215001705(yjs@13.6.12)
       '@blocksuite/blocks':
         specifier: 0.0.0-canary-20241215001705
         version: 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.12)
+      '@blocksuite/global':
+        specifier: 0.0.0-canary-20241215001705
+        version: 0.0.0-canary-20241215001705
       '@blocksuite/presets':
         specifier: 0.0.0-canary-20241215001705
         version: 0.0.0-canary-20241215001705(@types/react@18.2.58)(react@18.2.0)(yjs@13.6.12)
       '@blocksuite/store':
         specifier: 0.0.0-canary-20241215001705
         version: 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.12)
+      '@blocksuite/sync':
+        specifier: 0.0.0-canary-20241215001705
+        version: 0.0.0-canary-20241215001705(yjs@13.6.12)
       '@codemirror/commands':
         specifier: ^6.3.3
         version: 6.3.3
@@ -13063,13 +13075,13 @@ snapshots:
 
   '@floating-ui/react-dom@2.0.8(react-dom@17.0.2(react@17.0.2))(react@17.0.2)':
     dependencies:
-      '@floating-ui/dom': 1.6.3
+      '@floating-ui/dom': 1.6.12
       react: 17.0.2
       react-dom: 17.0.2(react@17.0.2)
 
   '@floating-ui/react-dom@2.0.8(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
-      '@floating-ui/dom': 1.6.3
+      '@floating-ui/dom': 1.6.12
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 
@@ -22285,7 +22297,7 @@ snapshots:
 
   hast-util-embedded@3.0.0:
     dependencies:
-      '@types/hast': 3.0.3
+      '@types/hast': 3.0.4
       hast-util-is-element: 3.0.0
 
   hast-util-from-dom@4.2.0:
@@ -22346,7 +22358,7 @@ snapshots:
 
   hast-util-is-element@3.0.0:
     dependencies:
-      '@types/hast': 3.0.3
+      '@types/hast': 3.0.4
 
   hast-util-parse-selector@3.1.1:
     dependencies:
@@ -22366,7 +22378,7 @@ snapshots:
 
   hast-util-phrasing@3.0.1:
     dependencies:
-      '@types/hast': 3.0.3
+      '@types/hast': 3.0.4
       hast-util-embedded: 3.0.0
       hast-util-has-property: 3.0.0
       hast-util-is-body-ok-link: 3.0.0
@@ -22388,7 +22400,7 @@ snapshots:
 
   hast-util-raw@9.0.1:
     dependencies:
-      '@types/hast': 3.0.3
+      '@types/hast': 3.0.4
       '@types/unist': 3.0.0
       '@ungap/structured-clone': 1.2.0
       hast-util-from-parse5: 8.0.1
@@ -22406,7 +22418,7 @@ snapshots:
     dependencies:
       '@types/estree': 1.0.1
       '@types/estree-jsx': 1.0.5
-      '@types/hast': 3.0.3
+      '@types/hast': 3.0.4
       comma-separated-tokens: 2.0.3
       devlop: 1.1.0
       estree-util-attach-comments: 3.0.0
@@ -22534,7 +22546,7 @@ snapshots:
 
   hast-util-whitespace@3.0.0:
     dependencies:
-      '@types/hast': 3.0.3
+      '@types/hast': 3.0.4
 
   hastscript@7.2.0:
     dependencies:
@@ -26022,7 +26034,7 @@ snapshots:
 
   rehype-minify-whitespace@6.0.0:
     dependencies:
-      '@types/hast': 3.0.3
+      '@types/hast': 3.0.4
       hast-util-embedded: 3.0.0
       hast-util-is-element: 3.0.0
       hast-util-whitespace: 3.0.0
