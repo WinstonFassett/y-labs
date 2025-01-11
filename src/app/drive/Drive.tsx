@@ -47,6 +47,7 @@ const docTypes = [
 ];
 
 export function getDocUrl(name: string, type: string) {
+  console.log('getDocUrl', {name, type});
   switch (type) {
     case "novel":
       return `/y-labs/app/novel/index.html#/edit/${name}`;

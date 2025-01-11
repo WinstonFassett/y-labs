@@ -40,7 +40,7 @@ import './styles/collab.css'
 //   loading: () => <Loading />,
 // });
 
-export default function Dual ({ doc, awareness }: { doc: Y.Doc, awareness?: Awareness }) {
+export default function Dual ({ doc, awareness, shareName = "milkdown" }: { doc: Y.Doc, awareness?: Awareness, shareName: string }) {
   const [expand, setExpand] = useState(false);
   const onMilkdownChange = useAtomCallback(
     useCallback((get, _set, markdown: string) => {
@@ -69,7 +69,7 @@ export default function Dual ({ doc, awareness }: { doc: Y.Doc, awareness?: Awar
     <div className="flex-1 flex flex-col overflow-hidden relative">
       <PanelGroup className="thePanels flex-1" direction="horizontal">
         <Panel>
-          <PlaygroundMilkdown onChange={onMilkdownChange} doc={doc} awareness={awareness}  />
+          <PlaygroundMilkdown onChange={onMilkdownChange} doc={doc} shareName={shareName}  awareness={awareness}  />
         </Panel>
         <PanelResizeHandle className="w-1 bg-muted" />
         <Panel>

@@ -21,10 +21,11 @@ import { useAtomCallback } from "jotai/utils";
 interface MilkdownProps {
   onChange: (markdown: string) => void;
   doc: Y.Doc;
+  shareName?: string;
   awareness?: Awareness;
 }
 
-const CrepeEditor: FC<MilkdownProps> = ({ onChange, doc, awareness }) => {
+const CrepeEditor: FC<MilkdownProps> = ({ onChange, doc, awareness, shareName = "milkdown" }) => {
   const crepeRef = useRef<Crepe>(null);
   const [theme] = useTheme()
   const darkMode = theme === "dark";
@@ -82,7 +83,9 @@ const CrepeEditor: FC<MilkdownProps> = ({ onChange, doc, awareness }) => {
           const collabService = ctx.get(collabServiceCtx);
           collabService
             // bind doc and awareness
-            .bindDoc(doc)
+            .bindDoc({
+              getXmlFragment: () => doc.getXmlFragment(shareName)
+            })
           if (awareness) {
             collabService
               .setAwareness(awareness)
