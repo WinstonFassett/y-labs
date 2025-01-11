@@ -9,20 +9,20 @@ import { PeekViewExtension } from '@blocksuite/affine-components/peek';
 import { BlockComponent } from '@blocksuite/block-std';
 import {
   ColorScheme,
+  matchFlavours,
+  toast,
   type DocMode,
   type DocModeProvider,
   type GenerateDocUrlService,
-  matchFlavours,
   type NotificationService,
   type ParseDocUrlService,
   type ReferenceParams,
   type ThemeExtension,
-  toast,
 } from '@blocksuite/blocks';
-import { type DocCollection, Slot } from '@blocksuite/store';
-import { signal } from '@preact/signals-core';
+import { Slot, type DocCollection } from '@blocksuite/store';
 
-import type { AttachmentViewerPanel } from './components/attachment-viewer-panel.js';
+import { atom } from 'nanostores';
+// import type { AttachmentViewerPanel } from './components/attachment-viewer-panel.js';
 
 function getModeFromStorage() {
   const mapJson = localStorage.getItem('playground:docMode');
@@ -127,20 +127,19 @@ export function mockParseDocUrlService(collection: DocCollection) {
   };
   return parseDocUrlService;
 }
-
 export class MockEdgelessTheme {
-  theme$ = signal(ColorScheme.Light);
+  theme$ = atom<ColorScheme>(ColorScheme.Light);
 
   setTheme(theme: ColorScheme) {
-    this.theme$.value = theme;
+    this.theme$.set(theme);
   }
 
   toggleTheme() {
     const theme =
-      this.theme$.value === ColorScheme.Dark
+      this.theme$.get() === ColorScheme.Dark
         ? ColorScheme.Light
         : ColorScheme.Dark;
-    this.theme$.value = theme;
+    this.theme$.set(theme);
   }
 }
 
@@ -152,35 +151,35 @@ export const themeExtension: ThemeExtension = {
   },
 };
 
-export function mockPeekViewExtension(
-  attachmentViewerPanel: AttachmentViewerPanel
-) {
-  return PeekViewExtension({
-    peek(
-      element: {
-        target: HTMLElement;
-        docId: string;
-        blockIds?: string[];
-        template?: TemplateResult;
-      },
-      options?: PeekOptions
-    ) {
-      const { target } = element;
+// export function mockPeekViewExtension(
+//   attachmentViewerPanel: AttachmentViewerPanel
+// ) {
+//   return PeekViewExtension({
+//     peek(
+//       element: {
+//         target: HTMLElement;
+//         docId: string;
+//         blockIds?: string[];
+//         template?: TemplateResult;
+//       },
+//       options?: PeekOptions
+//     ) {
+//       const { target } = element;
 
-      if (target instanceof BlockComponent) {
-        if (matchFlavours(target.model, ['affine:attachment'])) {
-          attachmentViewerPanel.open(target.model);
-          return Promise.resolve();
-        }
-      }
+//       if (target instanceof BlockComponent) {
+//         if (matchFlavours(target.model, ['affine:attachment'])) {
+//           attachmentViewerPanel.open(target.model);
+//           return Promise.resolve();
+//         }
+//       }
 
-      alert('Peek view not implemented in playground');
-      console.log('peek', element, options);
+//       alert('Peek view not implemented in playground');
+//       console.log('peek', element, options);
 
-      return Promise.resolve();
-    },
-  } satisfies PeekViewService);
-}
+//       return Promise.resolve();
+//     },
+//   } satisfies PeekViewService);
+// }
 
 export function mockGenerateDocUrlService(collection: DocCollection) {
   const generateDocUrlService: GenerateDocUrlService = {
