@@ -61,15 +61,19 @@ export async function refreshDocMetadata() {
   for (const dbName of databases) {
     const existing = existingMetas.find(m => m.id === dbName);
     if (!existing) {
-      const metadata = await getOfflineDocMeta(dbName);
-      const { title, name, type, ...rest } = metadata;
-      newMetas.push({
-        ...rest,    
-        id: dbName,
-        type,
-        title: title ?? undefined,
-        savedAt: Date.now()
-      });
+      try {
+        const metadata = await getOfflineDocMeta(dbName);
+        const { title, name, type, ...rest } = metadata;
+        newMetas.push({
+          ...rest,    
+          id: dbName,
+          type,
+          title: title ?? undefined,
+          savedAt: Date.now()
+        });
+      } catch (err) {
+        console.error(`Error loading metadata for ${dbName}`, err);
+      }
     }
   }
   newMetas.forEach(m => saveDocMetadata(m));

@@ -60,15 +60,27 @@ importers:
       '@blocknote/react':
         specifier: ^0.11.2
         version: 0.11.2(@tiptap/pm@2.10.4)(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@blocksuite/affine-components':
+        specifier: 0.0.0-canary-20241215001705
+        version: 0.0.0-canary-20241215001705(@types/react@18.3.18)(react@18.3.1)(yjs@13.6.21)
+      '@blocksuite/block-std':
+        specifier: 0.0.0-canary-20241215001705
+        version: 0.0.0-canary-20241215001705(yjs@13.6.21)
       '@blocksuite/blocks':
         specifier: 0.0.0-canary-20241215001705
         version: 0.0.0-canary-20241215001705(@types/react@18.3.18)(react@18.3.1)(yjs@13.6.21)
+      '@blocksuite/global':
+        specifier: 0.0.0-canary-20241215001705
+        version: 0.0.0-canary-20241215001705
       '@blocksuite/presets':
         specifier: 0.0.0-canary-20241215001705
         version: 0.0.0-canary-20241215001705(@types/react@18.3.18)(react@18.3.1)(yjs@13.6.21)
       '@blocksuite/store':
         specifier: 0.0.0-canary-20241215001705
         version: 0.0.0-canary-20241215001705(lit@3.2.1)(yjs@13.6.21)
+      '@blocksuite/sync':
+        specifier: 0.0.0-canary-20241215001705
+        version: 0.0.0-canary-20241215001705(yjs@13.6.21)
       '@codemirror/autocomplete':
         specifier: ^6.18.3
         version: 6.18.4
