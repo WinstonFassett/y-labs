@@ -45,7 +45,7 @@ export interface EditorContextType {
 }
 
 export function createEditor(doc: Doc, mode: "edgeless" | "page" = "edgeless") {
-  console.log("blocksuite/createEditor.ts:createEditor()");
+  // console.log("blocksuite/createEditor.ts:createEditor()");
   initDoc(doc);
 
   // const attachmentViewerPanel = new AttachmentViewerPanel();
@@ -85,7 +85,7 @@ export function createEditor(doc: Doc, mode: "edgeless" | "page" = "edgeless") {
   function bindMode() {
     const modeService = editor.std.provider.get(DocModeProvider);
     editor.slots.docUpdated.on(({ newDocId }) => {
-      console.log("doc updated", newDocId);
+      // console.log("doc updated", newDocId);
       editor.mode = modeService.getPrimaryMode(newDocId);
     });
   }
@@ -94,18 +94,21 @@ export function createEditor(doc: Doc, mode: "edgeless" | "page" = "edgeless") {
     editor.std
       .get(RefNodeSlotsProvider)
       .docLinkClicked.on(({ pageId: docId }) => {
-        console.log(`const target = collection.getDoc(docId);
-      if (!target) {
-        throw new Error(\`Failed to jump to doc ${docId}\`);
-      }
+        console.log('doc link clicked', docId);
+        // console.log(`
+        //   const target = collection.getDoc(docId);
+        //   if (!target) {
+        //     throw new Error(\`Failed to jump to doc ${docId}\`);
+        //   }
 
-      const url = editor.std
-        .get(GenerateDocUrlProvider)
-        .generateDocUrl(target.id);
-      if (url) history.pushState({}, '', url);
+        //   const url = editor.std
+        //     .get(GenerateDocUrlProvider)
+        //     .generateDocUrl(target.id);
+        //   if (url) history.pushState({}, '', url);
 
-      target.load();
-      editor.doc = target;`);
+        //   target.load();
+        //   editor.doc = target;`
+        // );
       });
   }
 
@@ -149,7 +152,7 @@ class PatchPageServiceWatcher extends BlockServiceWatcher {
     const onFormatBarConnected = pageRootService.specSlots.widgetConnected.on(
       (view) => {
         if (view.component instanceof AffineFormatBarWidget) {
-          console.log(`TODO: configureFormatBar(view.component);`);
+          // console.log(`TODO: configureFormatBar(view.component);`);
         }
       },
     );
