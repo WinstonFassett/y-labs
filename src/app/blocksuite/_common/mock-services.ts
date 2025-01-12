@@ -144,7 +144,18 @@ export class MockEdgelessTheme {
   }
 }
 
+document.addEventListener("set-theme", ({ detail: theme }: any) => {
+  mockEdgelessTheme.setTheme(theme);
+});
+
 export const mockEdgelessTheme = new MockEdgelessTheme();
+
+mockEdgelessTheme.theme$.subscribe(theme => {
+  (window as any).setTheme(theme);
+});
+
+
+
 
 export const themeExtension: ThemeExtension = {
   getEdgelessTheme() {
