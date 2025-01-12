@@ -15,7 +15,7 @@ const idGenerator: IdGeneratorType = IdGeneratorType.NanoID;
 
 export const schema = new Schema().register(AffineSchemas);
 
-let awarenessSources: DocCollectionOptions['awarenessSources'];
+export const localBlobSource = new IndexedDBBlobSource('local')
 
 const blocksuiteDocsT = mapTemplate(
   (id) => atom<BsDoc>(undefined as any),
@@ -27,7 +27,7 @@ const blocksuiteDocsT = mapTemplate(
       schema,
       idGenerator,
       blobSources: {
-        main: new IndexedDBBlobSource('collabPlayground'),
+        main: localBlobSource,
         shadows: [
           createDocRoomBlobSource(id)
         ]
@@ -45,7 +45,7 @@ const blocksuiteDocsT = mapTemplate(
       },
     };
 
-    const collection = new DocCollection({ schema });
+    const collection = new DocCollection(options);
     collection.meta.initialize();
     const bsDoc = collection.createDoc({ id })
     const awareness = bsDoc.awarenessStore.awareness
