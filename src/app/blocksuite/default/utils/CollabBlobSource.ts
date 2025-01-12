@@ -26,34 +26,23 @@ export class HyperdriveBlobSource implements BlobSource {
     await writeBlobToHyperdrive(value, drive, path);
     const id = await getHyperdrivePermalink(drive, path);
     setAttachmentDrive(id, drive);
-    console.log('saved', id, { value, drive, key});
+    // console.log('saved', id, { value, drive, key});
     return id
   }
   async get(key: string): Promise<Blob | null> {
-    console.log('GET', key);
     // ensure initialized
     await this._init();
-    const stuff = parseHyperdrivePermalink(key);
-    console.log('stuff', stuff);
-    if (stuff === null) {
+    
+    const linkData = parseHyperdrivePermalink(key);
+    if (linkData === null) {
       return null;
     }
-    console.log('retrieving')
-    const { key: driveKey, path, version, blob } = stuff;
-    // const drive = new Hyperdrive(driveKey);
-    // need a corestore to pass to the drive
-    // how do I get a corestore for the drive key?
-    const attachmentStore = getCasStore(path);
-    console.log('attachmentStore', attachmentStore);
-    // const drive = new Hyperdrive(attachmentStore, driveKey);
+    const { key: driveKey, path, version, blob } = linkData;
     const drive = getAttachmentDrive(key);
-    console.log('drive', drive);
-    const ready = await drive.ready();
-    console.log('drive ready', { ready, drive});
-    const blobs = await drive.getBlobs();
-    console.log('blobs', blobs);
+    await drive.ready();    
     return await readBlobFromHyperdrive(drive, path);    
   }
+
   async delete(key: string): Promise<void> {
     await this._init();
     const stuff = parseHyperdrivePermalink(key);
@@ -64,6 +53,7 @@ export class HyperdriveBlobSource implements BlobSource {
     const drive = new Hyperdrive(driveKey);
     await drive.del(path);    
   }
+  
   async list() {
     await this._init();    
     return [];    
