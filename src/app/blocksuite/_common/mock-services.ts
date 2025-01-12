@@ -9,20 +9,20 @@ import { PeekViewExtension } from '@blocksuite/affine-components/peek';
 import { BlockComponent } from '@blocksuite/block-std';
 import {
   ColorScheme,
-  matchFlavours,
-  toast,
   type DocMode,
   type DocModeProvider,
   type GenerateDocUrlService,
+  matchFlavours,
   type NotificationService,
   type ParseDocUrlService,
   type ReferenceParams,
   type ThemeExtension,
+  toast,
 } from '@blocksuite/blocks';
-import { Slot, type DocCollection } from '@blocksuite/store';
+import { type DocCollection, Slot } from '@blocksuite/store';
+import { signal } from '@preact/signals-core';
 
-import { atom } from 'nanostores';
-// import type { AttachmentViewerPanel } from './components/attachment-viewer-panel.js';
+import type { AttachmentViewerPanel } from './components/attachment-viewer-panel.js';
 
 function getModeFromStorage() {
   const mapJson = localStorage.getItem('playground:docMode');
@@ -127,19 +127,20 @@ export function mockParseDocUrlService(collection: DocCollection) {
   };
   return parseDocUrlService;
 }
+
 export class MockEdgelessTheme {
-  theme$ = atom<ColorScheme>(ColorScheme.Light);
+  theme$ = signal(ColorScheme.Light);
 
   setTheme(theme: ColorScheme) {
-    this.theme$.set(theme);
+    this.theme$.value = theme;
   }
 
   toggleTheme() {
     const theme =
-      this.theme$.get() === ColorScheme.Dark
+      this.theme$.value === ColorScheme.Dark
         ? ColorScheme.Light
         : ColorScheme.Dark;
-    this.theme$.set(theme);
+    this.theme$.value = theme;
   }
 }
 
