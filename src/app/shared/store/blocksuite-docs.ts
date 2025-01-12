@@ -1,3 +1,4 @@
+import { StoreDocSource } from "@/app/blocksuite/default/utils/StoreDocSource";
 import { mapTemplate } from "@/lib/nanostores-utils/mapTemplate";
 import { AffineSchemas } from '@blocksuite/blocks';
 import { Doc as BsDoc, DocCollection, IdGeneratorType, Schema, type DocCollectionOptions } from '@blocksuite/store';
@@ -28,11 +29,11 @@ const blocksuiteDocsT = mapTemplate(
       blobSources: {
         main: new IndexedDBBlobSource('collabPlayground'),
         shadows: [
-          // createDocRoomBlobSource(id)
+          createDocRoomBlobSource(id)
         ]
       },
       docSources: {
-        main: new IndexedDBDocSource(),
+        main: new StoreDocSource(),
       },
       awarenessSources: undefined,
       defaultFlags: {
