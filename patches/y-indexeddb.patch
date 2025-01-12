@@ -1,0 +1,13 @@
+diff --git a/src/y-indexeddb.js b/src/y-indexeddb.js
+index 07f4fbb6da0b0b0621b5696370aabf230f7293a8..41bfa214a734f5f78aa3ffe9a955239ac796eacd 100644
+--- a/src/y-indexeddb.js
++++ b/src/y-indexeddb.js
+@@ -79,7 +79,7 @@ export class IndexeddbPersistence extends Observable {
+      */
+     this.whenSynced = promise.create(resolve => this.on('synced', () => resolve(this)))
+ 
+-    this._db.then(db => {
++    this._load = this._db.then(db => {
+       this.db = db
+       /**
+        * @param {IDBObjectStore} updatesStore

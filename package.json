@@ -181,7 +181,8 @@
     "patchedDependencies": {
       "y-protocols@1.0.6": "patches/y-protocols@1.0.6.patch",
       "y-codemirror.next@0.3.2": "patches/y-codemirror.next@0.3.2.patch",
-      "y-prosemirror": "patches/y-prosemirror.patch"
+      "y-prosemirror": "patches/y-prosemirror.patch",
+      "y-indexeddb": "patches/y-indexeddb.patch"
     }
   }
 }
