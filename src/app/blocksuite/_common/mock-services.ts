@@ -161,6 +161,9 @@ export const themeExtension: ThemeExtension = {
   getEdgelessTheme() {
     return mockEdgelessTheme.theme$;
   },
+  getAppTheme() {
+    return mockEdgelessTheme.theme$;
+  }
 };
 
 // export function mockPeekViewExtension(
