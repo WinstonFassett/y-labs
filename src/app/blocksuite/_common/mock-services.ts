@@ -129,7 +129,7 @@ export function mockParseDocUrlService(collection: DocCollection) {
 }
 
 export class MockEdgelessTheme {
-  theme$ = signal(ColorScheme.Light);
+  theme$ = signal((window as any).getTheme() as string);
 
   setTheme(theme: ColorScheme) {
     this.theme$.value = theme;
@@ -144,12 +144,26 @@ export class MockEdgelessTheme {
   }
 }
 
+document.addEventListener("set-theme", ({ detail: theme }: any) => {
+  mockEdgelessTheme.setTheme(theme);
+});
+
 export const mockEdgelessTheme = new MockEdgelessTheme();
+
+mockEdgelessTheme.theme$.subscribe(theme => {
+  (window as any).setTheme(theme);
+});
+
+
+
 
 export const themeExtension: ThemeExtension = {
   getEdgelessTheme() {
     return mockEdgelessTheme.theme$;
   },
+  getAppTheme() {
+    return mockEdgelessTheme.theme$;
+  }
 };
 
 // export function mockPeekViewExtension(

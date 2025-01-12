@@ -11,6 +11,9 @@
   function resolveTheme(theme) {
     return theme ?? localStorage.getItem(STORAGE_KEY) ?? getThemePreference();
   }
+  function getTheme() {
+    return resolveTheme(document.documentElement.getAttribute("data-theme"))
+  }
   function applyTheme(theme) {
     document.documentElement.setAttribute("data-theme", theme);
     document.documentElement.style.colorScheme = theme;
