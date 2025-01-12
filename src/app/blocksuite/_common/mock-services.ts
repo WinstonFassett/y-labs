@@ -129,7 +129,7 @@ export function mockParseDocUrlService(collection: DocCollection) {
 }
 
 export class MockEdgelessTheme {
-  theme$ = signal(ColorScheme.Light);
+  theme$ = signal((window as any).getTheme() as string);
 
   setTheme(theme: ColorScheme) {
     this.theme$.value = theme;
