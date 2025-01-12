@@ -38,7 +38,7 @@ export function mapTemplate<
   Template.evict = (id: string) => {
     const it = Template.cache[id];
     delete Template.cache[id];
-    console.log("evicted", id, it);
+    // console.log("evicted", id, it);
   };
 
   Template.cache = {} as Record<string, S>;

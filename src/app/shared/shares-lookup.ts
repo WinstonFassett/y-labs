@@ -4,6 +4,8 @@ import { getBlocknoteShares } from "../blocknote/blocknote-shares";
 import { getBlocksuiteShares } from "../blocksuite/blocksuite-shares";
 import { getTlDrawShares } from '../tldraw/tldraw-shares';
 import { getCodeMirrorShares } from '../codemirror/codemirror-shares';
+import { getRemirrorShares } from '../remirror/remirror-shares';
+import { getMilkdownShares } from '../milkdown/milkdown-shares';
 
 export function getSharesForType(ydoc: Y.Doc, type: string): Record<string, Y.AbstractType<any>> {
   switch (type) {
@@ -17,6 +19,10 @@ export function getSharesForType(ydoc: Y.Doc, type: string): Record<string, Y.Ab
       return getTlDrawShares(ydoc);
     case 'codemirror': 
       return getCodeMirrorShares(ydoc);
+    case 'remirror': 
+      return getRemirrorShares(ydoc);
+    case 'milkdown':
+      return getMilkdownShares(ydoc);
     default:
       return {};
   }

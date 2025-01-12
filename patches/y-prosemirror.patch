@@ -1,0 +1,15 @@
+diff --git a/src/plugins/sync-plugin.js b/src/plugins/sync-plugin.js
+index f719448f24e841282f4bbd29cc5167f33fb06596..bd6e27df1f84ca35003f5c9a9924fc36aff8f60a 100644
+--- a/src/plugins/sync-plugin.js
++++ b/src/plugins/sync-plugin.js
+@@ -175,7 +175,9 @@ export const ySyncPlugin = (yXmlFragment, {
+       binding.initView(view)
+       if (mapping == null) {
+         // force rerender to update the bindings mapping
+-        binding._forceRerender()
++        eventloop.timeout(0, () => {
++          binding._forceRerender()
++        })
+       }
+       onFirstRender()
+       return {

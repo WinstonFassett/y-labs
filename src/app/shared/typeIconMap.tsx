@@ -20,6 +20,18 @@ export const typeIconMap = {
       alt="Blocksuite"
       className="h-8 w-8" />
   ),
+  milkdown: (
+    <img
+      src="/y-labs/logos/milkdown.svg"
+      alt="Milkdown"
+      className="h-8 w-8" />
+  ),
+  remirror: (
+    <img
+      src="/y-labs/logos/remirror.svg"
+      alt="Remirror"
+      className="h-8 w-8" />
+  ),
   novel: <img src="/y-labs/logos/novel.svg" alt="Novel" className="h-8 w-8" />,
   tldraw: (
     <img
@@ -47,6 +59,18 @@ export const FileTypeIcons = {
     <img
       src="/y-labs/logos/blocksuite2.svg"
       alt="Blocksuite"
+      className={cn("h-8 w-8", className)} />
+  ),
+  milkdown: ({ className }: { className: string }) => (
+    <img
+      src="/y-labs/logos/milkdown.svg"
+      alt="Milkdown"
+      className={cn("h-8 w-8", className)} />
+  ),
+  remirror: ({ className }: { className: string }) => (
+    <img
+      src="/y-labs/logos/remirror.svg"
+      alt="Remirror"
       className={cn("h-8 w-8", className)} />
   ),
   novel: ({ className }: { className: string }) => <img src="/y-labs/logos/novel.svg" alt="Novel" className={cn("h-8 w-8", className)} />,

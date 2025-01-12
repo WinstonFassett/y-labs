@@ -4,6 +4,7 @@ import {
   DialogContent,
   DialogFooter,
   DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog.js";
 
 import { useStore } from "@nanostores/react";
@@ -47,8 +48,8 @@ export function CreateDocumentDialog() {
       >
         <DialogContent>
           <>
-            <DialogHeader className="flex flex-col gap-1">
-              {/* Create new document */}
+            <DialogHeader className="flex flex-col gap-1">              
+              <DialogTitle>Create a new document</DialogTitle>
             </DialogHeader>
 
             <CreateDocButtons />

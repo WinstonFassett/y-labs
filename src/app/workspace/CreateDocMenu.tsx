@@ -20,6 +20,16 @@ const docTypes = [
     href: "/y-labs/app/workspace/index.html#/new/blocksuite",
   },
   {
+    label: "Milkdown",
+    icon: typeIconMap.milkdown,
+    href: "/y-labs/app/workspace/index.html#/new/milkdown",
+  },
+  {
+    label: "Remirror",
+    icon: typeIconMap.remirror,
+    href: "/y-labs/app/workspace/index.html#/new/remirror",
+  },
+  {
     label: "Blocknote",
     icon: typeIconMap.blocknote,
     href: "/y-labs/app/workspace/index.html#/new/blocknote",
@@ -37,7 +47,6 @@ export function CreateDocButtons() {
   const body = "flex items-center justify-center flex-grow"
   return (
     <div>
-      <p className="text-default-600 text-center">Create a new document:</p>
       <div className="gap-2 grid grid-cols-2 justify-items-center items-center mt-8">
         {docTypes.map((docType) => (
           <a href={docType.href} onClick={createDocumentState.close}>

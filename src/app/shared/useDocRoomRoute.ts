@@ -51,7 +51,6 @@ export function useDocRoomRoute({ type }:{ type?:string } = {}) {
           const pathParts = ["/edit", docId, type]
           const searchParts = createParams
           const url = buildUrl(pathParts, searchParts);
-          console.log('navigate to', url)
           navigate(url, { replace: true });          
         } else {
           setSearchParams(newSearchParams, { replace: true });

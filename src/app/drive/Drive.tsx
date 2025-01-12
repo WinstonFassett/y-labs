@@ -25,6 +25,16 @@ const docTypes = [
     href: "/y-labs/app/blocksuite/index.html#/new",
   },
   {
+    label: "Milkdown",
+    icon: typeIconMap.milkdown,
+    href: "/y-labs/app/milkdown/index.html#/new",
+  },
+  {
+    label: "Remirror",
+    icon: typeIconMap.remirror,
+    href: "/y-labs/app/remirror/index.html#/new",
+  },
+  {
     label: "Blocknote",
     icon: typeIconMap.blocknote,
     href: "/y-labs/app/blocknote/index.html#/new",
@@ -37,6 +47,7 @@ const docTypes = [
 ];
 
 export function getDocUrl(name: string, type: string) {
+  console.log('getDocUrl', {name, type});
   switch (type) {
     case "novel":
       return `/y-labs/app/novel/index.html#/edit/${name}`;
@@ -44,6 +55,10 @@ export function getDocUrl(name: string, type: string) {
       return `/y-labs/app/blocksuite/index.html#/edit/${name}`;
     case "blocknote":
       return `/y-labs/app/blocknote/index.html#/edit/${name}`;
+    case "milkdown":
+      return `/y-labs/app/milkdown/index.html#/edit/${name}`;
+    case "remirror":
+      return `/y-labs/app/remirror/index.html#/edit/${name}`;      
     case "codemirror":
       return `/y-labs/app/codemirror/index.html#/edit/${name}`;
     case "tldraw":
@@ -64,7 +79,6 @@ export function CreateDocButtons() {
   const body = "flex items-center justify-center flex-grow"
   return (
     <div>
-      <p className="text-default-600 text-center">Create a new document:</p>
       <div className="gap-2 grid grid-cols-2 justify-items-center items-center mt-8">
         {docTypes.map((docType) => (
           <a href={docType.href}>
