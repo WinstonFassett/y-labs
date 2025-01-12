@@ -14,7 +14,7 @@ export function mapTemplate<
 >(
   build?: (id: string, ...args: A) => S,
   mount?: (store: S, id: string, ...args: A) => (() => void) | undefined,
-): (id: string, ...args: A) => S {
+): ((id: string, ...args: A) => S) & { $cache: MapStore<Record<string, S>> } {
   
   
   const cacheStore = map<Record<string, S>>();

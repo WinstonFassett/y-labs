@@ -113,6 +113,7 @@
     "theme-change": "^2.5.0",
     "tinacms": "^1.5.29",
     "trystero": "^0.20.0",
+    "typed-emitter": "^2.1.0",
     "typescript": "^5.3.3",
     "use-debounce": "^10.0.0",
     "uuid": "^11.0.3",
