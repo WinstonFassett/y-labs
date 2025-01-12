@@ -1,13 +1,13 @@
 import RandomAccessStorage from 'random-access-storage';
 
-import { fs } from '@/app/shared/zen-fs';
+import { fs, FsReady } from '@/app/shared/zen-fs';
 
 export function createLevelRandomAccessFileSystem() {
-  const DatabaseOpened = Promise.resolve()
+  const DatabaseOpened = FsReady
 
   function createFile(name: string) {
     // replace / with escape character
-    name = name.replace(/\//g, '@');
+    name = name.replace(/\//g, '$');
     name = "/" + name;
 
     let fd = 0;
@@ -16,7 +16,7 @@ export function createLevelRandomAccessFileSystem() {
       open: function (req) {
         DatabaseOpened.then(() => {
           const next = () => {
-            fs.open(name, 'w+', function (err, res) {
+            fs.open(name, 'a+', function (err, res) {
               if (err) return req.callback(err)
               fd = res
               req.callback(null)
