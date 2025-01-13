@@ -189,7 +189,6 @@ export const DualEditor: React.FC = () => {
   //   extensions: () => [new YjsExtension({ getProvider, disableUndo: true })],
   // });
   const extensions = useMemo(() => [...baseExtensions(), ...realtime.extensions()], [realtime]);
-  console.log({ extensions })
   const visual = useRemirror({
     extensions,
     stringHandler: 'markdown',

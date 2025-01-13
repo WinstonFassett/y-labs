@@ -508,7 +508,6 @@ export class TrysteroDocRoom {
   }
 
   disconnect() {
-    console.log('**trystero disconnect')
     this.awareness.setLocalState(null);
     this.provider.trystero?.leave();
     this.provider.trystero = null
