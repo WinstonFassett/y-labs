@@ -1,12 +1,12 @@
-import type {
-  PeekOptions,
-  PeekViewService,
-} from '@blocksuite/affine-components/peek';
+// import type {
+//   PeekOptions,
+//   PeekViewService,
+// } from '@blocksuite/affine-components/peek';
 import type { AffineEditorContainer } from '@blocksuite/presets';
-import type { TemplateResult } from 'lit';
+// import type { TemplateResult } from 'lit';
 
-import { PeekViewExtension } from '@blocksuite/affine-components/peek';
-import { BlockComponent } from '@blocksuite/block-std';
+// import { PeekViewExtension } from '@blocksuite/affine-components/peek';
+// import { BlockComponent } from '@blocksuite/block-std';
 import {
   ColorScheme,
   type DocMode,
@@ -21,8 +21,6 @@ import {
 } from '@blocksuite/blocks';
 import { type DocCollection, Slot } from '@blocksuite/store';
 import { signal } from '@preact/signals-core';
-
-import type { AttachmentViewerPanel } from './components/attachment-viewer-panel.js';
 
 function getModeFromStorage() {
   const mapJson = localStorage.getItem('playground:docMode');
