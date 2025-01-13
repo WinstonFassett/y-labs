@@ -137,6 +137,7 @@ function createTrysteroDocRoom(
       if (connected) {
         setUserInAwareness(user.get())
         $connectionState.set('connected')
+        DocEvents.emit('joinedRoom', {docId, roomId, $room: model, provider})
       }
     });  
     provider.on("synced", ({ synced }: { synced: boolean }) => {
@@ -152,7 +153,7 @@ function createTrysteroDocRoom(
       const { added, removed, resurrected } = e;
       $peerIds.set( $peerIds.get().concat(added).concat(resurrected).filter((it) => !removed.includes(it)));
     })
-    DocEvents.emit('joinedRoom', {docId, roomId, $room: model, provider})
+    
     return provider
   }
 

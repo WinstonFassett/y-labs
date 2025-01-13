@@ -85,6 +85,7 @@
     "lib0": "^0.2.89",
     "lowlight": "^3.1.0",
     "lucide-react": "^0.338.0",
+    "mitt": "^3.0.1",
     "nanoid": "^5.0.8",
     "nanostores": "^0.10.0",
     "next-themes": "^0.3.0",

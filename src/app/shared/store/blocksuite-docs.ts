@@ -1,4 +1,5 @@
 import { StoreDocSource } from "@/app/blocksuite/default/utils/StoreDocSource";
+import { createDocRoomsBlobSource } from "@/app/blocksuite/doc-rooms-blobsource";
 import { mapTemplate } from "@/lib/nanostores-utils/mapTemplate";
 import { AffineSchemas } from '@blocksuite/blocks';
 import { Doc as BsDoc, DocCollection, IdGeneratorType, Schema, type DocCollectionOptions } from '@blocksuite/store';
@@ -29,7 +30,7 @@ const blocksuiteDocsT = mapTemplate(
       blobSources: {
         main: localBlobSource,
         shadows: [
-          createDocRoomBlobSource(id)
+          createDocRoomsBlobSource(id)
         ]
       },
       docSources: {
@@ -64,28 +65,28 @@ export function getBlocksuiteDocStore(id: string) {
   return blocksuiteDocsT(id);
 }
 
-export function createDocRoomBlobSource(id: string) {
-  async function get(key: string) {
-    console.log('todo: get', key)
-    return null
-  }
-  async function set(key: string, value: Blob): Promise<string> {
-    throw new Error("Function not implemented.");
-    // return key
-  }
-  function destroy () {}
-  const source: BlobSource & { destroy: typeof destroy }  = {
-    name: "",
-    readonly: true,
-    get,
-    set,
-    delete: function (key: string): Promise<void> {
-      throw new Error("Function not implemented.");
-    },
-    list: function (): Promise<string[]> {
-      throw new Error("Function not implemented.");
-    },
-    destroy
-  }
-  return source
-}
+// export function createDocRoomBlobSource(id: string) {
+//   async function get(key: string) {
+//     console.log('todo: get', key)
+//     return null
+//   }
+//   async function set(key: string, value: Blob): Promise<string> {
+//     throw new Error("Function not implemented.");
+//     // return key
+//   }
+//   function destroy () {}
+//   const source: BlobSource & { destroy: typeof destroy }  = {
+//     name: "",
+//     readonly: true,
+//     get,
+//     set,
+//     delete: function (key: string): Promise<void> {
+//       throw new Error("Function not implemented.");
+//     },
+//     list: function (): Promise<string[]> {
+//       throw new Error("Function not implemented.");
+//     },
+//     destroy
+//   }
+//   return source
+// }
