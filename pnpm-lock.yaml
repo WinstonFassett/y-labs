@@ -75,6 +75,9 @@ importers:
       '@blocksuite/global':
         specifier: 0.0.0-canary-20250113001525
         version: 0.0.0-canary-20250113001525
+      '@blocksuite/icons':
+        specifier: 2.1.75
+        version: 2.1.75(@types/react@18.3.18)(lit@3.2.1)(react@18.3.1)
       '@blocksuite/presets':
         specifier: 0.0.0-canary-20250113001525
         version: 0.0.0-canary-20250113001525(@types/react@18.3.18)(react@18.3.1)(yjs@13.6.21)
