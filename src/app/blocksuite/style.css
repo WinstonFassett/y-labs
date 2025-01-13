@@ -14,4 +14,5 @@
 .editor-container {
   flex-direction: column;
   flex: 1;
+  --affine-text-primary-color: pink;
 }

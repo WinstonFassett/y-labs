@@ -13,6 +13,7 @@ import { appId } from "./constants";
 import { getDocRoomConfig, type DocRoomConfigFields } from "./doc-room-config";
 import { user } from "./local-user";
 import { getYdoc } from "./yjs-docs";
+import { DocEvents } from "./doc-events";
 
 type ConnectionStatus = "connected" | "disconnected"
 type SyncStatus = "synced" | "unsynced"
@@ -23,6 +24,7 @@ interface DocRoomState {
   canConnect?: boolean
   provider?: TrysteroProvider
 }
+// type DocRoom = ReturnType<typeof getTrysteroDocRoom>;
 
 function getDocRoomId(docId: string, roomId: string) {
   return `${docId}/${roomId}`;
@@ -32,7 +34,7 @@ export function getTrysteroDocRoom(docId: string, roomId: string) {
   return trysteroDocRoomT(getDocRoomId(docId, roomId), docId, roomId);
 }
 
-
+export type DocRoomStore = ReturnType<typeof getTrysteroDocRoom>
 
 function createTrysteroDocRoom(
   docId: string,
@@ -99,6 +101,7 @@ function createTrysteroDocRoom(
       const prevProvider = store.get().provider      
       if (prevProvider) {
         prevProvider.destroy()
+        DocEvents.emit('leftRoom', {docId, roomId, $room: model, provider: prevProvider})
       }
 
       const provider = canConnect ? createProvider(config) : undefined
@@ -134,6 +137,7 @@ function createTrysteroDocRoom(
       if (connected) {
         setUserInAwareness(user.get())
         $connectionState.set('connected')
+        DocEvents.emit('joinedRoom', {docId, roomId, $room: model, provider})
       }
     });  
     provider.on("synced", ({ synced }: { synced: boolean }) => {
@@ -149,6 +153,7 @@ function createTrysteroDocRoom(
       const { added, removed, resurrected } = e;
       $peerIds.set( $peerIds.get().concat(added).concat(resurrected).filter((it) => !removed.includes(it)));
     })
+    
     return provider
   }
 
@@ -171,5 +176,19 @@ const trysteroDocRoomT = mapTemplate(
       docId,
       getYdoc(docId).get(),
       roomId,
-    )
+    ),
+  (store, id, docId, roomId) => {
+    $allDocRooms.setKey(id, store);
+    // DocEvents.emit('joinedRoom', docId, roomId)
+    return () => {
+      $allDocRooms.setKey(id, undefined as any);
+      // DocEvents.emit('leftRoom', docId, roomId)
+    }
+  }
 );
+
+
+export const $allDocRooms = map<Record<string, ReturnType<typeof getTrysteroDocRoom>>>({});
+
+const $docRoomRegistry = atom<Record<string, ReturnType<typeof getTrysteroDocRoom>>>({})
+

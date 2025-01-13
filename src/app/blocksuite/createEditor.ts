@@ -1,4 +1,3 @@
-import { collection } from "@/app/shared/store/blocksuite-docs";
 import { AffineEditorContainer } from "@blocksuite/presets";
 import { Doc, DocCollection } from "@blocksuite/store";
 
@@ -58,7 +57,7 @@ export function createEditor(doc: Doc, mode: "edgeless" | "page" = "edgeless") {
   setupEditorExtensions();
   setupDocLink();
 
-  return { editor, collection };
+  return editor
 
   function setupDebug() {
     Object.assign(window, {

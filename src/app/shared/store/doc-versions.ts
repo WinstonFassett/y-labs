@@ -10,7 +10,9 @@ import { $trackHistoryWhenEditing } from './local-settings';
 // import {  yCodemirrorSyncPluginKey } from 'y-codemirror.next'
 
 const VersionsByDocEditor = mapTemplate((id, { docId, type }:{docId:string, type:string}) => {
-  const sourceDoc = getYdoc(docId,).get()
+  const $sourceDoc = getYdoc(docId,)
+  const sourceDoc = $sourceDoc.get()
+  console.log({ sourceDoc, $sourceDoc })
   return createVersionControlStore(sourceDoc, {type})
 })
 

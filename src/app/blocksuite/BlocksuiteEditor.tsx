@@ -31,8 +31,11 @@ function App() {
 
   const editorContext = useMemo(() => {
     if (!loaded) return null
-    const editorContext = createEditor(currentBsDoc, mode)
-    return editorContext
+    const editor = createEditor(currentBsDoc, mode)
+    return {
+      editor,
+      collection: currentBsDoc.collection,
+    }
   }, [currentBsDoc, loaded])
   
   useEffect(() => {
@@ -40,9 +43,10 @@ function App() {
       editorContext.editor.switchEditor(mode)
     }
   },[editorContext, mode])
+  
+  if (!editorContext) return null;
   return (
     <EditorProvider value={editorContext}>
-
         <EditorContainer />
         <div className='fixed top-16 right-5 flex flex-row items-center'>
           <div className='flex-grow'></div>
