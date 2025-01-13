@@ -28,10 +28,10 @@ patchedDependencies:
   y-codemirror.next@0.3.2:
     hash: o3g64ndtgpt35bm3ffbyleh5ei
     path: patches/y-codemirror.next@0.3.2.patch
-  y-indexeddb:
+  y-indexeddb@9.0.12:
     hash: iryb4kowkwm6hmzom5egxfipw4
     path: patches/y-indexeddb.patch
-  y-prosemirror:
+  y-prosemirror@1.2.15:
     hash: 5fcsrlqgkagh6tnn74qpavl4li
     path: patches/y-prosemirror.patch
   y-protocols@1.0.6:
@@ -448,7 +448,7 @@ importers:
         specifier: 0.3.2
         version: 0.3.2(patch_hash=o3g64ndtgpt35bm3ffbyleh5ei)(@codemirror/state@6.5.0)(@codemirror/view@6.36.1)(yjs@13.6.21)
       y-indexeddb:
-        specifier: ^9.0.12
+        specifier: 9.0.12
         version: 9.0.12(patch_hash=iryb4kowkwm6hmzom5egxfipw4)(yjs@13.6.21)
       y-prosemirror:
         specifier: 1.2.15

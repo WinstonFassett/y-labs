@@ -149,7 +149,7 @@
     "use-debounce": "^10.0.0",
     "uuid": "^11.0.3",
     "y-codemirror.next": "0.3.2",
-    "y-indexeddb": "^9.0.12",
+    "y-indexeddb": "9.0.12",
     "y-prosemirror": "1.2.15",
     "y-protocols": "^1.0.6",
     "y-utility": "^0.1.4",
@@ -183,8 +183,8 @@
     "patchedDependencies": {
       "y-protocols@1.0.6": "patches/y-protocols@1.0.6.patch",
       "y-codemirror.next@0.3.2": "patches/y-codemirror.next@0.3.2.patch",
-      "y-prosemirror": "patches/y-prosemirror.patch",
-      "y-indexeddb": "patches/y-indexeddb.patch"
+      "y-prosemirror@1.2.15": "patches/y-prosemirror.patch",
+      "y-indexeddb@9.0.12": "patches/y-indexeddb.patch"
     }
   }
 }
