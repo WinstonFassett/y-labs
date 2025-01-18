@@ -7,7 +7,7 @@ import {
   getDocRoomId
 } from "./store/doc-room-config";
 import { getTrysteroDocRoom } from "./store/doc-room-trystero";
-import { getYdoc } from "./store/yjs-docs";
+import { getYdoc } from "./store/doc-yjs";
 import { useStoreIfPresent } from "./useStoreIfPresent";
 
 export function useDocCollabStore(requireDocId = true) {

@@ -12,7 +12,7 @@ import { createRoom } from "../createRoom";
 import { appId } from "./constants";
 import { getDocRoomConfig, type DocRoomConfigFields } from "./doc-room-config";
 import { user } from "./local-user";
-import { getYdoc } from "./yjs-docs";
+import { getYdoc } from "./doc-yjs";
 import { nanosubscriber } from "@/lib/trystero-subscribe/subscribe";
 
 type ConnectionStatus = "connected" | "disconnected"

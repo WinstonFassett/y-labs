@@ -3,7 +3,7 @@ import { createEmptyDoc } from '@blocksuite/presets';
 import * as Y from 'yjs';
 import { useStore } from '@nanostores/react';
 import { useState, useMemo, useEffect } from 'react';
-import { getBlocksuiteDocStore } from '../shared/store/blocksuite-docs';
+import { getBlocksuiteDocStore } from '../shared/store/doc-blocksuite';
 import { useDocEditor } from '../shared/useDocEditor';
 import { useDocParams } from '../shared/useDocParams';
 import EditorContainer from './EditorContainer';

@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import * as Y from "yjs";
 import { getOfflineDoc } from "../shared/store/local-yjs-idb";
 import { resolveShare } from "../shared/store/resolveShare";
-import { getAllDocMetadata } from "../shared/store/doc-metadata";
+import { getAllDocMetadata } from "../shared/store/local-docs-metadata";
 
 export function ExportDriveButton() {
   return <Button onClick={doExport}>Export Drive</Button>;

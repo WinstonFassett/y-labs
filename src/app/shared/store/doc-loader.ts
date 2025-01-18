@@ -3,7 +3,7 @@ import { atom, batched, type ReadableAtom } from "nanostores";
 import { getDocRoomConfig } from "./doc-room-config";
 import { getDocIdbStore } from "./local-yjs-idb";
 import { getTrysteroDocRoom } from "./doc-room-trystero";
-import { getYdoc } from "./yjs-docs";
+import { getYdoc } from "./doc-yjs";
 import { $newDocIds } from "./new-doc-ids";
 
 

@@ -1,5 +1,5 @@
 import { useDocCollabStore } from "@/app/shared/useDocCollabStore";
-import { $docMetas } from "./store/doc-metadata";
+import { $docMetas } from "./store/local-docs-metadata";
 import { getBaseShares } from "./shares-base";
 
 export function useDocTitle() {

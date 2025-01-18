@@ -1,7 +1,7 @@
 import { mapTemplate } from "@/lib/nanostores-utils/mapTemplate";
 import { atom } from "nanostores";
 import { Doc } from "yjs";
-import { getBlocksuiteDocStore } from "./blocksuite-docs";
+import { getBlocksuiteDocStore } from "./doc-blocksuite";
 
 const ydocsT = mapTemplate(
   (id) =>
