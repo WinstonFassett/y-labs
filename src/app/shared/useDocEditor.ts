@@ -10,13 +10,13 @@ import { useDocParams } from "./useDocParams";
 
 export function useDocEditor(options: {type?: string}={}) {
   const { docId, type } = useDocParams({ type: options.type });
-  const collabStuff = useDocCollabStore();
-  const currentVersionStuff = useCurrentVersion({ type });
-  const { ydoc, versionKey, isReplay } = currentVersionStuff;
-  const { roomId, docRoomId } = collabStuff;
+  const docCollab = useDocCollabStore();
+  const docVersioning = useCurrentVersion({ type });
+  const { ydoc, versionKey, isReplay } = docVersioning;
+  const { roomId, docRoomId } = docCollab;
   const mode = useDocEditorMode();
-  const loadState = useStore(getDocLoadState(docId, roomId));
-  const shares = useMemo(() => getSharesForType(ydoc, type), [type]);
+  const loadState = useStore(getDocLoadState(docId!, roomId));
+  const shares = useMemo(() => getSharesForType(ydoc, type!), [type]);
 
   const loaded = loadState === "loaded";
   const title = useDocTitle();
@@ -24,8 +24,8 @@ export function useDocEditor(options: {type?: string}={}) {
   const docEditorKey = [docRoomId, versionKey].join(":");
   const readOnly = isReplay
   return {
-    ...collabStuff,
-    ...currentVersionStuff,
+    ...docCollab,
+    ...docVersioning,
     mode,
     loadState,
     shares,
