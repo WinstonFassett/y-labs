@@ -1,7 +1,9 @@
 import * as Y from "yjs";
-
+import { getBlocksuiteShares } from "@/app/blocksuite/blocksuite-shares";
 export function resolveShare(ydoc: Y.Doc, name: string) {
   switch (name) {
+    case "blocksuite": 
+      return getBlocksuiteShares(ydoc).blocks
     case "tldraw":
       return ydoc.getArray(name);
     case "novel":
