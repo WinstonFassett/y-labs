@@ -1,7 +1,7 @@
 import { Card, CardFooter, CardHeader } from "@/components/ui/card";
 import { Toaster } from "@/components/ui/toaster.tsx";
 import { cn } from "@/lib/utils.js";
-import { typeIconMap } from "../shared/typeIconMap.tsx";
+import { typeIconMap } from "../shared/config/app-icons.tsx";
 import { CreateDocumentDialog } from "./CreateDocumentDialogButton.tsx";
 import DriveListing from "./DriveListing.tsx";
 import { ImportDriveModal } from "./ImportDrive.tsx";

@@ -3,7 +3,7 @@ import { useStore } from "@nanostores/react";
 import { useMemo } from "react";
 import { DeleteSavedDialog } from "../shared/DeleteSavedDialog.tsx";
 import { $docMetas } from "../shared/store/local-docs-metadata.ts";
-import { typeIconMap } from "../shared/typeIconMap.tsx";
+import { typeIconMap } from "../shared/config/app-icons.tsx";
 import { EmptyState, getDocUrl as getAppDocUrl } from "./Drive.tsx";
 import { cn } from "@/lib/utils.ts";
 import { Loading } from "@/components/ui/loading.js";

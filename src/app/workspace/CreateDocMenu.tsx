@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardFooter } from "@/components/ui/card";
-import { typeIconMap } from "../shared/typeIconMap";
+import { typeIconMap } from "../shared/config/app-icons";
 import { cn } from "@/lib/utils";
 import { createDocumentState } from "./CreateDocumentDialog";
 
