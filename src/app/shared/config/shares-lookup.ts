@@ -1,11 +1,11 @@
 import * as Y from 'yjs'
-import { getNovelShares } from "../novel/novel-shares";
-import { getBlocknoteShares } from "../blocknote/blocknote-shares";
-import { getBlocksuiteShares } from "../blocksuite/blocksuite-shares";
-import { getTlDrawShares } from '../tldraw/tldraw-shares';
-import { getCodeMirrorShares } from '../codemirror/codemirror-shares';
-import { getRemirrorShares } from '../remirror/remirror-shares';
-import { getMilkdownShares } from '../milkdown/milkdown-shares';
+import { getNovelShares } from "../../novel/novel-shares";
+import { getBlocknoteShares } from "../../blocknote/blocknote-shares";
+import { getBlocksuiteShares } from "../../blocksuite/blocksuite-shares";
+import { getTlDrawShares } from '../../tldraw/tldraw-shares';
+import { getCodeMirrorShares } from '../../codemirror/codemirror-shares';
+import { getRemirrorShares } from '../../remirror/remirror-shares';
+import { getMilkdownShares } from '../../milkdown/milkdown-shares';
 
 export function getSharesForType(ydoc: Y.Doc, type: string): Record<string, Y.AbstractType<any>> {
   switch (type) {

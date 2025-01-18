@@ -3,7 +3,7 @@ import { useDocCollabStore } from "@/app/shared/useDocCollabStore";
 import { useStore } from "@nanostores/react";
 import { useDocEditorMode } from "./useDocEditorMode";
 import { useCurrentVersion } from "./useCurrentVersion";
-import { getSharesForType } from "./shares-lookup";
+import { getSharesForType } from "./config/shares-lookup";
 import { useMemo } from "react";
 import { useDocTitle } from "./useDocTitle";
 import { useDocParams } from "./useDocParams";

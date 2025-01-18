@@ -2,7 +2,7 @@ import { mapTemplate } from '@/lib/nanostores-utils/mapTemplate';
 import { type ReadableAtom, atom, computed, map, onMount } from 'nanostores';
 import { ySyncPluginKey, yUndoPluginKey } from 'y-prosemirror';
 import * as Y from 'yjs';
-import { getSharesForType } from '../shares-lookup';
+import { getSharesForType } from '../config/shares-lookup';
 import { addVersion, buildVersionGraph, restoreVersion, type Version } from '../../../lib/yjs-versions';
 import { getYdoc } from './doc-yjs';
 import { Doc as BlocksuiteDoc } from '@blocksuite/store';
