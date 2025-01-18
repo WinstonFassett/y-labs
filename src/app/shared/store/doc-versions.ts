@@ -42,7 +42,7 @@ export function createVersionControlStore(sourceDoc: Y.Doc, {type}:{type: string
   })
 
   const $isLatestVersion = computed([store, $versions], ({ displayVersionId }, versions) => 
-    checkIfLatestVersion(displayVersionId, versions)
+    !displayVersionId || checkIfLatestVersion(displayVersionId, versions)
   )
 
   const $stackSizes = map<{undo: number; redo: number}>({ undo: 0, redo: 0 });
@@ -119,7 +119,7 @@ export function createVersionControlStore(sourceDoc: Y.Doc, {type}:{type: string
     
   }
 
-  function switchToVersion(versionId: string | null) {
+  function switchToVersion(versionId: string) {
     const versions = $versions.get();
     const isLatestVersion = checkIfLatestVersion(versionId, versions);
 

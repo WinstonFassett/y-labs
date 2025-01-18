@@ -39,7 +39,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { buildUrl } from "@/lib/buildUrl";
+import { buildUrl } from "@/lib/build-url";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "framer-motion";
@@ -97,10 +97,11 @@ export function ShareDialog({ type }: { type?: string }) {
       const { roomId } = data;
       startSharing({
         ...data,
-        docId
+        type: type!,
+        docId: docId!
       });
       handleCopyLink();
-      const newRoomConfig = getDocRoomConfig(docId, roomId).get();
+      const newRoomConfig = getDocRoomConfig(docId!, roomId).get();
       navigate(
         generateDocRoomRouterLink(newRoomConfig, type)
       )
@@ -112,7 +113,7 @@ export function ShareDialog({ type }: { type?: string }) {
   const [linkCopied, setLinkCopied] = useState(false);
   const handleCopyLink = async () => {
     const roomId = form.getValues("roomId");
-    const $roomConfig = getDocRoomConfig(docId, roomId);
+    const $roomConfig = getDocRoomConfig(docId!, roomId);
     const sharingLink = generateSharingLink($roomConfig.get(), type);
     if (sharingLink && navigator.clipboard){
       await navigator.clipboard?.writeText(sharingLink);

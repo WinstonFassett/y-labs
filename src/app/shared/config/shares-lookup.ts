@@ -27,3 +27,8 @@ export function getSharesForType(ydoc: Y.Doc, type: string): Record<string, Y.Ab
       return {};
   }
 }
+
+export function resolveShare(ydoc: Y.Doc, key: string): Y.AbstractType<any> | undefined {
+  const shares = getSharesForType(ydoc, key);
+  return shares[key];
+}

@@ -85,7 +85,7 @@ const CrepeEditor: FC<MilkdownProps> = ({ onChange, doc, awareness, shareName = 
             // bind doc and awareness
             .bindDoc({
               getXmlFragment: () => doc.getXmlFragment(shareName)
-            })
+            } as any)
           if (awareness) {
             collabService
               .setAwareness(awareness)

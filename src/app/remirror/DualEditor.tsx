@@ -14,7 +14,7 @@ import React, { useMemo } from 'react';
 import jsx from 'refractor/lang/jsx.js';
 import md from 'refractor/lang/markdown.js';
 import typescript from 'refractor/lang/typescript.js';
-import { ExtensionPriority, getThemeVar } from 'remirror';
+import { Extension, ExtensionPriority, getThemeVar, type EmptyShape } from 'remirror';
 import {
   BlockquoteExtension,
   BoldExtension,
@@ -42,18 +42,18 @@ import { useDocEditor } from '../shared/useDocEditor';
 import './style.css';
 const baseExtensions = () => [
   new LinkExtension({ autoLink: true }),
-  new BoldExtension(),
+  new BoldExtension({}),
   new StrikeExtension(),
   new ItalicExtension(),
-  new HeadingExtension(),
+  new HeadingExtension({}),
   new BlockquoteExtension(),
   new BulletListExtension({ enableSpine: true }),
   new OrderedListExtension(),
   new ListItemExtension({ priority: ExtensionPriority.High, enableCollapsible: true }),
   new CodeExtension(),
   new CodeBlockExtension({ supportedLanguages: [jsx, typescript] }),
-  new TrailingNodeExtension(),
-  new TableExtension(),
+  new TrailingNodeExtension({}),
+  new TableExtension({}),
   new MarkdownExtension({ copyAsMarkdown: false }),
   new HardBreakExtension(),
 ];
@@ -64,7 +64,7 @@ interface Context extends Props {
 }
 
 interface Props {
-  visual: UseRemirrorReturn<ReactExtensions<ReturnType<typeof baseExtensions>[number]>>;
+  visual: UseRemirrorReturn<ReactExtensions<Extension<EmptyShape>>>;
   markdown: UseRemirrorReturn<ReactExtensions<DocExtension | CodeBlockExtension>>;
 }
 
@@ -190,7 +190,7 @@ export const DualEditor: React.FC = () => {
   // });
   const extensions = useMemo(() => [...baseExtensions(), ...realtime.extensions()], [realtime]);
   const visual = useRemirror({
-    extensions,
+    extensions: () => extensions as Extension[],
     stringHandler: 'markdown',
     // content: '**Markdown** content is the _best_',
   });

@@ -8,20 +8,20 @@ import {
   SidebarRail
 } from "@/components/ui/sidebar"
 import { Toaster } from "@/components/ui/toaster"
+import { useStore } from "@nanostores/react"
 import { Clock, X } from "lucide-react"
+import { useCallback, useMemo } from "react"
+import { TimelineControls } from "../shared/PlaybackControls"
+import { $settingsStore } from "../shared/SettingsDialog"
 import { VersionHistory } from "../shared/VersionHistory"
+import { usePlayback } from "../shared/usePlayback"
 import { useVersionHistory } from "../shared/useVersionHistory"
 import { CreateDocumentDialog } from "./CreateDocumentDialog"
 import Editor from "./Editor"
 import AppBar from "./WorkspaceAppBar"
-import { TimelineControls } from "../shared/PlaybackControls"
-import { useStore } from "@nanostores/react"
-import { usePlayback } from "../shared/usePlayback"
-import { useCallback, useMemo } from "react"
-import { $settingsStore, TrackHistorySetting } from "../shared/SettingsDialog"
 
 export function Workspace() {
-  const { showVersionHistory, setShowVersionHistory, trackHistoryWhenEditing } = useVersionHistory()
+  const { showVersionHistory, setShowVersionHistory, trackHistoryWhenEditing, $versionHistory } = useVersionHistory()
   return (
     <SidebarProvider shortcut="l" className="h-dvh overflow-hidden">
       <AppSidebar />
@@ -75,18 +75,19 @@ export function Workspace() {
 
 function VersionTimelineControls () {
   const { $versionHistory, displayVersionId, currentVersionId } = useVersionHistory()
-  const versionGraph = useStore($versionHistory.$versionGraph)
-  const versions = useStore($versionHistory.$versions)
+  const store = $versionHistory!
+  const versionGraph = useStore(store.$versionGraph)
+  const versions = useStore(store.$versions)
 
   const handleJumpToVersion = useCallback(
-    (versionId: string | null) => {
+    (versionId: string) => {
       if (!versionGraph?.nodes.has(versionId)) return;
       const version = versionGraph.nodes.get(versionId);
       if (!version) {
         console.warn("Version not found", versionId);
         return;
       } 
-      $versionHistory.switchToVersion(versionId)
+      store.switchToVersion(versionId)
     },
     [versionGraph]
   );
@@ -98,7 +99,7 @@ function VersionTimelineControls () {
   } = usePlayback(
     versionGraph,
     currentVersionId,
-    newVersion => $versionHistory.switchToVersion(newVersion)
+    newVersion => store.switchToVersion(newVersion)
   );
 
   const currentIndex = useMemo(() => {

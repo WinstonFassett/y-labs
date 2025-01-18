@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import * as Y from "yjs";
-import { getOfflineDoc } from "../shared/store/local-yjs-idb";
-import { resolveShare } from "../shared/store/resolveShare";
+import { resolveShare } from "../shared/config/shares-lookup";
 import { getAllDocMetadata } from "../shared/store/local-docs-metadata";
+import { getOfflineDoc } from "../shared/store/local-yjs-idb";
 
 export function ExportDriveButton() {
   return <Button onClick={doExport}>Export Drive</Button>;
@@ -44,7 +44,7 @@ async function exportAllYDocsToString(asJson = false) {
       if (asJson) {
         docsData[id] = Object.fromEntries(
           Array.from(ydoc.share.entries()).map(([key, value]) => {
-            const resolved = resolveShare(ydoc, key);
+            const resolved = resolveShare(ydoc, key)!;
             return [key, resolved.toJSON()];
           }),
         );

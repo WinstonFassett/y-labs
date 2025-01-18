@@ -265,8 +265,8 @@ importers:
         specifier: ^18.2.19
         version: 18.3.5(@types/react@18.3.18)
       '@types/refractor':
-        specifier: ^4.0.0
-        version: 4.0.0
+        specifier: ^3.0.2
+        version: 3.4.1
       '@uiw/codemirror-theme-eclipse':
         specifier: ^4.23.7
         version: 4.23.7(@codemirror/language@6.10.7)(@codemirror/state@6.5.0)(@codemirror/view@6.36.1)
@@ -330,9 +330,6 @@ importers:
       lz-string:
         specifier: ^1.5.0
         version: 1.5.0
-      mitt:
-        specifier: ^3.0.1
-        version: 3.0.1
       nanoid:
         specifier: ^5.0.8
         version: 5.0.9
@@ -400,8 +397,8 @@ importers:
         specifier: ^0.15.0
         version: 0.15.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       refractor:
-        specifier: ^4.8.1
-        version: 4.8.1
+        specifier: ^3.6.0
+        version: 3.6.0
       remirror:
         specifier: ^3.0.1
         version: 3.0.1(@remirror/pm@3.0.0)(@types/node@20.17.10)(prettier@3.4.2)
@@ -435,9 +432,6 @@ importers:
       trystero:
         specifier: ^0.20.0
         version: 0.20.0(@libp2p/interface@1.7.0)(@waku/core@0.0.28(@multiformats/multiaddr@12.3.4)(@waku/enr@0.0.21)(@waku/interfaces@0.0.23)(@waku/message-hash@0.1.17)(@waku/proto@0.0.7)(@waku/utils@0.0.21)(libp2p@1.9.4))(@waku/enr@0.0.21)(@waku/interfaces@0.0.23)(@waku/message-hash@0.1.17)(@waku/proto@0.0.7)(@waku/relay@0.0.11(@waku/core@0.0.28(@multiformats/multiaddr@12.3.4)(@waku/enr@0.0.21)(@waku/interfaces@0.0.23)(@waku/message-hash@0.1.17)(@waku/proto@0.0.7)(@waku/utils@0.0.21)(libp2p@1.9.4))(@waku/interfaces@0.0.23)(@waku/proto@0.0.7)(@waku/utils@0.0.21))(@waku/utils@0.0.21)
-      typed-emitter:
-        specifier: ^2.1.0
-        version: 2.1.0
       typescript:
         specifier: ^5.3.3
         version: 5.7.2
@@ -5271,10 +5265,6 @@ packages:
   '@types/refractor@3.4.1':
     resolution: {integrity: sha512-wYuorIiCTSuvRT9srwt+taF6mH/ww+SyN2psM0sjef2qW+sS8GmshgDGTEDgWB1sTVGgYVE6EK7dBA2MxQxibg==}
 
-  '@types/refractor@4.0.0':
-    resolution: {integrity: sha512-qba+Qpzch8TqKwHPw3TIR8VaCK3o7spwnlQd51cbYgrZyBOc9K9kFSdH3zxlAmcD0RN6vWBwFZBe6FwJSfM/LA==}
-    deprecated: This is a stub types definition. refractor provides its own type definitions, so you do not need this installed.
-
   '@types/resolve@1.17.1':
     resolution: {integrity: sha512-yy7HuzQhj0dhGpD8RLXSZWEkLsV9ibvxvi6EiJ3bkqLAO1RGo0WbkWQiwpRlSFymTJRz0d3k5LM3kkx8ArDbLw==}
 
@@ -7739,9 +7729,6 @@ packages:
     resolution: {integrity: sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==}
     engines: {node: '>=16 || 14 >=14.17'}
 
-  mitt@3.0.1:
-    resolution: {integrity: sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw==}
-
   mkdirp-classic@0.5.3:
     resolution: {integrity: sha512-gKLcREMhtuZRwRAfqP3RFW+TK4JqApVBtOIftVgjuABpAtpxhPGaDcfvbhNvD0B8iD1oUr/txX35NjcaY6Ns/A==}
 
@@ -8621,9 +8608,6 @@ packages:
   refractor@3.6.0:
     resolution: {integrity: sha512-MY9W41IOWxxk31o+YvFCNyNzdkc9M20NoZK5vq6jkv4I/uh2zkWcfudj0Q1fovjUQJrNewS9NMzeTtqPf+n5EA==}
 
-  refractor@4.8.1:
-    resolution: {integrity: sha512-/fk5sI0iTgFYlmVGYVew90AoYnNMP6pooClx/XKqyeeCQXrL0Kvgn8V0VEht5ccdljbzzF1i3Q213gcntkRExg==}
-
   regenerate-unicode-properties@10.2.0:
     resolution: {integrity: sha512-DqHn3DwbmmPVzeKj9woBadqmXxLvQoQIwu7nopMc72ztvxVmVk2SBhSnx67zuye5TP+lJsb/TBQsjLKhnDf3MA==}
     engines: {node: '>=4'}
@@ -8839,9 +8823,6 @@ packages:
 
   run-parallel@1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
-
-  rxjs@7.8.1:
-    resolution: {integrity: sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==}
 
   s.color@0.0.15:
     resolution: {integrity: sha512-AUNrbEUHeKY8XsYr/DYpl+qk5+aM+DChopnWOPEzn8YKzOhv4l2zH6LzZms3tOZP3wwdOyc0RmTciyi46HLIuA==}
@@ -9351,9 +9332,6 @@ packages:
   typed-array-length@1.0.7:
     resolution: {integrity: sha512-3KS2b+kL7fsuk/eJZ7EQdnEmQoaho/r6KUef7hxvltNA5DR8NAUM+8wJMbJyZ4G9/7i3v5zPBIMN5aybAh2/Jg==}
     engines: {node: '>= 0.4'}
-
-  typed-emitter@2.1.0:
-    resolution: {integrity: sha512-g/KzbYKbH5C2vPkaXGu8DJlHrGKHLsM25Zg9WuC9pMGfuvT+X25tZQWo5fK1BjBm8+UrVE9LDCvaY0CQk+fXDA==}
 
   typedarray@0.0.6:
     resolution: {integrity: sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==}
@@ -17150,10 +17128,6 @@ snapshots:
     dependencies:
       '@types/prismjs': 1.26.5
 
-  '@types/refractor@4.0.0':
-    dependencies:
-      refractor: 4.8.1
-
   '@types/resolve@1.17.1':
     dependencies:
       '@types/node': 20.17.10
@@ -20481,8 +20455,6 @@ snapshots:
 
   minipass@7.1.2: {}
 
-  mitt@3.0.1: {}
-
   mkdirp-classic@0.5.3: {}
 
   mortice@3.0.6:
@@ -21651,13 +21623,6 @@ snapshots:
       parse-entities: 2.0.0
       prismjs: 1.27.0
 
-  refractor@4.8.1:
-    dependencies:
-      '@types/hast': 2.3.10
-      '@types/prismjs': 1.26.5
-      hastscript: 7.2.0
-      parse-entities: 4.0.2
-
   regenerate-unicode-properties@10.2.0:
     dependencies:
       regenerate: 1.4.2
@@ -22085,11 +22050,6 @@ snapshots:
   run-parallel@1.2.0:
     dependencies:
       queue-microtask: 1.2.3
-
-  rxjs@7.8.1:
-    dependencies:
-      tslib: 2.8.1
-    optional: true
 
   s.color@0.0.15: {}
 
@@ -22750,10 +22710,6 @@ snapshots:
       is-typed-array: 1.1.15
       possible-typed-array-names: 1.0.0
       reflect.getprototypeof: 1.0.9
-
-  typed-emitter@2.1.0:
-    optionalDependencies:
-      rxjs: 7.8.1
 
   typedarray@0.0.6: {}
 

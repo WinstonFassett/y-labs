@@ -5,7 +5,7 @@ import { getBlocksuiteDocStore } from "./doc-blocksuite";
 
 const ydocsT = mapTemplate(
   (id) =>
-    Object.assign(atom<Doc>(), {
+    Object.assign(atom<Doc>(undefined as any), {
       $loaded: atom(false),
     }),
   (store, id) => {
@@ -24,7 +24,7 @@ const ydocsT = mapTemplate(
 );
 
 const blocksuiteYdocsT = mapTemplate(
-  id => Object.assign(atom<Doc>(), { id }),
+  id => Object.assign(atom<Doc>(undefined as any), { id }),
   (store, id) => {
     const $bsDoc = getBlocksuiteDocStore(id);
     return $bsDoc.subscribe((bsDoc) => {

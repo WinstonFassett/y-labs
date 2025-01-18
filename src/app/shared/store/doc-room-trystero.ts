@@ -8,7 +8,7 @@ import {
 } from "nanostores";
 import { Awareness } from "y-protocols/awareness.js";
 import type { Doc } from "yjs";
-import { createRoom } from "../../../lib/createTrysteroRoom";
+import { createRoom } from "../../../lib/trystero-room";
 import { appId } from "./constants";
 import { getDocRoomConfig, type DocRoomConfigFields } from "./doc-room-config";
 import { user } from "./local-user";
@@ -161,7 +161,7 @@ function createTrysteroDocRoom(
       if (synced && $loadState.get()!== 'loaded') {
         $loadState.set('loaded')
         if (!ydoc.isLoaded) {
-          ydoc.emit("load", []);
+          ydoc.emit("load", [ydoc]);
         }
       }
     });  

@@ -57,9 +57,6 @@ export function bindToYDoc(
     } else {
       applySchemaMigration();
     }
-    Promise.resolve().then(() => {
-      yDoc.emit("tldraw-ready", [name]);
-    });
   }
   if (loaded) {
     onLoaded();
@@ -72,7 +69,7 @@ export function bindToYDoc(
     provider &&
       listen(provider, "synced", (synced) => {
         if (synced && !yDoc.isLoaded) {
-          yDoc.emit("load", []); // change to synced
+          yDoc.emit("load", [yDoc]); // change to synced
         } else {
           applySchemaMigration();
         }

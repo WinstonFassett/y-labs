@@ -213,10 +213,10 @@ export function OpenAiKeyForm() {
             </div>
           )}
         ></Controller>
-        <Button size="sm" color="primary" type="submit" isIconOnly>
+        <Button size="icon" color="primary" type="submit">
           <CheckIcon />
         </Button>
-        <Button size="sm" type="reset" variant="destructive" isIconOnly onClick={reset}>
+        <Button size="icon" type="reset" variant="destructive" onClick={reset}>
           <XIcon />
         </Button>
       </div>

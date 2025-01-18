@@ -30,7 +30,7 @@ const docIdbStoreT = mapTemplate(
       const persister = new IndexeddbPersistence(id, y);
       persister.once("synced", () => {
         if (!y.isLoaded) {
-          y.emit("load", []);
+          y.emit("load", [y]);
         } 
         store.setKey("loaded", true);
 
@@ -147,7 +147,7 @@ export function getOfflineDoc(name: string, destroy = true) {
         resolver?.(ydoc);
       });
 
-      persister._load.catch(err => {
+      (persister as any)._load.catch((err: unknown) => {
         console.error("Error loading doc", name, err);
         reject?.(err);
         resolver = undefined;

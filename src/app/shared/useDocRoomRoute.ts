@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { buildUrl } from "../../lib/buildUrl";
+import { buildUrl } from "../../lib/build-url";
 import { generateId } from "../../lib/generateId";
 import { getDocRoomConfig } from "./store/doc-room-config";
 

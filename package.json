@@ -11,7 +11,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "publish": "surge dist ylabs0.surge.sh"
+    "publish": "surge dist ylabs0.surge.sh",
+    "typecheck": "astro check"
   },
   "dependencies": {
     "@astrojs/check": "^0.5.5",
@@ -88,7 +89,7 @@
     "@types/lodash.throttle": "^4.1.9",
     "@types/react": "^18.2.58",
     "@types/react-dom": "^18.2.19",
-    "@types/refractor": "^4.0.0",
+    "@types/refractor": "^3.0.2",
     "@uiw/codemirror-theme-eclipse": "^4.23.7",
     "ai": "^3.2.22",
     "astro": "^4.4.2",
@@ -132,7 +133,7 @@
     "react-router-dom": "^6.22.1",
     "react-secure-storage": "^1.3.2",
     "react-spinners": "^0.15.0",
-    "refractor": "^4.8.1",
+    "refractor": "^3.6.0",
     "remirror": "^3.0.1",
     "sass": "^1.72.0",
     "sonner": "^1.4.3",

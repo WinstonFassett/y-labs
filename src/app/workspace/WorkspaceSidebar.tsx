@@ -1,11 +1,6 @@
-import { ChevronRight, File, FilePlusIcon, Files, Folder, MoreHorizontal, TrashIcon } from "lucide-react"
+import { FilePlusIcon, MoreHorizontal, TrashIcon } from "lucide-react"
 import * as React from "react"
 
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import {
   Sidebar,
@@ -18,7 +13,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSkeleton,
-  SidebarMenuSub,
   SidebarRail,
   useSidebar
 } from "@/components/ui/sidebar"
@@ -26,12 +20,11 @@ import { useStore } from "@nanostores/react"
 import { AlertDialog } from "@radix-ui/react-alert-dialog"
 import { Button } from "../../components/ui/button"
 import logoRaw from "../../images/lab-icon.svg?raw"
+import { FileTypeIcons, typeIconMap } from "../shared/config/app-icons"
 import { DeleteSavedDialogAlertContent } from "../shared/DeleteSavedDialog"
 import { $docMetas, type DocMetadata } from "../shared/store/local-docs-metadata"
-import { FileTypeIcons, typeIconMap } from "../shared/config/app-icons"
 import { createDocumentState } from "./CreateDocumentDialog"
 import { EditorsByType } from "./Editor"
-import { Skeleton } from "@/components/ui/skeleton"
 
 
 const ValidTypes = Object.keys(EditorsByType).filter(t => t !== 'UNKNOWN');

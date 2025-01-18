@@ -1,17 +1,18 @@
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useStore } from "@nanostores/react";
+import type { Version } from "@/lib/yjs-versions";
 import { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { checkIfLatestVersion } from "./store/doc-versions";
 import { useDocLoadState } from "./useDocLoadState";
+import { useStoreIfPresent } from "./useStoreIfPresent";
 import { useVersionHistory } from "./useVersionHistory";
 
 export function VersionHistory() {
   const { docId, type } = useParams();
   const { displayVersionId, $versionHistory } = useVersionHistory()    
-  const versions = useStore($versionHistory.$versions);
+  const versions = useStoreIfPresent($versionHistory?.$versions) || [];
 
   const versionArray = Array.from(versions).reverse();
   const len = versionArray.length;
@@ -49,13 +50,13 @@ export function VersionHistory() {
             ) : (
               versionArray.map((version, idx) => {
                 const versionKey = version.id;
-                const isLatest = checkIfLatestVersion(versionKey, versions);
+                const isLatest = checkIfLatestVersion(versionKey, versions as Version[]);
                 return (
                   <Button
                     key={versionKey}
                     ref={versionKey === currentVersionId ? selectedRef : null}
                     variant="outline"
-                    onClick={() => $versionHistory.switchToVersion(versionKey)}
+                    onClick={() => $versionHistory!.switchToVersion(versionKey)}
                     className={`w-full text-left p-3 rounded-lg transition-colors ${
                       versionKey === currentVersionId
                         ? "bg-indigo-50 dark:bg-indigo-950 border border-indigo-200 dark:border-indigo-800"
