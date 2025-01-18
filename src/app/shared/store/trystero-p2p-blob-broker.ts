@@ -1,7 +1,7 @@
 import type { BlobSource } from "@blocksuite/sync";
 import type { JsonValue, Room } from "trystero";
 import { TransferQueue, type FileRequest } from "../../blocksuite/transfer-queue";
-import { listenJoinedTrysteroRoom, listenLeftTrysteroRoom } from "./trystero-doc-room";
+import { listenJoinedTrysteroRoom, listenLeftTrysteroRoom } from "./doc-room-trystero";
 
 type MessageType = 'want' | 'unwant' | 'have' | 'fetch';
 

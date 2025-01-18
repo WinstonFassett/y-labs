@@ -14,7 +14,7 @@ import { useStore } from "@nanostores/react";
 import { CheckIcon, KeyRoundIcon, XIcon } from "lucide-react";
 import { map } from "nanostores";
 import { $openAiConfigValid, validateOpenAiKey } from "./store/openai";
-import { $openaiApiKey, $openaiApiKey_masked } from "./store/secure-settings";
+import { $openaiApiKey, $openaiApiKey_masked } from "./store/local-secure-settings";
 import { Switch } from "@/components/ui/switch";
 import { FormItem, FormLabel } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";

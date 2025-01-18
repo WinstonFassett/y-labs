@@ -1,4 +1,4 @@
-import { $openaiApiKey } from "@/app/shared/store/secure-settings";
+import { $openaiApiKey } from "@/app/shared/store/local-secure-settings";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "../ui/button";

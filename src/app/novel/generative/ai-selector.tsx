@@ -16,7 +16,7 @@ import CrazySpinner from "../ui/icons/crazy-spinner";
 import { addAIHighlight } from "../extensions/ai-highlight";
 import OpenAI from "openai";
 import { useStore } from "@nanostores/react";
-import { $openaiApiKey } from "@/app/shared/store/secure-settings";
+import { $openaiApiKey } from "@/app/shared/store/local-secure-settings";
 import { createRecipeStepPrompt, parseRecipe } from "./createRecipeStepPrompt";
 //TODO: I think it makes more sense to create a custom Tiptap extension for this functionality https://tiptap.dev/docs/editor/ai/introduction
 

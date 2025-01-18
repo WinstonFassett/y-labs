@@ -6,7 +6,7 @@ import Magic from "../ui/icons/magic";
 import {} from "novel/plugins";
 import { removeAIHighlight } from "../extensions/ai-highlight";
 import { useStore } from "@nanostores/react";
-import { $openaiApiKey } from "@/app/shared/store/secure-settings";
+import { $openaiApiKey } from "@/app/shared/store/local-secure-settings";
 import {
   Popover,
   PopoverContent,

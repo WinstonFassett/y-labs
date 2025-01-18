@@ -1,5 +1,5 @@
 import type { BlobSource } from "@blocksuite/sync";
-import { P2PBlobBroker } from "./p2p-blob-broker";
+import { P2PBlobBroker } from "./trystero-p2p-blob-broker";
 import { localBlobSource } from "./blocksuite-docs";
 
 

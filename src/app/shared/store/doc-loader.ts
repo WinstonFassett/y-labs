@@ -2,7 +2,7 @@ import { mapTemplate } from "@/lib/nanostores-utils/mapTemplate";
 import { atom, batched, type ReadableAtom } from "nanostores";
 import { getDocRoomConfig } from "./doc-room-config";
 import { getDocIdbStore } from "./local-yjs-idb";
-import { getTrysteroDocRoom } from "./trystero-doc-room";
+import { getTrysteroDocRoom } from "./doc-room-trystero";
 import { getYdoc } from "./yjs-docs";
 import { $newDocIds } from "./new-doc-ids";
 

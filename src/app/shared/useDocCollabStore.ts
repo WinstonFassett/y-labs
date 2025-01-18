@@ -6,7 +6,7 @@ import {
   type DocRoomConfigFields,
   getDocRoomId
 } from "./store/doc-room-config";
-import { getTrysteroDocRoom } from "./store/trystero-doc-room";
+import { getTrysteroDocRoom } from "./store/doc-room-trystero";
 import { getYdoc } from "./store/yjs-docs";
 import { useStoreIfPresent } from "./useStoreIfPresent";
 
