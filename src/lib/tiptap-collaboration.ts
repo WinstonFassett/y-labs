@@ -5,7 +5,7 @@ export const Collaboration = TipTapCollaboration.extend({
   addProseMirrorPlugins() {
     const fragment = this.options.fragment
       ? this.options.fragment
-      : this.options.document.getXmlFragment(this.options.field)
+      : this.options.document!.getXmlFragment(this.options.field)
 
     return [ySyncPlugin(fragment)]
   }
