@@ -2,34 +2,27 @@ import { AffineEditorContainer } from "@blocksuite/presets";
 import { Doc, DocCollection } from "@blocksuite/store";
 
 import {
-  BlockServiceWatcher,
   EditorHost,
-  type ExtensionType,
+  type ExtensionType
 } from "@blocksuite/block-std";
 import {
-  AffineFormatBarWidget,
   CommunityCanvasTextFonts,
   DocModeExtension,
   DocModeProvider,
   FontConfigExtension,
-  GenerateDocUrlExtension,
   NotificationExtension,
   OverrideThemeExtension,
-  PageRootService,
-  ParseDocUrlExtension,
   RefNodeSlotsExtension,
   RefNodeSlotsProvider,
-  SpecProvider,
+  SpecProvider
 } from "@blocksuite/blocks";
 import { effects as blocksEffects } from "@blocksuite/blocks/effects";
 import { effects as presetsEffects } from "@blocksuite/presets/effects";
 import {
   mockDocModeService,
-  mockGenerateDocUrlService,
   mockNotificationService,
-  mockParseDocUrlService,
   // mockPeekViewExtension,
-  themeExtension,
+  themeExtension
 } from "./_common/mock-services";
 import { initDoc } from "./initDoc";
 

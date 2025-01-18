@@ -9,16 +9,15 @@ import { type ReactNode } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { PasswordInput } from "@/components/ui/password-input";
-import { useStore } from "@nanostores/react";
-import { CheckIcon, KeyRoundIcon, XIcon } from "lucide-react";
-import { map } from "nanostores";
-import { $openAiConfigValid, validateOpenAiKey } from "./store/openai";
-import { $openaiApiKey, $openaiApiKey_masked } from "./store/local-secure-settings";
-import { Switch } from "@/components/ui/switch";
-import { FormItem, FormLabel } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
+import { PasswordInput } from "@/components/ui/password-input";
+import { Switch } from "@/components/ui/switch";
+import { useStore } from "@nanostores/react";
+import { CheckIcon, XIcon } from "lucide-react";
+import { map } from "nanostores";
+import { $openaiApiKey, $openaiApiKey_masked } from "./store/local-secure-settings";
 import { $trackHistoryWhenEditing } from "./store/local-settings";
+import { $openAiConfigValid, validateOpenAiKey } from "./store/openai";
 
 export const $settingsStore = map({
   show: false,

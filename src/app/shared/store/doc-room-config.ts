@@ -1,5 +1,5 @@
 import { mapTemplate } from "@/lib/nanostores-utils/mapTemplate";
-import { computed, map, type MapStore } from "nanostores";
+import { computed, map } from "nanostores";
 import { z } from "zod";
 
 export interface DocRoomConfigFields {

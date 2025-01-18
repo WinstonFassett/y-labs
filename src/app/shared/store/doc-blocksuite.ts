@@ -6,9 +6,7 @@ import { Doc as BsDoc, DocCollection, IdGeneratorType, Schema, type DocCollectio
 import {
   // BroadcastChannelAwarenessSource,
   // BroadcastChannelDocSource,
-  IndexedDBBlobSource,
-  IndexedDBDocSource,
-  type BlobSource,
+  IndexedDBBlobSource
 } from '@blocksuite/sync';
 import { atom } from "nanostores";
 
