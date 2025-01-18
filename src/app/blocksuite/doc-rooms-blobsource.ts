@@ -1,5 +1,4 @@
 import type { BlobSource } from "@blocksuite/sync";
-import { DocEvents } from "../shared/store/doc-events";
 import { P2PBlobBroker } from "./p2p-blob-broker";
 import { localBlobSource } from "../shared/store/blocksuite-docs";
 

@@ -1,7 +1,7 @@
 import type { BlobSource } from "@blocksuite/sync";
 import type { JsonValue, Room } from "trystero";
 import { TransferQueue, type FileRequest } from "./transfer-queue";
-import { DocEvents } from "../shared/store/doc-events";
+import { listenJoinedTrysteroRoom, listenLeftTrysteroRoom } from "../shared/store/trystero-doc-room";
 
 type MessageType = 'want' | 'unwant' | 'have' | 'fetch';
 
@@ -40,7 +40,7 @@ export class P2PBlobBroker extends EventTarget {
   }
 
   private setupDocEvents(): void {
-    DocEvents.on('joinedRoom', ev => {
+    listenJoinedTrysteroRoom(ev => {
       if (!this.docFilter(ev.docId, ev.roomId)) return;
 
       const room = (ev.provider.trystero as Room);
@@ -67,8 +67,7 @@ export class P2PBlobBroker extends EventTarget {
         }
       }
     });
-
-    DocEvents.on('leftRoom', ev => {
+    listenLeftTrysteroRoom(ev => {
       if (!this.docFilter(ev.docId, ev.roomId)) return;
       const state = this.rooms.get(ev.roomId);
       if (state) state.cleanup();

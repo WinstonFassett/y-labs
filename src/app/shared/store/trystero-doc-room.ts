@@ -13,7 +13,7 @@ import { appId } from "./constants";
 import { getDocRoomConfig, type DocRoomConfigFields } from "./doc-room-config";
 import { user } from "./local-user";
 import { getYdoc } from "./yjs-docs";
-import { DocEvents } from "./doc-events";
+import { nanosubscriber } from "@/lib/trystero-subscribe/subscribe";
 
 type ConnectionStatus = "connected" | "disconnected"
 type SyncStatus = "synced" | "unsynced"
@@ -25,6 +25,22 @@ interface DocRoomState {
   provider?: TrysteroProvider
 }
 // type DocRoom = ReturnType<typeof getTrysteroDocRoom>;
+
+type RoomInfo = {
+  docId: string 
+  roomId: string
+  $room: DocRoomStore
+  provider: TrysteroProvider
+}
+
+const [emitJoinedTrysteroRoom, listenJoinedTrysteroRoom] = nanosubscriber<RoomInfo>()
+
+const [emitLeftTrysteroRoom, listenLeftTrysteroRoom] = nanosubscriber<RoomInfo>()
+
+export {
+  listenJoinedTrysteroRoom,
+  listenLeftTrysteroRoom
+}
 
 function getDocRoomId(docId: string, roomId: string) {
   return `${docId}/${roomId}`;
@@ -101,7 +117,7 @@ function createTrysteroDocRoom(
       const prevProvider = store.get().provider      
       if (prevProvider) {
         prevProvider.destroy()
-        DocEvents.emit('leftRoom', {docId, roomId, $room: model, provider: prevProvider})
+        emitLeftTrysteroRoom({docId, roomId, $room: model, provider: prevProvider})
       }
 
       const provider = canConnect ? createProvider(config) : undefined
@@ -137,7 +153,7 @@ function createTrysteroDocRoom(
       if (connected) {
         setUserInAwareness(user.get())
         $connectionState.set('connected')
-        DocEvents.emit('joinedRoom', {docId, roomId, $room: model, provider})
+        emitJoinedTrysteroRoom({ docId, roomId, $room: model, provider })
       }
     });  
     provider.on("synced", ({ synced }: { synced: boolean }) => {
@@ -179,10 +195,8 @@ const trysteroDocRoomT = mapTemplate(
     ),
   (store, id, docId, roomId) => {
     $allDocRooms.setKey(id, store);
-    // DocEvents.emit('joinedRoom', docId, roomId)
     return () => {
       $allDocRooms.setKey(id, undefined as any);
-      // DocEvents.emit('leftRoom', docId, roomId)
     }
   }
 );
