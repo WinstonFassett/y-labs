@@ -48,7 +48,7 @@ import { forwardRef, useEffect, useRef, useState } from "react";
 import { useForm, useFormContext } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { z } from "zod";
-import { generateId } from "./generateId";
+import { generateId } from "../../lib/generateId";
 import { RoomConfigSchema, getDocRoomConfig, type DocRoomConfigFields } from "./store/doc-room-config";
 import { user } from "./store/local-user";
 import { useDocCollabStore } from "./useDocCollabStore";

@@ -3,7 +3,7 @@ export type Subscribe<T> = (listener: Listen<T>) => Unsubscribe;
 export type Unsubscribe = () => void;
 export type Emit<T> = (value: T) => void;
 
-export const nanosubscriber = <T>(
+export const nanoevent = <T>(
   listeners = [] as Listen<T>[],
 ): [
     emit: Emit<T>, 

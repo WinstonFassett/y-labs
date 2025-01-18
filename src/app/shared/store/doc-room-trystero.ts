@@ -8,12 +8,12 @@ import {
 } from "nanostores";
 import { Awareness } from "y-protocols/awareness.js";
 import type { Doc } from "yjs";
-import { createRoom } from "../createRoom";
+import { createRoom } from "../../../lib/createTrysteroRoom";
 import { appId } from "./constants";
 import { getDocRoomConfig, type DocRoomConfigFields } from "./doc-room-config";
 import { user } from "./local-user";
 import { getYdoc } from "./doc-yjs";
-import { nanosubscriber } from "@/lib/trystero-subscribe/subscribe";
+import { nanoevent } from "@/lib/nanoevent";
 
 type ConnectionStatus = "connected" | "disconnected"
 type SyncStatus = "synced" | "unsynced"
@@ -33,9 +33,9 @@ type RoomInfo = {
   provider: TrysteroProvider
 }
 
-const [emitJoinedTrysteroRoom, listenJoinedTrysteroRoom] = nanosubscriber<RoomInfo>()
+const [emitJoinedTrysteroRoom, listenJoinedTrysteroRoom] = nanoevent<RoomInfo>()
 
-const [emitLeftTrysteroRoom, listenLeftTrysteroRoom] = nanosubscriber<RoomInfo>()
+const [emitLeftTrysteroRoom, listenLeftTrysteroRoom] = nanoevent<RoomInfo>()
 
 export {
   listenJoinedTrysteroRoom,

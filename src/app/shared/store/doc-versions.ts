@@ -3,7 +3,7 @@ import { type ReadableAtom, atom, computed, map, onMount } from 'nanostores';
 import { ySyncPluginKey, yUndoPluginKey } from 'y-prosemirror';
 import * as Y from 'yjs';
 import { getSharesForType } from '../shares-lookup';
-import { addVersion, buildVersionGraph, restoreVersion, type Version } from '../utils/versionManager';
+import { addVersion, buildVersionGraph, restoreVersion, type Version } from '../../../lib/yjs-versions';
 import { getYdoc } from './doc-yjs';
 import { Doc as BlocksuiteDoc } from '@blocksuite/store';
 import { $trackHistoryWhenEditing } from './local-settings';

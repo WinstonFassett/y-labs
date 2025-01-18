@@ -1,8 +1,8 @@
-import { nanosubscriber } from "./subscribe";
+import { nanoevent } from "../nanoevent";
 
 export function makeMultiHandler(room: any, methodName: string) {
   const origEventMethod = room[methodName];
-  const [listen, emit] = nanosubscriber();
+  const [listen, emit] = nanoevent();
   room[methodName](emit);
   room[methodName] = listen;
   return () => {

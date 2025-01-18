@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from 'react';
-import type { VersionGraph, VersionNode } from './utils/versionManager';
+import type { VersionGraph, VersionNode } from '../../lib/yjs-versions';
 
 export function findMainBranch(graph: VersionGraph): VersionNode[] {
   const branch: VersionNode[] = [];
