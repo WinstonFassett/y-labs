@@ -10,7 +10,9 @@ export class StoreDocSource implements DocSource {
   
   async pull(docId: string, state: Uint8Array) {
     const $loader = getDocLoadState(docId);
-    await $loader.load();
+    console.log('pulling', docId, { $loader})
+        
+    await ($loader as any).load(); 
     return null
   }
 

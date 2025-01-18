@@ -12,8 +12,8 @@ import { useDocParams } from "../shared/useDocParams";
 export function Editor({ className }: { className?: string }) {
   const { docId, type } = useDocParams({ type: 'blocknote' });
   const [searchParams] = useSearchParams();
-  const roomId = searchParams.get("roomId")
-  const $loader = getDocLoadState(docId, roomId);
+  const roomId = searchParams.get("roomId") || undefined
+  const $loader = getDocLoadState(docId!, roomId);
   const loadState = useStore($loader);
   const { needsPasswordToConnect } = useDocCollabStore(true);
   const canShow = !needsPasswordToConnect || loadState === "loaded";

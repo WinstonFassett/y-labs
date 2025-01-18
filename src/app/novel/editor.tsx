@@ -13,7 +13,7 @@ import { Novel } from "./Novel";
 import { PasswordRequiredDialog } from "../shared/PasswordRequiredDialog";
 function Editor() {
   const { docId, ydoc, $room, roomId, needsPasswordToConnect } = useDocCollabStore();
-  const loadState = useStore(getDocLoadState(docId, roomId));
+  const loadState = useStore(getDocLoadState(docId!, roomId));
   const fragment = ydoc.getXmlFragment("novel");
   const provider = $room?.get().provider;
   const u = $user.get();
@@ -29,7 +29,6 @@ function Editor() {
           key={roomId ?? docId}
           autofocus
           className="p-4"
-          disableHistory={true}
           extensions={[
             TextStyle as any, 
             Color,

@@ -23,7 +23,6 @@ import {
 } from "@blocksuite/blocks";
 import { effects as blocksEffects } from "@blocksuite/blocks/effects";
 import { effects as presetsEffects } from "@blocksuite/presets/effects";
-// import { AttachmentViewerPanel } from "./_common/components/attachment-viewer-panel";
 import {
   mockDocModeService,
   mockGenerateDocUrlService,
@@ -117,7 +116,7 @@ export function createEditor(doc: Doc, mode: "edgeless" | "page" = "edgeless") {
     const getEditorModeCallback = () => editor.mode;
     const extensions: ExtensionType[] = [
       refNodeSlotsExtension,
-      PatchPageServiceWatcher,
+      // PatchPageServiceWatcher,
       FontConfigExtension(CommunityCanvasTextFonts),
       // ParseDocUrlExtension(mockParseDocUrlService(collection)),
       // GenerateDocUrlExtension(mockGenerateDocUrlService(collection)),
@@ -143,20 +142,20 @@ export function createEditor(doc: Doc, mode: "edgeless" | "page" = "edgeless") {
   }
 }
 
-class PatchPageServiceWatcher extends BlockServiceWatcher {
-  static override readonly flavour = "affine:page";
+// class PatchPageServiceWatcher extends BlockServiceWatcher {
+//   static override readonly flavour = "affine:page";
 
-  override mounted() {
-    const pageRootService = this.blockService as PageRootService;
-    const onFormatBarConnected = pageRootService.specSlots.widgetConnected.on(
-      (view) => {
-        if (view.component instanceof AffineFormatBarWidget) {
-          // console.log(`TODO: configureFormatBar(view.component);`);
-        }
-      },
-    );
-    pageRootService.disposables.add(onFormatBarConnected);
-  }
-}
+//   override mounted() {
+//     const pageRootService = this.blockService as PageRootService;
+//     const onFormatBarConnected = pageRootService.specSlots.widgetConnected.on(
+//       (view) => {
+//         if (view.component instanceof AffineFormatBarWidget) {
+//           // console.log(`TODO: configureFormatBar(view.component);`);
+//         }
+//       },
+//     );
+//     pageRootService.disposables.add(onFormatBarConnected);
+//   }
+// }
 
 

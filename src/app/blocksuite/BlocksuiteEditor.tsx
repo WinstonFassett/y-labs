@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button';
 function App() {
   const [mode, setMode] = useState<DocMode>('page')
   const { docId } = useDocParams()
-  const bsDocStore = getBlocksuiteDocStore(docId)
+  const bsDocStore = getBlocksuiteDocStore(docId!)
   const bsDoc = useStore(bsDocStore)
   const { loaded, isLatestVersion, currentDoc } = useDocEditor({ type: 'blocksuite'})
   

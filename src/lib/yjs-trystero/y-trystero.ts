@@ -280,7 +280,7 @@ export class TrysteroConn {
       );
       sendTrysteroConn(this, encoder);
     }
-    room.provider.listenDocData((data: Uint8Array, peerId: string) => {
+    room.provider.listenDocData((data: Uint8Array, _peerId: string) => {
       try {
         const answer = readPeerMessage(this, data);
         if (answer !== null) {

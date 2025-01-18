@@ -180,12 +180,9 @@ async function runRecipe(
     steps: string[];
   },
   handleCompletion: (
-    prompts: {
-      role: string;
-      content: string;
-    }[],
-    replacer?: (prev: string, next: string) => string,
-  ) => Promise<string>,
+    messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[],
+    replacer?: (prevCompletion: string, newCompletion: string) => string,
+  ) => Promise<void>,
 ) {
   const outputs = [] as string[];
   for (let index = 0; index < steps.length; index++) {
@@ -194,8 +191,8 @@ async function runRecipe(
       steps,
       index,
       outputs,
-    });
-    await handleCompletion(stepPrompts, (prev = "", value) => {
+    }).map((prompt) => ({ ...prompt, name: "step" }));
+    await handleCompletion(stepPrompts as OpenAI.Chat.Completions.ChatCompletionMessageParam[], (prev = "", value) => {
       outputs.push(value);
       return [prev, value].join("\n\n");
     });

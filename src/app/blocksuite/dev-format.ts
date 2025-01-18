@@ -9,8 +9,14 @@ function toStyledEntry(key: string, value: unknown) {
     ['span', { style: 'color: rgb(92, 213, 251)' }, `${JSON.stringify(value)}`],
   ];
 }
+type HTMLTemplate = [
+  string,
+  Record<string, unknown>,
+  ...(HTMLTemplate | string)[],
+];
 
-export const devtoolsFormatter: typeof window.devtoolsFormatters = [
+
+export const devtoolsFormatter = [
   {
     header: function (obj: unknown) {
       if ('flavour' in (obj as BlockModel) && 'yBlock' in (obj as BlockModel)) {
@@ -58,4 +64,4 @@ export const devtoolsFormatter: typeof window.devtoolsFormatters = [
   },
 ];
 
-window.devtoolsFormatters = devtoolsFormatter;
+Object.assign(window, { devtoolsFormatter });

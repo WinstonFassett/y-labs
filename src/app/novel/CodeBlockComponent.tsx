@@ -9,7 +9,7 @@ export default ({
   },
   updateAttributes,
   extension,
-}) => (
+}: any) => (
   <NodeViewWrapper className="code-block not-prose">
     {/* <select
       contentEditable={false}

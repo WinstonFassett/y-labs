@@ -13,8 +13,8 @@ const sorter = compareDates((x) => x?.data?.pubDate);
 const labs = await getCollection("labs");
 const sortedLabs = labs.sort(sorter);
 
-const taggedAsDrive = labs.filter((lab) => lab.data.tags.includes("drive"));
-const others = labs.filter((lab) => !lab.data.tags.includes("drive"));
+const taggedAsDrive = labs.filter((lab) => lab.data.tags!.includes("drive"));
+const others = labs.filter((lab) => !lab.data.tags!.includes("drive"));
 
 function compareDates(get = (x?: any) => x) {
   return (a: any, b: any) => {

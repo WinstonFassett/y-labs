@@ -6,7 +6,6 @@ import {
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader
 } from "@/components/ui/dialog";
 import { Spinner } from "@/components/ui/spinner";

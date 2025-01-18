@@ -139,7 +139,7 @@ export function ShareDialog({ type }: { type?: string }) {
         </AriaButton>        
         <DialogOverlay>
           <DialogContent className="max-h-screen flex flex-col overflow-hidden">
-            {({ close }) => (
+            {({ close: _close }) => (
               <>
                 <Form {...form}>
                   <form ref={formRef} onSubmit={onSubmit} autoComplete="off" className="flex flex-col flex-1 w-full overflow-hidden">

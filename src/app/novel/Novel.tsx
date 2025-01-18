@@ -44,7 +44,7 @@ export const Novel = ({
   extensions = extensions
     ? ([...baseExtensions, ...extensions] as any)
     : baseExtensions;
-  const [saveStatus, setSaveStatus] = useState("Saved");
+  const [_saveStatus, setSaveStatus] = useState("Saved");
 
   const [openNode, setOpenNode] = useState(false);
   const [openColor, setOpenColor] = useState(false);

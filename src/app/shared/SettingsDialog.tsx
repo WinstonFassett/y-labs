@@ -28,15 +28,15 @@ export function SettingsDialog() {
   const open = useStore($settingsStore).show;
   const setOpen = (open: boolean) => $settingsStore.setKey("show", open);
   const {
-    register,
-    trigger,
-    reset,
-    handleSubmit,
-    watch,
-    formState: { errors },
-    control,
-    setValue,
-    getValues,
+    // register,
+    // trigger,
+    // reset,
+    // handleSubmit,
+    // watch,
+    // formState: { errors },
+    // control,
+    // setValue,
+    // getValues,
   } = useForm();
   return (
     <Dialog open={open} onOpenChange={setOpen}>

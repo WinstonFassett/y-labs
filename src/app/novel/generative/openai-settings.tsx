@@ -22,15 +22,15 @@ const wait = () => new Promise((resolve) => setTimeout(resolve, 1000));
 export function OpenAiDialog() {
   const [open, setOpen] = useState(false);
   const {
-    register,
-    trigger,
-    reset,
-    handleSubmit,
-    watch,
+    // register,
+    // trigger,
+    // reset,
+    // handleSubmit,
+    // watch,
     formState: { errors },
-    control,
-    setValue,
-    getValues,
+    // control,
+    // setValue,
+    // getValues,
   } = useForm();
   return (
     <Dialog open={open} onOpenChange={setOpen}>

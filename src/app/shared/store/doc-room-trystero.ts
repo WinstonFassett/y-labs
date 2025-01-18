@@ -193,7 +193,7 @@ const trysteroDocRoomT = mapTemplate(
       getYdoc(docId).get(),
       roomId,
     ),
-  (store, id, docId, roomId) => {
+  (store, id) => {
     $allDocRooms.setKey(id, store);
     return () => {
       $allDocRooms.setKey(id, undefined as any);

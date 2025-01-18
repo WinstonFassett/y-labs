@@ -40,7 +40,7 @@ import './styles/collab.css'
 //   loading: () => <Loading />,
 // });
 
-export default function Dual ({ doc, awareness, shareName = "milkdown" }: { doc: Y.Doc, awareness?: Awareness, shareName: string }) {
+export default function Dual ({ doc, awareness, shareName = "milkdown" }: { doc: Y.Doc, awareness?: Awareness, shareName?: string }) {
   const [expand, setExpand] = useState(false);
   const onMilkdownChange = useAtomCallback(
     useCallback((get, _set, markdown: string) => {

@@ -19,7 +19,7 @@ export const schema = new Schema().register(AffineSchemas);
 export const localBlobSource = new IndexedDBBlobSource('local')
 
 const blocksuiteDocsT = mapTemplate(
-  (id) => atom<BsDoc>(undefined as any),
+  () => atom<BsDoc>(undefined as any),
   (store, id) => {
 
     const flags = {}

@@ -1,22 +1,19 @@
-import { useToast } from "./toast";
-import { encode } from "./share";
+import { useTheme } from "@/lib/astro-tailwind-themes/useTheme";
 import { Crepe } from "@milkdown/crepe";
-import { defaultValueCtx, editorViewCtx, parserCtx } from "@milkdown/kit/core";
+import { editorViewCtx, parserCtx } from "@milkdown/kit/core";
 import { listener, listenerCtx } from "@milkdown/kit/plugin/listener";
 import { Slice } from "@milkdown/kit/prose/model";
 import { Selection } from "@milkdown/kit/prose/state";
 import { getMarkdown } from "@milkdown/kit/utils";
-import { eclipse } from "@uiw/codemirror-theme-eclipse";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { collab, collabServiceCtx } from '@milkdown/plugin-collab';
+import { useAtom, useSetAtom } from "jotai";
 import throttle from "lodash.throttle";
-import { type FC, type MutableRefObject, useLayoutEffect, useRef, useCallback } from "react";
+import { type FC, type MutableRefObject, useLayoutEffect, useRef } from "react";
+import { Awareness } from 'y-protocols/awareness';
+import * as Y from 'yjs';
 import { crepeAPI, markdown } from "./atom";
-import { useTheme } from "@/lib/astro-tailwind-themes/useTheme";
-import template from '../template.md?raw'
-import { CollabReady, collab, collabServiceCtx } from '@milkdown/plugin-collab';
-import * as Y from 'yjs'
-import { Awareness } from 'y-protocols/awareness'
-import { useAtomCallback } from "jotai/utils";
+import { encode } from "./share";
+import { useToast } from "./toast";
 
 interface MilkdownProps {
   onChange: (markdown: string) => void;
@@ -33,7 +30,7 @@ const CrepeEditor: FC<MilkdownProps> = ({ onChange, doc, awareness, shareName = 
   const loading = useRef(false);
   const toast = useToast();
   // const content = useAtomValue(markdown);
-  const [content, setMarkdown] = useAtom(markdown)
+  const [content, _setMarkdown] = useAtom(markdown)
   // const getMarkdown = useAtomCallback(useCallback((get, set) => {
   //   return get(markdown)
   // }, []))
@@ -74,7 +71,7 @@ const CrepeEditor: FC<MilkdownProps> = ({ onChange, doc, awareness, shareName = 
 
     crepe.create().then(async () => {
       const { doc, awareness } = collabRef.current
-      const theAwareness = awareness
+      // const theAwareness = awareness
       if (doc) {
         // ctx.set(defaultValueCtx, template);      
         await crepe.editor

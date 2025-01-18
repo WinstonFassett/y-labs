@@ -2,7 +2,7 @@
 import { useDocRoomRoute } from "../shared/useDocRoomRoute";
 import { Workspace } from "./Workspace";
 
-export function EditorRoute({mode}: {mode?: string}) {
+export function EditorRoute() {
   useDocRoomRoute()
-  return <Workspace mode={mode} />
+  return <Workspace />
 }
