@@ -1,5 +1,5 @@
 import { StoreDocSource } from "@/app/blocksuite/default/utils/StoreDocSource";
-import { createDocRoomsBlobSource } from "@/app/blocksuite/doc-rooms-blobsource";
+import { createDocRoomsBlobSource } from "@/app/shared/store/doc-rooms-blobsource";
 import { mapTemplate } from "@/lib/nanostores-utils/mapTemplate";
 import { AffineSchemas } from '@blocksuite/blocks';
 import { Doc as BsDoc, DocCollection, IdGeneratorType, Schema, type DocCollectionOptions } from '@blocksuite/store';
