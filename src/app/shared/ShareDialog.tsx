@@ -50,7 +50,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { z } from "zod";
 import { generateId } from "../../lib/generateId";
 import { RoomConfigSchema, getDocRoomConfig, type DocRoomConfigFields } from "./store/doc-room-config";
-import { user } from "./store/local-user";
+import { $user } from "./store/local-user";
 import { useDocCollabStore } from "./useDocCollabStore";
 import { useStoreIfPresent } from "./useStoreIfPresent";
 
@@ -452,7 +452,7 @@ function UserList({
   awarenessClientID: number | undefined;
 }) {
   const userAwareness = isSharing && (awarenessUsers as Map<any, any>)?.get(awarenessClientID);
-  const userInfo = user.get();
+  const userInfo = $user.get();
   const connectedCount= peerIds?.length ?? 0;
   return (
     <div>
@@ -545,7 +545,7 @@ const User = forwardRef<HTMLDivElement, UserProps>(
 const UserForm = forwardRef<HTMLFormElement, React.HTMLProps<HTMLFormElement>>(
   (props, ref) => {
     useEffect(() => {
-      return user.subscribe(currentUser => {
+      return $user.subscribe(currentUser => {
         form.reset(currentUser) 
       })
     }, [])
@@ -555,7 +555,7 @@ const UserForm = forwardRef<HTMLFormElement, React.HTMLProps<HTMLFormElement>>(
     });
     const onSubmit = form.handleSubmit(
       (data) => {
-        user.set(data);
+        $user.set(data);
       },
       (errors) => {
         console.log({ errors });

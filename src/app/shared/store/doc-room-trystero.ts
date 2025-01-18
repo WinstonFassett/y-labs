@@ -11,7 +11,7 @@ import type { Doc } from "yjs";
 import { createRoom } from "../../../lib/trystero-room";
 import { appId } from "./constants";
 import { getDocRoomConfig, type DocRoomConfigFields } from "./doc-room-config";
-import { user } from "./local-user";
+import { $user } from "./local-user";
 import { getYdoc } from "./doc-yjs";
 import { nanoevent } from "@/lib/nanoevent";
 
@@ -103,7 +103,7 @@ function createTrysteroDocRoom(
 
 
   onMount(store, () => {
-    const unsubUser = user.subscribe((user) => {
+    const unsubUser = $user.subscribe((user) => {
       setUserInAwareness(user);
     });
     
@@ -125,7 +125,7 @@ function createTrysteroDocRoom(
         console.warn('recreating provider')
       }
       if (provider) {
-        setUserInAwareness(user.get());
+        setUserInAwareness($user.get());
       }
       store.set({
         needsPasswordToConnect,
@@ -151,7 +151,7 @@ function createTrysteroDocRoom(
     });
     provider.on('status', ({ connected }: { connected: boolean }) => {
       if (connected) {
-        setUserInAwareness(user.get())
+        setUserInAwareness($user.get())
         $connectionState.set('connected')
         emitJoinedTrysteroRoom({ docId, roomId, $room: model, provider })
       }

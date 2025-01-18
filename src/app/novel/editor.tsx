@@ -6,7 +6,7 @@ import Highlight from '@tiptap/extension-highlight';
 import TextStyle from '@tiptap/extension-text-style';
 import AppBar from "../shared/AppBar";
 import { getDocLoadState } from "../shared/store/doc-loader";
-import { user } from "../shared/store/local-user";
+import { $user } from "../shared/store/local-user";
 import { useDocCollabStore } from "../shared/useDocCollabStore";
 import { Novel } from "./Novel";
 
@@ -16,7 +16,7 @@ function Editor() {
   const loadState = useStore(getDocLoadState(docId, roomId));
   const fragment = ydoc.getXmlFragment("novel");
   const provider = $room?.get().provider;
-  const u = user.get();
+  const u = $user.get();
   const ready = loadState === "loaded";
   const providerReady = roomId ? !!provider : true;
   const waiting = !providerReady && !ready ;

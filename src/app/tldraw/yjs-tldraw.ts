@@ -17,7 +17,7 @@ import { Observable, ObservableV2 } from "lib0/observable.js";
 import { Awareness } from "y-protocols/awareness";
 import { YKeyValue } from "y-utility/y-keyvalue";
 import * as Y from "yjs";
-import { user } from "../shared/store/local-user";
+import { $user } from "../shared/store/local-user";
 
 export class TLDrawCollabRoom extends ObservableV2<any> {
   constructor(
@@ -149,7 +149,7 @@ export function bindToYDoc(
     const yClientId = awareness.clientID.toString();
     setUserPreferences({ id: yClientId });
 
-    const { username, color } = user.get();
+    const { username, color } = $user.get();
 
     const userPreferences = computed<{
       id: string;
