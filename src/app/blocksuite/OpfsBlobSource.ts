@@ -1,7 +1,10 @@
+import type { BlobSource } from "@blocksuite/sync";
+
 export class OpfsBlobSource implements BlobSource {
   private readonly metaSuffix = '.mime';
 
   constructor(readonly name: string) {}
+  readonly!: boolean;
 
   private async getDir(): Promise<any> {
     const nav = navigator as any;
