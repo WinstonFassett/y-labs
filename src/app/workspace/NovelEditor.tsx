@@ -1,8 +1,12 @@
 <<<<<<< ours
+<<<<<<< ours
 import { Collaboration } from "@/lib/tiptap-collaboration";
 import { $user } from "@/app/shared/store/local-user";
 =======
 import { Collaboration } from "@/lib/TiptapCollaborationExtension";
+=======
+import { Collaboration } from "@/lib/tiptap-collaboration";
+>>>>>>> theirs
 import { user } from "@/app/shared/store/local-user";
 >>>>>>> theirs
 import { useStore } from "@nanostores/react";
