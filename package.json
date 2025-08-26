@@ -165,7 +165,6 @@
       "@tiptap/extension-collaboration": "2.10.4",
       "@tiptap/extension-collaboration-cursor": "2.10.4",
       "@tiptap/extension-color": "2.10.4",
-      "@tiptap/extension-horizontal-rule": "2.10.4",
       "@tiptap/extension-highlight": "2.10.4",
       "@tiptap/extension-text": "2.10.4",
       "@tiptap/extension-text-style": "2.10.4",
