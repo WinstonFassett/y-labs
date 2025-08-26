@@ -1,7 +1,6 @@
 import { $openaiApiKey } from "@/app/shared/store/local-secure-settings";
 import { useStore } from "@nanostores/react";
 import { EditorBubble, useEditor } from "novel";
-import { } from "novel/plugins";
 import { Fragment, useEffect, type ReactNode } from "react";
 import { removeAIHighlight } from "../extensions/ai-highlight";
 import { Button } from "../ui/button";
