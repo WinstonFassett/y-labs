@@ -11,6 +11,7 @@ overrides:
   '@tiptap/extension-collaboration-cursor': 2.10.4
   '@tiptap/extension-color': 2.10.4
   '@tiptap/extension-highlight': 2.10.4
+  '@tiptap/extension-horizontal-rule': 2.10.4
   '@tiptap/extension-text': 2.10.4
   '@tiptap/extension-text-style': 2.10.4
   '@tiptap/react': 2.10.4
@@ -237,6 +238,9 @@ importers:
       '@tiptap/extension-highlight':
         specifier: 2.10.4
         version: 2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))
+      '@tiptap/extension-horizontal-rule':
+        specifier: 2.10.4
+        version: 2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)
       '@tiptap/extension-text':
         specifier: 2.10.4
         version: 2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))
