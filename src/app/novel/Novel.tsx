@@ -2,19 +2,18 @@
 // import { defaultEditorContent } from "./content";
 import type { EditorInstance } from "novel";
 import {
-  EditorBubble,
   EditorCommand,
   EditorCommandEmpty,
   EditorCommandItem,
   EditorCommandList,
   EditorContent,
   // EditorInstance,
-  EditorRoot,
+  EditorRoot
 } from "novel";
 import { ImageResizer, handleCommandNavigation } from "novel/extensions";
 import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
-import {defaultExtensions} from "./extensions";
+import { defaultExtensions } from "./extensions";
 import { ColorSelector } from "./selectors/color-selector";
 import { LinkSelector } from "./selectors/link-selector";
 import { NodeSelector } from "./selectors/node-selector";
@@ -44,7 +43,7 @@ export const Novel = ({
   extensions = extensions
     ? ([...baseExtensions, ...extensions] as any)
     : baseExtensions;
-  const [saveStatus, setSaveStatus] = useState("Saved");
+  const [_saveStatus, setSaveStatus] = useState("Saved");
 
   const [openNode, setOpenNode] = useState(false);
   const [openColor, setOpenColor] = useState(false);

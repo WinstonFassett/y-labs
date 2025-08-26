@@ -39,7 +39,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { buildUrl } from "@/lib/buildUrl";
+import { buildUrl } from "@/lib/build-url";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "framer-motion";
@@ -48,9 +48,9 @@ import { forwardRef, useEffect, useRef, useState } from "react";
 import { useForm, useFormContext } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { z } from "zod";
-import { generateId } from "./generateId";
+import { generateId } from "../../lib/generateId";
 import { RoomConfigSchema, getDocRoomConfig, type DocRoomConfigFields } from "./store/doc-room-config";
-import { user } from "./store/local-user";
+import { $user } from "./store/local-user";
 import { useDocCollabStore } from "./useDocCollabStore";
 import { useStoreIfPresent } from "./useStoreIfPresent";
 
@@ -97,10 +97,11 @@ export function ShareDialog({ type }: { type?: string }) {
       const { roomId } = data;
       startSharing({
         ...data,
-        docId
+        type: type!,
+        docId: docId!
       });
       handleCopyLink();
-      const newRoomConfig = getDocRoomConfig(docId, roomId).get();
+      const newRoomConfig = getDocRoomConfig(docId!, roomId).get();
       navigate(
         generateDocRoomRouterLink(newRoomConfig, type)
       )
@@ -112,7 +113,7 @@ export function ShareDialog({ type }: { type?: string }) {
   const [linkCopied, setLinkCopied] = useState(false);
   const handleCopyLink = async () => {
     const roomId = form.getValues("roomId");
-    const $roomConfig = getDocRoomConfig(docId, roomId);
+    const $roomConfig = getDocRoomConfig(docId!, roomId);
     const sharingLink = generateSharingLink($roomConfig.get(), type);
     if (sharingLink && navigator.clipboard){
       await navigator.clipboard?.writeText(sharingLink);
@@ -138,7 +139,7 @@ export function ShareDialog({ type }: { type?: string }) {
         </AriaButton>        
         <DialogOverlay>
           <DialogContent className="max-h-screen flex flex-col overflow-hidden">
-            {({ close }) => (
+            {({ close: _close }) => (
               <>
                 <Form {...form}>
                   <form ref={formRef} onSubmit={onSubmit} autoComplete="off" className="flex flex-col flex-1 w-full overflow-hidden">
@@ -451,7 +452,7 @@ function UserList({
   awarenessClientID: number | undefined;
 }) {
   const userAwareness = isSharing && (awarenessUsers as Map<any, any>)?.get(awarenessClientID);
-  const userInfo = user.get();
+  const userInfo = $user.get();
   const connectedCount= peerIds?.length ?? 0;
   return (
     <div>
@@ -544,7 +545,7 @@ const User = forwardRef<HTMLDivElement, UserProps>(
 const UserForm = forwardRef<HTMLFormElement, React.HTMLProps<HTMLFormElement>>(
   (props, ref) => {
     useEffect(() => {
-      return user.subscribe(currentUser => {
+      return $user.subscribe(currentUser => {
         form.reset(currentUser) 
       })
     }, [])
@@ -554,7 +555,7 @@ const UserForm = forwardRef<HTMLFormElement, React.HTMLProps<HTMLFormElement>>(
     });
     const onSubmit = form.handleSubmit(
       (data) => {
-        user.set(data);
+        $user.set(data);
       },
       (errors) => {
         console.log({ errors });

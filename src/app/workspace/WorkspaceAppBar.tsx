@@ -29,9 +29,8 @@ import { startImport } from "../drive/ImportDrive";
 import { DocTitle } from "../shared/DocTitle";
 import { $settingsStore } from "../shared/SettingsDialog";
 import { ShareDialog } from "../shared/ShareDialog";
-import { createDocumentState } from "./CreateDocumentDialog";
-import { Button } from "@/components/ui/button";
 import { useVersionHistory } from "../shared/useVersionHistory";
+import { createDocumentState } from "./CreateDocumentDialog";
 
 export default function AppBar({ className }: { className?: string }) {
   const [theme, setTheme] = useTheme();

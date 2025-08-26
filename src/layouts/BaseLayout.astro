@@ -9,13 +9,13 @@ interface Props {
   class?: string;
 }
 
-const { title, favicon, class: className } = Astro.props;
+const { title, favicon, class: className, description } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={title} favicon={favicon} />
+    <BaseHead title={title} favicon={favicon} description={description} />
     <slot name="head" />
   </head>
   <body class={cn("flex flex-col", className)}>

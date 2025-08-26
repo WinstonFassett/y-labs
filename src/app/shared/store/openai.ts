@@ -1,6 +1,6 @@
 import { atom, computed, onMount, task } from "nanostores";
 import OpenAI from "openai";
-import { $openaiApiKey } from "./secure-settings";
+import { $openaiApiKey } from "./local-secure-settings";
 
 export const $session = computed([$openaiApiKey], (openaiApiKey) => {
   if (openaiApiKey) {

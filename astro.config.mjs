@@ -7,7 +7,7 @@ import svelte from "@astrojs/svelte";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://winstonfassett.github.io",
+  site: process.env.DEPLOY_PRIME_URL || "https://winstonfassett.github.io",
   base: "/y-labs",
   integrations: [
     react(),

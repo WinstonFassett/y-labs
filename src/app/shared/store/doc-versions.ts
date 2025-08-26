@@ -2,9 +2,9 @@ import { mapTemplate } from '@/lib/nanostores-utils/mapTemplate';
 import { type ReadableAtom, atom, computed, map, onMount } from 'nanostores';
 import { ySyncPluginKey, yUndoPluginKey } from 'y-prosemirror';
 import * as Y from 'yjs';
-import { getSharesForType } from '../shares-lookup';
-import { addVersion, buildVersionGraph, restoreVersion, type Version } from '../utils/versionManager';
-import { getYdoc } from './yjs-docs';
+import { getSharesForType } from '../config/shares-lookup';
+import { addVersion, buildVersionGraph, restoreVersion, type Version } from '../../../lib/yjs-versions';
+import { getYdoc } from './doc-yjs';
 import { Doc as BlocksuiteDoc } from '@blocksuite/store';
 import { $trackHistoryWhenEditing } from './local-settings';
 
@@ -42,7 +42,7 @@ export function createVersionControlStore(sourceDoc: Y.Doc, {type}:{type: string
   })
 
   const $isLatestVersion = computed([store, $versions], ({ displayVersionId }, versions) => 
-    checkIfLatestVersion(displayVersionId, versions)
+    !displayVersionId || checkIfLatestVersion(displayVersionId, versions)
   )
 
   const $stackSizes = map<{undo: number; redo: number}>({ undo: 0, redo: 0 });
@@ -119,7 +119,7 @@ export function createVersionControlStore(sourceDoc: Y.Doc, {type}:{type: string
     
   }
 
-  function switchToVersion(versionId: string | null) {
+  function switchToVersion(versionId: string) {
     const versions = $versions.get();
     const isLatestVersion = checkIfLatestVersion(versionId, versions);
 

@@ -1,17 +1,13 @@
-
 import type DriveListing from "@/app/drive/DriveListing";
+import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 import { Suspense, lazy, useMemo } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { PasswordRequiredDialog } from "../shared/PasswordRequiredDialog";
 import { getDocLoadState } from "../shared/store/doc-loader";
 import { useDocCollabStore } from "../shared/useDocCollabStore";
-import { useStoreIfPresent } from "../shared/useStoreIfPresent";
-import { Sidebar, SidebarContent, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { Navbar } from "@/components/ui/navbar";
-import { VersionHistory } from "../shared/VersionHistory";
 import { useDocEditorMode } from "../shared/useDocEditorMode";
-import { Skeleton } from "@/components/ui/skeleton";
-import { cn } from "@/lib/utils";
+import { useStoreIfPresent } from "../shared/useStoreIfPresent";
 
 export const EditorsByType: Record<string, React.ComponentType<{ className?: string }>>
  = {
@@ -35,7 +31,6 @@ export default function Editor({ className }: { className?: string }) {
   const location = useLocation();
   const mode = useDocEditorMode() 
   const showVersionHistory = !!docId && mode === 'versions';  
-  // const [showVersionHistory, setShowVersionHistory] = useState(true);
   const navigate = useNavigate();
   
   if (!docId) return <FolderView />;
@@ -61,10 +56,10 @@ function EditorSkeleton () {
   </div>
 }
 
-function LineSkeleton ({ className, ...props }) {
+function LineSkeleton ({ className, ...props }: { className?: string }) {
   // Random width between 50 to 90%.
   const style = useMemo(() => {
-    if (className.split([' ']).find(it => it.indexOf('w-') === 0)) return {};
+    if (className &&className.split(' ').find(it => it.indexOf('w-') === 0)) return {};
     return { width: `${  Math.floor(Math.random() * 40) + 50}%`}
   }, [className])
   return <Skeleton {...props} className={cn(`h-6 mt-4 mb-6`, className)} style={style} />

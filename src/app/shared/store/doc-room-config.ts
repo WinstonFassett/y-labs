@@ -1,9 +1,10 @@
 import { mapTemplate } from "@/lib/nanostores-utils/mapTemplate";
-import { computed, map, type MapStore } from "nanostores";
+import { computed, map } from "nanostores";
 import { z } from "zod";
 
 export interface DocRoomConfigFields {
   docId: string;
+  type: string;
   roomId: string;
   enabled: boolean;
   encrypt: boolean;
@@ -88,6 +89,6 @@ export function getDocRoomConfig(docId: string, roomId: string) {
   return $model;
 }
 
-export function getDocRoomId(docId: string, roomId: string) {
+export function getDocRoomId(docId: string, roomId?: string) {
   return `${docId}-${roomId ?? 'local'}`;
 }

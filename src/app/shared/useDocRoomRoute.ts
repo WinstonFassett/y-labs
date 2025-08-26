@@ -1,9 +1,8 @@
 import { useEffect } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { AppGlobals } from "../../globals";
-import { generateId } from "./generateId";
+import { buildUrl } from "../../lib/build-url";
+import { generateId } from "../../lib/generateId";
 import { getDocRoomConfig } from "./store/doc-room-config";
-import { buildUrl } from "../../lib/buildUrl";
 
 export function useDocRoomRoute({ type }:{ type?:string } = {}) {
   const params = useParams();
@@ -14,10 +13,9 @@ export function useDocRoomRoute({ type }:{ type?:string } = {}) {
   const x = searchParams.get("x");
   const encryptParam = searchParams.get("encrypt") === 'true';
   const roomId = searchParams.get("roomId");
-  const { frontmatter } = AppGlobals;
+  
   // when docId, roomId or x changes, update password and encrypted
   useEffect(() => {
-
     if (roomId) {
       const config = getDocRoomConfig(docId!, roomId!);
       if (x) {
@@ -32,8 +30,8 @@ export function useDocRoomRoute({ type }:{ type?:string } = {}) {
         
         config.set({
           ...config.get(),
-          docId: docId,
-          type,
+          docId: docId!,
+          type: type!,
           roomId: roomId,
           password: x,
           encrypt: true,
@@ -60,7 +58,7 @@ export function useDocRoomRoute({ type }:{ type?:string } = {}) {
 
       config.set({
         ...config.get(),
-        docId: docId,
+        docId: docId!,
         roomId: roomId,
         // password: "",
         encrypt: encryptParam,

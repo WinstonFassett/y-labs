@@ -1,8 +1,6 @@
 /* Basic editor styles */
-.tiptap {
-  > * + * {
+.tiptap > * + * {
     margin-top: 0.75em;
-  }
 }
 
 /* Placeholder (at the top) */

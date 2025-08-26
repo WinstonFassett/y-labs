@@ -3,12 +3,10 @@
 // import { useContext } from "react";
 // import { AppContext } from "../app/providers";
 // import { FontDefault, FontSerif, FontMono } from "@/ui/icons";
-import { Check, Menu as MenuIcon, Monitor, Moon, SunDim } from "lucide-react";
-import { Popover, PopoverContent, PopoverTrigger } from "./popover";
-import { cn } from "@/lib/utils";
-import { cva } from "class-variance-authority";
-import { Button } from "./button";
 import { useTheme } from "@/lib/astro-tailwind-themes/useTheme";
+import { Check, Menu as MenuIcon, Monitor, Moon, SunDim } from "lucide-react";
+import { Button } from "./button";
+import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 
 // const fonts = [
 //   {

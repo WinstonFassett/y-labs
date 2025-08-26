@@ -1,4 +1,24 @@
 import {
+  type AcceptUndefined,
+  convertCommand,
+  ErrorConstant,
+  invariant,
+  isEmptyObject,
+  isFunction,
+  type KeyBindingProps,
+  nonChainable,
+  type NonChainableCommandFunction,
+  type OnSetOptionsProps,
+  PlainExtension,
+  type Shape,
+  type Static
+} from '@remirror/core';
+import {
+  EditorState,
+  Plugin as ProsemirrorPlugin,
+  Selection,
+} from 'prosemirror-state';
+import {
   defaultCursorBuilder,
   defaultDeleteFilter,
   defaultSelectionBuilder,
@@ -12,35 +32,9 @@ import {
 } from 'y-prosemirror';
 import type { Doc } from 'yjs';
 import { UndoManager } from 'yjs';
-import {
-  type AcceptUndefined,
-  command,
-  convertCommand,
-  ErrorConstant,
-  extension,
-  ExtensionPriority,
-  invariant,
-  isEmptyObject,
-  isFunction,
-  keyBinding,
-  type KeyBindingProps,
-  NamedShortcut,
-  nonChainable,
-  type NonChainableCommandFunction,
-  type OnSetOptionsProps,
-  PlainExtension,
-  type Shape,
-  type Static,
-} from '@remirror/core';
-import {
-  EditorState,
-  Plugin as ProsemirrorPlugin,
-  Selection,
-} from 'prosemirror-state'
 
-import { ExtensionHistoryMessages as Messages } from '@remirror/messages';
 // import { DecorationAttrs } from '@remirror/pm/view';
-import type { DecorationAttrs} from 'prosemirror-view'
+import type { DecorationAttrs } from 'prosemirror-view';
 
 export interface ColorDef {
   light: string;

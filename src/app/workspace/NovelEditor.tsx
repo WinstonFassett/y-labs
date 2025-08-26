@@ -1,5 +1,5 @@
-import { Collaboration } from "@/app/shared/TiptapCollaborationExtension";
-import { user } from "@/app/shared/store/local-user";
+import { Collaboration } from "@/lib/tiptap-collaboration";
+import { $user } from "@/app/shared/store/local-user";
 import { useStore } from "@nanostores/react";
 import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 import { Color } from '@tiptap/extension-color';
@@ -24,7 +24,7 @@ export default function NovelEditor() {
 
   const { novel: fragment } = useMemo(() => getNovelShares(currentDoc), [currentDoc])
 
-  const u = useStore(user);
+  const u = useStore($user);
   
   const extensions = useMemo(() => [
     TextStyle as any, 

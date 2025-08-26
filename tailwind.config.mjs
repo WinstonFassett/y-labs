@@ -157,7 +157,7 @@ export default {
           dark: "#252932",
         },        
       },
-      typography: (theme) => ({
+      typography: () => ({
         DEFAULT: {
           css: {           
             '--tw-prose-bold': 'currentColor',

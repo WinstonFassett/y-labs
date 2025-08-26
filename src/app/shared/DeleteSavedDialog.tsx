@@ -16,9 +16,9 @@ import { useToast } from "@/hooks/use-toast";
 import { Slot } from "@radix-ui/react-slot";
 import { TrashIcon } from "lucide-react";
 import { useState } from "react";
-import { useNavigateMaybe } from "../../lib/useNavigateMaybe";
+import { useNavigateMaybe } from "../../hooks/use-navigate-maybe";
 import { useDocParams } from "./useDocParams";
-import type { DocMetadata } from "./store/doc-metadata";
+import type { DocMetadata } from "./store/local-docs-metadata";
 import { deleteOfflineDoc, getDocIdbStore, getHasDocIdb } from "./store/local-yjs-idb";
 
 const DefaultTriggerButton = (props: any) => {

@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from 'react';
-import type { VersionGraph, VersionNode } from './utils/versionManager';
+import type { VersionGraph, VersionNode } from '../../lib/yjs-versions';
 
 export function findMainBranch(graph: VersionGraph): VersionNode[] {
   const branch: VersionNode[] = [];
@@ -15,9 +15,9 @@ export function findMainBranch(graph: VersionGraph): VersionNode[] {
 }
 
 export function usePlayback(
-  versionGraph: VersionGraph | null,
-  currentVersionId: string | null,
-  onJumpToVersion: (id: string | null) => void
+  versionGraph: VersionGraph,
+  currentVersionId: string,
+  onJumpToVersion: (id: string) => void
 ) {
   const [isPlaying, setIsPlaying] = useState(false);
   const playIntervalRef = useRef<number | null>(null);

@@ -6,17 +6,17 @@ import Highlight from '@tiptap/extension-highlight';
 import TextStyle from '@tiptap/extension-text-style';
 import AppBar from "../shared/AppBar";
 import { getDocLoadState } from "../shared/store/doc-loader";
-import { user } from "../shared/store/local-user";
+import { $user } from "../shared/store/local-user";
 import { useDocCollabStore } from "../shared/useDocCollabStore";
 import { Novel } from "./Novel";
 
 import { PasswordRequiredDialog } from "../shared/PasswordRequiredDialog";
 function Editor() {
   const { docId, ydoc, $room, roomId, needsPasswordToConnect } = useDocCollabStore();
-  const loadState = useStore(getDocLoadState(docId, roomId));
+  const loadState = useStore(getDocLoadState(docId!, roomId));
   const fragment = ydoc.getXmlFragment("novel");
   const provider = $room?.get().provider;
-  const u = user.get();
+  const u = $user.get();
   const ready = loadState === "loaded";
   const providerReady = roomId ? !!provider : true;
   const waiting = !providerReady && !ready ;
@@ -29,7 +29,6 @@ function Editor() {
           key={roomId ?? docId}
           autofocus
           className="p-4"
-          disableHistory={true}
           extensions={[
             TextStyle as any, 
             Color,

@@ -17,7 +17,7 @@ import { Observable, ObservableV2 } from "lib0/observable.js";
 import { Awareness } from "y-protocols/awareness";
 import { YKeyValue } from "y-utility/y-keyvalue";
 import * as Y from "yjs";
-import { user } from "../shared/store/local-user";
+import { $user } from "../shared/store/local-user";
 
 export class TLDrawCollabRoom extends ObservableV2<any> {
   constructor(
@@ -57,9 +57,6 @@ export function bindToYDoc(
     } else {
       applySchemaMigration();
     }
-    Promise.resolve().then(() => {
-      yDoc.emit("tldraw-ready", [name]);
-    });
   }
   if (loaded) {
     onLoaded();
@@ -72,7 +69,7 @@ export function bindToYDoc(
     provider &&
       listen(provider, "synced", (synced) => {
         if (synced && !yDoc.isLoaded) {
-          yDoc.emit("load", []); // change to synced
+          yDoc.emit("load", [yDoc]); // change to synced
         } else {
           applySchemaMigration();
         }
@@ -152,7 +149,7 @@ export function bindToYDoc(
     const yClientId = awareness.clientID.toString();
     setUserPreferences({ id: yClientId });
 
-    const { username, color } = user.get();
+    const { username, color } = $user.get();
 
     const userPreferences = computed<{
       id: string;

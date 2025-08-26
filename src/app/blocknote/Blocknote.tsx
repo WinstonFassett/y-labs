@@ -1,14 +1,12 @@
+import { cn } from "@/lib/utils";
 import { BlockNoteView, useBlockNote } from "@blocknote/react";
 import "@blocknote/react/style.css";
-import type { XmlFragment } from "yjs";
-import "./Blocknote.css";
-import { useEffect, useMemo } from "react";
-import { user } from "../shared/store/local-user";
 import { useStore } from "@nanostores/react";
-import { useDocCollabStore } from "../shared/useDocCollabStore";
-import { cn } from "@/lib/utils";
-import { getBlocknoteShares } from "./blocknote-shares";
+import { useEffect, useMemo } from "react";
+import { $user } from "../shared/store/local-user";
 import { useDocEditor } from "../shared/useDocEditor";
+import { getBlocknoteShares } from "./blocknote-shares";
+import "./Blocknote.css";
 
 export interface BlocknoteProps {
   autofocus?: boolean;
@@ -29,10 +27,7 @@ export function Blocknote(
   } = useDocEditor();
 
   const { blocknote: fragment } = useMemo(() => getBlocknoteShares(currentDoc), [currentDoc])
-
-  
-  const theme = "dark"; // useStore(store.theme)
-  const u = useStore(user);
+  const u = useStore($user);
 
   const editor = useBlockNote({
     collaboration: {
@@ -42,10 +37,10 @@ export function Blocknote(
         name: u.username,
         userName: u.username,
         color: u.color,
-      },
+      } as any,
     },
   }, [fragment, u]);
-  window.editor = editor;
+  Object.assign(window, { editor });
   useEffect(() => {
     if (autofocusDoc) {
       editor.focus();

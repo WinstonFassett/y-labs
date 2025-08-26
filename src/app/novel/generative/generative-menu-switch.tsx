@@ -1,18 +1,12 @@
-import { EditorBubble, useEditor } from "novel";
-import React, { Fragment, useEffect, type ReactNode } from "react";
-import { Button } from "../ui/button";
-import { AISelector } from "./ai-selector";
-import Magic from "../ui/icons/magic";
-import {} from "novel/plugins";
-import { removeAIHighlight } from "../extensions/ai-highlight";
+import { $openaiApiKey } from "@/app/shared/store/local-secure-settings";
 import { useStore } from "@nanostores/react";
-import { $openaiApiKey } from "@/app/shared/store/secure-settings";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@radix-ui/react-popover";
-import { atom, computed, map } from "nanostores";
+import { EditorBubble, useEditor } from "novel";
+import { } from "novel/plugins";
+import { Fragment, useEffect, type ReactNode } from "react";
+import { removeAIHighlight } from "../extensions/ai-highlight";
+import { Button } from "../ui/button";
+import Magic from "../ui/icons/magic";
+import { AISelector } from "./ai-selector";
 import { OpenAiSettings } from "./openai-settings";
 
 interface GenerativeMenuSwitchProps {

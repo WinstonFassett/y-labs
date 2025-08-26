@@ -14,6 +14,7 @@ import "@milkdown/crepe/theme/common/style.css";
 
 // We have some themes for you to choose
 import "@milkdown/crepe/theme/frame.css";
+import "@milkdown/crepe/theme/frame-dark.css";
 // import "@milkdown/crepe/theme/frame.css";
 // import "@milkdown/theme-nord";
 
@@ -26,7 +27,6 @@ import "@milkdown/crepe/theme/frame.css";
 // import "@/styles/playground.css";
 // import "@/styles/toast.css";
 // import "@/styles/liquid.css";
-import "./styles/crepe.css";
 import './styles/collab.css'
 // import "@milkdown/crepe/theme/common/style.css";
 
@@ -40,7 +40,7 @@ import './styles/collab.css'
 //   loading: () => <Loading />,
 // });
 
-export default function Dual ({ doc, awareness, shareName = "milkdown" }: { doc: Y.Doc, awareness?: Awareness, shareName: string }) {
+export default function Dual ({ doc, awareness, shareName = "milkdown" }: { doc: Y.Doc, awareness?: Awareness, shareName?: string }) {
   const [expand, setExpand] = useState(false);
   const onMilkdownChange = useAtomCallback(
     useCallback((get, _set, markdown: string) => {

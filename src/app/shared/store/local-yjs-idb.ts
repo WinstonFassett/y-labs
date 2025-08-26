@@ -4,8 +4,8 @@ import * as idb from "lib0/indexeddb";
 import { computed, map, onSet } from "nanostores";
 import { IndexeddbPersistence } from "y-indexeddb";
 import * as Y from "yjs";
-import { $docMetas, deleteDocMetadata, saveDocMetadata } from "./doc-metadata";
-import { getYdoc } from "./yjs-docs";
+import { $docMetas, deleteDocMetadata, saveDocMetadata } from "./local-docs-metadata";
+import { getYdoc } from "./doc-yjs";
 import { debounce } from "../../../lib/debounce";
 
 interface DocIdbStoreFields {
@@ -30,7 +30,7 @@ const docIdbStoreT = mapTemplate(
       const persister = new IndexeddbPersistence(id, y);
       persister.once("synced", () => {
         if (!y.isLoaded) {
-          y.emit("load", []);
+          y.emit("load", [y]);
         } 
         store.setKey("loaded", true);
 
@@ -147,7 +147,7 @@ export function getOfflineDoc(name: string, destroy = true) {
         resolver?.(ydoc);
       });
 
-      persister._load.catch(err => {
+      (persister as any)._load.catch((err: unknown) => {
         console.error("Error loading doc", name, err);
         reject?.(err);
         resolver = undefined;

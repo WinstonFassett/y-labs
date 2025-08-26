@@ -2,35 +2,27 @@ import { AffineEditorContainer } from "@blocksuite/presets";
 import { Doc, DocCollection } from "@blocksuite/store";
 
 import {
-  BlockServiceWatcher,
   EditorHost,
-  type ExtensionType,
+  type ExtensionType
 } from "@blocksuite/block-std";
 import {
-  AffineFormatBarWidget,
   CommunityCanvasTextFonts,
   DocModeExtension,
   DocModeProvider,
   FontConfigExtension,
-  GenerateDocUrlExtension,
   NotificationExtension,
   OverrideThemeExtension,
-  PageRootService,
-  ParseDocUrlExtension,
   RefNodeSlotsExtension,
   RefNodeSlotsProvider,
-  SpecProvider,
+  SpecProvider
 } from "@blocksuite/blocks";
 import { effects as blocksEffects } from "@blocksuite/blocks/effects";
 import { effects as presetsEffects } from "@blocksuite/presets/effects";
-// import { AttachmentViewerPanel } from "./_common/components/attachment-viewer-panel";
 import {
   mockDocModeService,
-  mockGenerateDocUrlService,
   mockNotificationService,
-  mockParseDocUrlService,
   // mockPeekViewExtension,
-  themeExtension,
+  themeExtension
 } from "./_common/mock-services";
 import { initDoc } from "./initDoc";
 
@@ -117,7 +109,7 @@ export function createEditor(doc: Doc, mode: "edgeless" | "page" = "edgeless") {
     const getEditorModeCallback = () => editor.mode;
     const extensions: ExtensionType[] = [
       refNodeSlotsExtension,
-      PatchPageServiceWatcher,
+      // PatchPageServiceWatcher,
       FontConfigExtension(CommunityCanvasTextFonts),
       // ParseDocUrlExtension(mockParseDocUrlService(collection)),
       // GenerateDocUrlExtension(mockGenerateDocUrlService(collection)),
@@ -143,20 +135,20 @@ export function createEditor(doc: Doc, mode: "edgeless" | "page" = "edgeless") {
   }
 }
 
-class PatchPageServiceWatcher extends BlockServiceWatcher {
-  static override readonly flavour = "affine:page";
+// class PatchPageServiceWatcher extends BlockServiceWatcher {
+//   static override readonly flavour = "affine:page";
 
-  override mounted() {
-    const pageRootService = this.blockService as PageRootService;
-    const onFormatBarConnected = pageRootService.specSlots.widgetConnected.on(
-      (view) => {
-        if (view.component instanceof AffineFormatBarWidget) {
-          // console.log(`TODO: configureFormatBar(view.component);`);
-        }
-      },
-    );
-    pageRootService.disposables.add(onFormatBarConnected);
-  }
-}
+//   override mounted() {
+//     const pageRootService = this.blockService as PageRootService;
+//     const onFormatBarConnected = pageRootService.specSlots.widgetConnected.on(
+//       (view) => {
+//         if (view.component instanceof AffineFormatBarWidget) {
+//           // console.log(`TODO: configureFormatBar(view.component);`);
+//         }
+//       },
+//     );
+//     pageRootService.disposables.add(onFormatBarConnected);
+//   }
+// }
 
 

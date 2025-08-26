@@ -41,7 +41,7 @@ export default function TlDrawEditor({ className }: { className?: string; }) {
 
   const loading = !loaded || storeWithStatus.status === "loading";
 
-  const $offlineStore = getDocIdbStore(docId)
+  const $offlineStore = getDocIdbStore(docId!)
   const persister = useStore($offlineStore.$persister);
 
   useEffect(() => {

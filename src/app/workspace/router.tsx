@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { createHashRouter, useNavigate, useParams } from "react-router-dom";
-import { generateId } from "../shared/generateId";
+import { generateId } from "../../lib/generateId";
 import { saveOfflineDoc } from "../shared/store/local-yjs-idb";
 import { $newDocIds } from "../shared/store/new-doc-ids";
 import { EditorRoute } from "./EditorRoute";
