@@ -14,12 +14,8 @@ import React, { useMemo } from 'react';
 import jsx from 'refractor/lang/jsx.js';
 import md from 'refractor/lang/markdown.js';
 import typescript from 'refractor/lang/typescript.js';
-<<<<<<< ours
 import { ExtensionPriority, getThemeVar } from 'remirror';
 import type { Extension, EmptyShape } from '@remirror/core';
-=======
-import { Extension, ExtensionPriority, getThemeVar, type EmptyShape } from 'remirror';
->>>>>>> theirs
 import {
   BlockquoteExtension,
   BoldExtension,
