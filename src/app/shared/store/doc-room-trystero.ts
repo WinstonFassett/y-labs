@@ -33,9 +33,9 @@ type RoomInfo = {
   provider: TrysteroProvider
 }
 
-const [emitJoinedTrysteroRoom, listenJoinedTrysteroRoom] = nanoevent<RoomInfo>()
+const [listenJoinedTrysteroRoom, emitJoinedTrysteroRoom] = nanoevent<RoomInfo>()
 
-const [emitLeftTrysteroRoom, listenLeftTrysteroRoom] = nanoevent<RoomInfo>()
+const [listenLeftTrysteroRoom, emitLeftTrysteroRoom] = nanoevent<RoomInfo>()
 
 export {
   listenJoinedTrysteroRoom,
