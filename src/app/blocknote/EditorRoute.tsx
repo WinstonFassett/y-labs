@@ -1,8 +1,8 @@
 
 import { useDocRoomRoute } from "../shared/useDocRoomRoute";
-import { Editor } from "./Editor";
+import { LazyEditor } from "./lazy/editor";
 
 export function EditorRoute() {
   useDocRoomRoute()
-  return <Editor />;
+  return <LazyEditor />;
 }
