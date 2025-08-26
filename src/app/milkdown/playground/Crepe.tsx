@@ -146,7 +146,7 @@ const CrepeEditor: FC<MilkdownProps> = ({ onChange, doc, awareness, shareName = 
     };
   }, [doc, awareness, content, darkMode, onChange, setCrepeAPI, toast]);
 
-  return <div className="crepe flex h-full flex-1 flex-col" ref={divRef} />;
+  return <div className="crepe flex h-full flex-1 flex-col [&>*]:flex-1" ref={divRef} />;
 };
 
 export default CrepeEditor;
