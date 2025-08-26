@@ -14,6 +14,7 @@ import * as Y from 'yjs';
 import { crepeAPI, markdown } from "./atom";
 import { encode } from "./share";
 import { useToast } from "./toast";
+import "./styles/crepe.css"
 
 interface MilkdownProps {
   onChange: (markdown: string) => void;
