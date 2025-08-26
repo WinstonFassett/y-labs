@@ -2,7 +2,7 @@
   "name": "y-labs",
   "type": "module",
   "version": "0.0.1",
-  "packageManager": "pnpm@8.6.12",
+  "packageManager": "pnpm@9.12.3",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
