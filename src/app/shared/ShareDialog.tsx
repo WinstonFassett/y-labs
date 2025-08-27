@@ -77,12 +77,12 @@ export function ShareDialog({ type }: { type?: string }) {
     defaultValues: async () => {
       const enabled = roomConfigMaybe?.enabled ?? false;
       const inRoom = roomParameter
-      const encrypt = inRoom ? (roomConfigMaybe?.encrypt || !!roomConfigMaybe?.password) : true;
+      const encrypt = inRoom ? (roomConfigMaybe?.encrypt || !!roomConfigMaybe?.password) : false;
       return {
         roomId: roomParameter || generateId(),
         enabled,
         encrypt,
-        password: roomConfigMaybe?.password ?? generateId(),
+        password: roomConfigMaybe?.password ?? (encrypt ? generateId() : undefined),
         accessLevel: roomConfigMaybe?.accessLevel ?? "edit",
       }
     },
@@ -617,7 +617,7 @@ export function generateSharingLink(config: DocRoomConfigFields, type?: string) 
       {
         roomId,
         encrypt: encrypt ? "true" : undefined,
-        x: password,
+        x: encrypt ? password : undefined,
       }
     )
 }

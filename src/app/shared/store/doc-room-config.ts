@@ -51,6 +51,7 @@ const docRoomConfigsT = mapTemplate(
         docId,
         "?roomId=",
         roomId,
+        encrypt ? "&encrypt=true" : "",
         (encrypt && password) ? `&x=${password}` : "",
       ].join("")  
     })

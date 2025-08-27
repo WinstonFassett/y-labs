@@ -59,8 +59,9 @@ export function useDocRoomRoute({ type }:{ type?:string } = {}) {
       config.set({
         ...config.get(),
         docId: docId!,
+        type: type!,
         roomId: roomId,
-        // password: "",
+        password: encryptParam ? config.get().password : undefined,
         encrypt: encryptParam,
         enabled: true,
         accessLevel: "edit",
