@@ -14,7 +14,6 @@ class CustomAttachmentBlockService extends AttachmentBlockService {
   override mounted(): void {
     super.mounted();
     this.maxFileSize = Infinity //  100 * 1000 * 1000; // 100MB
-    console.log("CustomAttachmentBlockService mounted with maxFileSize =", this.maxFileSize);
   }
 }
 
