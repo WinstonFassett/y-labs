@@ -16,16 +16,17 @@ const idGenerator: IdGeneratorType = IdGeneratorType.NanoID;
 
 export const schema = new Schema().register(AffineSchemas);
 
-// Create both blob sources
+// Create IDB blob source
 const idbBlobSource = new IndexedDBBlobSource('local');
-const opfsBlobSource = new OpfsBlobSource('local');
 
-// Create a migrating blob source that uses OPFS as primary but falls back to IDB
-export const localBlobSource = new MigratingBlobSource(
-  'local',
-  opfsBlobSource, // current/preferred source
-  idbBlobSource   // previous/fallback source
-);
+export const localBlobSource = 
+  OpfsBlobSource.isSupported ? 
+    new MigratingBlobSource(
+      'local',
+      new OpfsBlobSource('local'),
+      idbBlobSource
+    ) :
+    idbBlobSource;
 
 const blocksuiteDocsT = mapTemplate(
   () => atom<BsDoc>(undefined as any),
