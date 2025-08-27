@@ -1,10 +1,12 @@
 import type { BlobSource } from "@blocksuite/sync";
 
-const isSupported = !!((window as any).showDirectoryPicker && 
-  navigator.storage?.getDirectory);
+export const hasOPFS = typeof navigator.storage?.getDirectory === "function"
+export const hasWritableOPFS =
+  hasOPFS &&
+  typeof FileSystemFileHandle?.prototype?.createWritable === "function";
 
 export class OpfsBlobSource implements BlobSource {
-  static isSupported = isSupported;
+  static isSupported = hasWritableOPFS;
 
   private readonly metaSuffix = '.mime';
 
