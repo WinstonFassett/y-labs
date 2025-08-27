@@ -6,20 +6,20 @@ export type Emit<T> = (value: T) => void;
 export const nanoevent = <T>(
   listeners = [] as Listen<T>[],
 ): [
-    emit: Emit<T>, 
-    listen: Subscribe<T>, 
-    listeners: Listen<T>[]
-  ] => [
-  (value: T) => {
-    for (const listener of listeners) {
-      listener(value);
-    }
-  },
+  listen: Subscribe<T>, 
+  emit: Emit<T>, 
+  listeners: Listen<T>[]
+] => [  
   (listener: Listen<T>) => {
     listeners.push(listener);
     return () => {
       listeners = listeners.filter((l) => l !== listener);
     };
   },
+  (value: T) => {
+    for (const listener of listeners) {
+      listener(value);
+    }
+  },  
   listeners,
 ];
