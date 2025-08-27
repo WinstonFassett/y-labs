@@ -1,6 +1,8 @@
 import { StoreDocSource } from "@/app/blocksuite/default/utils/StoreDocSource";
 import { createDocRoomsBlobSource } from "@/app/shared/store/doc-rooms-blobsource";
 import { mapTemplate } from "@/lib/nanostores-utils/mapTemplate";
+import { MigratingBlobSource } from "@/app/blocksuite/MigratingBlobSource";
+import { OpfsBlobSource } from "@/app/blocksuite/OpfsBlobSource";
 import { AffineSchemas } from '@blocksuite/blocks';
 import { Doc as BsDoc, DocCollection, IdGeneratorType, Schema, type DocCollectionOptions } from '@blocksuite/store';
 import {
@@ -14,7 +16,17 @@ const idGenerator: IdGeneratorType = IdGeneratorType.NanoID;
 
 export const schema = new Schema().register(AffineSchemas);
 
-export const localBlobSource = new IndexedDBBlobSource('local')
+// Create IDB blob source
+const idbBlobSource = new IndexedDBBlobSource('local');
+
+export const localBlobSource = 
+  OpfsBlobSource.isSupported ? 
+    new MigratingBlobSource(
+      'local',
+      new OpfsBlobSource('local'),
+      idbBlobSource
+    ) :
+    idbBlobSource;
 
 const blocksuiteDocsT = mapTemplate(
   () => atom<BsDoc>(undefined as any),

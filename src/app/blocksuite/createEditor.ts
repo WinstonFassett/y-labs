@@ -6,6 +6,7 @@ import {
   type ExtensionType
 } from "@blocksuite/block-std";
 import {
+  AttachmentBlockService,
   CommunityCanvasTextFonts,
   DocModeExtension,
   DocModeProvider,
@@ -25,6 +26,7 @@ import {
   themeExtension
 } from "./_common/mock-services";
 import { initDoc } from "./initDoc";
+import { CustomAttachmentSpecSetup } from "./custom-attachment";
 
 blocksEffects();
 presetsEffects();
@@ -119,15 +121,16 @@ export function createEditor(doc: Doc, mode: "edgeless" | "page" = "edgeless") {
         mockDocModeService(getEditorModeCallback, setEditorModeCallBack),
       ),
       // mockPeekViewExtension(attachmentViewerPanel),
+      
     ];
 
     const pageSpecs = SpecProvider.getInstance().getSpec("page");
     pageSpecs.extend([...extensions]);
-    editor.pageSpecs = pageSpecs.value;
+    editor.pageSpecs = [...pageSpecs.value, CustomAttachmentSpecSetup];
 
     const edgelessSpecs = SpecProvider.getInstance().getSpec("edgeless");
     edgelessSpecs.extend([...extensions]);
-    editor.edgelessSpecs = edgelessSpecs.value;
+    editor.edgelessSpecs = [...edgelessSpecs.value, CustomAttachmentSpecSetup];
 
     SpecProvider.getInstance().extendSpec("edgeless:preview", [
       OverrideThemeExtension(themeExtension),
