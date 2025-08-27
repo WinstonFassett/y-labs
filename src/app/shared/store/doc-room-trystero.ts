@@ -1,5 +1,5 @@
 import { mapTemplate } from "@/lib/nanostores-utils/mapTemplate";
-import { TrysteroProvider } from "@winstonfassett/y-webrtc-trystero";
+import { TrysteroProvider } from "@/lib/yjs-trystero/y-trystero";
 import {
   atom,
   computed,
@@ -8,7 +8,7 @@ import {
 } from "nanostores";
 import { Awareness } from "y-protocols/awareness.js";
 import type { Doc } from "yjs";
-import { joinRoom } from "trystero";
+import { createRoom } from "../../../lib/trystero-room";
 import { appId } from "./constants";
 import { getDocRoomConfig, type DocRoomConfigFields } from "./doc-room-config";
 import { $user } from "./local-user";
@@ -144,9 +144,7 @@ function createTrysteroDocRoom(
 
   function createProvider(config: Readonly<DocRoomConfigFields>) {
     const { roomId, password, encrypt, accessLevel } = config;
-    const provider = new TrysteroProvider(roomId, ydoc, { 
-      appId: appId,
-      joinRoom,
+    const provider = new TrysteroProvider(ydoc, roomId, createRoom, { appId: appId }, { 
       password, 
       accessLevel: config.accessLevel,
       awareness
