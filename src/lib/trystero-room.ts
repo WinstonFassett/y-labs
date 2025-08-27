@@ -1,5 +1,5 @@
 import { makeMultiHandler } from "@/lib/trystero-subscribe/makeMultiHandler.js";
-import { joinRoom } from "trystero";
+import { joinRoom } from "trystero/torrent";
 import { appId } from "../app/shared/store/constants";
 
 export function createRoom(config: any, roomId: string) {
